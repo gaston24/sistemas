@@ -1,0 +1,9 @@
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/brands.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/duotone.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/fontawesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/light.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/regular.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/solid.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/svg-with-js.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/v4-shims.min.css">
