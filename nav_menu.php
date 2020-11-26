@@ -126,6 +126,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Remitos</a>
             <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulos</a>
+            <a class="dropdown-item" href="#" onclick="location.href='procedimientos'">Procedimientos</a>
             </div>
         </li>
         <?php

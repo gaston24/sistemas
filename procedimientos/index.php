@@ -4,7 +4,7 @@ session_start();
 if(!isset($_SESSION['username'])){
 	header("Location:login.php");
 }else{
-
+    header("Content-Type: text/html;charset=utf-8");
 include 'class/procedimiento.php';
 $proce = new Procedimiento();
 $list = $proce->traerProcedimientos();
@@ -12,10 +12,11 @@ $list = $proce->traerProcedimientos();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="ISO-8859-1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="../assets/css/icono.jpg" />
     <title>Procedimientos</title>
     <link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/brands.min.css">
@@ -35,8 +36,8 @@ $list = $proce->traerProcedimientos();
     <h1 class="text-center">Procedimientos</h1>
 
 <div class="row">
-<div class="col-2"></div>
-<div class="col-8">
+<div class="col-1"></div>
+<div class="col-10">
 
 <table class="table table-responsive table-hover">
 <thead>
@@ -68,7 +69,7 @@ foreach ($list as $value) {
 
 
 </div>
-<div class="col-2"></div>
+<div class="col-1"></div>
 </div>
 
 

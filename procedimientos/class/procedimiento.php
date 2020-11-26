@@ -8,8 +8,11 @@ class Procedimiento{
         $sql = "
         SET DATEFORMAT YMD
 
-        SELECT * FROM SJ_PROCEDIMIENTOS ORDER BY NOMBRE_PROCEDIMIENTO
+        SELECT *
+        FROM SJ_PROCEDIMIENTOS 
+        ORDER BY NOMBRE_PROCEDIMIENTO
         ";
+
         $stmt = sqlsrv_query( $cid, $sql );
 
         $rows = array();
