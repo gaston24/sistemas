@@ -147,7 +147,14 @@
         }
         ?>
         <?php 
-		if($_SESSION['numsuc']== 8 || $_SESSION['numsuc']== 16 || $_SESSION['numsuc']== 72 || $_SESSION['numsuc']== 76 || $_SESSION['numsuc']== 60){
+		if(
+            $_SESSION['numsuc']== 8 
+            || $_SESSION['numsuc']== 16 
+            || $_SESSION['numsuc']== 72 
+            || $_SESSION['numsuc']== 76 
+            || $_SESSION['numsuc']== 60
+            || $_SESSION['numsuc']== 79
+            ){
         ?>	
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
