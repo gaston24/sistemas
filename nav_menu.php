@@ -13,7 +13,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-            <?php if($habPedidos == 1)
+            <?php if($habPedidos == 1 || $_SESSION['numsuc'] < 100)
             {
             ?>
 

@@ -5,7 +5,7 @@ if(!isset($_SESSION['username'])){
 
 	header("Location:../../login.php");
 	
-}elseif($_SESSION['habPedidos']==0){
+}elseif($_SESSION['habPedidos']==0 && $_SESSION['numsuc'] > 100){
 	
 	header("Location:../index.php");
 
