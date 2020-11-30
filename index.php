@@ -14,6 +14,8 @@ $ven =	$_SESSION['vendedor'];
 $local = $_SESSION['descLocal'];
 $dashboard = $_SESSION['dashboard'];
 
+$habPedidos = $_SESSION['habPedidos'];
+
 $dsn = "1 - CENTRAL";
 $user = "sa";
 $pass = "Axoft1988";
@@ -63,6 +65,7 @@ include_once 'nav_menu.php';
 ?>
 
 	<div class="row">
+		
 
 		<div class="col-3">
 			
@@ -153,7 +156,11 @@ include_once 'nav_menu.php';
 	</div>
 	
 	</div>
-
+	<?php if($habPedidos == 0)
+            {
+			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
+			}
+	?>
 </div>
 
 

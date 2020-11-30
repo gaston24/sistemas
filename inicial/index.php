@@ -1,7 +1,13 @@
 <?php 
 session_start(); 
 if(!isset($_SESSION['username'])){
-	header("Location:login.php");
+  
+  header("Location:login.php");
+
+}elseif($_SESSION['habPedidos']==0){
+	
+	header("Location:../index.php");  
+
 }else{
 	
 $permiso = $_SESSION['permisos'];

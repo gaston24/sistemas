@@ -13,9 +13,10 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-            <?php if($codClient != 'FRFUL4' && $codClient != 'FRREM2' && $codClient != 'FRMPO')
+            <?php if($habPedidos == 1)
             {
             ?>
+
                 <!-- GENERALES -->
                 <a class="dropdown-item" href="#" 
                 <?php if($deposi != '00' ) 
@@ -133,7 +134,7 @@
         }
         ?>
         <?php 
-		if($_SESSION['numsuc']>100){
+		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1){
         ?>	
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

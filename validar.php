@@ -10,10 +10,12 @@ $pass = $_POST['pass'];
 
 $sql = 
 "
-SELECT A.*, ISNULL(B.URL_DASHBOARD, 'SIN_URL')URL_DASHBOARD 
+SELECT A.*, ISNULL(B.URL_DASHBOARD, 'SIN_URL')URL_DASHBOARD, C.EXCLUYE_PEDIDOS
 FROM SOF_USUARIOS A
 LEFT JOIN SJ_LOCALES_DASHBOARD B
 ON A.NRO_SUCURS = B.NRO_SUCURS 
+LEFT JOIN SJ_PPP_EXCLUYE_CLIENTE C
+ON A.COD_CLIENT = C.COD_CLIENT COLLATE Latin1_General_BIN
 WHERE A.NOMBRE = '$user' AND A.PASS = '$pass';
 ";
 
@@ -39,6 +41,7 @@ while($v=odbc_fetch_array($result)){
 	$_SESSION['dashboard'] = $v['URL_DASHBOARD'];
 	$_SESSION['deposi'] = $v['COD_DEPOSI'];
 	$_SESSION['tipo'] = $v['TIPO'];
+	$_SESSION['habPedidos'] = $v['EXCLUYE_PEDIDOS'];
 	
 	
 	if($v['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
