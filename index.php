@@ -156,7 +156,7 @@ include_once 'nav_menu.php';
 	</div>
 	
 	</div>
-	<?php if($habPedidos == 0 && $_SESSION['numsuc'] > 100)
+	<?php if($habPedidos == 0 && $_SESSION['numsuc'] > 300)
             {
 			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
 			}
