@@ -44,7 +44,9 @@
         ($_SESSION['numsuc']== 8 || $_SESSION['numsuc']== 11 || $_SESSION['numsuc']== 16 || $_SESSION['numsuc']== 60 || $_SESSION['numsuc']== 72 || $_SESSION['numsuc']== 76 || 
         $_SESSION['numsuc']== 77 || $_SESSION['numsuc']== 700 || $_SESSION['numsuc']== 701 || $_SESSION['numsuc']== 808 || $_SESSION['numsuc']== 900 || $_SESSION['numsuc']== 912
         || $_SESSION['numsuc']== 79
-		|| $_SESSION['numsuc']== 885)
+        || $_SESSION['numsuc']== 885
+        || $_SESSION['numsuc']== 870
+        )
 		&&($codClient != 'FRMDP')
 		)
 		{
