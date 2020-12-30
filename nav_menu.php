@@ -157,6 +157,7 @@
             || $_SESSION['numsuc']== 72 
             || $_SESSION['numsuc']== 76 
             || $_SESSION['numsuc']== 60
+            || $_SESSION['numsuc']== 78
             || $_SESSION['numsuc']== 79
             ){
         ?>	

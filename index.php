@@ -16,10 +16,15 @@ $dashboard = $_SESSION['dashboard'];
 
 $habPedidos = $_SESSION['habPedidos'];
 
-$dsn = "1 - CENTRAL";
-$user = "sa";
-$pass = "Axoft1988";
-$cid = odbc_connect($dsn, $user, $pass);
+try {
+
+    $servidor = 'SERVIDOR';
+    $conexion = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
+    $cid = sqlsrv_connect($servidor, $conexion);
+    
+} catch (PDOException $e){
+        echo $e->getMessage();
+}
 
 
 $sqlProx =
@@ -28,10 +33,11 @@ EXEC SOF_FECHAS_2'$codClient';
 
 ";
 
+$stmt = sqlsrv_query( $cid, $sqlProx );
 
-$resultProx=odbc_exec($cid,$sqlProx)or die(exit("Error en odbc_exec"));
+$rows = array();
 
-while($v=odbc_fetch_array($resultProx)){
+while( $v = sqlsrv_fetch_array( $stmt) ) {
 	$proximaEntrega = $v['A']	;
 }
 
