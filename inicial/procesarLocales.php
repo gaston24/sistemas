@@ -3,14 +3,9 @@ session_start();
 
 if(!isset($_SESSION['username'])){
 
-	header("Location:login.php");
+	header("Location:../login.php");
 
 }else{
-	
-	
-	//if($_SESSION['nuevoPedido']==0 && $_SESSION['cargaPedido']==1){
-
-//var_dump($_POST);
 
 include 'comprometerStock.php';
 
@@ -32,6 +27,8 @@ $codClient = $_POST['codClient'][$clave];
 $cantArt = $_POST['cantPed'][$clave];
 
 
+if($cantArt > 0){
+	
 
 
 
@@ -185,7 +182,7 @@ odbc_exec($cid,$sqlCargaPedidoEncabezado)or die(exit("Error en odbc_exec"));
 		
 		$sqlCargaPedidoDetalle = "
 
-		EXEC SJ_PEDIDO_DETALLE $cantArt, '$codArt', '$codArt', $nroRenglon, 0, 0, 1, $nroLista, '$numPed', 96
+		EXEC SJ_PEDIDO_DETALLE $cantArt, '$codArt', '$codArt', $nroRenglon, 0, 1, 1, $nroLista, '$numPed', 96
 
 		";
 
@@ -234,105 +231,15 @@ odbc_exec($cid,$sqlCargaPedidoEncabezado)or die(exit("Error en odbc_exec"));
 		
 	}
 
-		
-
-
-
-
-
-
-
-
-
-//for($i = 0; $i < count($_POST['codArt']); $i++){
-//foreach ($_POST['codArt'] as $clave => $valor) {
-//	$cantArt = $_POST['cantPed'][$clave];
-	//echo $clave.' '.$valor.' '.$cantArt.'</br>';
-		
-	
-		//echo $codArt.' '.$cantArt.'</br>';
-		
-		
-		
-		/*
-		if($cantArt>0){
-			
-			
-			
-			$sqlCargaPedidoDetalle = "
-			INSERT INTO GVA03
-			(
-			CAN_EQUI_V, CANT_A_DES, CANT_A_FAC, CANT_PEDID, CANT_PEN_D, CANT_PEN_F, COD_ARTICU, DESCUENTO, N_RENGLON, NRO_PEDIDO, PEN_REM_FC, PEN_FAC_RE, PRECIO, TALON_PED, 
-			CANT_A_DES_2, CANT_A_FAC_2, CANT_PEDID_2, CANT_PEN_D_2, CANT_PEN_F_2, PEN_REM_FC_2, ID_MEDIDA_VENTAS, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, RENGL_PADR,
-			PROMOCION, PRECIO_ADICIONAL_KIT, KIT_COMPLETO, INSUMO_KIT_SEPARADO, PRECIO_LISTA, PRECIO_BONIF, DESCUENTO_PARAM, COD_ARTICU_KIT
-			)
-			VALUES
-			(
-			1, $cantArt, $cantArt, $cantArt, $cantArt, $cantArt, '$codArt', 0, $nroRenglon, ' '+'$numPed', 0, 0, 0, 96,
-			0, 0, 0, 0, 0, 0, 7, 7, 'V', 0,
-			1, 0, 1, 0, 0, 0, 0, '$codArt'
-			)
-			";
-
-			odbc_exec($cid, $sqlCargaPedidoDetalle)or die(exit("Error en odbc_exec"));
-		
-			$ultRenglon = $nroRenglon;
-			
-			$nroRenglon++;
-			
-			
-			
-			$sqlKit = "SELECT COD_INSUMO FROM STA03 WHERE COD_ARTICU = '$codArt'";
-			
-			$resultExplota = odbc_exec($cid, $sqlKit)or die(exit("Error en odbc_exec"));
-			
-			while($v=odbc_fetch_array($resultExplota)){
-				
-				
-				
-				$codArt1 = $v['COD_INSUMO'];
-				
-				//echo 'punto de control '.$codClient.' '.$codArt.' '.$cantArt.' '.$codArt1.' '.$nroRenglon.'</br>';
-				
-				$sqlCargaPedidoDetalle = "
-				INSERT INTO GVA03
-				(
-				CAN_EQUI_V, CANT_A_DES, CANT_A_FAC, CANT_PEDID, CANT_PEN_D, CANT_PEN_F, COD_ARTICU, DESCUENTO, N_RENGLON, NRO_PEDIDO, PEN_REM_FC, PEN_FAC_RE, PRECIO, TALON_PED, 
-				CANT_A_DES_2, CANT_A_FAC_2, CANT_PEDID_2, CANT_PEN_D_2, CANT_PEN_F_2, PEN_REM_FC_2, ID_MEDIDA_VENTAS, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, RENGL_PADR,
-				PROMOCION, PRECIO_ADICIONAL_KIT, KIT_COMPLETO, INSUMO_KIT_SEPARADO, PRECIO_LISTA, PRECIO_BONIF, DESCUENTO_PARAM, COD_ARTICU_KIT
-				)
-				VALUES
-				(
-				1, $cantArt, $cantArt, $cantArt, $cantArt, $cantArt, '$codArt1', 0, $nroRenglon, ' '+'$numPed', 0, 0, 0, 96,
-				0, 0, 0, 0, 0, 0, 7, 7, 'P', $ultRenglon,
-				0, 0, 1, 0, 0, 0, 0, '$codArt'
-				)
-				";
-
-				odbc_exec($cid, $sqlCargaPedidoDetalle)or die(exit("Error en odbc_exec"));
-			
-				$nroRenglon++;
-				
-				
-			}	
-		
-		}
-		*/
-		
 }
-//}
+		
+}else{
+	echo $codClient.' no hay nada<br>';
+}
 
-//$_SESSION['cargaPedido']=0;
-
-echo "<script>setTimeout(function () {window.location.href= 'admin.php';},1000);</script>";
+header("Location:admin.php");
 
 }
 
-	/*}
-
-else{
-		//echo $_SESSION['nuevoPedido'].' '.$_SESSION['cargaPedido'];
-		header("Location:login.php");
-	}*/
 }	
 ?>
