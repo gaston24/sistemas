@@ -218,7 +218,11 @@ if(!isset($_SESSION['username'])){
 		<div class="mt-2 text-center fixed fixed-bottom bg-white" style="height: 30px!important; background-color: white;" id="pantalla">
 
 			<a> <strong>Total de articulos:</strong> </a> <input name="total_todo" size="3" id="total" value="0" type="text">
-			<?php if($suc>100){ ?> <a> <strong>Importe total:</strong> </a> <input name="total_precio" size="3" id="totalPrecio" value="0" type="text"><?php } ?>
+			<?php if($suc>100){ ?> 
+			
+				<a> <strong>Importe total:</strong> </a> <input name="total_precio" size="3" id="totalPrecio" value="0" type="text" onChange="verificarCredito()">
+				<a id="cupoCreditoExcedido"></a>
+			<?php } ?>
 			
 		</div>
 		
@@ -233,15 +237,24 @@ if(!isset($_SESSION['username'])){
 		$depo = $_SESSION['depo'];
 		$talon_ped = 97;
 		?>
+
 		<script>
 		var suc = '<?= $suc; ?>'
 		var codClient = '<?= $codClient; ?>'
 		var t_ped = '<?= $t_ped; ?>'
 		var depo = '<?= $depo; ?>'
 		var talon_ped = '<?= $talon_ped; ?>'
+
+		var cupo_credito = '<?= $_SESSION['cupoCredi']; ?>'
+		
+
+		
+
 		</script>
+
 		<script src="js/main.js"></script>
 		<script src="js/envio.js"></script>
+		
 		</html>
 
 		<?php

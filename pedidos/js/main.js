@@ -70,20 +70,28 @@ function myFunction() {
 }
 
 
+
 function precioTotal() {
     var precioTodos = 0;
     var p = document.querySelectorAll("#id_tabla #precio"); 
     var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']");
-    
-
-
     var i;
+
     for (i = 0; i < p.length; i++) {
         precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
     }
 
-    // // ni idea dónde lo vas a mostrar ese dato, yo puse un input, pero puede ser cualquier otro elemento
     document.getElementById('totalPrecio').value = precioTodos;
+
+    // console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
+
+    if(parseInt(precioTodos, 10) > parseInt(cupo_credito, 10)){
+        document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO</strong>";
+    }else{
+        document.getElementById("cupoCreditoExcedido").innerHTML = "";
+    }
+
+
 };
 
 

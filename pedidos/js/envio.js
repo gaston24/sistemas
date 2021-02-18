@@ -29,15 +29,29 @@ function enviar(){
 
 
 
-    
     suma = document.getElementById('total').value;
-    if(suma!= 0){
-        $("#aguarde").show();
-        $("#pantalla").fadeOut();
-        postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-        
 
-        //console.log(matriz);
+    totalPedido = document.getElementById('totalPrecio').value;
+
+    if(suma!= 0){
+
+        console.log(totalPedido + " " + cupo_credito);
+
+        var diferencia = (cupo_credito - totalPedido)*-1;
+
+        if(totalPedido > cupo_credito){
+            swal({
+                title: "Atencion!",
+                text: "El cupo del credito fue excedido en "+ diferencia +" pesos, quite articulos o comuniquese con ines.sica@xl.com.ar para elevar el limite",
+                icon: "warning",
+                button: "Aceptar",
+              });
+        }else{
+            // $("#aguarde").show();
+            // $("#pantalla").fadeOut();
+            // postear(matriz, suc, codClient, t_ped, depo, talon_ped);
+            console.log("pedido enviado");
+        }
     }else{
         swal({
             title: "Error!",
@@ -46,6 +60,12 @@ function enviar(){
             button: "Aceptar",
           });
     }
+
+
+
+    
+
+    
 
 }
 
@@ -83,11 +103,15 @@ function enviarMayorista(){
 
     
     suma = document.getElementById('total').value;
+
+    
+
+
     if(suma!= 0){
         $("#aguarde").show();
         $("#pantalla").fadeOut();
         postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-        //console.log(matriz);
+
     }else{
         swal({
             title: "Error!",
