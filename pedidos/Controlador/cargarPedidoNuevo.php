@@ -188,19 +188,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 }
 
 
-// ACTUALIZAR CUPO CREDITICIO
 
-$buscarPedidoParaCredito = "
-	SET DATEFORMAT YMD
-	SELECT SUM(PRECIO) PRECIO FROM GVA03 WHERE NRO_PEDIDO = '$numPed' AND TALON_PED = '$talon_ped'
-	";
-
-$resultCredito = odbc_exec($cid,$buscarPedidoParaCredito)or die(exit("Error en odbc_exec"));
-while($v=odbc_fetch_array($resultCredito)){
-	$monto = $v['PRECIO'];
-}
-
-$_SESSION['cupoCredi'] = $_SESSION['cupoCredi'] - $monto;
 
 echo $numPed;
 

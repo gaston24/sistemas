@@ -80,6 +80,7 @@ if(!isset($_SESSION['username'])){
 		
 		ini_set('max_execution_time', 300);
 		$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+	
 
 		?>
 
