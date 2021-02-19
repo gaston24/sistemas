@@ -37,9 +37,9 @@ function enviar(){
 
         console.log(totalPedido + " " + cupo_credito);
 
-        var diferencia = (cupo_credito - totalPedido)*-1;
+        var diferencia = (parseInt(cupo_credito, 10) - parseInt(totalPedido, 10))*-1;
 
-        if(totalPedido > cupo_credito){
+        if(parseInt(totalPedido, 10) > parseInt(cupo_credito, 10)){
             swal({
                 title: "Atencion!",
                 text: "El cupo del credito fue excedido en "+ diferencia +" pesos, quite articulos o comuniquese con ines.sica@xl.com.ar para elevar el limite",

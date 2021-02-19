@@ -85,8 +85,10 @@ function precioTotal() {
 
     // console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
 
+    var diferencia = (cupo_credito - precioTodos)*-1;
+
     if(parseInt(precioTodos, 10) > parseInt(cupo_credito, 10)){
-        document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO</strong>";
+        document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
     }else{
         document.getElementById("cupoCreditoExcedido").innerHTML = "";
     }
