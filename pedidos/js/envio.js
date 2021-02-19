@@ -31,15 +31,15 @@ function enviar(){
 
     suma = document.getElementById('total').value;
 
-    totalPedido = document.getElementById('totalPrecio').value;
+    if(suc>100){
+        totalPedido = document.getElementById('totalPrecio').value;
+        console.log(totalPedido + " " + cupo_credito);
+        var diferencia = (parseInt(cupo_credito, 10) - parseInt(totalPedido, 10))*-1;
+    }
 
     if(suma!= 0){
 
-        console.log(totalPedido + " " + cupo_credito);
-
-        var diferencia = (parseInt(cupo_credito, 10) - parseInt(totalPedido, 10))*-1;
-
-        if(parseInt(totalPedido, 10) > parseInt(cupo_credito, 10)){
+        if(suc > 100 && (parseInt(totalPedido, 10) > parseInt(cupo_credito, 10)) ){
             swal({
                 title: "Atencion!",
                 text: "El limite de crédito fue excedido en "+ diferencia +" pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
@@ -52,6 +52,7 @@ function enviar(){
             postear(matriz, suc, codClient, t_ped, depo, talon_ped);
             // console.log("pedido enviado");
         }
+
     }else{
         swal({
             title: "Error!",

@@ -72,28 +72,36 @@ function myFunction() {
 
 
 function precioTotal() {
-    var precioTodos = 0;
-    var p = document.querySelectorAll("#id_tabla #precio"); 
-    var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']");
-    var i;
 
-    for (i = 0; i < p.length; i++) {
-        precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
+
+    if(suc>100){
+
+        var precioTodos = 0;
+        var p = document.querySelectorAll("#id_tabla #precio"); 
+        var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']");
+        var i;
+
+        for (i = 0; i < p.length; i++) {
+            precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
+        }
+
+        document.getElementById('totalPrecio').value = precioTodos;
+
+        console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
+
+        var diferencia = (cupo_credito - precioTodos)*-1;
+        const number = diferencia;
+        diferencia = number.toLocaleString().toLocaleString('en-US', { maximumFractionDigits: 2 });
+
+        if(parseInt(precioTodos, 10) > parseInt(cupo_credito, 10)){
+            document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
+        }else{
+            document.getElementById("cupoCreditoExcedido").innerHTML = "";
+        }
+        
     }
 
-    document.getElementById('totalPrecio').value = precioTodos;
-
-    console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
-
-    var diferencia = (cupo_credito - precioTodos)*-1;
-    const number = diferencia;
-	diferencia = number.toLocaleString().toLocaleString('en-US', { maximumFractionDigits: 2 });
-
-    if(parseInt(precioTodos, 10) > parseInt(cupo_credito, 10)){
-        document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
-    }else{
-        document.getElementById("cupoCreditoExcedido").innerHTML = "";
-    }
+    
 
 
 };
