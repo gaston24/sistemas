@@ -15,6 +15,7 @@ $codClient = $_SESSION['codClient'];
 <link rel="shortcut icon" href="icono.jpg" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 
@@ -35,12 +36,16 @@ $sql="
 
 SET DATEFORMAT YMD
 
-SELECT A.FECHA, A.CONTENEDOR, A.COD_ARTICU, B.DESCRIPCIO
+SELECT A.FECHA, A.CONTENEDOR, A.COD_ARTICU, B.DESCRIPCIO, CAST(C.PRECIO AS float) PRECIO
 FROM SOF_DISTRIBUCION_INICIAL A
 INNER JOIN STA11 B
 ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU
+INNER JOIN GVA17 C
+ON A.COD_ARTICU = C.COD_ARTICU
 WHERE A.FECHA >= GETDATE()-180
-AND ESTADO = 1 
+AND CENTRAL = 1 
+--AND ESTADO = 1 
+AND C.NRO_DE_LIS = 30
 AND A.COD_ARTICU COLLATE Latin1_General_BIN 
 NOT IN (SELECT COD_ARTICU FROM SOF_DISTRIBUCION_INICIAL_RELACION WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI >= GETDATE()-180)
 
@@ -73,6 +78,15 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				
 				<td >CANTIDAD</td>
 				
+				<?php if(substr($codClient, 0, 2) == 'FR')
+				{
+				?>
+
+					<td >PRECIO</td>
+
+				<?php
+				}
+				?>
 
         </tr>
 
@@ -99,7 +113,17 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				
 				<td><?php echo $v['DESCRIPCIO'] ;?></td>
 				
-				<td><input type="text" name="cantPed[]" value="0" size="4" onChange="total();verifica()"></td>
+				<td><input type="text" name="cantPed[]" id="cantPedi" value="0" size="4" onkeyup="totalizar()"></td>
+
+				<?php if(substr($codClient, 0, 2) == 'FR')
+				{
+				?>
+
+					<td><a id="precioArt"><?php echo number_format($v['PRECIO'], 0, ",", ".") ;?></a></td>
+
+				<?php
+				}
+				?>
 				
 				
 		</tr>
@@ -115,15 +139,24 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         		
 </table>
 
-<input type="submit" value="Aceptar" class="btn btn-primary btn-sm" style="margin-left:80%">
+<input type="submit" id="btnAceptar" value="Aceptar" class="btn btn-primary btn-sm" style="margin-left:80%">
 
 </form>
 
 </div>
 
 <div>
-</br></br></br></br><h5 align="center">En caso de querer mas cantidades, enviar un mail a <a href="mailto:asistentesupervision@xl.com.ar">Comercial</a></h5>
+</br></br></br></br>
+<h2 align="center" id="cupoCreditoExcedido"></a></h2>
+<h5 align="center">En caso de querer mas cantidades, enviar un mail a <a href="mailto:asistentesupervision@xl.com.ar">Comercial</a></h5>
 </div>
+
+<script>
+var cupoCredi = <?= $_SESSION["cupoCredi"];?>;
+</script>
+
+<script src="../pedidos/js/envio.js"></script>
+<script src="../pedidos/js/main.js"></script>
 
 </body>
 </html>

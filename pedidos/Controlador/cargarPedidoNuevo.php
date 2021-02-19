@@ -1,7 +1,6 @@
 <?php
 
 require '../../../Controlador/dsn_central.php';
-// require '../../../Controlador/comprometer_stock.php';
 require '../../../Controlador/fecha.php';
 require '../../../Controlador/carga_pedido_encabezado.php';
 
@@ -107,7 +106,6 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 		if(odbc_num_rows($resultVerifica)==0){
 		
 			if($cantArt>0){
-				//echo $codArt.' '.$cantArt.'</br>';
 				
 				if($rubro != 'PACKAGING' && $cantArt > 15 ){
 				
@@ -127,12 +125,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 				}
 				
 				
-				////// FUNCION DE CARGAR PEDIDO DETALLE
-				// pedido_detalle($numPed, $nroRenglon, $codArt, $cantArt, $codClient, $talon_ped);
-
-				////// FUNCION COMPROMETER STOCK
-
-				// comp_stock($cantArt, $codArt, $depo);
+				////// FUNCION DE CARGAR PEDIDO DETALLE // TAMBIEN COMPROMETE STOCK
 
 				pedido_detalle_simple($depo, $numPed, $nroRenglon, $codArt, $cantArt, $codClient, $talon_ped);
 			
@@ -152,12 +145,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 				}
 				
 				
-				////// FUNCION DE CARGAR PEDIDO DETALLE
-				// pedido_detalle($numPed, $nroRenglon, $codArt, $cantArt, $codClient, $talon_ped);
-
-				////// FUNCION COMPROMETER STOCK
-
-				// comp_stock($cantArt, $codArt, $depo);
+				////// FUNCION DE CARGAR PEDIDO DETALLE // TAMBIEN COMPROMETE STOCK
 
 				pedido_detalle_simple($depo, $numPed, $nroRenglon, $codArt, $cantArt, $codClient, $talon_ped);
 			
@@ -190,16 +178,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 					);
 					
 					$nroRenglon++;
-					
-					// pedido_detalle_kit($numPed, //PEDIDO TANGO 
-					// $nroRenglon, //NRO_RENGLON
-					// $codArt, //COD_ARTICU
-					// $cantArt2, //CANT_PEDIDO
-					// $codClient, //COD_CLIENT 
-					// $talon_ped, //TALON_PED
-					// $codArt2, //COD_INSUMO 
-					// $ultRenglon);
-					// comp_stock($cantInsumo, $codArt2, $depo);
+
 				}	
 			
 			}
@@ -208,7 +187,21 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 	}	
 }
 
-//print_r ($_POST['matriz']);
+
+// ACTUALIZAR CUPO CREDITICIO
+
+$buscarPedidoParaCredito = "
+	SET DATEFORMAT YMD
+	SELECT SUM(PRECIO) PRECIO FROM GVA03 WHERE NRO_PEDIDO = '$numPed' AND TALON_PED = '$talon_ped'
+	";
+
+$resultCredito = odbc_exec($cid,$buscarPedidoParaCredito)or die(exit("Error en odbc_exec"));
+while($v=odbc_fetch_array($resultCredito)){
+	$monto = $v['PRECIO'];
+}
+
+$_SESSION['cupoCredi'] = $_SESSION['cupoCredi'] - $monto;
+
 echo $numPed;
 
 

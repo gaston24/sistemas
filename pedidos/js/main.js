@@ -83,9 +83,11 @@ function precioTotal() {
 
     document.getElementById('totalPrecio').value = precioTodos;
 
-    // console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
+    console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
 
     var diferencia = (cupo_credito - precioTodos)*-1;
+    const number = diferencia;
+	diferencia = number.toLocaleString().toLocaleString('en-US', { maximumFractionDigits: 2 });
 
     if(parseInt(precioTodos, 10) > parseInt(cupo_credito, 10)){
         document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
@@ -105,3 +107,53 @@ $('#distribucion').hover(
         $('#tool').tooltip('hide');
     }
 );
+
+
+
+
+
+
+
+function totalizar(){
+
+	var cantPedido = parseFloat(document.getElementById("cantPedi").value);
+
+	var precioArt =  document.getElementById("precioArt").innerHTML;
+	precioArt = parseFloat(precioArt.replace(".", ""));
+
+
+	var totalPedido = parseFloat(cantPedido * precioArt);
+
+	console.log("cant pedido: "+typeof(cantPedido));
+	console.log("cant pedido: "+cantPedido);
+	console.log("precio articulo: "+typeof(precioArt));
+	console.log("precio articulo: "+precioArt);
+	console.log("cupo credito: "+typeof(cupoCredi));
+	console.log("cupo credito: "+cupoCredi);
+	console.log("total pedido: "+typeof(totalPedido));
+	console.log("total pedido: "+totalPedido);
+
+	var diferencia = parseInt(((cupoCredi - totalPedido)*-1), 10);
+	const number = diferencia;
+	diferencia = number.toLocaleString().toLocaleString('en-US', { maximumFractionDigits: 2 });//.replaceAll(".", "|").replaceAll(".", ",").replaceAll("|", ".");
+	console.log(diferencia);
+
+
+	if( cupoCredi < totalPedido ) {
+	    document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
+		document.getElementById("btnAceptar").disabled = true;
+		swal({
+                title: "Atencion!",
+                text: "El limite de crédito fue excedido en "+ diferencia +" pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
+                icon: "warning",
+                button: "Aceptar",
+              });
+    }else{
+		document.getElementById("cupoCreditoExcedido").innerHTML = "";
+		document.getElementById("btnAceptar").disabled = false;
+    }
+
+
+
+
+}

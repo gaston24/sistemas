@@ -42,15 +42,15 @@ function enviar(){
         if(parseInt(totalPedido, 10) > parseInt(cupo_credito, 10)){
             swal({
                 title: "Atencion!",
-                text: "El cupo del credito fue excedido en "+ diferencia +" pesos, quite articulos o comuniquese con ines.sica@xl.com.ar para elevar el limite",
+                text: "El limite de crédito fue excedido en "+ diferencia +" pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
                 icon: "warning",
                 button: "Aceptar",
               });
         }else{
-            // $("#aguarde").show();
-            // $("#pantalla").fadeOut();
-            // postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-            console.log("pedido enviado");
+            $("#aguarde").show();
+            $("#pantalla").fadeOut();
+            postear(matriz, suc, codClient, t_ped, depo, talon_ped);
+            // console.log("pedido enviado");
         }
     }else{
         swal({
