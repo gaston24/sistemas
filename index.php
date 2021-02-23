@@ -66,7 +66,7 @@ while( $v = sqlsrv_fetch_array( $stmt) ) {
 <div class="container">
 <?php
 
-include_once 'nav_menu.php';
+include_once 'Controlador/nav_menu.php';
 
 ?>
 
@@ -107,7 +107,7 @@ include_once 'nav_menu.php';
 	
 	<div class="col"> 
 
-	<img src="logo.jpg">
+	<img src="Controlador/logo.jpg">
 
 	</div>
 
