@@ -3,7 +3,7 @@ session_start();
 
 if(!isset($_SESSION['username'])){
 
-	header("Location:login.php");
+	header("Location:../login.php");
 
 }else{
 
@@ -86,12 +86,12 @@ if(!isset($_SESSION['username'])){
 	
 	$_SESSION['nuevoPedido']=0;
 	
-	header("Location:index.php");
+	header("Location:../index.php");
 	
 	}
 	
 	else{
-		header("Location:login.php");
+		header("Location:../login.php");
 	}
 }
 ?>

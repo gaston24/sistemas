@@ -18,7 +18,7 @@ $local = $_SESSION['descLocal'];
 <meta charset="utf-8">
 <title>INICIO</title>	
 
-<link rel="shortcut icon" href="../icono.jpg" />
+<link rel="shortcut icon" href="../Controlador/icono.jpg" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
@@ -29,7 +29,7 @@ $local = $_SESSION['descLocal'];
 
 <div align="center" style="margin-top:10px"> 
 
-<img src="../logo.jpg">
+<img src="../Controlador/logo.jpg">
 </div>
 
 <ul class="nav justify-content-center">

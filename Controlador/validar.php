@@ -45,43 +45,43 @@ while($v=odbc_fetch_array($result)){
 		$_SESSION['cargaPedido']=1;
 		header("Location: mayoristas/index.php");
 	}elseif($_SESSION['tipo'] == 'MAYORISTA'){
-		header("Location: index.php");
+		header("Location: ../index.php");
 	}elseif($_SESSION['username']== 'supervisoras'){
-		header("Location: supervisoras/index.php");	
+		header("Location: ../supervisoras/index.php");	
 	}elseif($_SESSION['username']== 'cordoba'){
-		header("Location: cordoba/eliminaPedidoCordoba.php");		
-	}elseif($_SESSION['username']== 'dodivani'){
-		header("Location: dodivani/eliminaPedidoDodi.php");
+		header("Location: ../cordoba/eliminaPedidoCordoba.php");		
+	// }elseif($_SESSION['username']== 'dodivani'){
+	// 	header("Location: dodivani/eliminaPedidoDodi.php");
 	}elseif($_SESSION['username']== 'levi'){
-		header("Location: levi/eliminaPedidoLevi.php");	
+		header("Location: ../levi/eliminaPedidoLevi.php");	
 	}elseif($_SESSION['username']== 'salta'){
-		header("Location: salta/eliminaPedidoSalta.php");	
+		header("Location: ../salta/eliminaPedidoSalta.php");	
 	}elseif($_SESSION['username']== 'ramiro'){
-		header("Location: conteos/index.php");			
+		header("Location: ../conteos/index.php");			
 	}elseif($_SESSION['username']== 'estadisticas'){
-		header("Location: ../estadisticas/index.php");	
+		header("Location: ../../estadisticas/index.php");	
 	}elseif($_SESSION['username']== 'LOGISTICA'){
-		header("Location: control/control_logistica.php");	
+		header("Location: ../control/control_logistica.php");	
 	}elseif($_SESSION['username']== 'comercial2'){
-		header("Location: ../comercial2/index.php");		
+		header("Location: ../../comercial2/index.php");		
 	}elseif($_SESSION['username']== 'directores'){
-		header("Location: ../ppp/index.php");		
+		header("Location: ../../ppp/index.php");		
 	}elseif($_SESSION['username']== 'rotaciones'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
-		header("Location: rotaciones/index.php");
+		header("Location: ../rotaciones/index.php");
 	}elseif($_SESSION['dsn']== 'SIN'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
-		header("Location: index.php");
+		header("Location: ../index.php");
 	}elseif($v['NOMBRE']=='COMERCIAL')
 		{
-		header("Location: inicial/admin.php");
+		header("Location: ../inicial/admin.php");
 	}elseif($_POST['conecta']=='no' && $_SESSION['numsuc'] > 104){
 		$_SESSION['dsn']= 'SIN';
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
-		header("Location: index.php");		
+		header("Location: ../index.php");		
 	}else{
 		header("Location: eliminaPedido.php");
 	}
