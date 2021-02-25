@@ -43,7 +43,7 @@ while($v=odbc_fetch_array($result)){
 	if($v['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
-		header("Location: mayoristas/index.php");
+		header("Location: ../mayoristas/index.php");
 	}elseif($_SESSION['tipo'] == 'MAYORISTA'){
 		header("Location: ../index.php");
 	}elseif($_SESSION['username']== 'supervisoras'){

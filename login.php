@@ -101,7 +101,7 @@ if(isset($_SESSION['username'])){
 	
 </body>
 
-<script src="validar_usuario.js"></script>
+<script src="Controlador/validar_usuario.js"></script>
 
 
 </html>

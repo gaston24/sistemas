@@ -6,7 +6,7 @@ $("#usuarioRegistrado").change(function(){
     //console.log(usuario);
 
     $.ajax({
-        url: "ajax.php",
+        url: "Controlador/ajax.php",
         method:"POST",
         data: datos,
         cache: false,

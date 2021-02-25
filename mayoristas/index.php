@@ -28,7 +28,7 @@ $local = $_SESSION['descLocal'];
 <h1 align="center">Bienvenido <?php echo $local; ?></h1>
 
 <div align="center" style="margin-top:50px"> 
-<img src="../logo.jpg">
+<img src="logo.jpg">
 </div>
 </br>
 <ul class="nav justify-content-center">
