@@ -22,7 +22,7 @@ $permiso = $_SESSION['permisos'];
 <body>	
 
 <div align="center" style="margin-top:50px"> 
-<img src="../logo.jpg">
+<img src="../Controlador/logo.jpg">
 </div>
 </br>
 <ul class="nav justify-content-center">

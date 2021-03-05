@@ -35,7 +35,7 @@ while($v=odbc_fetch_array($result)){
 $cantDisp = $v['DISPONIBLE'] ;
 }
 
-var_dump($cantDisp);
+// var_dump($cantDisp);
 
 ?>
 <!doctype html>
