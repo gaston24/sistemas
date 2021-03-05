@@ -7,7 +7,35 @@ if(!isset($_SESSION['username'])){
 $codClient = $_SESSION['codClient'];
 
 $_SESSION['codArt'] = $_GET['codArt'];
+$codArt = $_GET['codArt'];
+
 $_SESSION['contenedor'] = $_GET['contenedor'];
+
+
+
+$dsn = "1 - CENTRAL";
+$user = "sa";
+$pass = "Axoft1988";
+
+$cid = odbc_connect($dsn, $user, $pass);
+
+if(!$cid){echo "</br>Imposible conectarse a la base de datos!</br>";}
+
+
+$sql="
+SELECT (CANT_PACK - CANT) DISPONIBLE FROM SOF_DISTRIBUCION_INICIAL A
+INNER JOIN (SELECT COD_ARTICU, SUM(CANT) CANT FROM SOF_DISTRIBUCION_INICIAL_RELACION GROUP BY COD_ARTICU) B
+ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
+WHERE A.COD_ARTICU = '$codArt'
+";
+
+$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+
+while($v=odbc_fetch_array($result)){
+$cantDisp = $v['DISPONIBLE'] ;
+}
+
+var_dump($cantDisp);
 
 ?>
 <!doctype html>
@@ -19,34 +47,6 @@ $_SESSION['contenedor'] = $_GET['contenedor'];
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
-<script>
-			
-			function pulsar(e) {
-			tecla = (document.all) ? e.keyCode : e.which;
-			return (tecla != 13);
-			}
-			
-				
-			function total() {
-				var suma = 0;
-				var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']"); //tomo todos los input con name='cantProd[]'
-
-				var i;
-				for (i = 0; i < x.length; i++) {
-					suma += parseInt(0+x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
-				}
-
-				// ni idea dónde lo vas a mostrar ese dato, yo puse un input, pero puede ser cualquier otro elemento
-				document.getElementById('total').value = suma;
-			};
-			
-			
-			
-			
-		
-		</script>
-
-
 
 </head>
 <body>
@@ -56,13 +56,7 @@ $_SESSION['contenedor'] = $_GET['contenedor'];
 
 <?php
 
-$dsn = "1 - CENTRAL";
-$user = "sa";
-$pass = "Axoft1988";
 
-$cid = odbc_connect($dsn, $user, $pass);
-
-if(!$cid){echo "</br>Imposible conectarse a la base de datos!</br>";}
 
 $sql="
 
@@ -100,7 +94,7 @@ CANT
 FROM SUCURSAL A
 INNER JOIN GVA14 B
 ON A.NRO_SUCURSAL = B.N_IMPUESTO
-WHERE NRO_SUCURSAL IN (2, 3, 6, 7, 10, 11, 16, 29, 32, 33, 40, 48, 53, 54, 60, 66, 70, 72, 75, 76, 77, 78, 79)
+WHERE NRO_SUCURSAL IN (2, 3, 6, 7, 10, 11, 16, 29, 32, 33, 40, 48, 53, 54, 60, 66, 70, 72, 75, 76, 78, 79)
 AND B.N_IMPUESTO LIKE '[0-9]%' AND LEN(B.N_IMPUESTO)<5
 ORDER BY 1
 
@@ -115,7 +109,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 <nav style="margin-left:20%; margin-right:20%">
 
-<form method="POST" action="procesarLocales.php" onkeypress = "return pulsar(event)">
+<form method="POST" action="procesarLocales.php" onKeyUp = "return pulsar(event)">
 
 <table class="table table-striped" id="id_tabla">
 
@@ -151,7 +145,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				
 				<td><?php echo $v['DESC_SUCURSAL'] ;?></td>
 				
-				<td><input type="text" value="<?php echo $v['CANT']; ?>" name="cantPed[]" size="5"  id="articulo" onChange="total();verifica()"></td>
+				<td><input type="text" value="<?php echo $v['CANT']; ?>" name="cantPed[]" size="5"  id="articulo" onChange="total()"></td>
 				
 				<td><input name="numsuc[]" value="<?php echo $v['NRO_SUCURSAL'] ;?>" hidden></td>	
 			
@@ -173,13 +167,14 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 
 
-<input type="submit" value="Enviar Pedidos" class="btn btn-primary btn-sm" style="margin-left:80%">
+<input type="submit" id="botonEnviar" value="Enviar Pedidos" class="btn btn-primary btn-sm" style="margin-left:80%">
 
 </br>
 
 </form>
 
 <div>
+	Cantidad disponible: <input  size="4" value="<?=$cantDisp ?>" type="text">
 	Total de los pedidos: <input name="total_todo" size="4" id="total" value="<?php echo $total ?>" type="text">
 	</br></br>
 </div >
@@ -188,6 +183,43 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 </div>
 
+<script>
+
+			
+function pulsar(e) {
+tecla = (document.all) ? e.keyCode : e.which;
+return (tecla != 13);
+}
+
+var cantDisp = <?=$cantDisp;?>
+
+
+
+function total() {
+var suma = 0;
+var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']"); //tomo todos los input con name='cantProd[]'
+
+var i;
+for (i = 0; i < x.length; i++) {
+suma += parseInt(0+x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
+}
+console.log(cantDisp);
+// ni idea dónde lo vas a mostrar ese dato, yo puse un input, pero puede ser cualquier otro elemento
+document.getElementById('total').value = suma;
+
+if(document.getElementById('total').value > cantDisp){
+	document.getElementById("botonEnviar").disabled = true;
+}else{
+	document.getElementById("botonEnviar").disabled = false;
+}
+
+};
+
+
+
+
+
+</script>
 
 </body>
 </html>
