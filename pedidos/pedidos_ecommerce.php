@@ -85,7 +85,7 @@ if(!isset($_SESSION['username'])){
 				<th style='width: 10%'>VENTAS<br>30 DIAS</th>
 				<th style="width: 5%">DIST</th>
 				<th style="width: 5%">PEDIDO</th>
-				<th style="width: 5%"><button class="btn btn-primary btn-sm" onClick="enviar()">Enviar</button></th>
+				<th style="width: 5%"><button class="btn btn-primary btn-sm" onClick="enviarEcommerce()">Enviar</button></th>
 			</tr>
 		</thead>
 		
