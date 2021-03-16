@@ -55,23 +55,24 @@ $sql=
 	"
 	SET DATEFORMAT YMD
 
-	SELECT CAST(A.FECHA_EMIS AS DATE) FECHA, 
-	ISNULL(E.RAZON_SOCI, '') NOMBRE, 
-	A.N_COMP, ISNULL(D.NRO_PEDIDO, '') PEDIDO , CAST(A.IMPORTE AS DECIMAL(10,2)) IMP_COMPROBANTE, 
-	B.COD_ARTICU, C.DESCRIPCIO, CAST(B.CANTIDAD AS INT) CANT, CAST(B.IMP_NETO_P * 1.21 AS DECIMAL(10,2)) IMP_ARTICULO
+	SELECT 
+	CAST(A.FECHA_EMIS AS DATE) FECHA, 
+	ISNULL(C.LEYENDA_2, '') NOMBRE, 
+	A.N_COMP, ISNULL(C.NRO_PEDIDO, '') PEDIDO , CAST(A.IMPORTE AS DECIMAL(10,2)) IMP_COMPROBANTE, 
+	G.COD_ARTICU, H.DESCRIPCIO, CAST(G.CANTIDAD AS INT) CANT, CAST(G.IMP_NETO_P * 1.21 AS DECIMAL(10,2)) IMP_ARTICULO, 
+	ISNULL(F.CARD_FIRST_DIGITS+'-'+F.CARD_LAST_DIGITS, '') TARJETA , F.ISSUER BANCO, I.N_CUIT
 	FROM GVA12 A
-	INNER JOIN GVA53 B
-	ON A.T_COMP = B.T_COMP AND A.N_COMP = B.N_COMP
-	INNER JOIN STA11 C
-	ON B.COD_ARTICU = C.COD_ARTICU
-	LEFT JOIN GVA55 D
-	ON A.T_COMP = D.T_COMP AND A.N_COMP = D.N_COMP
-	LEFT JOIN GVA38 E 
-	ON (E.T_COMP = 'FAC' AND A.N_COMP = E.N_COMP)-- OR (E.T_COMP = 'PED' AND E.N_COMP = D.NRO_PEDIDO)
+	INNER JOIN GVA55 B ON A.T_COMP = B.T_COMP AND A.N_COMP = B.N_COMP
+	INNER JOIN GVA21 C ON B.TALON_PED = C.TALON_PED AND B.NRO_PEDIDO = C.NRO_PEDIDO
+	LEFT JOIN NEXO_PEDIDOS_ORDEN D ON C.ID_NEXO_PEDIDOS_ORDEN = D.ID_NEXO_PEDIDOS_ORDEN   
+	LEFT JOIN GC_ECOMMERCE_ORDER E ON D.order_id_tienda = E.ORDER_ID collate Latin1_General_BIN              
+	LEFT JOIN GC_ECOMMERCE_PAYMENT_DETAIL F ON cast(E.ORDER_ID AS varchar) = F.ORDER_ID 
+	INNER JOIN GVA53 G ON A.T_COMP = G.T_COMP AND A.N_COMP = G.N_COMP
+	INNER JOIN STA11 H ON G.COD_ARTICU = H.COD_ARTICU
+	LEFT JOIN GVA38 I ON I.T_COMP = 'PED' AND C.NRO_PEDIDO = I.N_COMP
 	WHERE A.COD_CLIENT = '000000'
 	AND A.FECHA_EMIS >= GETDATE()-180
-	AND A.T_COMP = 'FAC'
-	AND (A.N_COMP = '$comp' OR E.RAZON_SOCI LIKE '%$comp%')
+	AND (A.N_COMP = '$comp' OR A.LEYENDA_2 LIKE '%$comp%')
 	ORDER BY A.N_COMP
 	";
 
@@ -81,7 +82,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 ?>
 
 <div class="container-fluid">
-<table class="table table-striped table-condensed"  >
+<table class="table table-sm table-striped table-condensed"  >
 	<thead>
         <tr >
 			<td class="col-"><h6>FECHA</h6></td>
@@ -93,6 +94,9 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 			<td class="col-"><h6>DESCRIPCION</h6></td>
 			<td class="col-"><h6>CANT</h6></td>
 			<td class="col-"><h6>IMP_ART</h6></td>
+			<td class="col-"><h6>DNI</h6></td>
+			<td class="col-"><h6>BANCO</h6></td>
+			<td class="col-"><h6>TARJETA</h6></td>
         </tr>
 	</thead>
 	<tbody id="table">
@@ -103,15 +107,18 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 		<tr >
 
-		<td class="col-"><?php echo $v['FECHA'] ;?></td>
-		<td class="col-"><?php echo $v['NOMBRE'] ;?></td>
-		<td class="col-"><?php echo $v['N_COMP'] ;?></td>
-		<td class="col-"><?php echo $v['PEDIDO'] ;?></td>
-		<td class="col-"><?php echo $v['IMP_COMPROBANTE'] ;?></td>
-		<td class="col-"><?php echo $v['COD_ARTICU'] ;?></td>
-		<td class="col-"><?php echo $v['DESCRIPCIO'] ;?></td>
-		<td class="col-"><?php echo $v['CANT'] ;?></td>
-		<td class="col-"><?php echo $v['IMP_ARTICULO'] ;?></td>
+		<td class="col-"><small><?= $v['FECHA'] ;?></small></td>
+		<td class="col-"><small><?= $v['NOMBRE'] ;?></small></td>
+		<td class="col-"><small><?= $v['N_COMP'] ;?></small></td>
+		<td class="col-"><small><?= $v['PEDIDO'] ;?></small></td>
+		<td class="col-"><small><?= $v['IMP_COMPROBANTE'] ;?></small></td>
+		<td class="col-"><small><?= $v['COD_ARTICU'] ;?></small></td>
+		<td class="col-"><small><?= $v['DESCRIPCIO'] ;?></small></td>
+		<td class="col-"><small><?= $v['CANT'] ;?></small></td>
+		<td class="col-"><small><?= $v['IMP_ARTICULO'] ;?></small></td>
+		<td class="col-"><small><?= $v['N_CUIT'] ;?></small></td>
+		<td class="col-"><small><?= $v['BANCO'] ;?></small></td>
+		<td class="col-"><small><?= $v['TARJETA'] ;?></small></td>
 			
 		
 
