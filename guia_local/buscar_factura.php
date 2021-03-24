@@ -97,6 +97,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 			<td class="col-"><h6>DNI</h6></td>
 			<td class="col-"><h6>BANCO</h6></td>
 			<td class="col-"><h6>TARJETA</h6></td>
+			<td class="col-"></td>
         </tr>
 	</thead>
 	<tbody id="table">
@@ -119,6 +120,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		<td class="col-"><small><?= $v['N_CUIT'] ;?></small></td>
 		<td class="col-"><small><?= $v['BANCO'] ;?></small></td>
 		<td class="col-"><small><?= $v['TARJETA'] ;?></small></td>
+		<td class="col-"> <a href="remitoEntrega/?nComp=<?= $v['N_COMP'] ;?>" target=”_blank”> <i class="fas fa-file-invoice"></i></a></td>
 			
 		
 
