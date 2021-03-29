@@ -48,14 +48,26 @@ $list = $remitos->traerRemito($nComp);
             
             </div>
 
+            <div class="border border-dark mt-2 mb-2  bg-dark text-white " >
+                <h4 class="text-center">COMPROBANTE DE ENTREGA DEL PRODUCTO</h4>
+            </div>
+            <div class="border border-dark mt-2 mb-2  bg-dark text-white " >
+                <h3 class="text-center">DATOS DEL COMPRADOR</h3>
+            </div>
+
             <div class="row border border-dark">
 
             
-                <div class="col-4 mt-2 mb-2"><strong>Nº COMP: </strong> <?=$lista['N_COMP']?></div>
-                <div class="col-4 mt-2 mb-2"><strong>NOMBRE: </strong> <?=$lista['NOMBRE']?></div>
-                <div class="col-4 mt-2 mb-2"><strong>DNI: </strong> <?=$lista['N_CUIT']?></div>
+                <div class="col-3 mt-2 mb-2"><strong>Nº COMP: </strong> <?=$lista['N_COMP']?></div>
+                <div class="col-3 mt-2 mb-2"><strong>NOMBRE: </strong> <?=$lista['NOMBRE']?></div>
+                <div class="col-3 mt-2 mb-2"><strong>DNI: </strong> <?=$lista['N_CUIT']?></div>
+                <div class="col-3 mt-2 mb-2"><strong>TELEFONO: </strong> <?=$lista['TELEFONO']?></div>
             
             
+            </div>
+
+            <div class="border border-dark mt-2 mb-2  bg-dark text-white " >
+                <h3 class="text-center">DATOS DE LA COMPRA</h3>
             </div>
 
             <div class="row border border-dark">
@@ -101,10 +113,13 @@ $list = $remitos->traerRemito($nComp);
     ?>
 
     <div class="row border border-dark" style="position: fixed; bottom: 0; width: 100%; height: 10%;"> 
-            <div class="col-2"></div>
-            <div class="col-4">Entrega por parte del local</div>
-            <div class="col-4">Firma del cliente:</div>
-            <div class="col-2"></div>
+            <div style="margin-left:5%" >
+                <strong>Firma del comprador o autorizado:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de entrega:</strong>
+            </div>
+        <div >
+            <p style="margin-left:5%">Al firmar el comprobante declaro haber recibido conforme el producto.</p>
+            <p style="margin-left:5%">IMPORTANTE: En caso de contracargos por parte del titular de la tarjeta, se presentará este documento como prueba de la entrega del producto.</p>
+        </div>
     </div>
 
 </div>
