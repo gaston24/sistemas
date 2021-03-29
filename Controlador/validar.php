@@ -13,13 +13,22 @@ $sql =
 EXEC SJ_APP_LOGIN '$user', '$pass'
 ";
 
+
 $cid = odbc_connect($dsn, $nom, $con);
+
+
 
 $result = odbc_exec($cid, $sql);
 
-if(odbc_num_rows($result)==1){
+// if(odbc_num_rows($result)==1){
+// 	echo 'entro';
 
+// 	die();
 while($v=odbc_fetch_array($result)){
+
+	
+
+
 	
 	$_SESSION['username'] = $v['NOMBRE'];
 	$_SESSION['permisos'] = $v['PERMISOS'];
@@ -38,6 +47,8 @@ while($v=odbc_fetch_array($result)){
 	$_SESSION['habPedidos'] = $v['EXCLUYE_PEDIDOS'];
 	$_SESSION['cupoCredi'] = $v['CUPO_CREDI'];
 
+	// print_r($_SESSION);
+	// die();
 	
 	
 	if($v['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
@@ -90,7 +101,11 @@ while($v=odbc_fetch_array($result)){
 	
 	
 }
-}else{
-	header("Location: cargaPedido.php");
-}
+// }else{
+// 	// echo 'sali';
+
+// 	echo odbc_num_rows($result);
+// 	die();
+// 	header("Location: cargaPedido.php");
+// }
 ?>
