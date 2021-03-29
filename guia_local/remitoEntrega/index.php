@@ -58,11 +58,19 @@ $list = $remitos->traerRemito($nComp);
             <div class="row border border-dark">
 
             
-                <div class="col-3 mt-2 mb-2"><strong>Nº COMP: </strong> <?=$lista['N_COMP']?></div>
-                <div class="col-3 mt-2 mb-2"><strong>NOMBRE: </strong> <?=$lista['NOMBRE']?></div>
-                <div class="col-3 mt-2 mb-2"><strong>DNI: </strong> <?=$lista['N_CUIT']?></div>
-                <div class="col-3 mt-2 mb-2"><strong>TELEFONO: </strong> <?=$lista['TELEFONO']?></div>
+                <div class="col-4 mt-2 mb-2"><strong>Nº COMP: </strong> <?=$lista['N_COMP']?></div>
+                <div class="col-4 mt-2 mb-2"><strong>NOMBRE: </strong> <?=$lista['NOMBRE']?></div>
+                <div class="col-4 mt-2 mb-2"><strong>DNI: </strong> <?=$lista['N_CUIT']?></div>
             
+            
+            </div>
+            <div class="row border border-dark">
+
+            
+            
+                <div class="col-4 mt-2 mb-2"><strong>TELEFONO: </strong> <?=$lista['TELEFONO']?></div>
+                <div class="col-4 mt-2 mb-2"><strong>BANCO: </strong> <?=$lista['BANCO']?></div>
+                <div class="col-4 mt-2 mb-2"><strong>TARJETA: </strong> <?=$lista['TARJETA']?></div>
             
             </div>
 
