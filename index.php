@@ -157,6 +157,40 @@ include_once 'Controlador/nav_menu.php';
 		<?php
 		}
 		?>
+
+
+		<?php
+		if($_SESSION['tipo'] == 'FRANQUICIA'){
+		?>
+
+			<ul class="list-group">
+
+
+			<li class="list-group-item list-group-item-secondary">
+				Detalle de CC
+				
+			</li>
+			<li class="list-group-item">
+				Cupo credito 
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCrediCliente'];  ?></span>
+			</li>
+			<li class="list-group-item">
+				Saldo CC
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCredi'];  ?></span>
+			</li>
+			<li class="list-group-item">
+				Pedidos abiertos
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['pedidos'];  ?></span>
+			</li>
+			<li class="list-group-item">
+				Total disponible para pedidos
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['totalDisponible'];  ?></span>
+			</li>
+		</ul>	
+	
+		<?php
+		}
+		?>
 		
 
 	</div>

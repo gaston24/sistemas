@@ -45,11 +45,13 @@ while($v=odbc_fetch_array($result)){
 	$_SESSION['deposi'] = $v['COD_DEPOSI'];
 	$_SESSION['tipo'] = $v['TIPO'];
 	$_SESSION['habPedidos'] = $v['EXCLUYE_PEDIDOS'];
-	$_SESSION['cupoCredi'] = $v['CUPO_CREDI'];
-
-	// print_r($_SESSION);
-	// die();
 	
+	// datos de credito del cliente
+	$_SESSION['cupoCredi'] = $v['CUPO_CREDI'];
+	$_SESSION['cupoCrediCliente'] = $v['CUPO_CREDITO_CLIENTE'];
+	$_SESSION['totalDisponible'] = $v['TOTAL_DISPONIBLE'];
+	$_SESSION['pedidos'] = $v['PEDIDOS'];
+
 	
 	if($v['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
