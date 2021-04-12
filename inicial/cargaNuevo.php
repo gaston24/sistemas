@@ -152,7 +152,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 </div>
 
 <script>
-var cupoCredi = <?= $_SESSION["cupoCredi"];?>;
+var cupoCredi = <?= (int)$_SESSION['totalDisponible'];  ?>;
 </script>
 
 <script src="../pedidos/js/envio.js"></script>

@@ -87,7 +87,7 @@ function precioTotal() {
 
         document.getElementById('totalPrecio').value = precioTodos;
 
-        console.log("cupo: "+cupo_credito+ " ejecutado: "+precioTodos);
+        console.log("Cupo disponible: "+cupo_credito+ " - Pedidos total: "+precioTodos);
 
         var diferencia = (cupo_credito - precioTodos)*-1;
         const number = diferencia;

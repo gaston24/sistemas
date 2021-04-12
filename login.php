@@ -102,7 +102,16 @@ include 'checkBrowser.php';
 	<?php
 		}else{
 	?>
-		<h1 align="center">El sistema solo acepta Google Chrome para navegar</h1>
+		<div class="row">
+			<h1 align="center">Para un correcto funcionamiento de la plataforma de carga de pedidos, por favor usar el navegador Google Chrome</h1>
+		</div>
+		<div class="row">
+		<div class="col"></div>
+		<div class="col">
+			<img src="Controlador/chrome.jpg">
+		</div>
+		<div class="col"></div>
+		</div>
 	<?php
 		}
 	?>
