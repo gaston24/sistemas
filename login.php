@@ -34,7 +34,8 @@ include 'checkBrowser.php';
 	</header>
 
 	<?php 
-		if(get_the_browser() == 'Google Chrome'){
+		// if(get_the_browser() == 'Google Chrome'){
+		if(1==1){
 	?>
 	
 	<section id="contenido">

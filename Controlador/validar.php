@@ -47,10 +47,17 @@ while($v=odbc_fetch_array($result)){
 	$_SESSION['habPedidos'] = $v['EXCLUYE_PEDIDOS'];
 	
 	// datos de credito del cliente
+	// cupoCredi es lo real disponible para pedidos
 	$_SESSION['cupoCredi'] = $v['CUPO_CREDI'];
+	// cupo de credito dispuesto por la empresa
 	$_SESSION['cupoCrediCliente'] = $v['CUPO_CREDITO_CLIENTE'];
+	// esto es al pedo
 	$_SESSION['totalDisponible'] = $v['TOTAL_DISPONIBLE'];
+	// pedidos abiertos
 	$_SESSION['pedidos'] = $v['PEDIDOS'];
+	// total de deuda
+	$_SESSION['totalDeuda'] = $v['TOTAL_DEUDA'];
+
 
 	
 	if($v['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){

@@ -175,8 +175,8 @@ include_once 'Controlador/nav_menu.php';
 				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCrediCliente'];  ?></span>
 			</li>
 			<li class="list-group-item">
-				Saldo CC
-				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCredi'];  ?></span>
+				Total deuda
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['totalDeuda'];  ?></span>
 			</li>
 			<li class="list-group-item">
 				Pedidos abiertos
@@ -184,7 +184,7 @@ include_once 'Controlador/nav_menu.php';
 			</li>
 			<li class="list-group-item">
 				Total disponible para pedidos
-				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['totalDisponible'];  ?></span>
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCredi'];  ?></span>
 			</li>
 		</ul>	
 	
