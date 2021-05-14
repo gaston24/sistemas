@@ -95,10 +95,21 @@ include 'checkBrowser.php';
 			</form>
 		</article>
 	</section>
+	
+	</br>
+	</br>
+	</br>
 
-	<aside>
-		<img src="Controlador/logo.jpg">
-	</aside>
+	<div class="row">
+	
+	<div class="col"> 
+	</div>
+	
+	<div class="col-md-12">
+	
+		<img src="Controlador/logo nuevo.jpg">
+	
+	</div>
 
 	<?php
 		}else{
