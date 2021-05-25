@@ -18,9 +18,8 @@ $habPedidos = $_SESSION['habPedidos'];
 
 try {
 
-    $servidor = 'SERVIDOR';
-    $conexion = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-    $cid = sqlsrv_connect($servidor, $conexion);
+	include_once '../Controlador/sql/sql_conexion.php';
+    $cid = $cid_central;
     
 } catch (PDOException $e){
         echo $e->getMessage();
@@ -175,8 +174,8 @@ include_once 'Controlador/nav_menu.php';
 				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCrediCliente'];  ?></span>
 			</li>
 			<li class="list-group-item">
-				Saldo CC
-				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCredi'];  ?></span>
+				Total deuda
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['totalDeuda'];  ?></span>
 			</li>
 			<li class="list-group-item">
 				Pedidos abiertos
@@ -184,7 +183,7 @@ include_once 'Controlador/nav_menu.php';
 			</li>
 			<li class="list-group-item">
 				Total disponible para pedidos
-				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['totalDisponible'];  ?></span>
+				<span class="badge badge-primary badge-pill"><?= (int)$_SESSION['cupoCredi'];  ?></span>
 			</li>
 		</ul>	
 	
