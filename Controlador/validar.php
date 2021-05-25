@@ -45,6 +45,7 @@ while($v=odbc_fetch_array($result)){
 	$_SESSION['deposi'] = $v['COD_DEPOSI'];
 	$_SESSION['tipo'] = $v['TIPO'];
 	$_SESSION['habPedidos'] = $v['EXCLUYE_PEDIDOS'];
+	$_SESSION['esOutlet'] = $v['IS_OUTLET'];
 	
 	// datos de credito del cliente
 	// cupoCredi es lo real disponible para pedidos

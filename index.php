@@ -18,9 +18,8 @@ $habPedidos = $_SESSION['habPedidos'];
 
 try {
 
-    $servidor = 'SERVIDOR';
-    $conexion = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-    $cid = sqlsrv_connect($servidor, $conexion);
+	include_once '../Controlador/sql/sql_conexion.php';
+    $cid = $cid_central;
     
 } catch (PDOException $e){
         echo $e->getMessage();
