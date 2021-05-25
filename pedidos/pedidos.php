@@ -246,7 +246,7 @@ if(!isset($_SESSION['username'])){
 		var depo = '<?= $depo; ?>'
 		var talon_ped = '<?= $talon_ped; ?>'
 
-		var cupo_credito = '<?= (int)$_SESSION['totalDisponible'];  ?>'
+		var cupo_credito = '<?= (int)$_SESSION['cupoCredi'];  ?>'
 		
 
 		
