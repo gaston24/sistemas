@@ -187,14 +187,19 @@ if(!isset($_SESSION['username'])){
 					if($suc>100){
 
 						if($_GET['tipo'] == 3) {
+
 							echo (int)($v['PRECIO_MAYO']);
+							
+						}else{
+							
+							if(substr($tipo_cli, 0, 1)=='F' && $_GET['tipo'] != 3){
+								echo (int)($v['PRECIO_FRANQ']);
+							}else{
+								echo (int)($v['PRECIO_MAYO']);
+							}
+
 						}
 
-						if(substr($tipo_cli, 0, 1)=='F' && $_GET['tipo'] != 3){
-							echo (int)($v['PRECIO_FRANQ']);
-						}else{
-							echo (int)($v['PRECIO_MAYO']);
-						}
 					}
 				?>
 			</td>
