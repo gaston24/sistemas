@@ -183,8 +183,14 @@ if(!isset($_SESSION['username'])){
 
 			<td style="width: 5%" id="precio">
 				<?php 
+
 					if($suc>100){
-						if(substr($tipo_cli, 0, 1)=='F'){
+
+						if($_GET['tipo'] == 3) {
+							echo (int)($v['PRECIO_MAYO']);
+						}
+
+						if(substr($tipo_cli, 0, 1)=='F' && $_GET['tipo'] != 3){
 							echo (int)($v['PRECIO_FRANQ']);
 						}else{
 							echo (int)($v['PRECIO_MAYO']);
