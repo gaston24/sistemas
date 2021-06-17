@@ -81,7 +81,7 @@ if(!isset($_SESSION['username'])){
                 <div class="col border border-secondary rounded-left">
                     <div class="mt-3 mb-2 text-center"><img src="images/LOGO XL 2018.jpg" height="50px" alt=""></div>
                     <p class="small text-center" id="parrafo"><strong>Sucursal</strong></p>
-                    <h4 class="text-center">29 - Paseo del Siglo</h4>
+                    <h4 class="text-center"><?php echo $_SESSION['numsuc'].' - '.$_SESSION['descLocal']; ?></h4>
                 </div>
 
                 <div class="col border border-secondary rounded-right" style="background-color:#e2e3e5;">
