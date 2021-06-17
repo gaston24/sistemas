@@ -1,8 +1,12 @@
+<?php
+session_start(); 
+if(!isset($_SESSION['username'])){
+	header("Location:../login.php");
+}else{
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
-
-
 
 <head>
     <meta charset="UTF-8">
@@ -18,7 +22,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
         <link rel="stylesheet" href="css/styles.css">
-</script>
 
 
 </head>
@@ -67,3 +70,10 @@
 
 </body>
 </html>
+
+
+<?php
+
+}
+
+?>
