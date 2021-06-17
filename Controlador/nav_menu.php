@@ -121,7 +121,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a>
             <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a>
-            <a class="dropdown-item" href="#" onclick="location.href='talonario_fallas/index.php'">Talonario de fallas</a>
+            <a class="dropdown-item" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a>
             </div>
         </li>
 

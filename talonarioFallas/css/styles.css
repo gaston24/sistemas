@@ -1,0 +1,94 @@
+a{
+    color:white;
+}
+
+a:hover
+{
+    text-decoration: none;
+    color:white;
+}
+
+
+.error
+{
+    border:1px solid red;
+}
+
+.error:focus
+{
+    border:1px solid red;
+}
+
+.horizontal_print
+{
+display: flex;
+flex-direction: row;
+justify-content:space-between
+}
+
+.mensaje
+{
+    color:red;
+    margin:2px 0 0 0; 
+    padding: 0;
+    width: 150px;
+    text-align: center;
+    font-size: .8rem;
+    visibility: hidden;
+}
+
+.width-btn
+{
+    width: 10vw;
+    margin-right: 35px;
+}
+
+.btn_talonario
+{
+    width: 100%;
+    display: flex;
+    justify-content:center;
+  }
+
+  .cerrar
+  {
+    
+      background-color: red;
+  }
+  .cerrar:hover
+  {
+      background-color: rgb(252, 55, 55);
+  }
+
+body{
+    width: 100vw;
+}
+
+.col-10
+{
+    max-width: 40%;
+}
+
+
+/* .container
+{
+    width: 30%;
+} */
+
+@media print {
+     @page {
+           
+      size:landscape;
+ 
+    }
+
+    body{
+        transform: scale(0.85,1);
+    }
+
+    .btn_talonario
+    {
+        display: none;
+    }
+  }
+

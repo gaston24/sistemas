@@ -1,0 +1,9 @@
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/all.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/brands.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/conflict-detection.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/duotone.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/fontawesome.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/light.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/regular.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/solid.min.js"></script>
+<script type="text/javascript" src="../../../../../sistemas/assets/css/fontawesome/js/v4-shims.min.js"></script>
