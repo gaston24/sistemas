@@ -41,7 +41,7 @@ $local = $_SESSION['descLocal'];
 </ul>
 </br>
 
-
+<did class="col"></did>
 
 </body>
 <?php
