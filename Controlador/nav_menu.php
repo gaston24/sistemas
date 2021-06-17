@@ -125,11 +125,20 @@
         ?>	
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Control de Stock
+            Operaciones
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Remitos</a>
-            <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulos</a>
+            <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a>
+            <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a>
+            <a class="dropdown-item" href="#" onclick="location.href='talonario_fallas/index.php'">Talonario de fallas</a>
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Utiles
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="#" onclick="location.href='procedimientos'">Procedimientos</a>
             </div>
         </li>
@@ -144,7 +153,7 @@
             Distribucion Inicial
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedidio Inicial</a>
+            <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedido Inicial</a>
             </div>
         </li>
         <?php
