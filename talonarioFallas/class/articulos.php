@@ -14,7 +14,7 @@ class Rubro
                  echo $e->getMessage();
          }
         $sql ="
-        SELECT TOP 1 COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE '$codigo' AND USA_ESC = 'S'
+        SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE '$codigo'
         ";
         $stmt = sqlsrv_query( $cid_central, $sql);
 
