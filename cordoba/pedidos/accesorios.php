@@ -49,7 +49,9 @@ if(!isset($_SESSION['username'])){
 		<table class="table table-striped table-fh table-12c" id="id_tabla">
 		
 		<thead>
+			
 			<?php include 'encabezado.php'; ?>
+			
 		</thead>
 		
 		<tbody>
@@ -64,15 +66,31 @@ if(!isset($_SESSION['username'])){
 
 		?>
 
+		</tbody>
+
+		
+		
 		</table>
+		</div>
 		
 		</form>
 
+		<div class="mt-2 text-center fixed fixed-bottom bg-white" style="height: 30px!important; background-color: white;" id="pantalla">
+
+			<a> <strong>Total de articulos:</strong> </a> <input name="total_todo" size="3" id="total" value="0" type="text">
+
+			<a> <strong>Importe total:</strong> </a> <input name="total_precio" size="3" id="totalPrecio" value="0" type="text" onChange="verificarCredito()">
+			<a id="cupoCreditoExcedido"></a>
+			
+			
 		</div>
+
 		
 		
-				
-		</body>
+		
+	</body>
+	<script src="js/main.js"></script>
+
 		</html>
 
 		<?php
