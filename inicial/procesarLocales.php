@@ -127,7 +127,7 @@ if($cantArt>0){
 $sqlCargaPedidoEncabezado = "
 SET DATEFORMAT YMD
 
-EXEC SJ_PEDIDO_ENCABEZADO '$codClient', '01', 'DISTRIBUCION INICIAL', 1, 'ZZ', '$numPed', 96
+EXEC SJ_PEDIDO_ENCABEZADO_DISTRIBUCION_INICIAL '$codClient', '01', 'DISTRIBUCION INICIAL', 1, 'ZZ', '$numPed', 96, 1000
 	
 ";
 
