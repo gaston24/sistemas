@@ -14,6 +14,8 @@ $_SESSION['usuario'] = $_GET['usuario'];
 $rem = $_SESSION['rem'];
 $dsn_local = $_SESSION['dsn'];
 
+$_SESSION['ultimoCodigo'] = '';
+
 
 
 
@@ -21,6 +23,7 @@ $dsn_local = $_SESSION['dsn'];
 $sqlBuscarRemito = "SELECT * FROM CTA115 WHERE N_COMP = '$rem'";
 $cid_2 = odbc_connect($dsn_local, $usuario, $clave);
 $result2 = odbc_exec($cid_2, $sqlBuscarRemito);
+
 if( odbc_num_rows( $result2 ) ) { 
 
 	//BUSCA QUE NO ESTE CONTROLADO EL REMITO
@@ -35,7 +38,7 @@ if( odbc_num_rows( $result2 ) ) {
 	}
 
 
-	echo $_SESSION['rem'];
+	// echo $_SESSION['rem'];
 
     while($v=odbc_fetch_array($result2)){
         $_SESSION['nro_sucurs'] = $v['NRO_SUCURS'];

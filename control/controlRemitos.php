@@ -29,7 +29,6 @@ while($v=odbc_fetch_array($result3)){
 	$verificacion = $v['VERIFICACION'] ;
 }
 
-odbc_close($cid);
 
 ?>
 <!DOCTYPE HTML>
@@ -45,15 +44,9 @@ odbc_close($cid);
 
 <div style="margin: 5px">
 <button onClick="window.location.href= 'index.php'" class="btn btn-primary">Cancelar</button>
-<h3 align="center">Remito: <?php echo $rem; ?></h3>
+<h3 align="center">Remito: <?= $rem ?> <?php if(isset($_POST['codigo'])){echo ' - Ultimo codigo: '.$_POST['codigo'];} ?>  
 
 </div>
-<script>
-function volver() {window.history.back();};
-function procesar() {window.location.href= 'procesar.php?pedido=<?php echo $rem ; ?>';};
-</script>
-
-<?php //echo $_SESSION['nro_sucurs'];?>
 
 <form action="" style="margin:20px" align="center" method="POST">
 	<label>Leer Codigo</label>
@@ -70,6 +63,7 @@ $user_local = $_SESSION['usuario'];
 if(isset ($_POST['codigo'])){
     $codigo = str_replace("'", "-", $_POST['codigo']);
     $codigo = str_replace(" ", "", $_POST['codigo']);
+	$codigo = strtoupper($codigo);
 
 
 $cid=odbc_connect($dsn, $usuario, $clave);
@@ -89,10 +83,6 @@ while($v=odbc_fetch_array($resultBuscaSinonimo)){
 $codigo = $v['COD_ARTICU'];
 }
 
-
-odbc_close($cid);
-
-//echo $fechaHora.' '.$user.' '.$rem.' '.$codigo.' '.$user_local;
 $cid=odbc_connect($dsn, $usuario, $clave);
 
 $sqlInsertar=
@@ -107,9 +97,6 @@ ini_set('max_execution_time', 300);
 $insert = odbc_exec($cid,$sqlInsertar)or die(exit("Error en odbc_exec"));
 
 
-odbc_close($cid);
-
-
 $cid=odbc_connect($dsn, $usuario, $clave);
 
 $sqlValida=
@@ -121,21 +108,14 @@ $sqlValida=
 ini_set('max_execution_time', 300);
 $resultValida=odbc_exec($cid,$sqlValida)or die(exit("Error en odbc_exec"));
 
-
-	//while($v=odbc_fetch_array($resultValida)){
 		if(odbc_num_rows($resultValida)==0){
-			//$areaEscaneada = 1;
 			echo '
 			<audio src="Wrong.ogg" autoplay></audio>
 			</br></br>
 			<div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">
 			ATENCION!! El codigo <strong>'.strtoupper($codigo).'</strong> no existe
 			</div>';
-			
 		}
-	//}
-	odbc_close($cid);
-
 
 }
 
@@ -159,8 +139,6 @@ $sql=
 
 ini_set('max_execution_time', 300);
 $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
-
-
 
 
 ?>
@@ -202,13 +180,8 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		
         <?php
 		$total+= $v['CANT_CONTROL'];
-		
         }
-		
-		odbc_close($cid);
-
         ?>
-     		
 
 </table>
 </br></br>
@@ -216,7 +189,6 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 <script>
 function historial(){
-
 
 <?php
 $cid=odbc_connect($dsn, $usuario, $clave);
@@ -233,7 +205,7 @@ ini_set('max_execution_time', 300);
 $cod_ultimo = '';
 $result5=odbc_exec($cid,$sql5)or die(exit("Error en odbc_exec"));
 ?>
-alert("Ultimos codigos ingresados :\n<?php while($v=odbc_fetch_array($result5)){ echo $v['COD_ARTICU'].'\n'; if($cod_ultimo==''){$cod_ultimo = $v['COD_ARTICU'] ;} } odbc_close($cid);?>");
+alert("Ultimos codigos ingresados :\n<?php while($v=odbc_fetch_array($result5)){ echo $v['COD_ARTICU'].'\n'; if($cod_ultimo==''){$cod_ultimo = $v['COD_ARTICU'] ;} } ?>");
 
 };
 
@@ -253,10 +225,6 @@ alert("Ultimos codigos ingresados :\n<?php while($v=odbc_fetch_array($result5)){
 }
 ?>
 
-
-
 </body>
-
-
 
 </html>
