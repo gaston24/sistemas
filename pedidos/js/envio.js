@@ -50,7 +50,7 @@ function enviar() {
             } else {
                 $("#aguarde").show();
                 $("#pantalla").fadeOut();
-                // postear(matriz, suc, codClient, t_ped, depo, talon_ped);
+                postear(matriz, suc, codClient, t_ped, depo, talon_ped);
                 // console.log("pedido enviado");
             }
 
