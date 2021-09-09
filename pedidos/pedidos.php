@@ -30,7 +30,6 @@ if (!isset($_SESSION['username'])) {
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<link rel="stylesheet" href="style/style.css">
-		<link rel="stylesheet" href="style/css.css">
 
 		<style>
 			td {
@@ -45,6 +44,32 @@ if (!isset($_SESSION['username'])) {
 				font-size: 14px;
 			}
 
+			#textBox, #total
+			{
+				border: 1px solid grey; 
+				border-radius: 5px;
+				padding: 5px;
+			}
+
+			#textBox
+			{
+				width: 250px;
+			}
+
+			#total
+			{
+				width: 60px;
+				text-align: center;
+			}
+
+			#btnExport {
+				float: right;
+			}
+
+			#articulo{
+				width: 60px;
+			}	
+			
 		</style>
 
 	</head>
@@ -114,14 +139,14 @@ if (!isset($_SESSION['username'])) {
 		<div style="width:98%; height:50%; padding-bottom:5%; margin-left:10px" id="pantalla">
 
 
-					<div class="row justify-content-between mt-1 mb-1" >
+					<div id="menu" class="row mt-3 mb-2" >
 						<div class="col-4">
 							<a> <strong>Búsqueda rápida</strong> </a>
 								<input type="text" onkeyup="myFunction()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
 						</div>
 						<div class="col-2">
 							<a> <strong>Total de articulos</strong> </a> 
-							<input name="total_todo" size="3" id="total" value="0" type="text">
+							<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
 						</div>
 						<div class="col-2"
 							<?php if ($suc < 100) { echo 'hidden'; } ?>
@@ -153,8 +178,8 @@ if (!isset($_SESSION['username'])) {
 					<tr style="font-size:smaller">
 						<th>FOTO</th>
 						<th>CODIGO</th>
-						<th>DESCRIPCION</th>
-						<th>RUBRO</th>
+						<th style="width: 80px;">DESCRIPCION</th>
+						<th style="width: 50px;">RUBRO</th>
 						<th>STOCK<br>CENTRAL</th>
 
 						<?php if ($_SESSION['tipo'] != 'MAYORISTA') { ?>
@@ -213,9 +238,9 @@ if (!isset($_SESSION['username'])) {
 
 							<td><?= $v['COD_ARTICU']; ?></td>
 
-							<td><?= $v['DESCRIPCIO']; ?></td>
+							<td style="width: 80px;"><?= $v['DESCRIPCIO']; ?></td>
 
-							<td><?= $v['RUBRO']; ?></td>
+							<td style="width: 50px;"><?= $v['RUBRO']; ?></td>
 
 							<td id="stock"><?= (int)($v['CANT_STOCK']); ?></td>
 
