@@ -165,3 +165,21 @@ function totalizar(){
 
 
 }
+
+
+
+$("#btnExport").click(function() {
+
+    $('input[type=number]').each(function(){
+        this.setAttribute('value',$(this).val());
+    });
+
+    $("table").table2excel({
+
+        // exclude CSS class
+        exclude: ".noExl",
+        name: "Worksheet Name",
+        filename: "SomeFile", //do not include extension
+        fileext: ".xls", // file extension
+    });
+});

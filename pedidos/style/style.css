@@ -1,4 +1,4 @@
-<style type="text/css">
+
 table.table-fh {
     width: 100%;
 }
@@ -12,7 +12,7 @@ table.table-fh > thead {
 }
 table.table-fh > tbody {
     display: block;
-    max-height: 90vh;
+    max-height: 80vh;
     overflow-y: scroll;
 }
 
@@ -59,4 +59,3 @@ table.table-fh > tbody > tr > td {
 body {
 	overflow-y: hidden;
 }
-</style>
