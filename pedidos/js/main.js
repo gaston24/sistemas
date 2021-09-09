@@ -179,7 +179,7 @@ $("#btnExport").click(function() {
         // exclude CSS class
         exclude: ".noExl",
         name: "Worksheet Name",
-        filename: "SomeFile", //do not include extension
+        filename: "Pedido", //do not include extension
         fileext: ".xls", // file extension
     });
 });
