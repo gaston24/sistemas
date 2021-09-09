@@ -18,7 +18,8 @@ $permiso = $_SESSION['permisos'];
 <body>	
 
 <?php
-	
+	 
+	 
 $dsn = "1 - CENTRAL";
 $usuario = "sa";
 $clave="Axoft1988";
