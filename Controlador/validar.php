@@ -104,6 +104,7 @@ while($v=odbc_fetch_array($result)){
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");		
 	}else{
+		
 		header("Location: eliminaPedido.php");
 	}
 	

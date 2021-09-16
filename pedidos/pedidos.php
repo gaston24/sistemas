@@ -144,11 +144,11 @@ if (!isset($_SESSION['username'])) {
 							<a> <strong>Búsqueda rápida</strong> </a>
 								<input type="text" onkeyup="myFunction()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
 						</div>
-						<div class="col-2">
+						<div class="col-3">
 							<a> <strong>Total de articulos</strong> </a> 
 							<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
 						</div>
-						<div class="col-2"
+						<div class="col-1"
 							<?php if ($suc < 100) { echo 'hidden'; } ?>
 						>
 							<a> <strong>Importe total:</strong> </a> 
