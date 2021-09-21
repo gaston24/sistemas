@@ -9,13 +9,11 @@ function mostrarDatos(){
 
 
 
-
-
-function myFunction() {
+function busquedaRapida() {
 	var input, filter, table, tr, td, td2, i, txtValue;
 	input = document.getElementById('textBox');
 	filter = input.value.toUpperCase();
-	table = document.getElementById("table");
+	table = document.getElementById("bodyTable");
 	tr = table.getElementsByTagName('tr');
 	//tr = document.getElementById('tr');
 	
