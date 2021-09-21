@@ -39,7 +39,7 @@ if(!isset($_GET['fechaDesde'])){
 <body>	
 
 
-<div class="container-fuid">
+<div class="container">
 
 
 <div >
