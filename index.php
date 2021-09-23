@@ -69,53 +69,45 @@ include_once 'Controlador/nav_menu.php';
 
 ?>
 
-	<div class="row">
+	<div class="row" style="text-align: center; margin-top: 1rem;">
 		
-
-		<div class="col-3">
+		<div class="col-1">
 			
 		</div>
-		<div class="col-8">
+		<div class="col-10">
 			<div class="row">
 				<div class="col-1"></div>
-				<div class="col-10 pl-0"><h1>Bienvenido <?php echo $local; ?></h1></div>
+				<div class="col-10"><h1>Bienvenido: <?php echo $local; ?></h1></div>
 				<div class="col-1"></div>
 			</div>
 			<?php
 				if($_SESSION['tipo']!= 'MAYORISTA'){
 			?>
 				<div class="row">
-					<div class="col-2"></div>
-					<div class="col-8 pl-0"><h5>Próximo despacho:<?php echo ' '.$proximaEntrega; ?></h5></div>
-					<div class="col-2"></div>
+					<div class="col-1"></div>
+					<div class="col-10"><h5>Próximo despacho:<?php echo ' '.$proximaEntrega; ?></h5></div>
+					<div class="col-1"></div>
 				</div>
 			<?php		
 				}
 			?>
 			
 		</div>
-		<div class="col-1">
-		</div>
-
-	</div>
-
-	<div class="row">
-	
-	<div class="col"> 
-	</div>
-	
-	<div class="col"> 
-
-	<img src="Controlador/logo.jpg">
-
-	</div>
-
-	
-	<div class="col">
-	
 		
+	</div>
 
+	
+	
+	<div class="row"> 	
+		<div class="col-10" style="margin-top: 2rem; text-align: center; margin-left: 50px;"> 
+			<img src="Controlador/logo.jpg" style="height: 180px; width: 270px">
+		</div>
+	</div>
 
+		
+	<div class="row" style="margin-top: 2rem;">
+		<div class="col-5" style="margin-left: 280px;">
+	
 		<?php
 		if($_SESSION['tipo'] == 'MAYORISTA'){
 			include __DIR__.'\ppp\mayoristas\ppp_function.php';
@@ -125,25 +117,25 @@ include_once 'Controlador/nav_menu.php';
 			<ul class="list-group">
 
 
-			<li class="list-group-item list-group-item-secondary">
+			<li class="list-group-item list-group-item-secondary" style="text-align: center;">
 				Plazo Promedio de Pago
 				
 			</li>
 			<li class="list-group-item">
 				Plazo 12 meses 
-				<span class="badge badge-primary badge-pill"><?php echo (int)$datos['ppp12meses'];  ?></span>
+				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['ppp12meses'], 0, ".",".");;  ?></span>
 			</li>
 			<li class="list-group-item">
 				Saldo CC
-				<span class="badge badge-primary badge-pill"><?php echo (int)$datos['saldo'];  ?></span>
+				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['saldo'], 0, ".",".");  ?></span>
 			</li>
 			<li class="list-group-item">
 				Vencidas
-				<span class="badge badge-primary badge-pill"><?php echo (int)$datos['vencidas'];  ?></span>
+				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['vencidas'], 0, ".",".");;  ?></span>
 			</li>
 			<li class="list-group-item">
 				A vencer
-				<span class="badge badge-primary badge-pill"><?php echo (int)$datos['aVencer'];  ?></span>
+				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['aVencer'], 0, ".",".");;  ?></span>
 			</li>
 			<li class="list-group-item list-group-item-info" >
 				<a href="ppp/mayoristas/pppDetalle.php?cliente=<?php echo $codClient;?>">Detalles comprobantes
@@ -165,7 +157,7 @@ include_once 'Controlador/nav_menu.php';
 			<ul class="list-group">
 
 
-			<li class="list-group-item list-group-item-secondary">
+			<li class="list-group-item list-group-item-secondary" style="text-align: center;">
 				Detalle de CC
 				
 		   </li>
@@ -197,7 +189,7 @@ include_once 'Controlador/nav_menu.php';
 		?>
 		
 
-	</div>
+		</div>
 	
 	</div>
 	<?php if($habPedidos == 0 && $_SESSION['numsuc'] > 300)
