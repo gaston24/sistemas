@@ -7,16 +7,36 @@ if(!isset($_SESSION['username'])){
 $permiso = $_SESSION['permisos'];
 $user = $_SESSION['username'];
 
+
+if(!isset($_GET['fechaDesde'])){
+	$fechaDesde = date("Y-m-d");
+	$fechaHasta = date("Y-m-d");
+}else{
+	$fechaDesde = $_GET['fechaDesde'];
+	$fechaHasta = $_GET['fechaHasta'];
+}
+
 ?>
 <!DOCTYPE HTML>
 
 <html>
 <head>
 <title>Control Remitos</title>	
-<?php include '../../css/header.php'; ?>
+<meta charset="utf-8">
+<link rel="shortcut icon" href="../../../css/icono.jpg" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
 </head>
 <body>	
+<div class="container-fluid mt-3">
+
 
 <?php
 
@@ -34,23 +54,23 @@ $sql=
 	"
 	SET DATEFORMAT YMD
 
+	SELECT 
 
-	SELECT ID, FECHA_CONTROL, COD_CLIENT, USUARIO_LOCAL, FECHA_REM, NRO_REMITO, SUC_ORIG, SUC_DESTIN, COD_ARTICU, DESCRIPCIO, CANT_REM, CANT_CONTROL, OBSERVAC_LOCAL, OBSERVAC_AUDITORIA, OBSERVAC_LOGISTICA, DIF
-	FROM
-	(
-	SELECT A.ID, CAST(FECHA_CONTROL AS DATE)FECHA_CONTROL, COD_CLIENT, USUARIO_LOCAL, CAST(FECHA_REM AS DATE)FECHA_REM, NRO_REMITO, C.DESC_SUCURSAL SUC_ORIG, D.DESC_SUCURSAL SUC_DESTIN, 
-	A.COD_ARTICU, CASE WHEN A.COD_ARTICU = 'SIN DIFERENCIAS' THEN 'REMITO SIN DIFERENCIAS' ELSE B.DESCRIPCIO END DESCRIPCIO, CANT_REM, CANT_CONTROL, ISNULL(A.OBSERVAC_LOCAL, '')OBSERVAC_LOCAL, ISNULL(A.OBSERVAC_AUDITORIA, '')OBSERVAC_AUDITORIA,
-	ISNULL(A.OBSERVAC_LOGISTICA, '')OBSERVAC_LOGISTICA, CANT_REM-CANT_CONTROL DIF
+	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
+	NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
+	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA
+		
 	FROM SJ_CONTROL_AUDITORIA A
-	LEFT JOIN STA11 B
-	ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
-	INNER JOIN SUCURSAL C
-	ON A.SUC_ORIG = C.NRO_SUCURSAL
-	INNER JOIN SUCURSAL D
-	ON A.SUC_DESTIN = D.NRO_SUCURSAL	
-	)A
-	WHERE DESCRIPCIO IS NOT NULL OR COD_ARTICU = 'SIN DIFERENCIAS'
-	ORDER BY FECHA_CONTROL DESC
+
+	INNER JOIN GVA23 D
+	ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
+
+	WHERE A.FECHA_REM >= GETDATE()-180
+	AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta')
+		
+	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
+	A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA
+	ORDER BY A.FECHA_REM
 	";
 
 ini_set('max_execution_time', 300);
@@ -58,91 +78,139 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 
-<form method="post" action="auditoria_procesar.php">
 
-	
+<div >
+<form action="" method="GET" >
 
-		<table class="table table-striped table-fh table-15c" id="id_tabla">
+	<div class="form-group row">
 		
-			<thead>
-				<tr style="font-size:smaller">
-					<th style="width: 7%">FECHA<br>CONTROL</th>
-					<th style="width: 7%">ID</th>
-					<th style="width: 7%">NRO<br>REMITO</th>
-
-					<th style="width: 7%">SUC<br>ORIGEN</th>
-					<th style="width: 7%">SUC<br>DESTINO</th>
-					<th style="width: 7%">USER</th>
-					<th style="width: 7%">CODIGO</th>
-
-					<th style="width: 7%">DESCRIPCION</th>
-					<th style="width: 7%">REM</th>
-					<th style="width: 7%">CONTRL</th>
-					<th style="width: 7%">DIF</th>
-					<th style="width: 7%">OBSERVAC<br>LOCAL</th>
-					<th style="width: 7%">OBSERVAC<br>AUDITORIA</th>
-					<th style="width: 7%"><input type="text" class="form-control form-control-sm" onkeyup="myFunction()" id="textBox" name="factura" placeholder="Sobre cualquier campo.." autofocus></th>
-					<th style="width: 7%"><input type="submit" value="Grabar" class="btn btn-primary btn-sm"></th>
-					
-				</tr>
-			</thead>
-			
-			<tbody id="table">
-
-				<?php
-				while($v=odbc_fetch_array($result)){
-				?>
-
-				<tr style="font-size:smaller">
-					<td style="width: 7%"><?php echo $v['FECHA_CONTROL'] ;?></td>
-					<td style="width: 7%"><input class="form-control-plaintext" type="text" name="id[]" value="<?php echo $v['ID'] ;?>" ></td>
-					
-					<td style="width: 7%; color:
-						<?php 
-						if($v['OBSERVAC_LOGISTICA']=='SI'){
-							echo 'green';
-						}else{
-							echo 'red';
-						}
-						?>
-					; font-weight: bold"><input type="text" class="form-control-plaintext" name="rem[]" value="<?php echo $v['NRO_REMITO'] ;?>" ></td>
-					
-					
-					<td style="width: 7%"><small><?php echo $v['SUC_ORIG'] ;?></small></td>
-					<td style="width: 7%"><small><?php echo $v['SUC_DESTIN'] ;?></small></td>
-					<td style="width: 7%"><?php echo $v['USUARIO_LOCAL'] ;?></td>
-					
-					<td style="width: 7%"><input class="form-control-plaintext" type="text" name="codArticu[]" value="<?php echo $v['COD_ARTICU'] ;?>" ></td>
-					<td style="width: 7%"><small><?php echo $v['DESCRIPCIO'] ;?></small></td>
-					<td style="width: 7%"><?php echo $v['CANT_REM'] ;?></td>
-					<td style="width: 7%"><?php echo $v['CANT_CONTROL'] ;?></td>
-					<td style="width: 7%"><?php echo $v['DIF'] ;?></td>
-					<td style="width: 7%"><input type="text" value="<?php echo $v['OBSERVAC_LOCAL'] ;?>" class="form-control form-control-sm col-md-12" readonly></td>
-					<td style="width: 7%"><input type="text" name="observ_auditoria[]" value="<?php echo $v['OBSERVAC_AUDITORIA'] ;?>" class="form-control form-control-sm col-md-12" ></td>
-					<td style="width: 7%"><input type="date" value="<?php echo date("Y-m-d");?>" class="form-control form-control-sm col-md-11" ></td>
-				</tr>
-
-				<?php
-				}
-				?>
+		<div class="col-sm-1">
+			<button type="button" class="btn btn-primary btn-sm" onClick="window.location.href= '../conteos/index.php'">Inicio</button>
+		</div>
+		
+		<label class="col-sm-1 col-form-label">Desde</label>
+		<div class="col-sm-2">
+			<input type="date" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>">
+		</div>
+		
+		<label class="col-sm-1 col-form-label">Hasta</label>
+		<div class="col-sm-2">
+			<input type="date" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>">
+		</div>
 				
-			</tbody>
-		</table>
+		<div class="col-sm-2 ">
+			<input type="submit" class="btn btn-primary btn-sm" value="Consultar">
+		</div>
 		
-	
-	
+		<label class="col-sm col-form-label">Busqueda Rapida:</label>
+		<div id="busqueda" >
+			<input type="textBox" class="form-control form-control-sm" onkeyup="busquedaRapida()"  id="textBox" name="factura" placeholder="Sobre cualquier campo.." autofocus>
+		</div>
+		
+	</div>
+
 </form>
 
-<button onClick="window.location.href= '../conteos/index.php'" class="btn btn-primary btn-sm" style="margin-left:80%">Volver</button>
+</div>
+
+		<table class="table table-striped " id="id_tabla">
+		
+		<thead>
+			<tr style="font-size:smaller">
+				<th >FECHA<br>REMITO</th>
+				<th >ORIGEN</th>
+				<th >DESTINO</th>
+				<th >NRO<br>REMITO</th>
+				<th >FECHA<br>CONTROL</th>
+				<th >USUARIO</th>
+				<th >CANT REM</th>
+				<th >CANT CONTROL</th>
+				<th >CANT DIF</th>
+				<th >ESTADO</th>
+				<th >CHAT</th>
+			</tr>
+		</thead>
+		<tbody id="bodyTable">
+        <?php
+
+		while($v=odbc_fetch_array($result)){
+		
+		?>
+		
+        <tr class="fila-base" style="font-size:smaller" id="bodyTable">
+
+			<td ><?= $v['FECHA_REM'] ;?></td>
+				<td ><?= $v['SUC_ORIG'] ;?></td>
+				<td ><?= $v['SUC_DESTIN'] ;?></td>
+				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $v['NRO_REMITO'] ;?>">  <?= $v['NRO_REMITO'] ;?> </a></td>
+				<td ><?= $v['FECHA_CONTROL'] ;?></td>
+				<td ><?= $v['NOMBRE_VEN'] ;?></td>
+				<td ><?= $v['CANT_REM'] ;?></td>
+				<td ><?= $v['CANT_CONTROL'] ;?></td>
+				<td ><?= $v['DIFERENCIA'] ;?> </td>
+				
+				<td >
+					<select class="form-control form-control-sm" id="select-<?= $v['NRO_REMITO'] ;?>" onChange="changeStatus('<?= $v['NRO_REMITO'] ;?>')" id="estadoRemito">
+						<option value="PENDIENTE" <?php if($v['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
+						<option value="ACEPTADO" <?php if($v['OBSERVAC_LOGISTICA'] == 'ACEPTADO'){echo 'selected'; }?>>Aceptado</option>
+						<option value="RECHAZADO" <?php if($v['OBSERVAC_LOGISTICA'] == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
+					</select>
+				</td>
+
+				<td >
+					<button data-toggle="modal" data-target="#chatModal" class="btn btn-primary btn-sm" type="button" onClick="getChat('<?= $v['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
+							<path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+							<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+						</svg>
+					</button>
+				</td>
+				
+        </tr>
+		
+        <?php
+
+        }
+
+        ?>
+		</tbody>
+		</table>
 
 <script type="text/javascript" src="main.js"></script>
+<script src="main.js"></script>
+<script src="js/chat.js"></script>
 
 
+<!-- MODAL CHAT -->
+
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Chat auditoria</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="numRemito" style="display:none"></div>
+        <div id="chatShow"></div>
+      </div>
+      <div class="modal-footer">
+		<input type="text" class="form-control mb-2" id="chatNew">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">Enviar mensaje</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  -->
+
+
+</div>
 </body>
-<script>
-function volver() {window.history.back();};
-function procesar() {window.location.href= 'procesar.php?pedido=<?php echo $rem ; ?>';};
-</script>
+
 </html>
 
 

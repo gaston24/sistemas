@@ -5,17 +5,11 @@ function mostrarDatos(){
 
 }
 
-
-
-
-
-
-
-function myFunction() {
+function busquedaRapida() {
 	var input, filter, table, tr, td, td2, i, txtValue;
 	input = document.getElementById('textBox');
 	filter = input.value.toUpperCase();
-	table = document.getElementById("table");
+	table = document.getElementById("bodyTable");
 	tr = table.getElementsByTagName('tr');
 	//tr = document.getElementById('tr');
 	
@@ -35,4 +29,24 @@ function myFunction() {
       tr[i].style.display = "none";
     }
   }
+}
+
+function changeStatus(remito){
+  
+  var status = $('#select-'+remito).val();
+
+  // console.log(remito, status);
+
+  $.ajax({
+      url: 'controlador/actuaStatusRemito.php',
+      method: 'POST',
+      dateType: 'json',
+      data: {
+          ncomp : remito, 
+          status: status 
+      },
+      success: function(data) {
+          // console.log(data)
+      }
+  });
 }
