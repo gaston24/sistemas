@@ -99,18 +99,21 @@ $sql=
 
 	SELECT 
 
-	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
+	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, E.DESC_SUCURSAL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
 	NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
-	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA
+	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA
 	
 	FROM SJ_CONTROL_AUDITORIA A
 
 	INNER JOIN GVA23 D
 	ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
+	INNER JOIN SUCURSAL E
+	ON A.SUC_ORIG = E.NRO_SUCURSAL
+
 	WHERE A.COD_CLIENT = '$codClient' 
 	AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta')
 	
-	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN
+	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, E.DESC_SUCURSAL, A.OBSERVAC_LOGISTICA
 	ORDER BY A.FECHA_CONTROL
 	";
 
@@ -128,12 +131,14 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		<thead>
 			<tr style="font-size:smaller">
 				<th >FECHA<br>REMITO</th>
+				<th >SUC<br>ORIGEN</th>
 				<th >NRO<br>REMITO</th>
 				<th >FECHA<br>CONTROL</th>
 				<th >USUARIO</th>
 				<th >CANT REM</th>
 				<th >CANT CONTROL</th>
 				<th >CANT DIF</th>
+				<th >ESTADO</th>
 				<th >CHAT</th>
 			</tr>
 		</thead>
@@ -142,18 +147,22 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		while($v=odbc_fetch_array($result)){
 		
 		?>
+
+		<tbody id="bodyTable">
 		
-        <tr class="fila-base" style="font-size:smaller" id="bodyTable">
+        <tr class="fila-base" style="font-size:smaller" >
 
 				<td ><?= $v['FECHA_REM'] ;?></td>
+				<td ><?= $v['DESC_SUCURSAL'] ;?></td>
 				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $v['NRO_REMITO'] ;?>">  <?= $v['NRO_REMITO'] ;?> </a></td>
 				<td ><?= $v['FECHA_CONTROL'] ;?></td>
 				<td ><?= $v['NOMBRE_VEN'] ;?></td>
 				<td ><?= $v['CANT_REM'] ;?></td>
 				<td ><?= $v['CANT_CONTROL'] ;?></td>
 				<td ><?= $v['DIFERENCIA'] ;?> </td>
+				<td ><?= $v['OBSERVAC_LOGISTICA'] ;?> </td>
 				<td >
-					<button data-toggle="modal" data-target="#chatModal" class="btn btn-primary btn-sm" type="button" onClick="getChat('<?= $v['NRO_REMITO'] ;?>')">
+					<button data-toggle="modal" data-target="#chatModal" class="btn btn-primary btn-sm" type="button" onClick="getChat('<?= $v['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
 							<path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
 							<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
@@ -168,6 +177,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         }
 
         ?>
+		</tbody>
      		
 </table>
 
@@ -184,7 +194,6 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 </div>
-
 <script src="main.js"></script>
 <script src="js/chat.js"></script>
 
@@ -200,12 +209,13 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         </button>
       </div>
       <div class="modal-body">
+        <div id="numRemito" style="display:none"></div>
         <div id="chatShow"></div>
       </div>
       <div class="modal-footer">
 		<input type="text" class="form-control mb-2" id="chatNew">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onClick="sendChat('<>')">Enviar mensaje</button>
+        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">Enviar mensaje</button>
       </div>
     </div>
   </div>

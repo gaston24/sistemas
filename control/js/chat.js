@@ -9,7 +9,7 @@ function getChat(remito){
             ncomp : remito
         },
         success: function(data) {
-            console.log(typeof(data));
+            // console.log(typeof(data));
             clearChat();
             updateChat(data);
         }
@@ -22,18 +22,22 @@ function clearChat(){
     $('#chatShow').html("");
 }
 
+function actuaNumRemito(remito){
+    $('#numRemito').html(remito);
+}
+
 function updateChat(data){
     console.log("actualizando chat");
 
     var_add_chat = '';
     data.forEach(element => {
-        console.log(element);
+        // console.log(element);
             var remito = element.remito;
             var user = element.user;
             var message = element.message;
             var datetime = element.datetime;
 
-            if(user == 'RAMIRO'){
+            if(user == 'ramiro'){
                 var_add_chat += '<div class="row mr-2">';
                     var_add_chat += '<div class="col-2" ></div>';
 
@@ -58,21 +62,25 @@ function updateChat(data){
     $('#chatShow').append(var_add_chat);
 }
 
-function sendChat(){
+function sendChat( user){
 
-    var msg = $('chatNew').val();
+    var msg = $('#chatNew').val();
+    var remito = $('#numRemito').html();
+
+    console.log(remito, user, msg);
 
     $.ajax({
         url: 'controlador/sendChatControlador.php',
         method: 'POST',
         dateType: 'json',
         data: {
-            ncomp : remito
+            user : user, 
+            ncomp : remito, 
+            msg : msg, 
         },
         success: function(data) {
-            console.log(typeof(data));
-            clearChat();
-            updateChat(data);
+            $('#chatNew').val("");
+            getChat(remito);
         }
     });
 

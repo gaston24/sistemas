@@ -69,10 +69,14 @@ $sql=
 	ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
 	INNER JOIN GVA23 D
 	ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-	WHERE A.COD_CLIENT = '$codClient' AND A.NRO_REMITO = '$numRem'
-	
-	ORDER BY A.FECHA_CONTROL
+	WHERE A.NRO_REMITO = '$numRem' 
 	";
+	
+	if(strtolower($user) != 'ramiro'){ 
+		$sql.= "AND A.COD_CLIENT = '$codClient'";
+	}	
+	
+	$sql.= "ORDER BY A.FECHA_CONTROL";
 
 ini_set('max_execution_time', 300);
 $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
@@ -145,7 +149,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 <script>
 
 	$(document).ready(function(){
-		$('#datosRemito').html('<h2><?=$numRem?> - <?=$nombreVen?></h2>');
+		$('#datosRemito').html('<h3><?=$numRem?> - <?=$nombreVen?></h3>');
 	});
 </script>
 </body>

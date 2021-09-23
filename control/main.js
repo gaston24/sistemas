@@ -5,10 +5,6 @@ function mostrarDatos(){
 
 }
 
-
-
-
-
 function busquedaRapida() {
 	var input, filter, table, tr, td, td2, i, txtValue;
 	input = document.getElementById('textBox');
@@ -33,4 +29,24 @@ function busquedaRapida() {
       tr[i].style.display = "none";
     }
   }
+}
+
+function changeStatus(remito){
+  
+  var status = $('#select-'+remito).val();
+
+  // console.log(remito, status);
+
+  $.ajax({
+      url: 'controlador/actuaStatusRemito.php',
+      method: 'POST',
+      dateType: 'json',
+      data: {
+          ncomp : remito, 
+          status: status 
+      },
+      success: function(data) {
+          // console.log(data)
+      }
+  });
 }
