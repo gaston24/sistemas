@@ -24,53 +24,9 @@ if (!isset($_SESSION['username'])) {
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
 		<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
 		<link rel="stylesheet" href="style/style.css">
-
-		<style>
-			td {
-				font-size: 11px;
-			}
-
-			#cant {
-				font-size: 14px;
-			}
-
-			#stock {
-				font-size: 14px;
-			}
-
-			#textBox, #total
-			{
-				border: 1px solid grey; 
-				border-radius: 5px;
-				padding: 5px;
-			}
-
-			#textBox
-			{
-				width: 250px;
-			}
-
-			#total
-			{
-				width: 60px;
-				text-align: center;
-			}
-
-			#btnExport {
-				float: right;
-			}
-
-			#articulo{
-				width: 60px;
-			}	
-			
-		</style>
 
 	</head>
 
@@ -85,95 +41,42 @@ if (!isset($_SESSION['username'])) {
 		</div>
 
 		<?php
-
-		$dsn = "1 - CENTRAL";
-		$user = "sa";
-		$pass = "Axoft1988";
-		$suc = $_SESSION['numsuc'];
-
-
-		switch ($_GET['tipo']) {
-			case 1:
-				$_SESSION['tipo_pedido'] = 'GENERAL';
-				break;
-			case 2:
-				$_SESSION['tipo_pedido'] = 'ACCESORIOS';
-				break;
-			case 3:
-				$_SESSION['tipo_pedido'] = 'OUTLET';
-				break;
-		}
-
-		$_SESSION['depo'] = '01';
-
-		$codClient = $_SESSION['username'];
-		$tipo_cli = $_SESSION['tipo'];
-
-		include 'Controlador/tipoPedido.php';
-
-		switch ($_GET['tipo']) {
-			case 1:
-				$sql = $sql1;
-				break;
-			case 2:
-				$sql = $sql2;
-				break;
-			case 3:
-				$sql = $sql3;
-				break;
-		}
-
-		$cid = odbc_connect($dsn, $user, $pass);
-
-		ini_set('max_execution_time', 300);
-		$result = odbc_exec($cid, $sql) or die(exit("Error en odbc_exec"));
-
-
+		include_once('Controlador/checkTipoPedido.php');
 		?>
 
-
-
-
-		<!--<form method="POST" action="Controlador/cargarPedidoNuevo.php" onkeypress = "return pulsar(event)">-->
-
 		<div style="width:98%; height:50%; padding-bottom:5%; margin-left:10px" id="pantalla">
-
-
-					<div id="menu" class="row mt-3 mb-2" >
-						<div class="col-4">
-							<a> <strong>Búsqueda rápida</strong> </a>
-								<input type="text" onkeyup="myFunction()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
-						</div>
-						<div class="col-3">
-							<a> <strong>Total de articulos</strong> </a> 
-							<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
-						</div>
-						<div class="col-1"
-							<?php if ($suc < 100) { echo 'hidden'; } ?>
-						>
-							<a> <strong>Importe total:</strong> </a> 
-							<input name="total_precio" size="3" id="totalPrecio" value="0" type="text" onChange="verificarCredito()">
-							<a id="cupoCreditoExcedido"></a>
-							
-						</div>
-					
-					<div class="col-2">
-						<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
-					</div>				
-					<div class="col-2">
-						<button class="btn btn-primary" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
-													echo 'enviarMayorista()';
-												} else {
-													echo 'enviar()';
-												} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
-					</div>				
+			<div id="menu" class="row mt-3 mb-2" >
+				<div class="col-4">
+					<a> <strong>Búsqueda rápida</strong> </a>
+						<input type="text" onkeyup="busquedaRapida()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
 				</div>
-		
-
+				<div class="col-3">
+					<a> <strong>Total de articulos</strong> </a> 
+					<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
+				</div>
+				<div class="col-1"
+					<?php if ($suc < 100) { echo 'hidden'; } ?>
+				>
+					<a> <strong>Importe total:</strong> </a> 
+					<input name="total_precio" size="3" id="totalPrecio" value="0" type="text" onChange="verificarCredito()">
+					<a id="cupoCreditoExcedido"></a>
+					
+				</div>
+			
+			<div class="col-2">
+				<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+			</div>				
+			<div class="col-2">
+				<button class="btn btn-primary" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
+						echo 'enviarMayorista()';
+					} else {
+						echo 'enviar()';
+					} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
+			</div>				
+		</div>
 			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
 
 				<thead class="bg-secondary text-white">
-
 
 					<tr style="font-size:smaller">
 						<th>FOTO</th>
@@ -201,11 +104,9 @@ if (!isset($_SESSION['username'])) {
 
 					<?php
 
-
 					while ($v = odbc_fetch_array($result)) {
 
 					?>
-
 
 						<?php
 						if (substr($v['DESCRIPCIO'], -11) == '-- SALE! --') {
@@ -284,19 +185,7 @@ if (!isset($_SESSION['username'])) {
 
 						?>
 
-						<!--FILA DE MAS QUE SE PONE PARA QUE EL TOTAL NO PISE AL ULTIMO REGISTRO-->
-						<tr style="font-size:smaller" id="ultimo">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
+
 
 				</tbody>
 
@@ -305,17 +194,7 @@ if (!isset($_SESSION['username'])) {
 			</table>
 		</div>
 
-
-
-		<!--</form>-->
-
-		
-
 		</div>
-
-
-	</body>
-
 
 	<?php
 	$suc = $_SESSION['numsuc'];
@@ -337,7 +216,9 @@ if (!isset($_SESSION['username'])) {
 
 	<script src="js/main.js"></script>
 	<script src="js/envio.js"></script>
+	<script src="js/jquery.table2excel.js"></script>
 
+	</body>
 	</html>
 
 <?php
@@ -345,4 +226,4 @@ if (!isset($_SESSION['username'])) {
 }
 ?>
 
-<script src="js/jquery.table2excel.js"></script>
+

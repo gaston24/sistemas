@@ -20,16 +20,8 @@ $cid = odbc_connect($dsn, $nom, $con);
 
 $result = odbc_exec($cid, $sql);
 
-// if(odbc_num_rows($result)==1){
-// 	echo 'entro';
-
-// 	die();
 while($v=odbc_fetch_array($result)){
 
-	
-
-
-	
 	$_SESSION['username'] = $v['NOMBRE'];
 	$_SESSION['permisos'] = $v['PERMISOS'];
 	$_SESSION['dsn'] = $v['DSN'];
@@ -108,15 +100,6 @@ while($v=odbc_fetch_array($result)){
 		header("Location: eliminaPedido.php");
 	}
 	
-	
-	
-	
 }
-// }else{
-// 	// echo 'sali';
 
-// 	echo odbc_num_rows($result);
-// 	die();
-// 	header("Location: cargaPedido.php");
-// }
 ?>
