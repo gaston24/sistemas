@@ -58,7 +58,7 @@ $sql=
 
 	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
 	NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
-	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA
+	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE
 		
 	FROM SJ_CONTROL_AUDITORIA A
 
@@ -69,7 +69,7 @@ $sql=
 	AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta')
 		
 	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
-	A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA
+	A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE
 	ORDER BY A.FECHA_REM
 	";
 
@@ -127,6 +127,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				<th >CANT CONTROL</th>
 				<th >CANT DIF</th>
 				<th >ESTADO</th>
+				<th >NRO AJUSTE</th>
 				<th >CHAT</th>
 			</tr>
 		</thead>
@@ -148,7 +149,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				<td ><?= $v['CANT_REM'] ;?></td>
 				<td ><?= $v['CANT_CONTROL'] ;?></td>
 				<td ><?= $v['DIFERENCIA'] ;?> </td>
-				
+								
 				<td >
 					<select class="form-control form-control-sm" id="select-<?= $v['NRO_REMITO'] ;?>" onChange="changeStatus('<?= $v['NRO_REMITO'] ;?>')" id="estadoRemito">
 						<option value="PENDIENTE" <?php if($v['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
@@ -156,6 +157,8 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 						<option value="RECHAZADO" <?php if($v['OBSERVAC_LOGISTICA'] == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
 					</select>
 				</td>
+
+				<td ><input type="text" size="8" class="form-control form-control-sm" id="nroAjuste" value="<?= $v['NRO_AJUSTE'] ;?>" onChange="changeNroAjuste('<?= $v['NRO_REMITO'] ;?>', this), validaAjuste()"> </td>
 
 				<td >
 					<button data-toggle="modal" data-target="#chatModal" class="btn btn-primary btn-sm" type="button" onClick="getChat('<?= $v['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">

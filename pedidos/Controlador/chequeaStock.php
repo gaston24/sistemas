@@ -19,10 +19,10 @@ $articulosConcat = substr($articulosConcat, 0, -2);
 
 $sqlStock = "
 	SET DATEFORMAT YMD
-	SELECT COD_ARTICU, CANT_STOCK FROM STA19 
+	SELECT COD_ARTICU, STOCK_DISPONIBLE CANT_STOCK FROM STOCK_CENTRAL_DISPONIBLE 
 	WHERE COD_ARTICU IN (".
 	$articulosConcat.	
-	") AND COD_DEPOSI = '01'"
+	")"
 	;
 
 $result=odbc_exec($cid,$sqlStock)or die(exit("Error en odbc_exec"));

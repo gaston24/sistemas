@@ -101,7 +101,7 @@ $sql=
 
 	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, E.DESC_SUCURSAL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
 	NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
-	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA
+	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE
 	
 	FROM SJ_CONTROL_AUDITORIA A
 
@@ -113,7 +113,7 @@ $sql=
 	WHERE A.COD_CLIENT = '$codClient' 
 	AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta')
 	
-	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, E.DESC_SUCURSAL, A.OBSERVAC_LOGISTICA
+	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, E.DESC_SUCURSAL, A.OBSERVAC_LOGISTICA, NRO_AJUSTE
 	ORDER BY A.FECHA_CONTROL
 	";
 
@@ -139,16 +139,18 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				<th >CANT CONTROL</th>
 				<th >CANT DIF</th>
 				<th >ESTADO</th>
+				<th >NRO AJUSTE</th>
 				<th >CHAT</th>
 			</tr>
 		</thead>
+		<tbody id="bodyTable">
         <?php
 
 		while($v=odbc_fetch_array($result)){
 		
 		?>
 
-		<tbody id="bodyTable">
+		
 		
         <tr class="fila-base" style="font-size:smaller" >
 
@@ -161,6 +163,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				<td ><?= $v['CANT_CONTROL'] ;?></td>
 				<td ><?= $v['DIFERENCIA'] ;?> </td>
 				<td ><?= $v['OBSERVAC_LOGISTICA'] ;?> </td>
+				<td ><?= $v['NRO_AJUSTE'] ;?> </td>
 				<td >
 					<button data-toggle="modal" data-target="#chatModal" class="btn btn-primary btn-sm" type="button" onClick="getChat('<?= $v['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
