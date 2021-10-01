@@ -168,7 +168,7 @@ function comparaStock(matrizPedidos, matrizStock){
     const comparativo = [];
     matrizPedidos.filter((x)=>{
         matrizStock.forEach((y)=>{
-            if(x[1] == y[0] && x[8] > y[1] ){
+            if(x[1] == y[0] && parseInt(x[8]) > parseInt(y[1]) ){
                 comparativo.push([y[0], y[1]]);
             }
         });
@@ -228,8 +228,12 @@ function marcarDiferencia(resultCompara){
 // ENVIA PEDIDO
 function postear(matriz, suc, codClient, t_ped, depo, talon_ped) {
 
+    let env = 1;
+
+    let url = (env == 1) ? 'cargarPedidoNuevo.php' : 'cargarPedidoNuevoTest.php';
+
     $.ajax({
-        url: 'Controlador/cargarPedidoNuevo.php',
+        url: 'Controlador/'+url,
         method: 'POST',
         data: {
             matriz: matriz,
@@ -247,11 +251,9 @@ function postear(matriz, suc, codClient, t_ped, depo, talon_ped) {
                 icon: "success",
                 button: "Aceptar",
             })
-                .then(function () {
-                    window.location = "../index.php";
-                })
-                ;
-
+            .then(function () {
+                window.location = "../index.php";
+            });
         }
 
     });
