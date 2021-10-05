@@ -228,6 +228,8 @@ function marcarDiferencia(resultCompara){
 // ENVIA PEDIDO
 function postear(matriz, suc, codClient, t_ped, depo, talon_ped) {
 
+    // variable env = 1 - envia pedido
+    // variable env = 0 - no hace nada
     let env = 1;
 
     let url = (env == 1) ? 'cargarPedidoNuevo.php' : 'cargarPedidoNuevoTest.php';
