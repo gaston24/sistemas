@@ -1,3 +1,6 @@
+<?php
+include('estado_cuenta.php');
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" onCLick="window.location='index.php'"><i class="fad fa-home" title="INICIO"></i></a>
     <a class="navbar-brand" onCLick="window.location='login.php'"><i class="far fa-times-octagon" title="CERRAR SESION"></i></a>
@@ -14,9 +17,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
             
-           
-            
-            <?php if($habPedidos == 1 || $_SESSION['numsuc'] < 100 and $codClient !='FRMPOU')
+            <?php if(($habPedidos == 1 || $_SESSION['numsuc'] < 100) && $codClient !='FRMPOU')
             {
             ?>
 
@@ -107,6 +108,7 @@
                 <?php
             }
             ?>
+            <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a>
             
           </div>
         </li>
@@ -140,7 +142,7 @@
         }
         ?>
         <?php 
-		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1){
+		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1 && $codClient !='FRMPOU'){
         ?>	
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
