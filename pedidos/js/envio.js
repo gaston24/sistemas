@@ -16,6 +16,9 @@ function matrizPedidos()  {
 // PEDIDOS LOCALES Y FRANQUICIAS
 function enviar() {
 
+    $('#btnEnviar').hide();
+    $('#spinnerEnviar').show();
+
     let totalPrecioValida = $('#totalPrecio').val();
 
     if (totalPrecioValida != 'NaN') {
