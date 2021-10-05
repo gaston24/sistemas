@@ -35,7 +35,6 @@ function changeStatus(remito){
   
   var status = $('#select-'+remito).val();
 
-  // console.log(remito, status);
 
   $.ajax({
       url: 'controlador/actuaStatusRemito.php',
@@ -50,3 +49,39 @@ function changeStatus(remito){
       }
   });
 }
+
+function changeNroAjuste(remito, context){
+  console.log(remito);
+  console.log(context.value)
+
+  $.ajax({
+    url: 'controlador/actuaAjusteRemito.php',
+    method: 'POST',
+    dateType: 'json',
+    data: {
+        ncomp : remito, 
+        ajuste: context.value 
+    },
+    success: function(data) {
+        // console.log(data)
+    }
+  });
+
+}
+
+function validaAjuste(){
+  const matriz = Array.from(document.getElementById("id_tabla").rows);
+  matriz.forEach( function(r, ri) {
+    let valor = r.querySelectorAll('td');
+      valor.forEach(function(d, di){
+        if(di == 10 && d.firstChild.value == ''){
+          valor.item(9).firstElementChild.disabled = true
+        }
+        if(di == 10 && d.firstChild.value != ''){
+          valor.item(9).firstElementChild.disabled = false
+        }
+      })
+  })
+}
+
+$(document).ready(()=>validaAjuste())

@@ -20,6 +20,7 @@ $cid = odbc_connect($dsn, $nom, $con);
 
 $result = odbc_exec($cid, $sql);
 
+
 if(odbc_num_rows($result)==0){
 header('Location:../login.php');
 }else{
@@ -27,7 +28,6 @@ header('Location:../login.php');
 
 while($v=odbc_fetch_array($result)){
 
-		
 	$_SESSION['username'] = $v['NOMBRE'];
 	$_SESSION['permisos'] = $v['PERMISOS'];
 	$_SESSION['dsn'] = $v['DSN'];

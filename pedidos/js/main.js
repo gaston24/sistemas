@@ -1,10 +1,11 @@
 $(document).ready(function(){
     $("#aguarde").fadeOut()
-  });
+});
+
 
 function pulsar(e) {
-tecla = (document.all) ? e.keyCode : e.which;
-return (tecla != 13);
+    tecla = (document.all) ? e.keyCode : e.which;
+    return (tecla != 13);
 }
     
         
@@ -20,57 +21,6 @@ function total() {
 };
     
     
-function verifica() {
-				
-    var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']");
-    var y = document.querySelectorAll("#id_tabla #stock");
-
-    
-    var i;
-    for (i = 0; i < x.length; i++) {
-        if( parseInt(x[i].value) > parseInt(y[i].innerHTML) ){
-            alert("La cantidad ingresada es mayor al stock!");
-            x[i].value = 0;
-        }
-    }
-
-
-};
-    
-    
-$('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').trigger('focus')
-})
-
-
-function myFunction() {
-    var input, filter, table, tr, td, td2, i, txtValue;
-    input = document.getElementById('textBox');
-    filter = input.value.toUpperCase();
-    table = document.getElementById("tabla");
-    tr = table.getElementsByTagName('tr');
-
-
-    for (i = 0; i < tr.length; i++) {
-        visible = false;
-        /* Obtenemos todas las celdas de la fila, no sólo la primera */
-        td = tr[i].getElementsByTagName("td");
-
-        for (j = 0; j < td.length; j++) {
-            if (td[j] && td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                visible = true; 
-            }
-        }
-        if (visible === true) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
-    }
-}
-
-
-
 function precioTotal() {
 
 
@@ -107,21 +57,6 @@ function precioTotal() {
 };
 
 
-$('#distribucion').hover(
-    function(){
-        $('#tool').tooltip('show');
-    }, 
-    function(){
-        $('#tool').tooltip('hide');
-    }
-);
-
-
-
-
-
-
-
 function totalizar(){
 
 	var cantPedido = parseFloat(document.getElementById("cantPedi").value);
@@ -131,15 +66,6 @@ function totalizar(){
 
 
 	var totalPedido = parseFloat(cantPedido * precioArt);
-
-	console.log("cant pedido: "+typeof(cantPedido));
-	console.log("cant pedido: "+cantPedido);
-	console.log("precio articulo: "+typeof(precioArt));
-	console.log("precio articulo: "+precioArt);
-	console.log("cupo credito: "+typeof(cupoCredi));
-	console.log("cupo credito: "+cupoCredi);
-	console.log("total pedido: "+typeof(totalPedido));
-	console.log("total pedido: "+totalPedido);
 
 	var diferencia = parseInt(((cupoCredi - totalPedido)*-1), 10);
 	const number = diferencia;
@@ -165,7 +91,48 @@ function totalizar(){
 
 
 }
+    
+    
+$('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+})
 
+
+function busquedaRapida() {
+    var input, filter, table, tr, td, td2, i, txtValue;
+    input = document.getElementById('textBox');
+    filter = input.value.toUpperCase();
+    table = document.getElementById("tabla");
+    tr = table.getElementsByTagName('tr');
+
+
+    for (i = 0; i < tr.length; i++) {
+        visible = false;
+        /* Obtenemos todas las celdas de la fila, no sólo la primera */
+        td = tr[i].getElementsByTagName("td");
+
+        for (j = 0; j < td.length; j++) {
+            if (td[j] && td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                visible = true; 
+            }
+        }
+        if (visible === true) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
+
+
+$('#distribucion').hover(
+    function(){
+        $('#tool').tooltip('show');
+    }, 
+    function(){
+        $('#tool').tooltip('hide');
+    }
+);
 
 
 $("#btnExport").click(function() {
@@ -183,3 +150,20 @@ $("#btnExport").click(function() {
         fileext: ".xls", // file extension
     });
 });
+
+function verifica() {
+				
+    var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']");
+    var y = document.querySelectorAll("#id_tabla #stock");
+
+    
+    var i;
+    for (i = 0; i < x.length; i++) {
+        if( parseInt(x[i].value) > parseInt(y[i].innerHTML) ){
+            alert("La cantidad ingresada es mayor al stock!");
+            x[i].value = 0;
+        }
+    }
+
+
+};
