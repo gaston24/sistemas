@@ -99,7 +99,16 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 		$stock = $_POST['matriz'][$i][4];
 
 		
-		$sqlVerificaArt = "SELECT * FROM STA03 WHERE COD_ARTICU = '$codArt'";
+		// $sqlVerificaArt = "SELECT * FROM STA03 WHERE COD_ARTICU = '$codArt'";
+		$sqlVerificaArt = "
+			SELECT COD_ARTICU, CANTIDAD FROM
+			(
+			SELECT DISTINCT COD_ARTICU, 1 CANTIDAD FROM STA03 
+			UNION ALL
+			SELECT DISTINCT COD_ARTICU, MULTIPLO CANTIDAD FROM KITS_PUBLICADOS
+			)A
+			WHERE A.COD_ARTICU = '$codArt'
+		";
 		
 		$resultVerifica = odbc_exec($cid, $sqlVerificaArt)or die(exit("Error en odbc_exec"));
 			
@@ -153,7 +162,16 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 				
 				$nroRenglon++;
 				
-				$sqlKit = "SELECT COD_INSUMO, CANTIDAD FROM STA03 WHERE COD_ARTICU = '$codArt'";
+				$sqlKit = "
+					SELECT COD_ARTICU, COD_INSUMO, CANTIDAD
+					FROM
+					(
+					SELECT COD_ARTICU, COD_INSUMO, CANTIDAD FROM STA03 
+					UNION ALL
+					SELECT COD_KIT COD_ARTICU, COD_ARTICU COD_INSUMO, MULTIPLO CANTIDAD FROM KITS_PUBLICADOS 
+					)A
+					WHERE COD_ARTICU = '$cantArt'
+				";
 				
 				$resultExplota = odbc_exec($cid, $sqlKit)or die(exit("Error en odbc_exec"));
 				
