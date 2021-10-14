@@ -34,6 +34,5 @@ while($v=odbc_fetch_array($result)){
     );
 }
 
-// var_dump(json_encode($chat));
 echo json_encode($chat);
 exit;

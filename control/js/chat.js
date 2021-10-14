@@ -43,7 +43,7 @@ function updateChat(data){
 
                     var_add_chat += '<div class="col-10 alert alert-primary" >';
                         var_add_chat += '<div class="row-fluid" ><p class="text-right">'+message+'</p></div>';
-                        var_add_chat += '<div class="row-fluid font-italic" ><p class="text-right"><small>'+datetime+'</small></p></div>';
+                        var_add_chat += '<div class="row-fluid font-italic" ><p class="text-right"><small>'+user+' - '+datetime+'</small></p></div>';
                     var_add_chat += '</div>';
                 var_add_chat += '</div>';
                 
@@ -51,7 +51,7 @@ function updateChat(data){
                 var_add_chat += '<div class="row ml-2">';
                     var_add_chat += '<div class="col-10 alert alert-secondary" >';
                     var_add_chat += '<div class="row-fluid" ><p class="text-left">'+message+'</p></div>';
-                    var_add_chat += '<div class="row-fluid font-italic" ><p class="text-left"><small>'+datetime+'</small></p></div>';
+                    var_add_chat += '<div class="row-fluid font-italic" ><p class="text-left"><small>'+user+' - '+datetime+'</small></p></div>';
                     var_add_chat += '</div>';
 
                     var_add_chat += '<div class="col-2" ></div>';

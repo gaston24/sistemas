@@ -152,14 +152,14 @@ if(odbc_num_rows ( odbc_exec($cid,$sqlAuditoria) ) == 0 ){
 
 	while($v=odbc_fetch_object($resultAuditoria)){
 		
-		$codArticu = $v-> COD_ARTICU;
-		$cantRem = $v -> CANT_REM;
-		$cantControl = $v -> CANT_CONTROL;
-		$usuarioLocal = $v -> USUARIO_LOCAL;
+		$codArticu = $v->COD_ARTICU;
+		$cantRem = $v->CANT_REM;
+		$cantControl = $v->CANT_CONTROL;
+		$usuarioLocal = $v->USUARIO_LOCAL;
 
 		$sqlInsertarAuditoria = "INSERT INTO SJ_CONTROL_AUDITORIA 
 		([FECHA_CONTROL], [COD_CLIENT], [FECHA_REM], [NRO_REMITO], [SUC_ORIG], [SUC_DESTIN], [COD_ARTICU], [CANT_REM], [CANT_CONTROL], [USUARIO_LOCAL], [OBSERVAC_LOGISTICA]) 
-		VALUES ('$fechaHora', '$codClient', '$fechaRem', '$rem', $sucOrig, $sucDestin, 'SIN DIFERENCIAS', $cantRem, $cantControl, '$usuarioLocal', 'PENDIENTE')";
+		VALUES ('$fechaHora', '$codClient', '$fechaRem', '$rem', $sucOrig, $sucDestin, '$codArticu', $cantRem, $cantControl, '$usuarioLocal', 'PENDIENTE')";
 	
 		odbc_exec($cid,$sqlInsertarAuditoria)or die("<p>".odbc_errormsg());
 	}
@@ -168,10 +168,10 @@ if(odbc_num_rows ( odbc_exec($cid,$sqlAuditoria) ) == 0 ){
 
 	while($v=odbc_fetch_object($resultAuditoria)){
 		
-		$codArticu = $v-> COD_ARTICU;
-		$cantRem = $v -> CANT_REM;
-		$cantControl = $v -> CANT_CONTROL;
-		$usuarioLocal = $v -> USUARIO_LOCAL;
+		$codArticu = $v->COD_ARTICU;
+		$cantRem = $v->CANT_REM;
+		$cantControl = $v->CANT_CONTROL;
+		$usuarioLocal = $v->USUARIO_LOCAL;
 		
 		$sqlInsertarAuditoria = "INSERT INTO SJ_CONTROL_AUDITORIA 
 		([FECHA_CONTROL], [COD_CLIENT], [FECHA_REM], [NRO_REMITO], [SUC_ORIG], [SUC_DESTIN], [COD_ARTICU], [CANT_REM], [CANT_CONTROL], [USUARIO_LOCAL], [OBSERVAC_LOGISTICA]) 

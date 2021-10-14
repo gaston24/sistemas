@@ -74,14 +74,18 @@ function validaAjuste(){
   matriz.forEach( function(r, ri) {
     let valor = r.querySelectorAll('td');
       valor.forEach(function(d, di){
-        if(di == 10 && d.firstChild.value == ''){
-          valor.item(9).firstElementChild.disabled = true
+        if(di == 7 && d.firstChild.value == ''){
+          valor.item(6).firstElementChild.disabled = true
         }
-        if(di == 10 && d.firstChild.value != ''){
-          valor.item(9).firstElementChild.disabled = false
+        if(di == 7 && d.firstChild.value != ''){
+          valor.item(6).firstElementChild.disabled = false
         }
       })
   })
 }
 
-$(document).ready(()=>validaAjuste())
+$(document).ready(()=>{
+  if (window.location.href.indexOf('control_auditoria.php')>-1){
+    validaAjuste();
+  }
+})

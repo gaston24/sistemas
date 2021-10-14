@@ -6,7 +6,8 @@ if(!isset($_SESSION['username'])){
 	
 $permiso = $_SESSION['permisos'];
 $user = $_SESSION['username'];
-
+$codClient = $_SESSION['codClient'];
+$estado = $_GET['estado'];
 
 if(!isset($_GET['fechaDesde'])){
 	$fechaDesde = date("Y-m-d");
@@ -15,6 +16,10 @@ if(!isset($_GET['fechaDesde'])){
 	$fechaDesde = $_GET['fechaDesde'];
 	$fechaHasta = $_GET['fechaHasta'];
 }
+
+include_once 'class/control.php';
+$remitos = new Remito();
+$remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta, $estado);
 
 ?>
 <!DOCTYPE HTML>
@@ -37,75 +42,44 @@ if(!isset($_GET['fechaDesde'])){
 <body>	
 <div class="container-fluid mt-3">
 
-
-<?php
-
-
-$dsn = '1 - CENTRAL';
-$usuario = "sa";
-$clave="Axoft1988";
-
-$codClient = $_SESSION['codClient'];
-
-$cid=odbc_connect($dsn, $usuario, $clave);
-
-
-$sql=
-	"
-	SET DATEFORMAT YMD
-
-	SELECT 
-
-	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
-	NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
-	SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE
-		
-	FROM SJ_CONTROL_AUDITORIA A
-
-	INNER JOIN GVA23 D
-	ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-
-	WHERE A.FECHA_REM >= GETDATE()-180
-	AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$fechaDesde' AND '$fechaHasta')
-		
-	GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
-	A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE
-	ORDER BY A.FECHA_REM
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
-
-?>
-
-
 <div >
 <form action="" method="GET" >
 
 	<div class="form-group row">
 		
-		<div class="col-sm-1">
+		<div class="col">
 			<button type="button" class="btn btn-primary btn-sm" onClick="window.location.href= '../conteos/index.php'">Inicio</button>
 		</div>
 		
-		<label class="col-sm-1 col-form-label">Desde</label>
-		<div class="col-sm-2">
+		<label class="col">Desde:</label>
+		<div class="col">
 			<input type="date" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>">
 		</div>
 		
-		<label class="col-sm-1 col-form-label">Hasta</label>
-		<div class="col-sm-2">
+		<label class="col">Hasta:</label>
+		<div class="col">
 			<input type="date" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>">
 		</div>
+		
+		<label class="col">Estado:</label>
+		<div class="col">
+			<select class="form-control"  name="estado" id="">
+				<option value="%">Todos</option>
+				<option value="PENDIENTE">Pendiente</option>
+				<option value="ACEPTADO">Aceptado</option>
+				<option value="RECHAZADO">Rechazado</option>
+			</select>
+		</div>
 				
-		<div class="col-sm-2 ">
+		<div class="col">
 			<input type="submit" class="btn btn-primary btn-sm" value="Consultar">
 		</div>
 		
-		<label class="col-sm col-form-label">Busqueda Rapida:</label>
+		<label class="col">Busqueda Rapida:</label>
 		<div id="busqueda" >
 			<input type="textBox" class="form-control form-control-sm" onkeyup="busquedaRapida()"  id="textBox" name="factura" placeholder="Sobre cualquier campo.." autofocus>
 		</div>
+		<div class="col"></div>
 		
 	</div>
 
@@ -117,12 +91,9 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		
 		<thead>
 			<tr style="font-size:smaller">
-				<th >FECHA<br>REMITO</th>
 				<th >ORIGEN</th>
-				<th >DESTINO</th>
 				<th >NRO<br>REMITO</th>
 				<th >FECHA<br>CONTROL</th>
-				<th >USUARIO</th>
 				<th >CANT REM</th>
 				<th >CANT CONTROL</th>
 				<th >CANT DIF</th>
@@ -134,34 +105,41 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		<tbody id="bodyTable">
         <?php
 
-		while($v=odbc_fetch_array($result)){
+		foreach($remitosHistoricos as $data){
+		$colorChat = 'primary';
+		switch ($data[0]->ULTIMO_CHAT) {
+			case 0:
+				$colorChat = 'success';
+				break;
+			case 1:
+				$colorChat = 'danger';
+				break;
+		}
+
 		
 		?>
 		
         <tr class="fila-base" style="font-size:smaller" id="bodyTable">
 
-			<td ><?= $v['FECHA_REM'] ;?></td>
-				<td ><?= $v['SUC_ORIG'] ;?></td>
-				<td ><?= $v['SUC_DESTIN'] ;?></td>
-				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $v['NRO_REMITO'] ;?>">  <?= $v['NRO_REMITO'] ;?> </a></td>
-				<td ><?= $v['FECHA_CONTROL'] ;?></td>
-				<td ><?= $v['NOMBRE_VEN'] ;?></td>
-				<td ><?= $v['CANT_REM'] ;?></td>
-				<td ><?= $v['CANT_CONTROL'] ;?></td>
-				<td ><?= $v['DIFERENCIA'] ;?> </td>
+				<td ><?= $data[0]->SUC_ORIG ;?></td>
+				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data[0]->NRO_REMITO ;?>">  <?= $data[0]->NRO_REMITO ;?> </a></td>
+				<td ><?= $data[0]->FECHA_CONTROL ;?></td>
+				<td ><?= $data[0]->CANT_REM ;?></td>
+				<td ><?= $data[0]->CANT_CONTROL ;?></td>
+				<td ><?= $data[0]->DIFERENCIA ;?> </td>
 								
 				<td >
-					<select class="form-control form-control-sm" id="select-<?= $v['NRO_REMITO'] ;?>" onChange="changeStatus('<?= $v['NRO_REMITO'] ;?>')" id="estadoRemito">
-						<option value="PENDIENTE" <?php if($v['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
-						<option value="ACEPTADO" <?php if($v['OBSERVAC_LOGISTICA'] == 'ACEPTADO'){echo 'selected'; }?>>Aceptado</option>
-						<option value="RECHAZADO" <?php if($v['OBSERVAC_LOGISTICA'] == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
+					<select class="form-control form-control-sm" id="select-<?= $data[0]->NRO_REMITO ;?>" onChange="changeStatus('<?= $data[0]->NRO_REMITO ;?>')" id="estadoRemito">
+						<option value="PENDIENTE" <?php if($data[0]->OBSERVAC_LOGISTICA == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
+						<option value="ACEPTADO" <?php if($data[0]->OBSERVAC_LOGISTICA == 'ACEPTADO'){echo 'selected'; }?>>Aceptado</option>
+						<option value="RECHAZADO" <?php if($data[0]->OBSERVAC_LOGISTICA == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
 					</select>
 				</td>
 
-				<td ><input type="text" size="8" class="form-control form-control-sm" id="nroAjuste" value="<?= $v['NRO_AJUSTE'] ;?>" onChange="changeNroAjuste('<?= $v['NRO_REMITO'] ;?>', this), validaAjuste()"> </td>
+				<td ><input type="text" size="8" class="form-control form-control-sm" id="nroAjuste" value="<?= $data[0]->NRO_AJUSTE ;?>" onChange="changeNroAjuste('<?= $data[0]->NRO_REMITO ;?>', this), validaAjuste()"> </td>
 
 				<td >
-					<button data-toggle="modal" data-target="#chatModal" class="btn btn-primary btn-sm" type="button" onClick="getChat('<?= $v['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">
+					<button data-toggle="modal" data-target="#chatModal" class="btn btn-<?=$colorChat?> btn-sm" type="button" onClick="getChat('<?= $data[0]->NRO_REMITO ;?>'), actuaNumRemito('<?= $data[0]->NRO_REMITO ;?>')">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
 							<path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
 							<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
@@ -202,7 +180,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
       <div class="modal-footer">
 		<input type="text" class="form-control mb-2" id="chatNew">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>'), actuaNumRemito('<?= $v['NRO_REMITO'] ;?>')">Enviar mensaje</button>
+        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>'), actuaNumRemito('<?= $data[0]->FECHA_REM ;?>')">Enviar mensaje</button>
       </div>
     </div>
   </div>
