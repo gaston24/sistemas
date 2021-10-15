@@ -208,12 +208,3 @@ include_once 'Controlador/nav_menu.php';
 }
 ?>
 
-<script>
-	var e = document.getElementById('icon');
-	e.onmouseover = function() {
-	document.getElementById('info').style.display = 'block';
-	}
-	e.onmouseout = function() {
-	document.getElementById('info').style.display = 'none';
-	}
-</script>

@@ -62,3 +62,42 @@ body {
 td, th{
     align-items: center;
 }
+
+
+td {
+    font-size: 11px;
+}
+
+#cant {
+    font-size: 14px;
+}
+
+#stock {
+    font-size: 14px;
+}
+
+#textBox, #total
+{
+    border: 1px solid grey; 
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#textBox
+{
+    width: 250px;
+}
+
+#total
+{
+    width: 60px;
+    text-align: center;
+}
+
+#btnExport {
+    float: right;
+}
+
+#articulo{
+    width: 60px;
+}	

@@ -1,39 +1,51 @@
+
+// MATRIZ DE PEDIDOS (LOCALES PROPIOS Y FRANQUICIAS --- MAYORISTAS)
+function matrizPedidos()  {
+    const matriz = Array.from(document.getElementById("tabla").rows);
+    const matriz2 = matriz.filter(x=>x.querySelector('input').value !=0);
+    const matriz3 = matriz2.map( function(x) {
+        let valor = x.querySelectorAll('td');
+        var another = [];
+        valor.forEach(function(x, z){
+            another[z] = (z==0||z==2) ? '' : ( (z==8) ? x.firstChild.value : (z==9 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
+        })
+        return another;
+    })
+    return matriz3;
+}
+
+function matrizPedidosMayoristas()  {
+    const matriz = Array.from(document.getElementById("tabla").rows);
+    const matriz2 = matriz.filter(x=>x.querySelector('input').value !=0);
+    const matriz3 = matriz2.map( function(x) {
+        let valor = x.querySelectorAll('td');
+        var another = [];
+        valor.forEach(function(x, z){
+            another[z] = (z==0||z==2) ? '' : ( (z==6) ? x.firstChild.value : (z==7 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
+        })
+        return another;
+    })
+    return matriz3;
+}
+
+
+
+// PEDIDOS LOCALES Y FRANQUICIAS
 function enviar() {
 
-    let totalPrecioValida = document.getElementById('totalPrecio').value;
+    $('#btnEnviar').hide();
+    $('#spinnerEnviar').show();
+
+    let totalPrecioValida = $('#totalPrecio').val();
 
     if (totalPrecioValida != 'NaN') {
 
-        var table = document.getElementById("tabla");
-        var matriz = [];
+        const matriz = matrizPedidos();
 
-        for (var i = 0; i < table.rows.length - 1; i++) {
-            if (table.rows[i].querySelector('input').value != 0) {
-                matriz[i] = [];
-                // console.log(table.rows[i].querySelector('input').value);
-                for (var x = 0; x < table.rows[0].cells.length; x++) {
-                    // if(i!=0){
-                    if (x == 8) {
-                        var dato = table.rows[i].cells[x].firstChild.value;
-                    } else if (x == 0) {
-                        var dato = "";
-                    } else if (x == 2) {
-                        var dato = "";
-                    } else {
-                        var dato = table.rows[i].cells[x].innerHTML;
-                    }
-                    matriz[i][x] = dato;
-                    // }
-                }
-            }
-        }
-
-
-
-        suma = document.getElementById('total').value;
+        suma = $('#total').val();
 
         if (suc > 100) {
-            totalPedido = document.getElementById('totalPrecio').value;
+            totalPedido = $('#totalPrecio').val();
             console.log(totalPedido + " " + cupo_credito);
             var diferencia = (parseInt(cupo_credito, 10) - parseInt(totalPedido, 10)) * -1;
         }
@@ -50,8 +62,21 @@ function enviar() {
             } else {
                 $("#aguarde").show();
                 $("#pantalla").fadeOut();
-                postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-                // console.log("pedido enviado");
+
+                const matrizStock = chequeaStock(matriz);
+
+                // console.log("matriz", matriz);
+                // console.log("matrizStock", matrizStock);
+                const resultCompara = comparaStock(matriz, matrizStock);
+
+                if(resultCompara.length > 0){
+                    // console.log("hay diferencias")
+                    muestraDiferencia(resultCompara)
+                }else{
+                    // console.log("sin diferencias")
+                    postear(matriz, suc, codClient, t_ped, depo, talon_ped);
+                }
+
             }
 
         } else {
@@ -62,9 +87,6 @@ function enviar() {
                 button: "Aceptar",
             });
         }
-
-
-
 
     } else {
         swal({
@@ -78,46 +100,16 @@ function enviar() {
 
 }
 
-
-
+// PEDIDOS ECOMMERCE
 function enviarEcommerce() {
 
+    const matriz = matrizPedidos();
 
-
-
-    var table = document.getElementById("tabla");
-    var matriz = [];
-
-    for (var i = 0; i < table.rows.length - 1; i++) {
-        if (table.rows[i].querySelector('input').value != 0) {
-            matriz[i] = [];
-            // console.log(table.rows[i].querySelector('input').value);
-            for (var x = 0; x < table.rows[0].cells.length; x++) {
-                // if(i!=0){
-                if (x == 8) {
-                    var dato = table.rows[i].cells[x].firstChild.value;
-                } else if (x == 0) {
-                    var dato = "";
-                } else if (x == 2) {
-                    var dato = "";
-                } else {
-                    var dato = table.rows[i].cells[x].innerHTML;
-                }
-                matriz[i][x] = dato;
-                // }
-            }
-        }
-    }
-
-
-
-    suma = document.getElementById('total').value;
+    suma = $('#total').val();
 
     if (suma != 0) {
 
         postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-        // console.log("pedido enviado");
-
 
     } else {
         swal({
@@ -131,46 +123,16 @@ function enviarEcommerce() {
 
 }
 
-
-
+// PEDIDOS MAYORISTAS
 function enviarMayorista() {
 
-    let totalPrecioValida = document.getElementById('totalPrecio').value;
+    let totalPrecioValida = $('#totalPrecio').val();
 
     if (totalPrecioValida != 'NaN') {
 
+        const matriz = matrizPedidosMayoristas();
 
-        var table = document.getElementById("tabla");
-        var matriz = [];
-
-        for (var i = 0; i < table.rows.length - 1; i++) {
-            if (table.rows[i].querySelector('input').value != 0) {
-                matriz[i] = [];
-                // console.log(table.rows[i].querySelector('input').value);
-                for (var x = 0; x < table.rows[0].cells.length; x++) {
-                    // if(i!=0){
-                    if (x == 6) {
-                        var dato = table.rows[i].cells[x].firstChild.value;
-                    } else if (x == 0) {
-                        var dato = "";
-                    } else if (x == 2) {
-                        var dato = "";
-                    } else {
-                        var dato = table.rows[i].cells[x].innerHTML;
-                    }
-                    matriz[i][x] = dato;
-                    // }
-                }
-            }
-        }
-
-
-
-
-        suma = document.getElementById('total').value;
-
-
-
+        suma = $('#total').val();
 
         if (suma != 0) {
             $("#aguarde").show();
@@ -197,17 +159,100 @@ function enviarMayorista() {
 
 }
 
+// CHEQUEA STOCK
+function chequeaStock(matriz) {
+
+    let response = 
+    $.ajax({
+        url: 'Controlador/chequeaStock.php',
+        method: 'POST',
+        data: {
+            matriz: matriz,
+        },
+        async: false,
+
+        success: function (data) {
+            return data;
+        }
+
+    });
+
+    return JSON.parse(response.responseText);
+}
+
+function comparaStock(matrizPedidos, matrizStock){
+
+    const comparativo = [];
+    matrizPedidos.filter((x)=>{
+        matrizStock.forEach((y)=>{
+            if(x[1] == y[0] && parseInt(x[8]) > parseInt(y[1]) ){
+                comparativo.push([y[0], y[1]]);
+            }
+        });
+    });
+
+    return comparativo;
+}
+
+function muestraDiferencia(resultCompara){
+
+    // console.log(resultCompara);
+
+    let texto = 'Los siguientes articulos no tienen el stock solicitado: ';
+    resultCompara.forEach((x)=>{
+        texto += x[0]+' -- ';
+    });
+    texto += ' -- Los articulos seran realtados, por favor, modifique las cantidades solicitadas';
+
+    swal({
+        title: "Error! El stock de central se ha modificado",
+        text: texto,
+        icon: "warning",
+        button: "Aceptar",
+    });
+
+    marcarDiferencia(resultCompara);
 
 
+}
 
+function marcarDiferencia(resultCompara){
 
+    const matriz = Array.from(document.getElementById("tabla").rows);
+    const matriz2 = matriz.filter(x=>x.querySelector('input').value !=0);
+    matriz2.forEach( function(x, r) {
+        let valor = x.querySelectorAll('td');
+        resultCompara.forEach((y)=>{
+            valor.forEach(function(a, z){
+                if(a.innerHTML == y[0]){
+                    x.style.backgroundColor = '#F05858';
 
+                    x.querySelectorAll('td').item(1).style.fontWeight = "bold";
+                    x.querySelectorAll('td').item(1).style.fontSize = "medium";
+                    
+                    x.querySelectorAll('td').item(4).innerHTML = y[1];
+                    x.querySelectorAll('td').item(4).style.fontWeight = "bold";
+                    x.querySelectorAll('td').item(4).style.fontSize = "medium";
 
+                    x.querySelectorAll('td').item(8).firstChild.value = 0;
+                }
+            })
+        })
 
+    })
+}
+
+// ENVIA PEDIDO
 function postear(matriz, suc, codClient, t_ped, depo, talon_ped) {
 
+    // variable env = 1 - envia pedido
+    // variable env = 0 - no hace nada
+    let env = 1;
+
+    let url = (env == 1) ? 'cargarPedidoNuevo.php' : 'cargarPedidoNuevoTest.php';
+
     $.ajax({
-        url: 'Controlador/cargarPedidoNuevo.php',
+        url: 'Controlador/'+url,
         method: 'POST',
         data: {
             matriz: matriz,
@@ -225,13 +270,12 @@ function postear(matriz, suc, codClient, t_ped, depo, talon_ped) {
                 icon: "success",
                 button: "Aceptar",
             })
-                .then(function () {
-                    window.location = "../index.php";
-                })
-                ;
-
+            .then(function () {
+                window.location = "../index.php";
+            });
         }
 
     });
 
 }
+

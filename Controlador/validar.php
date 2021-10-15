@@ -20,16 +20,14 @@ $cid = odbc_connect($dsn, $nom, $con);
 
 $result = odbc_exec($cid, $sql);
 
-// if(odbc_num_rows($result)==1){
-// 	echo 'entro';
 
-// 	die();
+if(odbc_num_rows($result)==0){
+header('Location:../login.php');
+}else{
+	
+
 while($v=odbc_fetch_array($result)){
 
-	
-
-
-	
 	$_SESSION['username'] = $v['NOMBRE'];
 	$_SESSION['permisos'] = $v['PERMISOS'];
 	$_SESSION['dsn'] = $v['DSN'];
@@ -71,8 +69,6 @@ while($v=odbc_fetch_array($result)){
 		header("Location: ../supervisoras/index.php");	
 	}elseif($_SESSION['username']== 'cordoba'){
 		header("Location: ../cordoba/eliminaPedidoCordoba.php");		
-	// }elseif($_SESSION['username']== 'dodivani'){
-	// 	header("Location: dodivani/eliminaPedidoDodi.php");
 	}elseif($_SESSION['username']== 'levi'){
 		header("Location: ../levi/eliminaPedidoLevi.php");	
 	}elseif($_SESSION['username']== 'salta'){
@@ -104,18 +100,15 @@ while($v=odbc_fetch_array($result)){
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");		
 	}else{
+		
 		header("Location: eliminaPedido.php");
 	}
+
+
 	
-	
+}
 	
 	
 }
-// }else{
-// 	// echo 'sali';
 
-// 	echo odbc_num_rows($result);
-// 	die();
-// 	header("Location: cargaPedido.php");
-// }
 ?>

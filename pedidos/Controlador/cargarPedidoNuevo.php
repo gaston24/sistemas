@@ -172,7 +172,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 					$ultRenglon, //NRO_RENGLON
 					$codArt, //COD_ARTICU
 					$codArt2, //COD_ARTICU
-					$codArt2, //CANT_PEDIDO
+					$cantArt2, //CANT_PEDIDO
 					$codClient, //COD_CLIENT 
 					$talon_ped //TALON_PED);
 					);

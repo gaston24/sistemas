@@ -3,11 +3,23 @@ session_start();
 if(!isset($_SESSION['username'])){
 	header("Location:../login.php");
 }else{
-	
+
 $permiso = $_SESSION['permisos'];
 $user = $_SESSION['username'];
 $numRem = $_GET['numRem'];
 $codClient = $_SESSION['codClient'];
+
+if(!isset($_GET['fechaDesde'])){
+	$fechaDesde = date("Y-m-d");
+	$fechaHasta = date("Y-m-d");
+}else{
+	$fechaDesde = $_GET['fechaDesde'];
+	$fechaHasta = $_GET['fechaHasta'];
+}
+
+include_once 'class/control.php';
+$remitos = new Remito();
+$remitosHistoricosDetalle = $remitos->traerHistoricosDetalle($numRem);
 
 ?>
 <!DOCTYPE HTML>
@@ -33,57 +45,17 @@ $codClient = $_SESSION['codClient'];
 <div class="container">
 
 
-
-</div>
-<script>
-function volver() {window.history.back();};
-function procesar() {window.location.href= 'procesar.php?pedido=<?php echo $rem ; ?>';};
-</script>
-
-
 <?php
 
 if(isset($_GET['numRem'])){
-
-
-$dsn = '1 - CENTRAL';
-$usuario = "sa";
-$clave="Axoft1988";
-
-$cid=odbc_connect($dsn, $usuario, $clave);
-
-
-$sql=
-	"
-	SET DATEFORMAT YMD
-
-	SELECT 
-
-	CAST(A.FECHA_CONTROL AS DATE) FECHA_CONTROL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
-	NOMBRE_VEN, A.NRO_REMITO, 
-	A.COD_ARTICU, B.DESCRIPCIO,
-	A.CANT_CONTROL, A.CANT_REM, A.CANT_CONTROL - A.CANT_REM DIFERENCIA
-		
-	FROM SJ_CONTROL_AUDITORIA A
-	INNER JOIN STA11 B
-	ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
-	INNER JOIN GVA23 D
-	ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-	WHERE A.COD_CLIENT = '$codClient' AND A.NRO_REMITO = '$numRem'
-	
-	ORDER BY A.FECHA_CONTROL
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 <div >
 
 <div class="row">
-	<div class="col-3"></div>
-	<div class="col-6" id="datosRemito"></div>
-	<div class="col-3"></div>
+	<div class="col-2"><button class="btn btn-primary btn-sm mt-1 ml-5 mb-1" onclick="location.href= document.referrer ">Volver</button></div>
+	<div class="col-8" id="datosRemito"></div>
+	<div class="col-2"></div>
 </div>
 
 <table class="table table-striped"  id="tabla">
@@ -103,27 +75,29 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		</thead>
         <?php
 
-		while($v=odbc_fetch_array($result)){
+	foreach($remitosHistoricosDetalle as $data){
+		$dateControl = date_create($data[0]->FECHA_CONTROL);
+		$dateControl = date_format($dateControl, 'Y-m-d H:i');
 		
 		?>
 		
         <tr class="fila-base" style="font-size:smaller">
 
-				<td ><?= $v['FECHA_REM'] ;?></td>
-				<td ><?= $v['FECHA_CONTROL'] ;?></td>
+				<td ><?= $data[0]->FECHA_REM ;?></td>
+				<td ><?= $dateControl ;?></td>
 
-				<td ><?= $v['COD_ARTICU'] ;?></td>
-				<td ><?= $v['DESCRIPCIO'] ;?></td>
-				<td ><?= $v['CANT_REM'] ;?></td>
-				<td ><?= $v['CANT_CONTROL'] ;?></td>
-				<td ><?= $v['DIFERENCIA'] ;?>
+				<td ><?= $data[0]->COD_ARTICU ;?></td>
+				<td ><?= $data[0]->DESCRIPCIO ;?></td>
+				<td ><?= $data[0]->CANT_REM ;?></td>
+				<td ><?= $data[0]->CANT_CONTROL ;?></td>
+				<td ><?= $data[0]->DIFERENCIA ;?>
 				</td>
 				
         </tr>
 		
         <?php
 
-		$nombreVen = $v['NOMBRE_VEN'];
+		$nombreVen = $data[0]->NOMBRE_VEN;
 
         }
 
@@ -145,7 +119,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 <script>
 
 	$(document).ready(function(){
-		$('#datosRemito').html('<h2><?=$numRem?> - <?=$nombreVen?></h2>');
+		$('#datosRemito').html('<h3><?=$numRem?> - <?=$nombreVen?></h3>');
 	});
 </script>
 </body>
