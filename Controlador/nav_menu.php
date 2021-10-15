@@ -162,6 +162,7 @@
             || $_SESSION['numsuc']== 60
             || $_SESSION['numsuc']== 78
             || $_SESSION['numsuc']== 79
+            || $_SESSION['numsuc']== 80
             ){
         ?>	
         <li class="nav-item dropdown">
