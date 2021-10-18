@@ -1,3 +1,6 @@
+<?php
+include('estado_cuenta.php');
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" onCLick="window.location='index.php'"><i class="fad fa-home" title="INICIO"></i></a>
     <a class="navbar-brand" onCLick="window.location='login.php'"><i class="far fa-times-octagon" title="CERRAR SESION"></i></a>
@@ -110,6 +113,8 @@
             }
             ?>
             
+            <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a>
+
           </div>
         </li>
 

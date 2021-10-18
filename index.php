@@ -150,45 +150,6 @@ include_once 'Controlador/nav_menu.php';
 		?>
 
 
-		<?php
-		if($_SESSION['tipo'] == 'FRANQUICIA'){
-		?>
-
-			<ul class="list-group">
-
-
-			<li class="list-group-item list-group-item-secondary" style="text-align: center;">
-				Detalle de CC
-				
-		   </li>
-			<li class="list-group-item">
-				Cupo credito 
-				<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['cupoCrediCliente'], 0, ".",".");  ?></span>
-			</li>
-			<li class="list-group-item">
-				Total deuda
-				<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['totalDeuda'], 0, ".",".");  ?></span>
-			</li>
-			<li class="list-group-item">
-				Pedidos abiertos
-				<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['pedidos'], 0, ".",".");  ?></span>
-			</li>
-			<li class="list-group-item">
-				Disponible para pedidos
-				<?php if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) < 0.10){ ?>
-					<span class="badge badge-warning badge-pill" id="icon"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-					<p id="info" class="text-danger" style="display: none"><small>El importe disponible en $ es inferior al 10% del cupo de crédito!</small></p>
-					<?php }else if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) >= 0.10){ ?>
-					<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-				<?php } ?>				
-			</li>
-		</ul>	
-	
-		<?php
-		}
-		?>
-		
-
 		</div>
 	
 	</div>
