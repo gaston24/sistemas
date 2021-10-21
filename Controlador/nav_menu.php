@@ -17,7 +17,7 @@ include('estado_cuenta.php');
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
             
-            <?php if(($habPedidos == 1 || $_SESSION['numsuc'] < 100) && $codClient !='FRMPOU')
+            <?php if($habPedidos == 1 || $_SESSION['numsuc'] < 100)
             {
             ?>
 
@@ -144,7 +144,7 @@ include('estado_cuenta.php');
         }
         ?>
         <?php 
-		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1 && $codClient !='FRMPOU'){
+		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1){
         ?>	
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
