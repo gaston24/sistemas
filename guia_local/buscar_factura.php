@@ -25,6 +25,9 @@ $numsuc = $_SESSION['numsuc'];
 	
 
 <?php
+
+$hoy = date("Y-m-d");
+
 if(!isset($_GET['desde'])){
 	$ayer = date('Y-m').'-'.strright(('0'.((date('d')))),2);
 }else{
@@ -41,12 +44,12 @@ if(!isset($_GET['desde'])){
 			
 		<div class="col-sm-2">
 			<label class="col-sm col-form-label">Desde:</label>
-			<input type="date" class="form-control form-control ml-2 col" name="desde" value="<?php if(!isset($_GET['desde'])){	echo $hoy;}else{ echo $_GET['desde'] ;}?>">
+			<input type="date" class="form-control form-control ml-2 col" name="desde" value="<?php if(!isset($_GET['desde'])){	echo date("Y-m-d",strtotime($hoy."- 30 days"));}else{ echo $_GET['desde'] ;}?>">
 		</div>
 	  
 		<div class="col-sm-2">
 			<label class="col-sm col-form-label">Hasta:</label>
-			<input type="date"  class="form-control form-control ml-2 col" name="hasta" value="<?php if(!isset($_GET['hasta'])){	echo $hoy;}else{ echo $_GET['hasta'] ;}?>">
+			<input type="date"  class="form-control form-control ml-2 col" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $hoy;}else{ echo $_GET['hasta'] ;}?>">
 		</div>
 			<div class="col">
 				<label class="col-sm col-form-label ml-3">Búsqueda:</label>
@@ -57,7 +60,7 @@ if(!isset($_GET['desde'])){
 				
 			<div class="col">
 				<label class="col-sm col-form-label" style="margin-left: 210px;">Búsqueda rápida:</label>
-				<input type="text" style="margin-left: 30px; width:60%; float: right;" onkeyup="myFunction()" id="textBox" name="comprobante" placeholder="Sobre cualquier campo..." class="form-control form-control"></input>
+				<input type="text" style="margin-left: 30px; width:60%; float: right;" onkeyup="myFunction()" id="textBox" name="comprobante2" placeholder="Sobre cualquier campo..." class="form-control form-control"></input>
 			</div>
 		</div>
 	</div>
