@@ -143,6 +143,7 @@ include('estado_cuenta.php');
         <?php
         }
         ?>
+        
         <?php 
 		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1){
         ?>	
@@ -157,29 +158,7 @@ include('estado_cuenta.php');
         <?php
         }
         ?>
-        <?php 
-		if(
-            $_SESSION['numsuc']== 8 
-            || $_SESSION['numsuc']== 16 
-            || $_SESSION['numsuc']== 72 
-            || $_SESSION['numsuc']== 76 
-            || $_SESSION['numsuc']== 60
-            || $_SESSION['numsuc']== 78
-            || $_SESSION['numsuc']== 79
-            || $_SESSION['numsuc']== 80
-            ){
-        ?>	
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Ajustes
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#" onclick="location.href='ajustes/ajusteLocal.php'">Recodificaciones</a>
-            </div>
-        </li>
-        <?php
-        }
-        ?>
+
         <?php 
 		if($codClient == 'FRSAL1' || $codClient == 'FRSAL2' || $codClient == 'FRSAL3'){
         ?>	
