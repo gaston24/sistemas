@@ -7,7 +7,8 @@ if(!isset($_SESSION['username'])){
 $permiso = $_SESSION['permisos'];
 $user = $_SESSION['username'];
 $codClient = $_SESSION['codClient'];
-$estado = $_GET['estado'];
+
+$estado = (isset($_GET['estado'])) ? $_GET['estado']: null;
 
 if(!isset($_GET['fechaDesde'])){
 	$fechaDesde = date("Y-m-d");
@@ -106,6 +107,8 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
         <?php
 
 		foreach($remitosHistoricos as $data){
+		$dateControl = date_create($data[0]->FECHA_CONTROL);
+		$dateControl = date_format($dateControl, 'Y-m-d H:i');
 		$colorChat = 'primary';
 		switch ($data[0]->ULTIMO_CHAT) {
 			case 0:
@@ -123,7 +126,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 
 				<td ><?= $data[0]->SUC_ORIG ;?></td>
 				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data[0]->NRO_REMITO ;?>">  <?= $data[0]->NRO_REMITO ;?> </a></td>
-				<td ><?= $data[0]->FECHA_CONTROL ;?></td>
+				<td ><?= $dateControl ;?></td>
 				<td ><?= $data[0]->CANT_REM ;?></td>
 				<td ><?= $data[0]->CANT_CONTROL ;?></td>
 				<td ><?= $data[0]->DIFERENCIA ;?> </td>

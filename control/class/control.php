@@ -113,7 +113,7 @@ class Remito
                             
             GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
             A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, (CASE WHEN E.USER_CHAT = 'ramiro' THEN 0 WHEN E.USER_CHAT != 'ramiro' THEN 1 END)
-            ORDER BY A.FECHA_REM            
+            ORDER BY A.FECHA_CONTROL            
             ";
 
         ini_set('max_execution_time', 300);
