@@ -7,7 +7,11 @@ if(!isset($_SESSION['username'])){
 }else{
 //include 'conex.php';
 include 'consultas.php';
-$_SESSION['dsn'] = $_POST['localSeleccionado'];
+
+if(isset($_POST['localSeleccionado'])){
+	$_SESSION['dsn'] = $_POST['localSeleccionado'];
+}
+
 $dsn = $_SESSION['dsn'];
 $user = 'sa';
 $pass = 'Axoft1988';
