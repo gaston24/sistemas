@@ -30,6 +30,7 @@ $permiso = $_SESSION['permisos'];
   <button type="button" class="btn btn-secondary" onclick="location.href='locales.php'">Locales Propios</button>
   <button type="button" class="btn btn-secondary" onclick="location.href='franquicias.php'">Franquicias</button>
   <button type="button" class="btn btn-secondary" onclick="location.href='pedidos.php'">Administrar</button>
+  <button type="button" class="btn btn-secondary" onclick="location.href='../ajustes/selecLocal.php'">Recodificaciones</button>
 </div>
 </ul>
 </br>

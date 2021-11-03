@@ -91,8 +91,7 @@ while($v=odbc_fetch_array($result)){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");
-	}elseif($v['NOMBRE']=='COMERCIAL')
-		{
+	}elseif($v['NOMBRE']=='COMERCIAL'){
 		header("Location: ../inicial/admin.php");
 	}elseif($_POST['conecta']=='no' && $_SESSION['numsuc'] > 104){
 		$_SESSION['dsn']= 'SIN';

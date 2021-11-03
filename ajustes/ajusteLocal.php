@@ -7,12 +7,12 @@ if(!isset($_SESSION['username'])){
 }else{
 //include 'conex.php';
 include 'consultas.php';
+$_SESSION['dsn'] = $_POST['localSeleccionado'];
 $dsn = $_SESSION['dsn'];
 $user = 'sa';
 $pass = 'Axoft1988';
 
 $cid = odbc_connect($dsn, $user, $pass);
-
 
 odbc_exec($cid, $sqlNuevos);
 
@@ -44,7 +44,7 @@ td{
 <!--<input type="button" value="Salir" name="B4" OnClick="location.href='index.php' ">-->
 
 <div class="container-fluid">
-<button type="button" class="btn btn-primary" OnClick="location.href='../index.php' " style="margin:5px">Salir</button>
+<button type="button" class="btn btn-primary" OnClick="location.href='selecLocal.php' " style="margin:5px">Volver</button>
 </br></br>
 <form method="POST" action="confirmAjus.php">
 <table class="table table-striped">
