@@ -42,7 +42,6 @@ td{
 <body>
 
 <!--<input type="button" value="Salir" name="B4" OnClick="location.href='index.php' ">-->
-
 <div class="container-fluid">
 <button type="button" class="btn btn-primary" OnClick="location.href='selecLocal.php' " style="margin:5px">Volver</button>
 </br></br>

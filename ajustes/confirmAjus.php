@@ -5,8 +5,6 @@ include 'consultas.php';
 
 if(!isset($_SESSION['username'])){
 	header("Location:index.php");
-}elseif($_SESSION['ajuste'] != 1){
-	header("Location:index.php");
 }else{
 	
 	
@@ -20,6 +18,8 @@ if(!isset($_SESSION['username'])){
 
 <?php
 
+// var_dump($_POST);
+// die();
 
 
 //include 'conex.php';
@@ -39,142 +39,147 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 	
 	if($_POST['nuevo'][$i] != ''){
 	
-	//echo 'Actualiza '.$_POST['codigo'][$i].' a '.$_POST['nuevo'][$i].' del comprobante '.$_POST['ncomp'][$i].'</br>';
-	$nuevo = $_POST['nuevo'][$i];
-	$codigo = $_POST['codigo'][$i];
-	$cant = $_POST['cant'][$i];
-	
-	if($_POST['ncomp'][$i] == ''){
-		$comp = 'TRANSFERENCIA';
-	}else{
-		$comp = $_POST['ncomp'][$i];
-	}
-	
-	$sqlArt = "
-	SELECT * FROM STA11 WHERE COD_ARTICU = '$nuevo'
-	";
-
-	$resultArt = odbc_exec($cid, $sqlArt);
-	
-	while($v=odbc_fetch_array($resultArt)){
-				$codConsulta = $v['COD_ARTICU'];
-				
-				
-		//echo $codConsulta;
-		if(odbc_num_rows($resultArt)==1){
-			//echo $codConsulta;
+		//echo 'Actualiza '.$_POST['codigo'][$i].' a '.$_POST['nuevo'][$i].' del comprobante '.$_POST['ncomp'][$i].'</br>';
+		$nuevo = $_POST['nuevo'][$i];
+		$codigo = $_POST['codigo'][$i];
+		$cant = $_POST['cant'][$i];
 		
-			if($codConsulta != '***DESTRUCCION'){
-			
-				//ACTUALIZAR CODIGO NUEVO
-				$sqlUpdate = "UPDATE SOF_CONFIRMA SET COD_NUEVO = '$nuevo' WHERE COD_ARTICU = '$codigo' AND NCOMP_ORIG = '$comp';";
-				odbc_exec($cid, $sqlUpdate);
-				
-				
-				
-				//LLENAR LA VARIABLE DE PROXIMO NUMERO DE REMITO
-				$sqlProx = "SELECT ' 0'+CAST((SELECT SUCURSAL FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)+RIGHT(('00000'+ CAST((SELECT PROXIMO FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)),8) PROXIMO";
-				$resultProx = odbc_exec($cid, $sqlProx);
-				while($v=odbc_fetch_array($resultProx)){
-				$proximo = $v['PROXIMO'];
-				}
-				
-				//UPDATEAR EL PROXIMO NUMERO DE REMITO EN EL TALONARIO
-				$sqlUpdateProx = "UPDATE STA17 SET PROXIMO = PROXIMO+1 WHERE TALONARIO = 850;";
-				$resultUpdateProx = odbc_exec($cid, $sqlUpdateProx);
-
-
-				//LLENAR VARIABLE DE PROXIMO NUMERO INTERNO
-				$sqlProxInterno = "SELECT RIGHT(('00100'+CAST((SELECT MAX(NCOMP_IN_S)+1 NCOMP_IN_S FROM STA14 WHERE TALONARIO = 850)AS VARCHAR)),8) PROXINTERNO;";
-				$resultProxInterno = odbc_exec($cid, $sqlProxInterno);
-				while($v=odbc_fetch_array($resultProxInterno)){
-				$proxInterno = $v['PROXINTERNO'];
-				}
-					
-				
-				//ENCABEZADO
-				$sqlEncabezado = "
-				INSERT INTO STA14 
-				(
-				COTIZ, EXPORTADO, EXP_STOCK, FECHA_ANU, FECHA_MOV, HORA, 
-				LISTA_REM, LOTE, LOTE_ANU, MON_CTE, N_COMP, NCOMP_IN_S, 
-				NRO_SUCURS, T_COMP, TALONARIO, TCOMP_IN_S, USUARIO, HORA_COMP,
-				ID_A_RENTA, DOC_ELECTR, IMP_IVA, IMP_OTIMP, IMPORTE_BO, IMPORTE_TO, 
-				DIFERENCIA, SUC_DESTIN, DCTO_CLIEN, FECHA_INGRESO, HORA_INGRESO, 
-				USUARIO_INGRESO, TERMINAL_INGRESO, IMPORTE_TOTAL_CON_IMPUESTOS, 
-				CANTIDAD_KILOS, COD_PRO_CL
-				)
-				VALUES
-				(
-				4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'AJU', 850, 'AJ', 'AJUSTES', 
-				'$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0, 'GTCENT'
-				)
-				;";
-				$resultEncabezado = odbc_exec($cid, $sqlEncabezado);
-				
-				
-				
-				//DETALLE SALIDA
-				$sqlDetSalida = "
-				INSERT INTO STA20
-				(
-				CAN_EQUI_V, CANT_DEV, CANT_OC, CANT_PEND, CANT_SCRAP, CANTIDAD, COD_ARTICU, COD_DEPOSI, DEPOSI_DDE, EQUIVALENC, 
-				FECHA_MOV, N_RENGL_OC, N_RENGL_S, NCOMP_IN_S, PLISTA_REM, PPP_EX, PPP_LO, PRECIO, PRECIO_REM, TCOMP_IN_S, TIPO_MOV,
-				CANT_FACTU, DCTO_FACTU, CANT_DEV_2, CANT_PEND_2, CANTIDAD_2, CANT_FACTU_2, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, 
-				PRECIO_REMITO_VENTAS, CANT_OC_2, RENGL_PADR, PROMOCION, PRECIO_ADICIONAL_KIT, TALONARIO_OC
-				)
-				VALUES
-				(
-				1, 0, 0, 0, 0, '$cant', '$codigo', 'OU','', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 
-				'S', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
-				);";
-				$resultDetSalida = odbc_exec($cid, $sqlDetSalida);
-					
-				//RESTA CANTIDAD
-				$sqlResta = "UPDATE STA19 SET CANT_STOCK = (CANT_STOCK - $cant) WHERE COD_ARTICU = '$codigo' AND COD_DEPOSI = 'OU'";
-				$resultResta = odbc_exec($cid, $sqlResta);
-				
-				
-				//DETALLE ENTRADA
-				$sqlDetEntrada = "
-				INSERT INTO STA20
-				(
-				CAN_EQUI_V, CANT_DEV, CANT_OC, CANT_PEND, CANT_SCRAP, CANTIDAD, COD_ARTICU, COD_DEPOSI, DEPOSI_DDE, EQUIVALENC, 
-				FECHA_MOV, N_RENGL_OC, N_RENGL_S, NCOMP_IN_S, PLISTA_REM, PPP_EX, PPP_LO, PRECIO, PRECIO_REM, TCOMP_IN_S, TIPO_MOV,
-				CANT_FACTU, DCTO_FACTU, CANT_DEV_2, CANT_PEND_2, CANTIDAD_2, CANT_FACTU_2, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, 
-				PRECIO_REMITO_VENTAS, CANT_OC_2, RENGL_PADR, PROMOCION, PRECIO_ADICIONAL_KIT, TALONARIO_OC
-				)
-				VALUES
-				(
-				1, 0, 0, 0, 0, '$cant', '$nuevo', (SELECT TOP 1 COD_SUCURS FROM STA22 WHERE COD_SUCURS != 'OU' AND INHABILITA = 0),'', 1, 
-				'$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
-				);";
-				$resultDetEntrada = odbc_exec($cid, $sqlDetEntrada);
-				
-				
-				//SUMA STOCK SI EXISTE EL ARTICULO O AGREGA EL REGISTRO		
-				$sqlConsulta19 = "EXEC SP_SJ_ARTICULO_OUTLET '$nuevo', $cant";
-				odbc_exec($cid, $sqlConsulta19);
-				
-			}
-			
-			//ACTUALIZA REGISTROS PENDIENTES
-			$sqlActuaPend = "UPDATE SOF_CONFIRMA SET N_ORDEN_CO = '1' WHERE N_ORDEN_CO = '' AND NCOMP_ORIG = '$comp' AND COD_ARTICU = '$codigo'";
-			$resultActuaPend = odbc_exec($cid, $sqlActuaPend);
-		
+		if($_POST['ncomp'][$i] == ''){
+			$comp = 'TRANSFERENCIA';
+		}else{
+			$comp = $_POST['ncomp'][$i];
 		}
-	}
+		
+		$sqlArt = "
+		SELECT * FROM STA11 WHERE COD_ARTICU = '$nuevo'
+		";
+
+		$resultArt = odbc_exec($cid, $sqlArt);
+		
+		while($v=odbc_fetch_array($resultArt)){
+					$codConsulta = $v['COD_ARTICU'];
+
+					var_dump('$codConsulta', $codConsulta);
+					
+					
+			//echo $codConsulta;
+			if(odbc_num_rows($resultArt)==1){
+				//echo $codConsulta;
+			
+				if($codConsulta != '***DESTRUCCION'){
+
+					var_dump('if');
+				
+					//ACTUALIZAR CODIGO NUEVO
+					$sqlUpdate = "UPDATE SOF_CONFIRMA SET COD_NUEVO = '$nuevo' WHERE COD_ARTICU = '$codigo' AND NCOMP_ORIG = '$comp';";
+					var_dump('$sqlUpdate', $sqlUpdate);
+					odbc_exec($cid, $sqlUpdate);
+					
+					
+					
+					//LLENAR LA VARIABLE DE PROXIMO NUMERO DE REMITO
+					$sqlProx = "SELECT ' 0'+CAST((SELECT SUCURSAL FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)+RIGHT(('00000'+ CAST((SELECT PROXIMO FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)),8) PROXIMO";
+					$resultProx = odbc_exec($cid, $sqlProx);
+					while($v=odbc_fetch_array($resultProx)){
+					$proximo = $v['PROXIMO'];
+					}
+					
+					//UPDATEAR EL PROXIMO NUMERO DE REMITO EN EL TALONARIO
+					$sqlUpdateProx = "UPDATE STA17 SET PROXIMO = PROXIMO+1 WHERE TALONARIO = 850;";
+					$resultUpdateProx = odbc_exec($cid, $sqlUpdateProx);
+
+
+					//LLENAR VARIABLE DE PROXIMO NUMERO INTERNO
+					$sqlProxInterno = "SELECT RIGHT(('00100'+CAST((SELECT MAX(NCOMP_IN_S)+1 NCOMP_IN_S FROM STA14 WHERE TALONARIO = 850)AS VARCHAR)),8) PROXINTERNO;";
+					$resultProxInterno = odbc_exec($cid, $sqlProxInterno);
+					while($v=odbc_fetch_array($resultProxInterno)){
+					$proxInterno = $v['PROXINTERNO'];
+					}
+						
+					
+					//ENCABEZADO
+					$sqlEncabezado = "
+					INSERT INTO STA14 
+					(
+					COTIZ, EXPORTADO, EXP_STOCK, FECHA_ANU, FECHA_MOV, HORA, 
+					LISTA_REM, LOTE, LOTE_ANU, MON_CTE, N_COMP, NCOMP_IN_S, 
+					NRO_SUCURS, T_COMP, TALONARIO, TCOMP_IN_S, USUARIO, HORA_COMP,
+					ID_A_RENTA, DOC_ELECTR, IMP_IVA, IMP_OTIMP, IMPORTE_BO, IMPORTE_TO, 
+					DIFERENCIA, SUC_DESTIN, DCTO_CLIEN, FECHA_INGRESO, HORA_INGRESO, 
+					USUARIO_INGRESO, TERMINAL_INGRESO, IMPORTE_TOTAL_CON_IMPUESTOS, 
+					CANTIDAD_KILOS, COD_PRO_CL
+					)
+					VALUES
+					(
+					4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'AJU', 850, 'AJ', 'AJUSTES', 
+					'$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0, 'GTCENT'
+					)
+					;";
+					var_dump('$sqlEncabezado', $sqlEncabezado);
+					$resultEncabezado = odbc_exec($cid, $sqlEncabezado);
+					
+					
+					
+					//DETALLE SALIDA
+					$sqlDetSalida = "
+					INSERT INTO STA20
+					(
+					CAN_EQUI_V, CANT_DEV, CANT_OC, CANT_PEND, CANT_SCRAP, CANTIDAD, COD_ARTICU, COD_DEPOSI, DEPOSI_DDE, EQUIVALENC, 
+					FECHA_MOV, N_RENGL_OC, N_RENGL_S, NCOMP_IN_S, PLISTA_REM, PPP_EX, PPP_LO, PRECIO, PRECIO_REM, TCOMP_IN_S, TIPO_MOV,
+					CANT_FACTU, DCTO_FACTU, CANT_DEV_2, CANT_PEND_2, CANTIDAD_2, CANT_FACTU_2, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, 
+					PRECIO_REMITO_VENTAS, CANT_OC_2, RENGL_PADR, PROMOCION, PRECIO_ADICIONAL_KIT, TALONARIO_OC
+					)
+					VALUES
+					(
+					1, 0, 0, 0, 0, '$cant', '$codigo', 'OU','', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 
+					'S', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
+					);";
+					var_dump('$sqlDetSalida', $sqlDetSalida);
+					$resultDetSalida = odbc_exec($cid, $sqlDetSalida);
+						
+					//RESTA CANTIDAD
+					$sqlResta = "UPDATE STA19 SET CANT_STOCK = (CANT_STOCK - $cant) WHERE COD_ARTICU = '$codigo' AND COD_DEPOSI = 'OU'";
+					$resultResta = odbc_exec($cid, $sqlResta);
+					
+					
+					//DETALLE ENTRADA
+					$sqlDetEntrada = "
+					INSERT INTO STA20
+					(
+					CAN_EQUI_V, CANT_DEV, CANT_OC, CANT_PEND, CANT_SCRAP, CANTIDAD, COD_ARTICU, COD_DEPOSI, DEPOSI_DDE, EQUIVALENC, 
+					FECHA_MOV, N_RENGL_OC, N_RENGL_S, NCOMP_IN_S, PLISTA_REM, PPP_EX, PPP_LO, PRECIO, PRECIO_REM, TCOMP_IN_S, TIPO_MOV,
+					CANT_FACTU, DCTO_FACTU, CANT_DEV_2, CANT_PEND_2, CANTIDAD_2, CANT_FACTU_2, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, 
+					PRECIO_REMITO_VENTAS, CANT_OC_2, RENGL_PADR, PROMOCION, PRECIO_ADICIONAL_KIT, TALONARIO_OC
+					)
+					VALUES
+					(
+					1, 0, 0, 0, 0, '$cant', '$nuevo', (SELECT TOP 1 COD_SUCURS FROM STA22 WHERE COD_SUCURS != 'OU' AND INHABILITA = 0),'', 1, 
+					'$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
+					);";
+					var_dump('$sqlDetEntrada', $sqlDetEntrada);
+					$resultDetEntrada = odbc_exec($cid, $sqlDetEntrada);
+					
+					
+					//SUMA STOCK SI EXISTE EL ARTICULO O AGREGA EL REGISTRO		
+					$sqlConsulta19 = "EXEC SP_SJ_ARTICULO_OUTLET '$nuevo', $cant";
+					odbc_exec($cid, $sqlConsulta19);
+					
+				}
+				
+				//ACTUALIZA REGISTROS PENDIENTES
+				$sqlActuaPend = "UPDATE SOF_CONFIRMA SET N_ORDEN_CO = '1' WHERE N_ORDEN_CO = '' AND NCOMP_ORIG = '$comp' AND COD_ARTICU = '$codigo'";
+				$resultActuaPend = odbc_exec($cid, $sqlActuaPend);
+			
+			}
+		}
 	}
 
 }
 echo 'Procesando...';	
-$_SESSION['ajuste'] = 0;
+
+header('Location: ajusteLocal.php');
 }
 ?>
-
-<script>
-setTimeout(function () {window.location.href= 'ajusteLocal.php';},1000);
-</script>
 
 </body>
 </html>
