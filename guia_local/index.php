@@ -29,7 +29,7 @@ if(!isset($_GET['desde'])){
 }
 ?>
 	
-	
+		
 	<form action="procesar.php" id="sucu" method="post" style="margin:20px">
 	<div class="form-row mb-1">
 		<button type="button" class="btn btn-primary" style="margin-left:1%" onClick="window.location.href='../index.php'">Inicio</button>

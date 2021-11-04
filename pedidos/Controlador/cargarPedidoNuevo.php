@@ -87,7 +87,7 @@ if( substr($codClient, 0, 2) == 'MA' ){
 }else{
 	$cantidadPedida = 8;
 }
-
+	
 $nroRenglon = 1;
 
 for($i = 0; $i < count($_POST['matriz']); $i++){
