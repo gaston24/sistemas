@@ -38,7 +38,7 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                 <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control"></input>  
             </div>
             <div class="col-1">   
-                <a type="button" class="btn btn-primary" id="btn_back" href="gestionOrdenes.php"><i class="fa fa-arrow-left"></i>  Volver</a>
+                <a type="button" class="btn btn-primary" id="btn_back" href="desactivaOrdenes.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div>
             
         </div>
@@ -53,9 +53,7 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                     <th scope="col" style="width: 20%">Rubro</th>
                     <th scope="col" style="width: 15%">Precio estimado</th>
                     <th scope="col" style="width: 20%">Temporada</th>
-                    <th scope="col" style="width: 20%"></th>
-                    <th scope="col" style="width: 5%">Cantidad</th>
-                
+                    <th scope="col" style="width: 20%"></th>                
             </thead>
 
             <tbody id="table">
@@ -70,14 +68,13 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                     <td id="articuloPed" name="articuloPed"><?=  $key['COD_ARTICU']?></td>
                     <td id="descripcioPed" name="descripcioPed"><?=  $key['DESCRIPCIO']?></td>
                     <td id="rubro" name="rubro"><?=  $key['RUBRO']?></td>
-                    <td id="precioPed" name="precioPed"><?= $key['PRECIO_ESTIMADO'] ?></td>
+                    <td id="precioPed" name="precioPed"><?= "$".number_format($key['PRECIO_ESTIMADO'], 0, ".",",")?></td>
                     <td id="temporadaPed" name="temporadaPed"><?=  $key['TEMPORADA'] ?></td>
                     <td id="novedadPed" name="novedadPed">
                         <?php if($key['LANZAMIENTO']== 1){ ?>
 				        <a>LANZAMIENTO!</a>
 					    <?php } else { ?> <?php } ?>
-                    </td>
-                    <td><input type="number" value="0" pattern="^[0-9]" min="1" step="1" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
+                    </td>                
                 </tr>   
                 
             <?php

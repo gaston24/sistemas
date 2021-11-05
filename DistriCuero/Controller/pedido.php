@@ -11,11 +11,11 @@ $codClient = $_SESSION['codClient'];
 $nroOrden = $_POST['orden'];
 
 
-require_once '../Class/numeroPedido.php';
+require_once '../Class/Pedido.php';
 
-$numPed = new numero_Pedido();
+$numPed = new Pedido();
 $proxNumPed = $numPed->traerNumPed();
-echo $proxNumPed;
+
 $fecha= Date('Y-m-d');
 
 date_default_timezone_set('Etc/GMT+3');
