@@ -111,7 +111,7 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                 ?>
     
                     <tr>
-                        <td><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($v['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
+                    <td><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
                         <td id="articuloPed" name="articuloPed"><?=  $key['COD_ARTICU']?></td>
                         <td id="descripcioPed" name="descripcioPed"><?=  $key['DESCRIPCIO']?></td>
                         <td id="rubro" name="rubro"><?=  $key['RUBRO']?></td>
@@ -123,6 +123,17 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                             <?php } else { ?> <?php } ?>
                         </td>
                         <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
+                        <div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-body" align="center">
+											<img src="../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg - imagen no encontrada" height="400" width="400">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+										</div>
+									</div>
+								</div>
+							</div>
                     </tr>   
                     
                 <?php
