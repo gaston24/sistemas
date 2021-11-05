@@ -5,10 +5,12 @@ if(!isset($_SESSION['username'])){
 	header("Location:../login.php");
 }else{
 
-require_once 'Class/Orden.php';
+require_once 'Class/Pedido.php';
 
-$orden = new Orden();
-$todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
+$codClient = $_SESSION['codClient']; 
+
+$pedido = new Pedido();
+$todosLosPedidos = $pedido->traerPedidos($codClient);
 
 ?> 
 
@@ -23,7 +25,7 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
     <link rel="stylesheet" href="css/style.css">
-    <title>Seleccion de ordenes</title>
+    <title>Lista notas de pedidos</title>
 </head>
 <body>
 
@@ -39,22 +41,26 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
   <!-- Navbar links -->
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" disabled><i class="fa fa-list"></i> Seleccionar ordenes</a>
+    <li class="nav-item">
+        <a class="nav-link" href="listOrdenesActivas.php"><i class="fa fa-list"></i> Seleccionar ordenes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pedidosSucursal.php"><i class="fa fa-calendar-check-o"></i> Notas de pedido</a>
+        <a class="nav-link" disabled><i class="fa fa-calendar-check-o"></i> Notas de pedido</a>
       </li>
     </ul>
-  </div>
+  </div>  
 </nav>
 
 <div id="contenedorList">
-    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-check-square-o"></i>  Selección de Ordenes</h3>
+    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-check-square-o"></i>  Consulta de nota de pedido</h3>
 
             <!-- <div class="ml-2">   
                 <a type="button" class="btn btn-primary ml-4 mb-4" id="btn_back2" href="../index.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div> -->
+    <div class="ml-4 mb-3" id="contBusqRapida">
+      <label id="textBusqueda">Busqueda rapida:</label>
+      <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control"></input>  
+    </div>
 
     <div class="table-responsive">
         <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableGestionOrden" style="width: 80%">
@@ -62,26 +68,28 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
                 <th scope="col" style="width: 15%">Fecha</th>
                 <th scope="col" style="width: 20%">Hora</th>
                 <th scope="col" style="width: 20%">Orden</th>
-                <th scope="col" style="width: 10%">Articulos</th>
-                <th scope="col" style="width: 5%">Estado</th>  
-                <th scope="col" style="width: 5%"></th>  
+                <th scope="col" style="width: 20%">Nota de pedido</th>
+                <th scope="col" style="width: 10%">Total</th>
+                <th scope="col" style="width: 5%">Cantidad</th>   
+                <th scope="col" style="width: 5%"></th>   
             </thead>
 
             <tbody id="table">
 
                 <?php
-                foreach($todasLasOrdenes as $valor => $key){
+                foreach($todosLosPedidos as $valor => $key){
                 ?>
 
                 <tr>
-                    <td><?=  $key['FECHA']?></td>
+                    <td><?=  $newDate = $key['FECHA']->format('Y-m-d') ?></td>
                     <td><?=  $key['HORA']?></td>
-                    <td><?= $key['NRO_ORDEN'] ?></td>
-                    <td><?=  $key['ARTICULOS']?></td>
-                    <td id="novedadPed"><a>ACTIVA!</a></td>
+                    <td><?=  $key['NRO_ORDEN'] ?></td>
+                    <td><?= $key['NRO_NOTA_PEDIDO'] ?></a></td>
+                    <td><?=  "$".number_format($key['TOTAL'], 0, ".",",")?></td>
+                    <td><?=  $key['CANTIDAD']?></td>  
                     <td>
-                      <a href="notaPedido.php?orden=<?= $key['NRO_ORDEN'] ?>"><i class="fa fa-search" style="color: #ffc107; font-size: 20px;"></i></a>
-                    </td>                
+                      <a href="detallePedidoSuc.php?notaPedido=<?= $key['NRO_NOTA_PEDIDO'] ?>"><i class="fa fa-search" style="color: #ffc107; font-size: 20px;"></i></a>
+                    </td>          
                 </tr>   
                 
                 <?php

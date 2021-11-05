@@ -29,7 +29,7 @@ if(!isset($_SESSION['codClient'])){
     
         public function traerDetalleOrden($a){
     
-            $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE ACTIVA = 1 AND NRO_ORDEN LIKE '$a' ";
+            $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE NRO_ORDEN LIKE '$a' ";
     
             $rows = $this->retornarArray($sql);
     
@@ -102,7 +102,7 @@ class Orden
 
     public function traerDetalleOrden($a){
 
-        $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE ACTIVA = 1 AND NRO_ORDEN LIKE '$a' ";
+        $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE NRO_ORDEN LIKE '$a' ";
 
         $rows = $this->retornarArray($sql);
 

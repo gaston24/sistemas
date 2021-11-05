@@ -37,7 +37,7 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
 
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <!-- Brand -->
-  <a class="navbar-brand" href="listOrdenesActivas.php">Volver</a>
+  <a class="navbar-brand" href="listOrdenesActivas.php" style="color: #28a745;"><i class="fa fa-arrow-left"></i> ATRAS</a>
 
   <!-- Toggler/collapsibe Button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -48,10 +48,10 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-      <a class="nav-link" href="#">Notas de pedido</a>
+      <a class="nav-link" href="pedidosSucursal.php"><i class="fa fa-list"></i> Seleccionar ordenes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Historial</a>
+      <a class="nav-link" href="pedidosSucursal.php"><i class="fa fa-calendar-check-o"></i> Notas de pedido</a>
       </li>
     </ul>
   </div>

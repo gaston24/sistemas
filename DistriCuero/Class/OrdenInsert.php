@@ -1,6 +1,6 @@
 <?php
 
-require_once 'numeroPedido.php';
+require_once 'Pedido.php';
 
 $numOrd = new numero_Orden();
 $proxNumOrd = $numOrd->traerNumOrden();
