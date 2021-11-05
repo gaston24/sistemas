@@ -123,6 +123,7 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                             <?php } else { ?> <?php } ?>
                         </td>
                         <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
+                        <div class="modal fade" id="exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-body" align="center">
