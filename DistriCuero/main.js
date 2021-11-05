@@ -456,3 +456,23 @@ function precioTotal() {
        document.getElementById('inputNum').addEventListener('keyup',(e)=>{
            e.target.value=(e.target.value!='')?e.target.value:e.target.value=0});
     }
+
+    inputNum.forEach((num) => {
+      num.addEventListener("keyup", (num) => {
+        verificarNum(num);
+      });
+    });
+    
+    function verificarNum(num) {
+      if (
+        num.target.parentElement.parentElement.childNodes[13].textContent.indexOf(
+          "LANZAMIENTO"
+        ) > -1
+      ) {
+        num.target.value =
+          num.target.value != "" ? num.target.value : (num.target.value = 1);
+      }else{
+        num.target.value =
+        num.target.value != "" ? num.target.value : (num.target.value = 0);
+      }
+    }

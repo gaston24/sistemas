@@ -141,7 +141,7 @@ $maestroArticulos = new Articulo();
             
 
                 <tr>
-                    <td><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($v['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
+                <td><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
                     <td><?=  $key['COD_ARTICU']?></td>
                     <td><?=  $key['DESCRIPCIO']?></td>
                     <td><?=  $key['RUBRO']?></td>
@@ -153,7 +153,20 @@ $maestroArticulos = new Articulo();
                             <option value="1">SI</option>
                         </select>
                     </td>
-                    <td><input type="checkbox" name="checkTd" onclick="contar(this);"></input></td>                
+                    <td><input type="checkbox" name="checkTd" onclick="contar(this);"></input></td> 
+                    <div class="modal fade" id="exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-body" align="center">
+											<img src="../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg - imagen no encontrada" height="400" width="400">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+                                     
                 </tr>   
             
             <?php
