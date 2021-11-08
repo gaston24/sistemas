@@ -58,10 +58,10 @@ $todasLasOrdenes = $orden->traerOrdenesTodas();
                             <?php } else { ?> <?php } ?>
                         </td>
                     <td>
-                      <a href="OrdenVsNotaPedido.php?orden=<?= $key['NRO_ORDEN'] ?>"><button type="button" class="btn btn-sm btn-warning"><i class="fa fa-search"></i> Analizar</button></a>
+                      <a href="OrdenVsNotaPedido.php?orden=<?= $key['NRO_ORDEN'] ?>"><button type="button" class="btn btn-sm btn-warning" style="width: 90px;"><i class="fa fa-search"></i> Analizar</button></a>
                     </td>
                     <td>
-                      <a href="detallePedidosCom.php?orden=<?= $key['NRO_ORDEN'] ?>"><button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Exportar</button></a>
+                      <a href="detallePedidosCom.php?orden=<?= $key['NRO_ORDEN'] ?>"><button type="button" class="btn btn-sm btn-danger" style="width: 90px;"><i class="fa fa-bars"></i> Detalle</button></a>
                     </td>                 
                 </tr>   
                 
