@@ -50,6 +50,22 @@ class Pedido
     
         return $numPed;
     }
+
+    public function traerDetallePedidosCom($orden){
+
+        $sql = "
+
+            SELECT FECHA, NRO_NOTA_PEDIDO, COD_CLIENT, COD_ARTICU, DESCRIPCIO, CANTIDAD FROM RO_PEDIDO_PRECOMPRA
+            WHERE NRO_ORDEN = '$orden'
+
+        "
+        ;
+
+        $rows = $this->retornarArray($sql);
+            
+        return $rows;
+
+    }
     
     public function traerPedidos($codClient){
 
