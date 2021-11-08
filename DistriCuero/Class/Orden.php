@@ -68,9 +68,45 @@ if(!isset($_SESSION['codClient'])){
     
             return $rows;
     
-            }  
-    
         }
+        
+        public function traerOrdenesTodas(){
+    
+                $sql = "
+        
+                SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS, ACTIVA FROM RO_ORDENES_PRECOMPRA 
+                GROUP BY FECHA, HORA, NRO_ORDEN, ACTIVA
+                ORDER BY NRO_ORDEN DESC
+        
+                ";
+                
+                $rows = $this->retornarArray($sql);
+        
+                return $rows;
+        
+        }
+            
+        public function traerOrdenesConNotaPedido($orden){
+
+            $sql = "
+    
+                SELECT A.NRO_SUCURSAL, A.COD_CLIENT, A.DESC_SUCURSAL, REPLACE(ISNULL(FECHA, ''),'1900-01-01','') FECHA, HORA, NRO_NOTA_PEDIDO, TOTAL, CANTIDAD FROM [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS A
+                LEFT JOIN (SELECT FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO, SUM(PRECIO_ESTIMADO) TOTAL, SUM(CANTIDAD) CANTIDAD FROM RO_PEDIDO_PRECOMPRA
+                WHERE NRO_ORDEN = '$orden' 
+                GROUP BY FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO) 
+                B ON A.COD_CLIENT = B.COD_CLIENT
+                WHERE CANAL = 'FRANQUICIAS' AND HABILITADO = 1 AND NRO_SUC_MADRE IS NULL
+                ORDER BY NRO_SUCURSAL
+
+                ";
+                
+                $rows = $this->retornarArray($sql);
+
+                return $rows;
+
+        }
+    
+    }
 	
 }else{
 

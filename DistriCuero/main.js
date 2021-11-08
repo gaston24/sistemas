@@ -403,6 +403,7 @@ function marcar(source) {
 //Count checkbox//
 
 function contar() {
+  
   var checkbox = document.querySelectorAll('#tableOrden input[type="checkbox"]'); //Array que contiene los checkbox
 
   var cont = 0; //Variable que lleva la cuenta de los checkbox pulsados
@@ -448,7 +449,40 @@ function precioTotal() {
       
   }
 
-  
+  // Coloca separador de miles //
+
+  function formatNumber (n) {
+    n = String(n).replace(/\D/g, "");
+    return n === '' ? n : Number(n).toLocaleString();
+  }
+
+  // Calculo de Kpis por orden //
+
+total_notaPedidos();
+  function total_notaPedidos()
+  {
+    let tabla=table.childNodes;
+    let total_pedidos = 0;
+    let total_$=0;
+    let cantidad=0;
+    for(x=0;x<tabla.length;x++)
+    {
+      if((tabla[x].nodeName=='TR')&&(tabla[x].childNodes[15].textContent !=''))
+      {
+        total_pedidos+=1;
+         total_$+= parseFloat(tabla[x].childNodes[13].textContent.slice(1).replaceAll('.', '').replace(',', '.'));
+         console.log(x+': '+parseFloat(tabla[x].childNodes[13].textContent.slice(1)));
+         cantidad+=parseInt(tabla[x].childNodes[15].textContent);
+      }
+    }
+    document.getElementById('inputCliente').value=total_pedidos+' / '+table.rows.length;
+    document.getElementById('input$').value=formatNumber(total_$);
+     document.getElementById('inputCant').value=cantidad;
+     document.getElementById('inputSolicitados').value = ((total_pedidos/table.rows.length) *100).toFixed();
+    console.log(total_$);
+    console.log(cantidad);
+  }
+  //************************************************** */
   document.getElementById('inputNum').addEventListener('keydown',(e)=>{verificarNum(e)});
 
     function verificarNum(e)
