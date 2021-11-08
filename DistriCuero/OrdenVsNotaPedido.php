@@ -33,7 +33,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
     <div class="row">
         <div class="row ml-1">
             <div class="ml-2">   
-                <a type="button" class="btn btn-primary ml-4" id="btn_back2" href="listOrdenesComercial.php"><i class="fa fa-arrow-left"></i>  Volver</a>
+                <a type="button" class="btn btn-primary ml-4" id="" href="listOrdenesComercial.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div>
             <div class="ml-4 mb-3" id="contBusqRapida">
                 <label id="textBusqueda">Busqueda rapida:</label>

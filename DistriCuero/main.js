@@ -483,6 +483,8 @@ total_notaPedidos();
     console.log(cantidad);
   }
   //************************************************** */
+
+  /**************** establecer dafault valores 0 y/o 1 en inputNum ******************* */
   document.getElementById('inputNum').addEventListener('keydown',(e)=>{verificarNum(e)});
 
     function verificarNum(e)
