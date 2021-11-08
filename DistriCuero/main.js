@@ -456,7 +456,34 @@ function precioTotal() {
     return n === '' ? n : Number(n).toLocaleString();
   }
 
-  // Calculo de Kpis por orden //
+  
+  //************************************************** */
+
+  /**************** establecer dafault valores 0 y/o 1 en inputNum ******************* */
+
+let inputNum=document.querySelectorAll('#inputNum');
+
+    inputNum.forEach((num) => {
+      num.addEventListener("keyup", (num) => {
+        verificarNum(num);
+      });
+    });
+    
+    function verificarNum(num) {
+      if (
+        num.target.parentElement.parentElement.childNodes[13].textContent.indexOf(
+          "LANZAMIENTO"
+        ) > -1
+      ) {
+          num.target.value =  num.target.value == 0 ||  num.target.value == 1 ?  num.target.value = 1:  num.target.value ;
+      }else{
+        num.target.value =
+        num.target.value != "" ? num.target.value : (num.target.value = 0);
+      }
+    }
+
+
+    // Calculo de Kpis por orden //
 
 total_notaPedidos();
   function total_notaPedidos()
@@ -482,33 +509,3 @@ total_notaPedidos();
     console.log(total_$);
     console.log(cantidad);
   }
-  //************************************************** */
-
-  /**************** establecer dafault valores 0 y/o 1 en inputNum ******************* */
-  document.getElementById('inputNum').addEventListener('keydown',(e)=>{verificarNum(e)});
-
-    function verificarNum(e)
-    {
-       document.getElementById('inputNum').addEventListener('keyup',(e)=>{
-           e.target.value=(e.target.value!='')?e.target.value:e.target.value=0});
-    }
-
-    inputNum.forEach((num) => {
-      num.addEventListener("keyup", (num) => {
-        verificarNum(num);
-      });
-    });
-    
-    function verificarNum(num) {
-      if (
-        num.target.parentElement.parentElement.childNodes[13].textContent.indexOf(
-          "LANZAMIENTO"
-        ) > -1
-      ) {
-        num.target.value =
-          num.target.value != "" ? num.target.value : (num.target.value = 1);
-      }else{
-        num.target.value =
-        num.target.value != "" ? num.target.value : (num.target.value = 0);
-      }
-    }
