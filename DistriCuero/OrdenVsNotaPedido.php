@@ -112,11 +112,12 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
                 <th scope="col" style="width: 15%">N° sucursal</th>
                 <th scope="col" style="width: 15%">Cliente</th>
                 <th scope="col" style="width: 20%">Sucursal</th>
-                <th scope="col" style="width: 15%">Fecha</th>
-                <th scope="col" style="width: 20%">Hora</th>
-                <th scope="col" style="width: 20%">Nota de pedido</th>
+                <th scope="col" style="width: 10%">Fecha</th>
+                <th scope="col" style="width: 10%">Hora</th>
+                <th scope="col" style="width: 15%">Nota de pedido</th>
                 <th scope="col" style="width: 10%">Total</th>
-                <th scope="col" style="width: 5%">Unidades</th>   
+                <th scope="col" style="width: 5%">Unidades</th>  
+                <th scope="col" style="width: 10%">Estado</th>
                 <!-- <th scope="col" style="width: 5%"></th>    -->
             </thead>
 
@@ -134,7 +135,12 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
                     <td><?=  $key['HORA']?></td>
                     <td id="notaPed"><?= $key['NRO_NOTA_PEDIDO'] ?></a></td>
                     <td><?=  "$".number_format($key['TOTAL'], 0, ",",".")?></td>
-                    <td id="cantidad"><?=  $key['CANTIDAD']?></td>  
+                    <td id="cantidad"><?=  $key['CANTIDAD']?></td>
+                    <td>
+                        <?php if($key['CANTIDAD'] < 1){ ?>
+                        <a>PENDIENTE</a>
+                        <?php } else { ?> <?php } ?>
+                    </td>
                     <!-- <td>
                       <a href="detallePedidoSuc.php?notaPedido=<?= $key['NRO_NOTA_PEDIDO'] ?>"><i class="fa fa-search" style="color: #ffc107; font-size: 20px;"></i></a>
                     </td>           -->
