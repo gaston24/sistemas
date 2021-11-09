@@ -119,7 +119,7 @@ $maestroArticulos = new Articulo();
     ?>
    
    <div class="table-responsive">
-        <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableOrden" style="width: 80%">
+        <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableOrden">
             <thead class="thead-dark">
                 
                     <th scope="col" style="width: 10%">Foto</th>

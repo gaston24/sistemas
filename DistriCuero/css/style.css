@@ -2,7 +2,7 @@
 /*Style de index */
 
 body{
-   width: 100vw;
+   width: 98.9vw;
    margin-left: 20px;
 }
 
@@ -109,8 +109,9 @@ table td {
     /*Fijar encabezado de tabla*/ 
 
 .table{
-    width: 80%;
+    width: 90%;
 }
+
 thead tr th { 
     position: sticky;
     top: 0;
@@ -118,7 +119,7 @@ thead tr th {
 }
 
 .table-responsive { 
-    height:750px;
+    height:745px;
 }
 
 .table .thead-dark th {
@@ -153,4 +154,6 @@ thead tr th {
 #contenedorList{
     margin-top: 40px;
 }
+
+
 
