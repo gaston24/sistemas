@@ -9,11 +9,10 @@ $dsn = '1 - CENTRAL';
 $usuario = "sa";
 $clave= "Axoft1988";
 $user = $_SESSION['codClient'];
-$_SESSION['rem'] = $_GET['rem'];
+$_SESSION['rem'] = trim($_GET['rem']);
 $_SESSION['usuario'] = $_GET['usuario'];
 $rem = $_SESSION['rem'];
 $dsn_local = $_SESSION['dsn'];
-
 $_SESSION['ultimoCodigo'] = '';
 
 

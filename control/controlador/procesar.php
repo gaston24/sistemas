@@ -4,7 +4,7 @@ if(!isset($_SESSION['username'])){
 	header("Location:../login.php");
 }else{
 
-include '../../css/header.php'; 
+include '../../../css/header.php'; 
 
 $codClient = $_SESSION['codClient'];
 $usuarioLocal = $_SESSION['usuario'];
@@ -80,20 +80,21 @@ function insertarRegistro($cArt, $k, $fechaHora, $codClient,  $fechaRem, $sucOri
 //INSERTAR DATOS DEL REMITO EN EL LOCAL CON FUNCION	
 
 $sql="
-SELECT B.COD_ARTICU, B.CANTIDAD FROM CTA115 A
-INNER JOIN CTA96 B
-ON A.NCOMP_IN_S = B.NCOMP_IN_S AND A.TCOMP_IN_S = B.TCOMP_IN_S AND A.NRO_SUCURS = B.NRO_SUCURS
-WHERE N_COMP = '$rem'
+SELECT B.COD_ARTICU, B.CANTIDAD 
+FROM STA14 A INNER JOIN STA20 B ON A.NCOMP_IN_S = B.NCOMP_IN_S AND A.TCOMP_IN_S = B.TCOMP_IN_S 
+WHERE PROMOCION != 1
+AND T_COMP = 'REM' 
+AND N_COMP = '$rem'
 ";
-$result=odbc_exec($cidLocal,$sql)or die(exit("Error en odbc_exec"));
+
+
+$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 while($v=odbc_fetch_array($result)){
 	
 	insertarRegistro($v['COD_ARTICU'], $v['CANTIDAD'], $fechaHora, $codClient, $fechaRem, $sucOrig, $sucDestin);
 	
 }
-
-
 
 
 $sqlAuditoria =
@@ -122,71 +123,34 @@ WHERE CANT_REM <> CANT_CONTROL
 AND COD_ARTICU NOT IN (SELECT COD_ARTICU COLLATE Latin1_General_BIN FROM STA03)
 ";
 
-$sqlAuditoriaOK =
-"
-SET DATEFORMAT YMD
-SELECT COD_CLIENT, COD_ARTICU, CANT_REM, CANT_CONTROL, USUARIO_LOCAL
-FROM
-(
-	SELECT COD_CLIENT, ISNULL(COD1,COD2) COD_ARTICU, 
-	CASE WHEN CANT_REM IS NULL THEN 0 ELSE CANT_REM END CANT_REM, 
-	CASE WHEN CANT_CONTROL IS NULL THEN 0 ELSE CANT_CONTROL END CANT_CONTROL, ISNULL(USUARIO_LOCAL, '$usuarioLocal')USUARIO_LOCAL
-	FROM
-	(
-		SELECT A.COD_CLIENT, A.COD_ARTICU COD1, B.COD_ARTICU COD2, A.CANT_REM, B.CANT_CONTROL, B.USUARIO_LOCAL FROM SJ_CONTROL_LOCAL_AUX_REMITO A
-		FULL JOIN 
-		(
-			SELECT COD_CLIENT, NRO_REMITO, COD_ARTICU, SUM(CANT_CONTROL)CANT_CONTROL, USUARIO_LOCAL FROM SJ_CONTROL_LOCAL 
-			GROUP BY COD_CLIENT, NRO_REMITO, COD_ARTICU, USUARIO_LOCAL
-		) B
-		ON A.COD_CLIENT = B.COD_CLIENT AND A.NRO_REMITO = B.NRO_REMITO AND A.COD_ARTICU = B.COD_ARTICU
-		WHERE ISNULL(A.COD_CLIENT, B.COD_CLIENT) = '$codClient' AND ISNULL(A.NRO_REMITO, B.NRO_REMITO) = '$rem'
-	)A
-	WHERE ISNULL(COD1,COD2) != '' 
-)A
-";
-
-if(odbc_num_rows ( odbc_exec($cid,$sqlAuditoria) ) == 0 ){
-
-	$resultAuditoria=odbc_exec($cid,$sqlAuditoriaOK)or die(exit("Error en odbc_exec"));
-
-	while($v=odbc_fetch_object($resultAuditoria)){
-		
-		$codArticu = $v->COD_ARTICU;
-		$cantRem = $v->CANT_REM;
-		$cantControl = $v->CANT_CONTROL;
-		$usuarioLocal = $v->USUARIO_LOCAL;
-
-		$sqlInsertarAuditoria = "INSERT INTO SJ_CONTROL_AUDITORIA 
-		([FECHA_CONTROL], [COD_CLIENT], [FECHA_REM], [NRO_REMITO], [SUC_ORIG], [SUC_DESTIN], [COD_ARTICU], [CANT_REM], [CANT_CONTROL], [USUARIO_LOCAL], [OBSERVAC_LOGISTICA]) 
-		VALUES ('$fechaHora', '$codClient', '$fechaRem', '$rem', $sucOrig, $sucDestin, '$codArticu', $cantRem, $cantControl, '$usuarioLocal', 'PENDIENTE')";
-	
-		odbc_exec($cid,$sqlInsertarAuditoria)or die("<p>".odbc_errormsg());
-	}
-}else{
 	$resultAuditoria=odbc_exec($cid,$sqlAuditoria)or die(exit("Error en odbc_exec"));
 
 	while($v=odbc_fetch_object($resultAuditoria)){
+		$data[] = array($v);
+	};
+
+
+	foreach ($data as $key => $v) {
 		
-		$codArticu = $v->COD_ARTICU;
-		$cantRem = $v->CANT_REM;
-		$cantControl = $v->CANT_CONTROL;
-		$usuarioLocal = $v->USUARIO_LOCAL;
+		
+		$codArticu = $v[0]->COD_ARTICU;
+		$cantRem = $v[0]->CANT_REM;
+		$cantControl = $v[0]->CANT_CONTROL;
+		$usuarioLocal = $v[0]->USUARIO_LOCAL;
 		
 		$sqlInsertarAuditoria = "INSERT INTO SJ_CONTROL_AUDITORIA 
 		([FECHA_CONTROL], [COD_CLIENT], [FECHA_REM], [NRO_REMITO], [SUC_ORIG], [SUC_DESTIN], [COD_ARTICU], [CANT_REM], [CANT_CONTROL], [USUARIO_LOCAL], [OBSERVAC_LOGISTICA]) 
 		VALUES ('$fechaHora', '$codClient', '$fechaRem', '$rem', $sucOrig, $sucDestin, '$codArticu', $cantRem, $cantControl, '$usuarioLocal', 'PENDIENTE')";
-		
+
 		odbc_exec($cid,$sqlInsertarAuditoria)or die("<p>".odbc_errormsg());
 	}
+
+
+
 }
 
-
-}
-
-header("Location:controlDetalle.php?rem=$rem&codClient=$codClient");
+header("Location: ../controlDetalle.php?rem=$rem&codClient=$codClient");
 
 ?>
 <title>Procesando..</title>
 <link rel="shortcut icon" href="icono.jpg" />
-<!--<script>setTimeout(function () {window.location.href= 'controlDetalle.php?rem=<?php echo $rem;?>&codClient=<?php echo $codClient;?>';},1000);</script>-->

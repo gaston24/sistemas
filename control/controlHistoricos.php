@@ -107,7 +107,7 @@ if(isset($_GET['fechaDesde'])){
 		<tbody id="bodyTable">
         <?php
 		foreach($remitosHistoricos as $data){
-			$diferencia = $data[0]->DIFERENCIA > 0 ? '<strong>SI</strong>' : 'NO';
+			$diferencia = $data[0]->DIFERENCIA <> 0 ? '<strong>SI</strong>' : 'NO';
 			$dateControl = date_create($data[0]->FECHA_CONTROL);
 			$dateControl = date_format($dateControl, 'Y-m-d H:i');
 			$colorChat = 'primary';

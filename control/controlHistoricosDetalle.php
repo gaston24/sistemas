@@ -79,9 +79,9 @@ if(isset($_GET['numRem'])){
 		$dateControl = date_create($data[0]->FECHA_CONTROL);
 		$dateControl = date_format($dateControl, 'Y-m-d H:i');
 		
+		$style= ($data[0]->CANT_REM <> $data[0]->CANT_CONTROL) ? "font-size:smaller;font-weight:bold;color:#FE2E2E" : '';
 		?>
-		
-        <tr class="fila-base" style="font-size:smaller">
+        <tr class="fila-base" style="font-size:smaller; <?=$style?>"  >
 
 				<td ><?= $data[0]->FECHA_REM ;?></td>
 				<td ><?= $dateControl ;?></td>

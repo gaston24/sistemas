@@ -5,13 +5,32 @@ class Remito
     private $dsn = '1 - CENTRAL';
     private $usuario = "sa";
     private $clave="Axoft1988";
+
+    private function getDatos($sql){
+
+        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+
+        ini_set('max_execution_time', 300);
+        $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+        $data = [];
+        while($v=odbc_fetch_object($result)){
+            $data[] = array($v);
+        };
+        return $data;
+
+    }
+
+    private function insertDatos($sql){
+        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        ini_set('max_execution_time', 300);
+        odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+    }
     
     
     public function traerHistoricos($codClient, $desde, $hasta){
 
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
-
         $sql=
+
             "
             SET DATEFORMAT YMD
 
@@ -41,19 +60,12 @@ class Remito
 
             ";
 
-        ini_set('max_execution_time', 300);
-        $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
-        $data = [];
-        while($v=odbc_fetch_object($result)){
-            $data[] = array($v);
-        };
-        return $data;
+        $array = $this->getDatos($sql);    
+
+        return $array;
     }
 
-
     public function traerHistoricosDetalle($numRem){
-
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
 
         $sql=
             "
@@ -74,19 +86,12 @@ class Remito
             WHERE A.NRO_REMITO = '$numRem' 
             ";
 
-        ini_set('max_execution_time', 300);
-        $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
-        $data = [];
-        while($v=odbc_fetch_object($result)){
-            $data[] = array($v);
-        };
-        return $data;
+        $array = $this->getDatos($sql);    
+
+        return $array;
     }    
 
-
     public function traerHistoricosAuditoria($desde, $hasta, $estado){
-
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
 
         $sql=
             "
@@ -116,14 +121,109 @@ class Remito
             ORDER BY A.FECHA_CONTROL            
             ";
 
-        ini_set('max_execution_time', 300);
-        $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
-        $data = [];
-        while($v=odbc_fetch_object($result)){
-            $data[] = array($v);
-        };
-        return $data;
+        $array = $this->getDatos($sql);    
+
+        return $array;
     }   
 
+    public function verificacion($user){
+
+        $sql=
+        "
+        SELECT ISNULL(SUM(CANT_CONTROL), 0)VERIFICACION FROM SJ_CONTROL_LOCAL 
+        WHERE COD_CLIENT = '$user'
+        ";
+
+        $array = $this->getDatos($sql);    
+
+        return $array;
+    } 
+
+    public function buscarSinonimo($codigo){
+
+        $sql=
+        "
+        SET DATEFORMAT YMD
+	    SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU = '$codigo' OR SINONIMO = '$codigo'
+        ";
+
+        $array = $this->getDatos($sql);    
+
+        return $array;
+    } 
+
+    public function insertarControlLocal($user, $rem, $codigo, $user_local){
+
+        $sql=
+        "
+        SET DATEFORMAT YMD
+        INSERT INTO SJ_CONTROL_LOCAL
+        (FECHA_CONTROL, COD_CLIENT, NRO_REMITO, COD_ARTICU, CANT_CONTROL, USUARIO_LOCAL)
+        VALUES (GETDATE(), '$user', '$rem', '$codigo', 1, '$user_local')
+        ";
+        $this->insertDatos($sql);
+        
+    } 
+
+    public function wrongCode($codigo){
+        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+
+        $sqlValida =
+            "
+            SET DATEFORMAT YMD
+            SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU = '$codigo'
+            ";
+
+        ini_set('max_execution_time', 300);
+        $resultValida = odbc_exec($cid, $sqlValida) or die(exit("Error en odbc_exec"));
+
+        if (odbc_num_rows($resultValida) == 0) {
+            return '
+            <audio src="Wrong.ogg" autoplay></audio>
+            </br></br>
+            <div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">
+            ATENCION!! El codigo <strong>' . strtoupper($codigo) . '</strong> no existe
+            </div>';
+        }else{
+            return '';
+        }
+    } 
+
+    public function traerControladoTemporal($user){
+
+        $sql=
+            "
+            SET DATEFORMAT YMD
+
+				SELECT A.COD_ARTICU, A.CANT_CONTROL, B.DESCRIPCIO 
+				FROM
+				(
+					SELECT COD_ARTICU, SUM(CANT_CONTROL)CANT_CONTROL FROM SJ_CONTROL_LOCAL 
+					WHERE COD_CLIENT = '$user'
+					GROUP BY COD_ARTICU
+				)A
+				INNER JOIN STA11 B
+				ON A.COD_ARTICU COLLATE Latin1_General_BIN= B.COD_ARTICU COLLATE Latin1_General_BIN
+            ";
+        $array = $this->getDatos($sql);    
+
+        return $array;
+    }  
+
+    public function traerHistorial($user){
+
+        $sql=
+            "
+            SET DATEFORMAT YMD
+            SELECT COD_ARTICU FROM SJ_CONTROL_LOCAL 
+            WHERE COD_CLIENT = '$user'
+            AND COD_ARTICU IN (SELECT COD_ARTICU COLLATE Latin1_General_BIN FROM STA11)
+            ORDER BY ID DESC
+            ";
+
+        $array = $this->getDatos($sql);    
+
+        return $array;
+    } 
 
 }
