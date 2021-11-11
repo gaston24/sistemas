@@ -1,0 +1,43 @@
+@media print {
+
+    #contenedor_barcode
+    {
+        margin:0;
+        page-break-before:avoid!;
+    }
+    #titulo,#generator{
+      display: none;
+      background-color: red;
+
+    }
+    
+  
+
+    @page
+    {
+  /*   margin:2cm; */
+    
+    }
+    
+    .principal_menu
+    {
+       display: none;
+    }
+    
+    .eh
+    {
+      /*   margin-top: 15px;
+        page-break-before:avoid;
+        page-break-after:avoid;
+        page-break-inside:avoid; */
+        page-break-before:avoid!;
+    }
+    
+    .contenedor_barcode
+    {
+       
+        page-break-before:avoid!;
+        
+    }
+    
+    }

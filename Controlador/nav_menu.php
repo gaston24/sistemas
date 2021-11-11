@@ -77,7 +77,7 @@ include('estado_cuenta.php');
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="#" onclick="location.href='guia_local'">Seguimiento de Pedidos</a>
             <a class="dropdown-item" href="#" onclick="location.href='guia_local/buscar_factura.php'">Buscar Factura</a>
-            <?php if($_SESSION['numsuc']<100){?> <a class="dropdown-item" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a> <?php }?> 
+            <a class="dropdown-item" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a>
           </div>
         </li>
         <?php
@@ -116,21 +116,19 @@ include('estado_cuenta.php');
         </li>
 
         
-
-
-        <?php 
-		if($_SESSION['numsuc']<100){
-        ?>	
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Operaciones
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a>
-            <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a>
-            <a class="dropdown-item" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a>
+            <?php if($_SESSION['numsuc']<100){?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php }?> 
+            <?php if($_SESSION['numsuc']<100){?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php }?>
+            <?php if($_SESSION['numsuc']<100){?> <a class="dropdown-item" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php }?>
+            <a class="dropdown-item" href="#" onclick="location.href='../../barcode/index.html'">Etiq. codigo de barras</a>
             </div>
         </li>
+
+        <?php if($_SESSION['numsuc']<100){?>
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -140,10 +138,9 @@ include('estado_cuenta.php');
             <a class="dropdown-item" href="#" onclick="location.href='procedimientos'">Procedimientos</a>
             </div>
         </li>
-        <?php
-        }
-        ?>
-        
+
+        <?php }?> 
+
         <?php 
 		if($_SESSION['numsuc']>100 && $_SESSION['habPedidos']==1){
         ?>	
