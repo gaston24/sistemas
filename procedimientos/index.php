@@ -27,12 +27,13 @@ $list = $proce->traerProcedimientos();
 	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/solid.min.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/svg-with-js.min.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/v4-shims.min.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
 </head>
 <body>
     <div class="container">
+        <div>
+            <button type="button" class="btn btn-primary" onclick="location.href='../index.php'" style="margin-top:1%">Inicio</button>
+        </div>
     <h1 class="text-center">Procedimientos</h1>
 
 <div class="row">
