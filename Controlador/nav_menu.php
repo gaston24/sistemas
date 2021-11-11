@@ -110,7 +110,7 @@ include('estado_cuenta.php');
                 <?php
             }
             ?>
-            <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a>
+            <?php if($_SESSION['numsuc']>100){?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php }?>
             
           </div>
         </li>
