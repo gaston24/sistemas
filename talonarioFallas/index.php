@@ -27,6 +27,9 @@ if(!isset($_SESSION['username'])){
 </head>
 <body>
     <div>
+        <button type="button" class="btn btn-primary" style="margin-left:70%; margin-top: 1%" onClick="window.location.href='../index.php'">Inicio</button>
+    </div>
+    <div>
         <h2 class="text-secondary mt-4 ml-4">Talonario de fallas<h2>
     </div>
 
