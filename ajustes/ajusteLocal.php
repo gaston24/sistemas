@@ -89,7 +89,7 @@ td{
 </table>
 
 
-<button type="submit" class="btn btn-primary">Ajustar</button>
+<button type="submit" class="btn btn-primary" id="btn_ajustar">Ajustar</button>
 </form>
 
 </div>

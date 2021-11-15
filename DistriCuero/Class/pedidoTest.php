@@ -6,7 +6,7 @@ echo 'testing - todo OK';
 
 
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
   <title>Exportar tablas HTML a EXCEL utilizando el plugin jQuery TableExport</title>
   <meta charset="utf-8">
