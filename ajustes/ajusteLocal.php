@@ -34,6 +34,8 @@ $result = odbc_exec($cid, $sql) or die (exit("Error en conexion"));
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/style.css">
+
 <style>
 td{
 	font-size: 11px;
@@ -47,10 +49,25 @@ td{
 
 <!--<input type="button" value="Salir" name="B4" OnClick="location.href='index.php' ">-->
 <div class="container-fluid">
-<button type="button" class="btn btn-primary" OnClick="location.href='selecLocal.php' " style="margin:5px">Volver</button>
-</br></br>
+
+<div class="row">
+	<button type="button" class="btn btn-primary" id="btn_back" OnClick="location.href='selecLocal.php'">Volver</button>
+
+	<div class="mt-2" id="busqRapida">
+		<label id="textBusqueda">Busqueda rapida:</label>
+		<input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
+	</div>
+
+	<div id="div_total">
+        <label id="labelTotal">Total artículos</label> 
+		<input name="total_todo" id="total" value="0" type="text" class="form-control" readonly>
+	</div>
+
+</div>
+<br>
 <form method="POST" action="confirmAjus.php">
-<table class="table table-striped">
+<div class="table-responsive">
+	<table class="table table-striped">
 
 		<thead>
 			<tr>
@@ -63,6 +80,8 @@ td{
 				<th>CODIGO NUEVO</th>
 			</tr>
 		</thead>
+
+		<tbody  id="table">
 		
         <?php
        
@@ -70,29 +89,37 @@ td{
 
         ?>
 		
-        <tr>
+        	<tr>
                 <td><?php echo $v['FECHA_MOV'] ;?></td>
 				<td><input class="form-control" name="ncomp[]" type="text" value="<?php echo $v['NCOMP_ORIG'] ;?>" readonly></td>
                 <td><?php echo $v['N_COMP'] ;?></a></td>
 				<td><input class="form-control" name="codigo[]" type="text" value="<?php echo $v['COD_ARTICU'] ;?>"  readonly></td>
 				<td><?php echo $v['DESCRIPCIO'] ;?></td>
 				<td><input class="form-control" name="cant[]" type="text" value="<?php echo $v['CANT'] ;?>"  readonly></td>
-				<td><input class="form-control" name="nuevo[]" type="text" value="<?php echo $v['COD_NUEVO'] ;?>" ></td>
-		</tr>
-		
+				<td><input class="form-control" name="nuevo[]" type="text" tabindex="1" value="<?php echo $v['COD_NUEVO'] ;?>" onchange="contar()"></td>
+			</tr>
         <?php
-
-        }
-
+        	}
         ?>
-        		
-</table>
+        </tbody>	
+	</table>
+</div>
 
+<button type="button" class="btn btn-success" id="btn_ajustar" onclick="ocultarBoton(); procesar()">Ajustar</button>
 
-<button type="submit" class="btn btn-primary" id="btn_ajustar">Ajustar</button>
 </form>
 
 </div>
+
+	<script src="main.js" charset="utf-8"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 
 </body>
 <?php
