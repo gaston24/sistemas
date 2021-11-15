@@ -1,0 +1,49 @@
+button{
+    width: 90px;
+    height: 40px;
+}
+
+html {
+    height: 100%;
+}
+body {
+    min-height: 100%;
+}
+
+#btn_ajustar{
+    margin-left: 1350px;
+    margin-top: 12px;
+}
+
+#btn_back{
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
+#busqRapida{
+    width: 300px;
+    margin-left: 100px;
+}
+
+    /*Fijar encabezado de tabla*/ 
+
+    .table{
+        width: 100%;
+    }
+    
+    thead tr th { 
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color:#343a40;
+        color: white;
+    }
+    
+    .table-responsive { 
+        height:760px;
+    }
+    
+    #div_total{
+        margin-top: 5px;
+        margin-left: 100px;
+    }

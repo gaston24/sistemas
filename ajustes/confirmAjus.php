@@ -12,7 +12,10 @@ if(!isset($_SESSION['username'])){
 <!doctype html>
 <html>
 <head>
-<title>Confirma</title>
+	<meta charset="UTF-8">
+	<title>Confirma</title>
+		<script src="sweetalert2.min.js"></script>
+		<link rel="stylesheet" href="sweetalert2.min.css">
 </head>
 <body>
 
@@ -59,7 +62,9 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 		while($v=odbc_fetch_array($resultArt)){
 					$codConsulta = $v['COD_ARTICU'];
 
-					// var_dump('$codConsulta', $codConsulta);
+
+					//var_dump('$codConsulta', $codConsulta);
+
 					
 					
 			//echo $codConsulta;
@@ -68,11 +73,13 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 			
 				if($codConsulta != '***DESTRUCCION'){
 
-					// var_dump('if');
+
+					//var_dump('if');
 				
 					//ACTUALIZAR CODIGO NUEVO
 					$sqlUpdate = "UPDATE SOF_CONFIRMA SET COD_NUEVO = '$nuevo' WHERE COD_ARTICU = '$codigo' AND NCOMP_ORIG = '$comp';";
-					// var_dump('$sqlUpdate', $sqlUpdate);
+					//var_dump('$sqlUpdate', $sqlUpdate);
+
 					odbc_exec($cid, $sqlUpdate);
 					
 					
@@ -115,7 +122,8 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 					'$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0, 'GTCENT'
 					)
 					;";
-					// var_dump('$sqlEncabezado', $sqlEncabezado);
+					//var_dump('$sqlEncabezado', $sqlEncabezado);
+
 					$resultEncabezado = odbc_exec($cid, $sqlEncabezado);
 					
 					
@@ -172,14 +180,14 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 			
 			}
 		}
-	}
+	}	
 
 }
-echo 'Procesando...';	
 
 header('Location: ajusteLocal.php');
 }
-?>
 
+?>
+   
 </body>
 </html>
