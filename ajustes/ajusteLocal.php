@@ -105,7 +105,7 @@ td{
 	</table>
 </div>
 
-<button type="button" class="btn btn-success" id="btn_ajustar" onclick="ocultarBoton(); procesar()">Ajustar</button>
+<button type="submit" class="btn btn-success" id="btn_ajustar" onclick="ocultarBoton(); procesar()">Ajustar</button>
 
 </form>
 
