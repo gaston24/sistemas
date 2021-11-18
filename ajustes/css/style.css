@@ -47,3 +47,20 @@ body {
         margin-top: 5px;
         margin-left: 100px;
     }
+
+    .input{
+        text-align: center;
+        width: 150px;
+    }
+
+    select{
+        width: 180px;
+    }
+
+    option{
+        text-align: center;
+    }
+
+    th{
+        text-align: justify;
+    }

@@ -36,14 +36,17 @@ $cid = odbc_connect($dsn, $user, $pass);
 $fecha = date("Y") . "/" . date("m") . "/" . date("d");
 $hora = (date("H")-5).date("i").date("s");
 
+// var_dump($_POST);
+// die();
+
 odbc_exec($cid, $sqlNuevos);
 
 for($i=0;$i<count($_POST['ncomp']);$i++){
 	
-	if($_POST['nuevo'][$i] != ''){
+	if($_POST['articulo'][$i] != ''){
 	
 		//echo 'Actualiza '.$_POST['codigo'][$i].' a '.$_POST['nuevo'][$i].' del comprobante '.$_POST['ncomp'][$i].'</br>';
-		$nuevo = $_POST['nuevo'][$i];
+		$nuevo = $_POST['articulo'][$i];
 		$codigo = $_POST['codigo'][$i];
 		$cant = $_POST['cant'][$i];
 		
@@ -180,11 +183,24 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 			
 			}
 		}
+	
 	}	
 
 }
 
+echo "<script> swal.fire({
+			icon: 'success',
+            title: 'Ajuste realizado exitosamente!',
+            showConfirmButton: true,
+          })
+            .then(function () {
+                window.location = 'ajusteLocal.php';
+            });
+		  	</script>";
+
+			  
 header('Location: ajusteLocal.php');
+
 }
 
 ?>
