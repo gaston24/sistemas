@@ -33,56 +33,64 @@ function myFunction() {
     }
   }
 
-//   $('#btn_ajustar').on('click', function(){
-
-//     Swal.fire({
-//         icon: 'success',
-//         title: 'Ajuste realizado con Exito!',
-//         showConfirmButton: true,
-//         timer: 3000
-//     })
-
-//   })
-
   //Cuenta la cantidad de artículos a ajustar//
 
    function contar(){
-    let elems = document.getElementsByName("nuevo[]");
+    let elems = document.querySelectorAll("option:checked");
     let cont = 0;
         for(var k=0;k<elems.length;k++){
-            if(elems[k].value.length > 0){ cont++; }
+            if(elems[k].textContent.length > 0){ cont++; }
         }
-
+        console.log(cont);
         document.getElementById('total').value = cont;
     }
-
-
-    function procesar() {
+  
     
-    cont = $('#total').val();
-  
-    if (cont != 0) {
-  
+    // $("form").submit(function(event) {
+    //   if (cont == 0) {
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Error de carga',
+    //       text: 'Debe ingresar al menos un artículo!',
+    //       showConfirmButton: true,
+    //       })
+    //         .then(function () {
+    //         });
+    //         event.preventDefault();
+    //       };
+    //     })
+
+
+    function procesar(event){
+
+      cont = $('#total').val();
+
+      if (cont == 0) {
         Swal.fire({
-            icon: 'success',
-            title: 'Ajuste realizado exitosamente!',
-            showConfirmButton: true,
+          icon: 'error',
+          title: 'Error de carga',
+          text: 'Debe ingresar al menos un artículo!',
+          showConfirmButton: true,
           })
             .then(function () {
-                window.location = "ajusteLocal.php";
             });
-  
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error de carga',
-        text: 'Debe ingresar al menos un artículo!',
-        showConfirmButton: true,
-      })
-      .then(function () {
-        window.location = "ajusteLocal.php";
-    });
-
+          event.preventDefault();
+      };
     }
+
+
+
+  $(document).ready(function(){
+    let largo = $( ".ctr-busc" ).length;
+    for(let x=1; x<=largo;x++){
+      $('#controlBuscador'+x).select2({
+        minimumInputLength: 5,
+        selectOnClose: true,
+      });
+    }
+  });
+
+
   
-  }
+  
+    
