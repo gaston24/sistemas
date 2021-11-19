@@ -119,8 +119,7 @@ FROM
 	)A
 	WHERE ISNULL(COD1,COD2) != '' 
 )A
-WHERE CANT_REM <> CANT_CONTROL
-AND COD_ARTICU NOT IN (SELECT COD_ARTICU COLLATE Latin1_General_BIN FROM STA03)
+WHERE COD_ARTICU NOT IN (SELECT COD_ARTICU COLLATE Latin1_General_BIN FROM STA03)
 ";
 
 	$resultAuditoria=odbc_exec($cid,$sqlAuditoria)or die(exit("Error en odbc_exec"));
