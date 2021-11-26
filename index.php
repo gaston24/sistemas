@@ -18,27 +18,28 @@ $habPedidos = $_SESSION['habPedidos'];
 
 try {
 
-	include_once '../Controlador/sql/sql_conexion.php';
-    $cid = $cid_central;
+	// include_once '../Controlador/sql/sql_conexion.php';
+    // $cid = $cid_central;
     
 } catch (PDOException $e){
         echo $e->getMessage();
 }
 
 
-$sqlProx =
-"
-EXEC SOF_FECHAS_2'$codClient';
+// $sqlProx =
+// "
+// EXEC SOF_FECHAS_2'$codClient';
 
-";
+// ";
 
-$stmt = sqlsrv_query( $cid, $sqlProx );
+// $stmt = sqlsrv_query( $cid, $sqlProx );
 
-$rows = array();
+// $rows = array();
 
-while( $v = sqlsrv_fetch_array( $stmt) ) {
-	$proximaEntrega = $v['A']	;
-}
+// while( $v = sqlsrv_fetch_array( $stmt) ) {
+	// $proximaEntrega = $v['A']	;
+	$proximaEntrega = ''	;
+// }
 
 ?>
 <!DOCTYPE HTML>

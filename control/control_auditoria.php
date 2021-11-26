@@ -92,7 +92,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 		
 		<thead>
 			<tr style="font-size:smaller">
-				<th >ORIGEN</th>
+				<th >SUC CONTROLÓ</th>
 				<th >NRO<br>REMITO</th>
 				<th >FECHA<br>CONTROL</th>
 				<th >CANT REM</th>
@@ -124,7 +124,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 		
         <tr class="fila-base" style="font-size:smaller" id="bodyTable">
 
-				<td ><?= $data[0]->SUC_ORIG ;?></td>
+				<td ><?= $data[0]->SUC_DESTIN ;?></td>
 				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data[0]->NRO_REMITO ;?>">  <?= $data[0]->NRO_REMITO ;?> </a></td>
 				<td ><?= $dateControl ;?></td>
 				<td ><?= $data[0]->CANT_REM ;?></td>

@@ -14,8 +14,6 @@ if(!isset($_SESSION['username'])){
 <body>
 
 <button type="button" class="btn btn-primary" onclick="location.href='../index.php'" style="margin:5px">Inicio</button>
-<!-- <button type="button" class="btn btn-primary" onclick="location.href='diferencias.php'" style="margin:5px">Diferencias</button>
-<button type="button" class="btn btn-primary" onclick="location.href='pendientes.php'" style="margin:5px">Pendientes</button> -->
 <button type="button" class="btn btn-primary" onclick="location.href='controlHistoricos.php'" style="margin:5px">Historial</button>
 
 

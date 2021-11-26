@@ -98,7 +98,8 @@ if(isset($_GET['numRem'])){
         <?php
 
 		$nombreVen = $data[0]->NOMBRE_VEN;
-
+		$numSuc = $data[0]->SUC_DESTIN;
+		$codSuc = $data[0]->COD_CLIENT;
         }
 
         ?>
@@ -119,7 +120,7 @@ if(isset($_GET['numRem'])){
 <script>
 
 	$(document).ready(function(){
-		$('#datosRemito').html('<h3><?=$numRem?> - <?=$nombreVen?></h3>');
+		$('#datosRemito').html('<h4><?=$codSuc?> (<?=$numSuc?> ) - <?=$numRem?> - <?=$nombreVen?></h4>');
 	});
 </script>
 </body>
