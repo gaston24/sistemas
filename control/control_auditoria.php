@@ -39,6 +39,10 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
+<script defer src="main.js"></script>
+<script defer src="js/chat.js"></script>
+<script defer src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>	
 <div class="container-fluid mt-3">
@@ -122,9 +126,9 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 		
 		?>
 		
-        <tr class="fila-base" style="font-size:smaller" id="bodyTable">
+        <tr class="fila-base" style="font-size:smaller" >
 
-				<td ><?= $data[0]->SUC_DESTIN ;?></td>
+				<td ><?= $data[0]->COD_CLIENT.' ('.$data[0]->SUC_DESTIN.')' ;?></td>
 				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data[0]->NRO_REMITO ;?>">  <?= $data[0]->NRO_REMITO ;?> </a></td>
 				<td ><?= $dateControl ;?></td>
 				<td ><?= $data[0]->CANT_REM ;?></td>
@@ -139,7 +143,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 					</select>
 				</td>
 
-				<td ><input type="text" size="8" class="form-control form-control-sm" id="nroAjuste" value="<?= $data[0]->NRO_AJUSTE ;?>" onChange="changeNroAjuste('<?= $data[0]->NRO_REMITO ;?>', this), validaAjuste()"> </td>
+				<td ><input type="text" size="8" class="form-control form-control-sm" ajuste="ajuste<?= $data[0]->NRO_REMITO ;?>" id="nroAjuste" value="<?= $data[0]->NRO_AJUSTE ;?>" onChange="changeNroAjuste('<?= $data[0]->NRO_REMITO ;?>', this), validaAjuste()"> </td>
 
 				<td >
 					<button data-toggle="modal" data-target="#chatModal" class="btn btn-<?=$colorChat?> btn-sm" type="button" onClick="getChat('<?= $data[0]->NRO_REMITO ;?>'), actuaNumRemito('<?= $data[0]->NRO_REMITO ;?>')">
@@ -160,9 +164,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 		</tbody>
 		</table>
 
-<script type="text/javascript" src="main.js"></script>
-<script src="main.js"></script>
-<script src="js/chat.js"></script>
+
 
 
 <!-- MODAL CHAT -->

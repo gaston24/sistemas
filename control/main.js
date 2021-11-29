@@ -35,19 +35,39 @@ function changeStatus(remito){
   
   var status = $('#select-'+remito).val();
 
+  let inputAjuste = document.querySelectorAll('.fila-base');
 
-  $.ajax({
-      url: 'controlador/actuaStatusRemito.php',
-      method: 'POST',
-      dateType: 'json',
-      data: {
-          ncomp : remito, 
-          status: status 
-      },
-      success: function(data) {
-          // console.log(data)
+  inputAjuste.forEach(
+    x=>{
+      let td = x.querySelectorAll('td');
+      if(td[6]){
+        if(td[6].querySelector('select').value == 'ACEPTADO' && (td[7].querySelector('INPUT').value == '' || td[7].querySelector('INPUT').value == '0') ){
+          Swal.fire({
+            icon: 'error',
+            title: 'Debe indicar un numero de ajuste',
+            showConfirmButton: true,
+          }).then(()=>{
+            location.reload()
+          })
+        }
+      }else{
+        $.ajax({
+            url: 'controlador/actuaStatusRemito.php',
+            method: 'POST',
+            dateType: 'json',
+            data: {
+                ncomp : remito, 
+                status: status 
+            },
+            success: function(data) {
+                // console.log(data)
+            }
+        });
       }
-  });
+    }
+  )
+
+
 }
 
 function changeNroAjuste(remito, context){
@@ -69,23 +89,23 @@ function changeNroAjuste(remito, context){
 
 }
 
-function validaAjuste(){
-  const matriz = Array.from(document.getElementById("id_tabla").rows);
-  matriz.forEach( function(r, ri) {
-    let valor = r.querySelectorAll('td');
-      valor.forEach(function(d, di){
-        if(di == 7 && d.firstChild.value == ''){
-          valor.item(6).firstElementChild.disabled = true
-        }
-        if(di == 7 && d.firstChild.value != ''){
-          valor.item(6).firstElementChild.disabled = false
-        }
-      })
-  })
-}
+// function validaAjuste(){
+//   const matriz = Array.from(document.getElementById("id_tabla").rows);
+//   matriz.forEach( function(r, ri) {
+//     let valor = r.querySelectorAll('td');
+//       valor.forEach(function(d, di){
+//         if(di == 7 && d.firstChild.value == ''){
+//           valor.item(6).firstElementChild.disabled = true
+//         }
+//         if(di == 7 && d.firstChild.value != ''){
+//           valor.item(6).firstElementChild.disabled = false
+//         }
+//       })
+//   })
+// }
 
-$(document).ready(()=>{
-  if (window.location.href.indexOf('control_auditoria.php')>-1){
-    validaAjuste();
-  }
-})
+// $(document).ready(()=>{
+//   if (window.location.href.indexOf('control_auditoria.php')>-1){
+//     validaAjuste();
+//   }
+// })
