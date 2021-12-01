@@ -64,7 +64,17 @@ if (!isset($_SESSION['username'])) {
 				</div>
 			
 			<div class="col-2">
-				<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+				<div class="row">
+					<div class="col">
+						<div class="btn-group" role="group" aria-label="Basic example">
+							<button type="button" class="btn btn-secondary" id="btnGrabarPedido">Grabar</button>
+							<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
+						</div>
+					</div>
+					<div class="col">
+						<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+					</div>
+				</div>
 			</div>				
 			<div class="col-2">
 				<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
@@ -73,7 +83,8 @@ if (!isset($_SESSION['username'])) {
 						echo 'enviar()';
 					} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
 					<div class="spinner-border ml-auto" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
-			</div>				
+			</div>	
+						
 		</div>
 			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
 
