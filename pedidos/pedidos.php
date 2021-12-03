@@ -83,15 +83,7 @@ if (!isset($_SESSION['username'])) {
 					</div>
 				</div>
 			</div>				
-			<!-- <div class="col-2">
-				<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
-						echo 'enviarMayorista()';
-					} else {
-						echo 'enviar()';
-					} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
-					<div class="spinner-border ml-auto" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
-			</div>	 -->
-						
+		
 		</div>
 			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
 
@@ -174,7 +166,7 @@ if (!isset($_SESSION['username'])) {
 
 							<td id="cant"><?= (int)($v['DISTRI']); ?></td>
 
-							<td id="cant"><input type="number" name="cantPed[]" value="0" size="4" tabindex="1" id="articulo" class="form-control form-control-sm" onchange="total();verifica();precioTotal()"></td>
+							<td id="cant"><input type="number" name="cantPed[]" value="0" min="0" size="4" tabindex="1" id="articulo" class="form-control form-control-sm" onchange="total();verifica();precioTotal()"></td>
 
 							<td id="precio">
 								<?php

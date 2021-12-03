@@ -76,7 +76,7 @@ td {
     font-size: 14px;
 }
 
-#textBox, #total
+#textBox, #total, #totalPrecio
 {
     border: 1px solid grey; 
     border-radius: 5px;
@@ -91,6 +91,12 @@ td {
 #total
 {
     width: 60px;
+    text-align: center;
+}
+
+#totalPrecio
+{
+    width: 100px;
     text-align: center;
 }
 
