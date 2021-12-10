@@ -44,17 +44,17 @@ if (!isset($_SESSION['username'])) {
 		include_once('Controlador/checkTipoPedido.php');
 		?>
 
-		<div style="width:98%; height:50%; padding-bottom:5%; margin-left:10px" id="pantalla">
+		<div style="width:98%; height:50%; padding-bottom:1%; padding-top:1%; margin-left:10px" id="pantalla">
 			<div id="menu" class="row mt-3 mb-2" >
 				<div class="col-4">
 					<a> <strong>Búsqueda rápida</strong> </a>
 						<input type="text" onkeyup="busquedaRapida()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
 				</div>
-				<div class="col-3">
+				<div class="col-2">
 					<a> <strong>Total de articulos</strong> </a> 
 					<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
 				</div>
-				<div class="col-1"
+				<div class="col-2"
 					<?php if ($suc < 100) { echo 'hidden'; } ?>
 				>
 					<a> <strong>Importe total:</strong> </a> 
@@ -63,17 +63,27 @@ if (!isset($_SESSION['username'])) {
 					
 				</div>
 			
-			<div class="col-2">
-				<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+				<div class="col-3">
+					<div class="row">
+						<div class="col">
+							<div class="btn-group" role="group" aria-label="Basic example">
+								<button type="button" class="btn btn-secondary" id="btnGrabarPedido">Grabar</button>
+								<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
+							</div>
+						</div>
+						<div class="col">
+							<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+						</div>
+						<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
+							echo 'enviarMayorista()';
+						} else {
+							echo 'enviar()';
+						} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
+						<div class="spinner-border ml-auto" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
+					</div>
+				</div>
 			</div>				
-			<div class="col-2">
-				<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
-						echo 'enviarMayorista()';
-					} else {
-						echo 'enviar()';
-					} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
-					<div class="spinner-border ml-auto" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
-			</div>				
+		
 		</div>
 			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
 
@@ -156,7 +166,7 @@ if (!isset($_SESSION['username'])) {
 
 							<td id="cant"><?= (int)($v['DISTRI']); ?></td>
 
-							<td id="cant"><input type="number" name="cantPed[]" value="0" size="4" tabindex="1" id="articulo" class="form-control form-control-sm" onchange="total();verifica();precioTotal()"></td>
+							<td id="cant"><input type="number" name="cantPed[]" value="0" min="0" size="4" tabindex="1" id="articulo" class="form-control form-control-sm" onchange="total();verifica();precioTotal()"></td>
 
 							<td id="precio">
 								<?php
