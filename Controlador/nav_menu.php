@@ -150,7 +150,7 @@ include('estado_cuenta.php');
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedido Inicial</a>
-            <a class="dropdown-item" href="#" onclick="location.href='DistriCuero/listOrdenesActivas.php'">Nota de pedido <span class="badge badge-warning"> Beta</span></a>
+            <a class="dropdown-item" href="#" onclick="location.href='DistriCuero/listOrdenesActivas.php'">Nota de pedido</a>
             </div>
         </li>
         <?php

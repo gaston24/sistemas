@@ -15,7 +15,7 @@ class Rubro
          }
 
         $sql = "
-        SELECT DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_]%' AND DESCRIP NOT LIKE 'Todos' 
+        SELECT REPLACE(DESCRIP, '_', '') DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_][ZD]%' AND DESCRIP NOT LIKE 'Todos' 
         AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT LIKE '%VINILICO' AND DESCRIP NOT IN ('ALHAJEROS','PACKAGING','LENTES')
         ";
         $stmt = sqlsrv_query( $cid_central, $sql );
