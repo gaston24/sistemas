@@ -124,12 +124,13 @@ $maestroArticulos = new Articulo();
                 
                     <th scope="col" style="width: 10%">Foto</th>
                     <th scope="col" style="width: 15%">Articulo</th>
-                    <th scope="col" style="width: 20%">Descripción</th>
+                    <th scope="col" style="width: 25%">Descripción</th>
                     <th scope="col" style="width: 20%">Rubro</th>
                     <th scope="col" style="width: 10%">Precio estimado</th>
                     <th scope="col" style="width: 20%">Temporada</th>
                     <th scope="col" style="width: 5%">Lanzamiento</th>
                     <th scope="col" style="width: 5%">Activo</th>
+                    <th scope="col" style="width: 5%">Detalle kit</th>
                 
             </thead>
 
@@ -153,7 +154,12 @@ $maestroArticulos = new Articulo();
                             <option value="1">SI</option>
                         </select>
                     </td>
-                    <td><input type="checkbox" name="checkTd" onclick="contar(this);"></input></td> 
+                    <td><input type="checkbox" name="checkTd" onclick="contar(this);"></input></td>
+                    <?php if($key['RUBRO']== 'KITS'){ ?>
+                    <td>
+                      <a href="detalleKits.php?cod_kit=<?= $key['COD_ARTICU'] ?>"><button type="button" class="btn btn-sm btn-warning" style="width: 80px;"><i class="fa fa-search"></i>  Ver</button></a>
+                    </td>
+                            <?php } else { ?><td style="width: 80px;"></td> <?php } ?> 
                     <div class="modal fade" id="exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
