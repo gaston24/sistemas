@@ -103,7 +103,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
             </div>
           </div>
         </div>
-        
+      </div>
     </div>
 
     <div class="table-responsive">
@@ -155,7 +155,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
         </table>
         
     </div>
-</div>
+
 
     <script src="main.js" charset="utf-8"></script> 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

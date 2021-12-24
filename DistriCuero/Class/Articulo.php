@@ -74,6 +74,15 @@ class Articulo
         return $rows;
     }
 
+    public function traerDetalleKit($cod_kit){
+
+        $sql = " SELECT * FROM RO_DETALLE_KIT_VALORIZADO WHERE COD_KIT LIKE '$cod_kit' ";
+        
+        $rows = $this->retornarArray($sql);
+
+        return $rows;
+    }
+
 }    
 
 
