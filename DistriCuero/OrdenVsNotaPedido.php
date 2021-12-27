@@ -29,7 +29,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
 <body>
 
 <div id="contenedorList">
-    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-list"></i>  Lista Notas de Pedido por Orden</h3>
+    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-list"></i>  Notas de Pedido por Orden</h3>
     <div class="row">
         <div class="row ml-1">
             <div class="ml-2">   
@@ -136,11 +136,11 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
                     <td id="notaPed"><?= $key['NRO_NOTA_PEDIDO'] ?></a></td>
                     <td><?=  "$".number_format($key['TOTAL'], 0, ",",".")?></td>
                     <td id="cantidad"><?=  $key['CANTIDAD']?></td>
-                    <td>
-                        <?php if($key['CANTIDAD'] < 1){ ?>
-                        <a>PENDIENTE</a>
-                        <?php } else { ?> <?php } ?>
-                    </td>
+                      <?php if($key['ESTADO']== 'RECHAZADA'){ ?>
+                        <td style="color: #dc3545;"><?=  $key['ESTADO']?></td>
+					            <?php } else { ?> 
+                        <td><?=  $key['ESTADO']?></td>
+                      <?php } ?>  
                     <!-- <td>
                       <a href="detallePedidoSuc.php?notaPedido=<?= $key['NRO_NOTA_PEDIDO'] ?>"><i class="fa fa-search" style="color: #ffc107; font-size: 20px;"></i></a>
                     </td>           -->

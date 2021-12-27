@@ -273,6 +273,55 @@ function postearOrdenes2(matriz) {
 
 }
 
+//Revisa que se haya seleccionado alguna orden e inserta la orden en la tabla RO_ORDENES_RECHAZADAS//
+
+function rechazaOrdenes() {
+  const matriz = matrizOrdenes();
+  let contar = $('#totalOrdenes').val();
+
+  if (contar != 0) {
+
+    postearOrdenes3(matriz);
+
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de seleccion',
+      text: 'No hay ninguna orden seleccionada!'
+    });
+  }
+
+}
+
+function postearOrdenes3(matriz) {
+
+  // variable env = 1 - envia pedido
+  // variable env = 0 - no hace nada
+  let env = 1;
+  let url = (env == 1) ? 'rechazaOrden.php' : 'PedidoTest.php';
+  $.ajax({
+      url: 'Controller/'+url,
+      method: 'POST',
+      data: {
+          matriz: matriz,
+      },
+
+      success: function (data) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Orden rechazada exitosamente!',
+          text: "Numero de orden: " + data,
+          showConfirmButton: true,
+        })
+          .then(function () {
+              window.location = "listOrdenesActivas.php";
+          });
+      }
+
+  });
+
+}
+
 
 //Suma el total de artículos del pedido//
 

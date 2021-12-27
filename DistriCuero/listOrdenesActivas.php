@@ -7,6 +7,9 @@ if(!isset($_SESSION['username'])){
 
 require_once 'Class/Orden.php';
 
+$codClient = $_SESSION['codClient']; 
+
+
 $orden = new Orden();
 $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
 
@@ -14,6 +17,7 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,11 +54,29 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
 </nav>
 
 <div id="contenedorList">
-    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-check-square-o"></i>  Selección de Ordenes</h3>
+  <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-check-square-o"></i>  Selección de Ordenes</h3>
+  
+  <div class="form-row ml-3 mb-3 contenedor">
 
-            <!-- <div class="ml-2">   
-                <a type="button" class="btn btn-primary ml-4 mb-4" id="btn_back2" href="../index.php"><i class="fa fa-arrow-left"></i>  Volver</a>
-            </div> -->
+            <div class="mt-2" id="busqRapida">
+                <label id="textBusqueda">Busqueda rapida:</label>
+                <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
+            </div>
+
+            <div>
+                 <label id="labelTotal">Ordenes seleccionadas</label> 
+				<input name="total" id="totalOrdenes" value="0" type="text" class="form-control" readonly>
+			</div>
+            
+            <div class="btn-group" role="group" aria-label="Basic example">
+               
+                <div>
+                    <button type="button" class="btn btn-danger ml-3" id="btn_rechazar" onclick="rechazaOrdenes()">Rechazar
+                    <i class="fa fa-times-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
     <div class="table-responsive">
         <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableGestionOrden" style="width: 80%">
@@ -63,8 +85,9 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
                 <th scope="col" style="width: 20%">Hora</th>
                 <th scope="col" style="width: 20%">Orden</th>
                 <th scope="col" style="width: 10%">Articulos</th>
-                <th scope="col" style="width: 5%">Estado</th>  
-                <th scope="col" style="width: 5%"></th>  
+                <th scope="col" style="width: 5%">Estado</th> 
+                <th scope="col" style="width: 2%">Seleccionar</th> 
+                <th scope="col" style="width: 2%"></th>  
             </thead>
 
             <tbody id="table">
@@ -79,9 +102,10 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
                     <td><?= $key['NRO_ORDEN'] ?></td>
                     <td><?=  $key['ARTICULOS']?></td>
                     <td id="novedadPed"><a>ACTIVA!</a></td>
+                    <td><input type="checkbox" name="checkTd" onclick="contarGestion()"></input></td> 
                     <td>
                       <a href="notaPedido.php?orden=<?= $key['NRO_ORDEN'] ?>"><i class="fa fa-search" style="color: #ffc107; font-size: 20px;"></i></a>
-                    </td>                
+                    </td>               
                 </tr>   
                 
                 <?php

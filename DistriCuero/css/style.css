@@ -12,7 +12,7 @@ body{
 }
 .contenedor
 {
-    max-width: 90%;
+    max-width: 70%;
     justify-content:space-between;
 }
 
@@ -155,6 +155,10 @@ thead tr th {
     margin-top: 40px;
 }
 
+#btn_rechazar
+{
+    margin-left: 70%;
+}
 
 
 
