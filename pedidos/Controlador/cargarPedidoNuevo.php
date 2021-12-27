@@ -147,7 +147,16 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 				
 				////// FUNCION DE CARGAR PEDIDO DETALLE // TAMBIEN COMPROMETE STOCK
 
-				pedido_detalle_simple_kit_encabezado($depo, $numPed, $nroRenglon, $codArt, $cantArt, $codClient, $talon_ped);
+				pedido_detalle_simple_kit_encabezado(
+					$depo, //CODIGO DEPOSITO ARTICULO
+					$numPed, //PEDIDO TANGO 
+					$nroRenglon, //NRO_RENGLON
+					$codArt, //COD_ARTICU
+					$cantArt, //CANT_PEDIDO
+					$codClient, //COD_CLIENT 
+					$talon_ped //TALON_PED
+				);
+
 			
 				$ultRenglon = $nroRenglon;
 				
