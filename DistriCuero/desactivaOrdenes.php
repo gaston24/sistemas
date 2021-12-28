@@ -36,7 +36,7 @@ $todasLasOrdenes = $orden->traerOrdenesActivasTodas();
                 <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
             </div>
 
-            <div>
+            <div id="contCountOrdenes">
                  <label id="labelTotal">Ordenes seleccionadas</label> 
 				<input name="total" id="totalOrdenes" value="0" type="text" class="form-control" readonly>
 			</div>
@@ -44,7 +44,7 @@ $todasLasOrdenes = $orden->traerOrdenesActivasTodas();
             <div class="btn-group" role="group" aria-label="Basic example">
                
                 <div>
-                    <button type="button" class="btn btn-danger ml-3" id="btn_desac" onclick="desactivaOrdenes()">Desactivar
+                    <button type="button" class="btn btn-danger" id="btn_desac" onclick="desactivaOrdenes()">Desactivar
                     <i class="fa fa-times-circle"></i>
                     </button>
                 </div>

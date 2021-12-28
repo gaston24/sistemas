@@ -31,7 +31,19 @@ $maestroArticulos = new Articulo();
     <title>Gestion de articulos</title>
   </head>
   <body>
-  <h3 class="mb-4 mt-4 ml-3"><i class="fa fa-archive"></i>  Gestion de Articulos</h3>
+
+    <div class="row mt-4" id="contenedorTitle">
+        <div>   
+            <a type="button" class="btn btn-primary" id="btn_back2" href="navbar.html"><i class="fa fa-arrow-left"></i>  Volver</a>
+        </div>
+        <div id="titleIndex">
+            <h3><i class="fa fa-archive"></i>  Gestion de Articulos</h3>
+        </div>
+        <div>
+            <button type="button" class="btn btn-success" id="btn_orden" onclick="enviaOrden()">Enviar<i class="fa fa-cloud-upload"></i></button>
+        </div>
+            
+    </div>
 
   <form>
         <div class="form-row ml-3 mb-3 contenedor">
@@ -52,7 +64,7 @@ $maestroArticulos = new Articulo();
             </select>
         </div>  
         
-            <div class="col-sm-1 mt-2">
+            <div class="col-sm-1 mt-2" id="contTemp">
                     <label for="inputState2">Temporada</label>
                     <select id="inputTemp" class="form-control form-control-sm" name="temporada">
                         <option selected></option>
@@ -75,19 +87,12 @@ $maestroArticulos = new Articulo();
                 <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
             </div>
             
-            <div>
+            <div id="contTotal">
                  <label id="labelTotal">Total artículos</label> 
 				<input name="total" id="total" value="0" type="text" class="form-control" readonly>
 			</div>
 
-            <div>
-                <button type="button" class="btn btn-success" id="btn_orden" onclick="enviaOrden()">Enviar
-                <i class="fa fa-cloud-upload"></i>
-                </button>
-            </div>
-            <div class="col-">   
-                <a type="button" class="btn btn-primary" id="btn_back2" href="navbar.html"><i class="fa fa-arrow-left"></i>  Volver</a>
-            </div>
+            
 
             <div class="form-check" id="check">
                 <label class="form-check-label ml-1" id="labelCheck">
