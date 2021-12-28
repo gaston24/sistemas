@@ -56,27 +56,22 @@ $todasLasOrdenes = $orden->traerOrdenesActivas($codClient);
 <div id="contenedorList">
   <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-check-square-o"></i>  Selección de Ordenes</h3>
   
-  <div class="form-row ml-3 mb-3 contenedor">
-
-            <div class="mt-2" id="busqRapida">
-                <label id="textBusqueda">Busqueda rapida:</label>
-                <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
-            </div>
-
-            <div>
-                 <label id="labelTotal">Ordenes seleccionadas</label> 
-				<input name="total" id="totalOrdenes" value="0" type="text" class="form-control" readonly>
-			</div>
-            
-            <div class="btn-group" role="group" aria-label="Basic example">
-               
-                <div>
-                    <button type="button" class="btn btn-danger ml-3" id="btn_rechazar" onclick="rechazaOrdenes()">Rechazar
-                    <i class="fa fa-times-circle"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+  <div class="form-row mb-3">
+    <div class="mt-2" id="busqRapida">
+      <label id="textBusqueda">Busqueda rapida:</label>
+      <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
+    </div>
+    <div class="form-row" id="contTotales">
+      <div>
+        <label id="labelTotal">Ordenes seleccionadas</label> 
+        <input name="total" id="totalOrdenes" value="0" type="text" class="form-control" readonly>
+      </div>
+      
+    </div>
+    <div>
+        <button type="button" class="btn btn-danger" id="btn_rechazar" onclick="rechazaOrdenes()">Rechazar <i class="fa fa-times-circle"></i></button>
+      </div>
+  </div>
 
     <div class="table-responsive">
         <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableGestionOrden" style="width: 80%">

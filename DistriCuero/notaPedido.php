@@ -68,14 +68,16 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                 <label id="textBusqueda">Busqueda rapida:</label>
                 <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control"></input>  
             </div>
-            <div>
-                 <label id="labelTotal">Total artículos</label> 
-				<input name="total_todo" id="total" value="0" type="text" class="form-control" readonly>
-			</div>
-            <div>
-                 <label id="labelTotal">Importe Total</label> 
-				<input name="total_todo" id="totalPrecio" value="0" type="text" class="form-control" readonly>
-			</div>
+            <div class="form-row" id="contTotales">
+                <div>
+                    <label id="labelTotal">Total artículos</label> 
+                    <input name="total_todo" id="total" value="0" type="text" class="form-control" readonly>
+                </div>
+                <div class="ml-4">
+                    <label id="labelTotal">Importe Total</label> 
+                    <input name="total_todo" id="totalPrecio" value="0" type="text" class="form-control" readonly>
+                </div>
+            </div>
             <!-- <div class="col-1">   
                 <a type="button" class="btn btn-primary" id="btn_back" href="listOrdenesActivas.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div> -->

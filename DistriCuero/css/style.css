@@ -78,7 +78,17 @@ body{
 /* Style de notaPedido */
 
 #contBusqRapida{
-    margin-left: 1%;
+    margin-left: 5%;
+}
+
+#btn_enviar
+{
+    margin-left: 300%;
+}
+
+#contTotales
+{
+    margin-left: 10%;
 }
 
 #inputNum{
@@ -194,7 +204,7 @@ thead tr th {
 
 #btn_rechazar
 {
-    margin-left: 70%;
+  margin-left: 250px;
 }
 
 #contCountOrdenes
