@@ -131,7 +131,19 @@ $maestroArticulos = new Articulo();
                     <td><?=  $key['DESCRIPCION']?></td>
                     <td><?=  $key['DESTINO']?></td>
                     <td><?=  $key['TEMPORADA']?></td>
-                    <td><?=  $key['RUBRO']?></td>                    
+                    <td><?=  $key['RUBRO']?></td>
+                    <div class="modal fade" id="exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-body" align="center">
+											<img src="../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg - imagen no encontrada" height="400" width="400">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+										</div>
+									</div>
+								</div>
+							</div>                    
                 </tr>   
             
             <?php
