@@ -111,7 +111,7 @@ include('estado_cuenta.php');
             }
             ?>
             <?php if($_SESSION['numsuc']>100){?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php }?>
-            
+            <a class="dropdown-item" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
           </div>
         </li>
 

@@ -1,0 +1,45 @@
+.table{
+    width: 85%;
+}
+
+/*Fijar encabezado de tabla*/ 
+
+thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table-responsive { 
+    height:745px;
+}
+
+.table .thead-dark th {
+    color: white;
+    background-color: #343a40;
+}
+
+.table-responsive { 
+    height:570px;
+    margin-left: 3%;
+}
+
+.form
+{
+    margin-left: 3%;
+}
+
+#contenedorTitle
+{
+    margin-left: 3%;
+}
+
+.contenedor
+{
+    margin-left: 3%;
+}
+
+#busqRapida
+{
+    margin-left: 30%;
+}
