@@ -1,0 +1,77 @@
+
+/*Fijar encabezado de tabla*/ 
+
+thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table .thead-dark th {
+    color: white;
+    background-color: #343a40;
+}
+
+.table-responsive { 
+    height:560px;
+    width: 1200px;
+    margin-left: 3.5%;
+}
+
+.form
+{
+    margin-left: 3%;
+}
+
+#contenedorTitle
+{
+    margin-left: 2%;
+}
+
+.contenedor
+{
+    margin-left: 3%;
+}
+
+#busqRapida
+{
+    margin-top: 0.5%;
+    margin-left: 15%;
+}
+
+#btn_filtro
+{
+    margin-top: 43%;
+}
+
+#btnSave
+{
+position: absolute;
+   top: 48%;
+   left: 120%;
+   width: 105px;
+   height: 40px;
+}
+
+#btnActive
+{
+    position: absolute;
+    left: 110%;
+    top: -5px;
+    width: 105px;
+    height: 40px;
+}
+
+#contCheck
+{
+    position: absolute;
+    right: 40%;
+    top: 30px;
+    font-weight: bold;
+}
+
+#prioridad
+{
+    width: 50%;
+    text-align: center;
+}
