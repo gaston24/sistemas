@@ -125,11 +125,11 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
                             <td><?= $value->NRO_SUCURSAL; ?></td>
                             <td><?= $value->COD_CLIENT; ?></td>
                             <td><?= $value->SUCURSAL; ?></td>
-                            <td><select name="prioridad" id="prioridad">
-                                <option value="<?= $value->PRIORIDAD ?>" selected><?= $value->PRIORIDAD ?> </option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
+                            <td ><select name="prioridad" id="prioridad" class="selectPrioridad">
+                                <option value="<?= $value->PRIORIDAD ?>" selected disabled><?= $value->PRIORIDAD ?> </option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
                             </select>
                             </td>
                             <td><input type="checkbox" name="LUNES" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->LUNES == 1) {
@@ -179,7 +179,8 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
 
 <script>
-   /*   let v = [];
+    let prioridad=[];
+     let v = [];
     const actualizarDia = (codClient, nameDia, event) => {
         // si checked true guardo en un array cod y día. Cada posición es un objeto. 
          if (event.target.checked) {
@@ -190,10 +191,17 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
              console.log(v);
          }
      }
- */
-    const actualizarDia = (codClient, nameDia) => {
+
+  /*   const actualizarDia = (codClient, nameDia) => {
     console.log(codClient, nameDia)
     //ejecutar el ajax, mandando codcliente y namedia
     }
-    
+     */
+    const selectElement = document.querySelector('.selectPrioridad');
+    selectElement.addEventListener('change', (event) => {
+        valuePrioridad=event.target.value; 
+        codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
+        prioridad.push({codClient,valuePrioridad});
+        console.log(prioridad);
+    });
 </script>
