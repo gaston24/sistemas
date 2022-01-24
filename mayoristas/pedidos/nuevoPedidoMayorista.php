@@ -198,7 +198,7 @@ foreach ($_POST['codArt'] as $clave => $valor) {
 		
 			$nroRenglon++;
 
-			comp_stock($cantArt, $codArt, $depo);
+			comp_stock($cantArt, $valor, $depo);
 		
 		}
 
