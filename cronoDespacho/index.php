@@ -197,7 +197,16 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
     //ejecutar el ajax, mandando codcliente y namedia
     }
      */
-    const selectElement = document.querySelector('.selectPrioridad');
+    const selectElement = document.querySelectorAll('.selectPrioridad');
+
+    selectElement.forEach((ele)=>
+    ele.addEventListener('change', (event) => {
+        valuePrioridad=event.target.value; 
+        codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
+        prioridad.push({codClient,valuePrioridad});
+        console.log(prioridad);
+    })
+    );
     selectElement.addEventListener('change', (event) => {
         valuePrioridad=event.target.value; 
         codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
