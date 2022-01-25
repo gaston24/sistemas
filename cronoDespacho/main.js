@@ -1,3 +1,93 @@
+  document.addEventListener('DOMContentLoaded',iniciarEscucha);
+
+  const selectElement = document.querySelectorAll('.selectPrioridad');
+
+function iniciarEscucha()
+{
+ 
+
+  selectElement.forEach((ele)=>
+  ele.addEventListener('change', (event) => {
+      valuePrioridad=event.target.value; 
+      codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
+      prioridad.push({codClient,valuePrioridad});
+      console.log(prioridad);
+  })
+  );
+
+
+  selectElement.addEventListener('change', (event) => {
+      valuePrioridad=event.target.value; 
+      codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
+      prioridad.push({codClient,valuePrioridad});
+      console.log(prioridad);
+  });
+
+}
+
+    //captura de cambios de priodidad y calendario
+
+    let prioridad=[];
+     let cronograma = [];
+    const actualizarDia = (codClient, nameDia, event) => {
+        // si checked true guardo en un array cod y día. Cada posición es un objeto. 
+         if (event.target.checked) {
+             cronograma.push({
+                 codClient,
+                 nameDia
+             });
+             console.log(cronograma);
+         }
+     }
+
+  /*   const actualizarDia = (codClient, nameDia) => {
+    console.log(codClient, nameDia)
+    //ejecutar el ajax, mandando codcliente y namedia
+    }
+     */
+ 
+  //evento guardar cambios prioridad y calendario por cliente y día. 
+
+  document.getElementById('btnSave').addEventListener('click',iniciar);
+
+ let conexion;
+  function iniciar()
+  {
+    console.log('entraste');
+    
+    conexion=new XMLHttpRequest(); 
+    conexion.onreadystatechange = eventoGuardar;
+    var aleatorio=Math.random();
+    conexion.open('GET','./class/cronograma.php?prioridad='+JSON.stringify(prioridad)+'&cronograma='+JSON.stringify(cronograma), true);
+    conexion.send();
+  }
+
+
+  function eventoGuardar()
+  {
+    console.log(cronograma);
+    console.log(prioridad);
+    if(conexion.readyState == 4 && conexion.status==200)
+    {
+      console.log(conexion.responseText );
+      if(!String(conexion.responseText).includes('error'))
+      {
+      Swal.fire({
+        icon: 'success',
+        title: 'Los cambios fueron guardados',
+        showConfirmButton: false,
+        timer:1500
+      })
+    }else{
+      Swal.fire('No se detectaron cambios');
+    }
+       } 
+    else 
+    {
+      console.log('Procesando...');
+    }
+  }
+
 
 //Búsqueda rápida table//
 
@@ -88,5 +178,6 @@ function myFunction() {
         })
       }
     }
+
 
   
