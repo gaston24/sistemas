@@ -55,7 +55,7 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
     </div>
 
-    <form class="mb-3 mt-4">
+    <form class="mb-3 mt-4" action="#">
         <div class="form-row contenedor">
 
             <div class="col-sm-2 mt-2">
@@ -83,9 +83,8 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
                 <input type="text" id="textBox" placeholder="Sobre cualquier campo..." onkeyup="myFunction()" class="form-control form-control-sm"></input>
             </div>
             <div class="col-2">
-                <button class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</button>
             </div>
-        </div>
 
     </form>
 
@@ -165,10 +164,10 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
         </div>
 
 </body>
-
+<script src="main.js" charset="utf-8"></script>
 </html>
 
-<script src="main.js" charset="utf-8"></script>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -179,38 +178,6 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
 
 <script>
-    let prioridad=[];
-     let v = [];
-    const actualizarDia = (codClient, nameDia, event) => {
-        // si checked true guardo en un array cod y día. Cada posición es un objeto. 
-         if (event.target.checked) {
-             v.push({
-                 codClient,
-                 nameDia
-             });
-             console.log(v);
-         }
-     }
-
-  /*   const actualizarDia = (codClient, nameDia) => {
-    console.log(codClient, nameDia)
-    //ejecutar el ajax, mandando codcliente y namedia
-    }
-     */
-    const selectElement = document.querySelectorAll('.selectPrioridad');
-
-    selectElement.forEach((ele)=>
-    ele.addEventListener('change', (event) => {
-        valuePrioridad=event.target.value; 
-        codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
-        prioridad.push({codClient,valuePrioridad});
-        console.log(prioridad);
-    })
-    );
-    selectElement.addEventListener('change', (event) => {
-        valuePrioridad=event.target.value; 
-        codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
-        prioridad.push({codClient,valuePrioridad});
-        console.log(prioridad);
-    });
+  
+  
 </script>
