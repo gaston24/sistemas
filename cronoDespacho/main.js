@@ -75,11 +75,14 @@ function iniciarEscucha()
       Swal.fire({
         icon: 'success',
         title: 'Los cambios fueron guardados',
-        showConfirmButton: false,
-        timer:1500
+        showConfirmButton: true
       })
     }else{
-      Swal.fire('No se detectaron cambios');
+      Swal.fire({
+        icon: 'error',
+        title: 'No se detectaron cambios'
+      })
+        ;
     }
        } 
     else 
@@ -87,6 +90,8 @@ function iniciarEscucha()
       console.log('Procesando...');
     }
   }
+
+
 
 
 //Búsqueda rápida table//
@@ -165,6 +170,7 @@ function myFunction() {
     
       });
     }
+    
     document.getElementById('btn_filtro').addEventListener('click',verificaCronoSeleccionado);
 
     function verificaCronoSeleccionado(event) {

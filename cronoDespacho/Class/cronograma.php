@@ -45,13 +45,27 @@ class Cronograma
         if (count($prioridad) > 0 || count($cronograma) > 0) {
             
             foreach ($prioridad as $item) {
-                var_dump($item->{'codClient'});
-                var_dump($item->{'valuePrioridad'});
+                // var_dump($item->{'codClient'});
+                // var_dump($item->{'valuePrioridad'});
+
+                $codClient = $item->{'codClient'};
+                $prioridad = $item->{'valuePrioridad'};
+                
+                $sql = " EXEC RO_UPDATE_CRONOGRAMA_DESPACHO_PRIORIDAD '$codClient','$prioridad' ";
+
+                $rows = $this->retornarArray($sql);
+
             }
 
             foreach ($cronograma as $item) {
-                var_dump($item->{'codClient'});
-                var_dump($item->{'nameDia'});
+
+                $codClient = $item->{'codClient'};
+                $nameDia = $item->{'nameDia'};
+                
+                $sql = " EXEC RO_UPDATE_CRONOGRAMA_DESPACHO '$codClient','$nameDia' ";
+
+                $rows = $this->retornarArray($sql);
+
             }
         } else {
             echo 'error';
