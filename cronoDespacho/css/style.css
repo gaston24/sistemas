@@ -35,22 +35,13 @@ thead tr th {
 
 #busqRapida
 {
-    margin-top: 0.5%;
+    margin-top: 0%;
     margin-left: 15%;
 }
 
 #btn_filtro
 {
-    margin-top: 43%;
-}
-
-#btnSave
-{
-position: absolute;
-   top: 48%;
-   left: 120%;
-   width: 105px;
-   height: 40px;
+    margin-top: 35%;
 }
 
 #btnActive
@@ -74,4 +65,10 @@ position: absolute;
 {
     width: 50%;
     text-align: center;
+}
+
+#menu
+{
+    margin-bottom: 10%;
+    margin-top: 1%;
 }
