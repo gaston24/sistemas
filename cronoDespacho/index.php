@@ -60,10 +60,10 @@ foreach ($todosLosTipos as $value) {
 
     </div>
 
-    <form class="mb-3 mt-4" action="#">
+    <form action="#" id="menu">
         <div class="form-row contenedor">
 
-            <div class="col-sm-2 mt-2">
+            <div class="col-sm-2">
                 <label>Cronograma</label>
                 <select id="inputTipo" class="form-control form-control-sm" name="tipo">
                     <?php
@@ -102,7 +102,7 @@ foreach ($todosLosTipos as $value) {
         $todosLosClientes = $cronoDespacho->traerCronograma($cronoElegido);
 
     ?>
-        <div class="table-responsive">
+        <div class="table-responsive mt-3">
             <table class="table table-hover table-condensed table-striped text-center">
                 <thead class="thead-dark">
                     <th scope="col" style="width: 2%">NRO_SUC</th>
