@@ -57,27 +57,20 @@ class Cronograma
 
             }
 
-            foreach ($cronograma as $item) {
-
-                $codClient = $item->{'codClient'};
-                $nameDia = $item->{'nameDia'};
-                
-                $sql = " EXEC RO_UPDATE_CRONOGRAMA_DESPACHO '$codClient','$nameDia' ";
-
-                $rows = $this->retornarArray($sql);
-
-            }
         } else {
             echo 'error';
         }
     }
+
+    public function updateDia($codClient, $nameDia, $tipo){
+        $sql = " EXEC RO_UPDATE_CRONOGRAMA_DESPACHO '$codClient','$nameDia', $tipo ";
+        $rows = $this->retornarArray($sql);
+    }
+
+    public function updatePrioridad($codClient, $prioridad, $tipo){
+        $sql = " EXEC RO_UPDATE_CRONOGRAMA_DESPACHO_PRIORIDAD '$codClient','$prioridad', $tipo ";
+        $rows = $this->retornarArray($sql);
+    }
 }
 
 
-$nuevoCrono = new Cronograma();
-
-if (isset($_GET['prioridad']) && isset($_GET['cronograma'])) {
-    $prioridad = json_decode($_GET['prioridad']);
-    $cronograma = json_decode($_GET['cronograma']);
-    $nuevoCrono->update($prioridad, $cronograma);
-}

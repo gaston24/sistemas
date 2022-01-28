@@ -1,95 +1,49 @@
-  document.addEventListener('DOMContentLoaded',iniciarEscucha);
-
-  const selectElement = document.querySelectorAll('.selectPrioridad');
-
-function iniciarEscucha()
-{
- 
-
-  selectElement.forEach((ele)=>
-  ele.addEventListener('change', (event) => {
-      valuePrioridad=event.target.value; 
-      codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
-      prioridad.push({codClient,valuePrioridad});
-      console.log(prioridad);
-  })
-  );
+const tipoCronograma = document.querySelector("#inputTipo")
 
 
-  selectElement.addEventListener('change', (event) => {
-      valuePrioridad=event.target.value; 
-      codClient   =event.target.parentNode.parentNode.childNodes[3].innerHTML;
-      prioridad.push({codClient,valuePrioridad});
-      console.log(prioridad);
-  });
+const actualizarDia = (codClient, nameDia) => {
+
+  // console.log(codClient, nameDia, tipoCronograma.value)
+  
+    $.ajax({
+      url: './Controller/CronogramaController.php?function=actuaDia',
+      method: 'POST',
+      data: {
+          codClient: codClient,
+          nameDia: nameDia,
+          tipoCronograma: tipoCronograma.value
+      },
+  
+      success: function (data) {
+        // console.log(data)   
+      }
+  
+    });
+
 
 }
 
-    //captura de cambios de priodidad y calendario
+const cambioPrioridad = (codClient, prioridad) => {
+  
+  console.log(codClient, prioridad, tipoCronograma.value)
 
-    let prioridad=[];
-     let cronograma = [];
-    const actualizarDia = (codClient, nameDia, event) => {
-        // si checked true guardo en un array cod y día. Cada posición es un objeto. 
-         if (event.target.checked) {
-             cronograma.push({
-                 codClient,
-                 nameDia
-             });
-             console.log(cronograma);
-         }
-     }
+    $.ajax({
+      url: './Controller/CronogramaController.php?function=actuaPrioridad',
+      method: 'POST',
+      data: {
+          codClient: codClient,
+          prioridad: prioridad,
+          tipoCronograma: tipoCronograma.value
+      },
+  
+      success: function (data) {
+      }
+  
+    });
 
-  /*   const actualizarDia = (codClient, nameDia) => {
-    console.log(codClient, nameDia)
-    //ejecutar el ajax, mandando codcliente y namedia
-    }
-     */
- 
-  //evento guardar cambios prioridad y calendario por cliente y día. 
-
-  document.getElementById('btnSave').addEventListener('click',iniciar);
-
- let conexion;
-  function iniciar()
-  {
-    console.log('entraste');
-    
-    conexion=new XMLHttpRequest(); 
-    conexion.onreadystatechange = eventoGuardar;
-    var aleatorio=Math.random();
-    conexion.open('GET','./class/cronograma.php?prioridad='+JSON.stringify(prioridad)+'&cronograma='+JSON.stringify(cronograma), true);
-    conexion.send();
-  }
+}
 
 
-  function eventoGuardar()
-  {
-    console.log(cronograma);
-    console.log(prioridad);
-    if(conexion.readyState == 4 && conexion.status==200)
-    {
-      console.log(conexion.responseText );
-      if(!String(conexion.responseText).includes('error'))
-      {
-      Swal.fire({
-        icon: 'success',
-        title: 'Los cambios fueron guardados',
-        showConfirmButton: true
-      })
-    }else{
-      Swal.fire({
-        icon: 'error',
-        title: 'No se detectaron cambios'
-      })
-        ;
-    }
-       } 
-    else 
-    {
-      console.log('Procesando...');
-    }
-  }
 
 
 

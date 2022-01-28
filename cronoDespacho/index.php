@@ -8,8 +8,13 @@ $cronoDespacho = new Cronograma();
 $tipo = new TipoCrono();
 $todosLosTipos = $tipo->traerTipo();
 
-$cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
+$cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : 'NORMAL';
 
+foreach ($todosLosTipos as $value) {
+    if($cronoElegido == $value['ID'] ){
+        $cronoElegido = $value['TIPO_CRONO'];
+    }    
+}
 ?>
 
 
@@ -61,11 +66,11 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
             <div class="col-sm-2 mt-2">
                 <label>Cronograma</label>
                 <select id="inputTipo" class="form-control form-control-sm" name="tipo">
-                    <option selected></option>
                     <?php
                     foreach ($todosLosTipos as $tipo => $key) {
+                        $selected = ($key['TIPO_CRONO'] == $cronoElegido) ? 'selected' : '';
                     ?>
-                        <option value="<?= $key['TIPO_CRONO'] ?>"><?= $key['TIPO_CRONO'] ?></option>
+                        <option value="<?= $key['ID'] ?>" <?=$selected ?> ><?= $key['TIPO_CRONO'] ?></option>
                     <?php
                     }
                     ?>
@@ -82,9 +87,7 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
                 <label id="textBusqueda">Busqueda rapida:</label>
                 <input type="text" id="textBox" placeholder="Sobre cualquier campo..." onkeyup="myFunction()" class="form-control form-control-sm"></input>
             </div>
-            <div class="col-2">
-                <button type="button" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</button>
-            </div>
+            
 
     </form>
 
@@ -96,7 +99,7 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
             $tipo = $_GET['tipo'];
         }
 
-        $todosLosClientes = $cronoDespacho->traerCronograma($tipo);
+        $todosLosClientes = $cronoDespacho->traerCronograma($cronoElegido);
 
     ?>
         <div class="table-responsive">
@@ -124,7 +127,7 @@ $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : '';
                             <td><?= $value->NRO_SUCURSAL; ?></td>
                             <td><?= $value->COD_CLIENT; ?></td>
                             <td><?= $value->SUCURSAL; ?></td>
-                            <td ><select name="prioridad" id="prioridad" class="selectPrioridad">
+                            <td ><select name="prioridad" id="prioridad" class="selectPrioridad" onChange="cambioPrioridad('<?=$value->COD_CLIENT ?>', this.options.selectedIndex)">
                                 <option value="<?= $value->PRIORIDAD ?>" selected disabled><?= $value->PRIORIDAD ?> </option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
