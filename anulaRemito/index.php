@@ -40,11 +40,11 @@ $list = $remitos->traerRemitos();
             
             <div class="row">
                 <div class="col-5">
-                    <select name="nroRemito" id="" class="form-control">
+                    <select name="nroRemito" id="nroRemito" class="form-control">
                         <?php
                         foreach ($list as $key => $value) {
                             ?>
-                            <option value="<?=$value['NCOMP_IN_S']?>"><?=$value['N_COMP']?> - <?=$value['COD_PRO_CL']?></option>
+                            <option value="<?=$value['NCOMP_IN_S']?>" ><?=$value['N_COMP']?> - <?=$value['COD_PRO_CL']?></option>
                         <?php
                         }
                         ?>
@@ -64,6 +64,9 @@ $list = $remitos->traerRemitos();
                         <th>Observaciones</th>
                     </tr>
                 </thead>
+                <tbody id="tableBody">
+                </tbody>
+
             </table>
 
             <div class="col">
@@ -77,22 +80,97 @@ $list = $remitos->traerRemitos();
 
 $(document).ready(function() {
     var t = $('#table').DataTable();
-    var counter = 1;
- 
+    
+    function showDate(datePass) {
+        var todayTime = new Date(datePass);
+        var month = String(todayTime.getMonth()+1);
+        month = '0'+month;
+        month = month.substr(month.length-2);
+        var day = String(todayTime.getDate());
+        day = '0'+day;
+        day = day.substr(day.length-2);
+        var year = todayTime.getFullYear();
+        var hour = todayTime.getHours();
+        var min = String(todayTime.getMinutes());
+        min = '0'+min;
+        min = min.substr(min.length-2);
+        var sec = String(todayTime.getSeconds());
+        sec = '0'+sec;
+        sec = sec.substr(sec.length-2);
+        let time = day + "-" + month + "-" + year;
+        return time;
+    }
+
+    const nroRemitoSelec = document.querySelector("#nroRemito")
+
+    var remitos = '<?=json_encode($list)?>'
+    remitos = JSON.parse(remitos)
+
     $('#addRow').on( 'click', function () {
+        let remitoSelect = remitos.filter(x=>{
+            if(x.NCOMP_IN_S == nroRemitoSelec.options[nroRemitoSelec.selectedIndex].value){
+                return x
+            }
+        })
+        
         t.row.add( [
-            '2021-09-21',
-            '16700002030',
-            'GTCENT',
-            'Error en el cliente'
+            showDate(remitoSelect[0].FECHA.date),
+            remitoSelect[0].N_COMP,
+            remitoSelect[0].COD_PRO_CL,
+            '<input name="motivo" type="text">'
         ] ).draw( false );
- 
-        counter++;
+
+        // ACA CREO QUE ES ASI
+        // filtra el array de los remitos originales, le resta el seleccionado mas arriba
+
+        remitos = remitos.filter(x=>{
+            if(x.NCOMP_IN_S != remitoSelect[0].NCOMP_IN_S){
+                return x
+            }            
+        })
+
+
     } );
+
+    const buttonSend = document.querySelector("#send")
+    const tablaDatos = document.querySelector("#tableBody")
+
+    buttonSend.addEventListener("click", function(){
+
+        let datos = tablaDatos.querySelectorAll("tr")
+        let datosEnviar = [];
+        let temp = [];
+
+        datos.forEach((x, i)=>{
+            let datitos = x.querySelectorAll("td")
+            temp = [];
+            datitos.forEach(y=>{
+                if(y.firstChild.value){
+                    temp.push(y.firstChild.value)
+                }else{
+                    temp.push(y.innerHTML)
+                }
+            })
+            datosEnviar.push(temp)
+        })
+
+        procesar(datosEnviar)
+
+    })
+
+
+    const procesar = (datosEnviar) => {
+        console.log("estoy en la function procesar y recibi:", datosEnviar)
+    }
  
-    // Automatically add a first row of data
-    $('#addRow').click();
+
 } );
+
+// crear function ajax para enviar el array con los datos de cada row
+// crear el php controller que recorra con un foreach cada campo recibido por POST 
+    // tiene que llamar a una function de una class que inserte en la DB
+// ponerle los SESSION y vincular el dato del session[sucursal] con el metodo de inicio
+
 
 </script>
 
