@@ -1,5 +1,6 @@
 const tipoCronograma = document.querySelector("#inputTipo")
 
+document.getElementById('btn_refresh').addEventListener('click',updatefechas);
 
 const actualizarDia = (codClient, nameDia) => {
 
@@ -22,6 +23,33 @@ const actualizarDia = (codClient, nameDia) => {
 
 
 }
+
+function updatefechas()
+{
+  conexion = new XMLHttpRequest();
+  conexion.onreadystatechange = ejecutarQuery;
+  conexion.open("GET", "./Class/actualizar.php?estado=1", true);
+  conexion.send();
+}
+
+function ejecutarQuery()
+{
+  if (conexion.readyState == 4) {
+    // console.log(conexion.responseText);
+      Swal.fire({
+        icon: 'success',
+        title: 'Cronograma actualizado exitosamente!',
+        showConfirmButton: true,
+      })
+        // .then(function () {
+        //     window.location = "index.php";
+        // });
+    } else {
+      console.log('error');
+    }
+  
+}
+
 
 const cambioPrioridad = (codClient, prioridad) => {
   
@@ -74,8 +102,8 @@ function myFunction() {
         tr[i].style.display = "none";
       }
     }
+    sumarTotal();
   }
-
 
   const boton = document.getElementById('btnActive');
   let checks = document.querySelectorAll('.valores');
@@ -138,6 +166,20 @@ function myFunction() {
         })
       }
     }
+
+
+  
+
+  // $(document).ready(function(){
+  //   var data = [];
+  //   $("td.sumTotal").each(function(){
+  //   data.push(parseFloat($(this).text()));
+  //   });
+  //   var suma = data.reduce(function(a,b){ return a+b; },0);
+  //       $("#total").val(suma);
+  //       console.log(suma);
+  //   });
+    
 
 
   
