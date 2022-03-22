@@ -25,6 +25,7 @@ class Cronograma
         return $rows;
     }
 
+
     public function traerCronograma($tipo)
     {
 
@@ -71,6 +72,7 @@ class Cronograma
         $sql = " EXEC RO_UPDATE_CRONOGRAMA_DESPACHO_PRIORIDAD '$codClient','$prioridad', $tipo ";
         $rows = $this->retornarArray($sql);
     }
+
 }
 
 

@@ -25,7 +25,8 @@ foreach ($todosLosTipos as $value) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrar Cronograma </title>
+    <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -86,6 +87,10 @@ foreach ($todosLosTipos as $value) {
             <div id="busqRapida">
                 <label id="textBusqueda">Busqueda rapida:</label>
                 <input type="text" id="textBox" placeholder="Sobre cualquier campo..." onkeyup="myFunction()" class="form-control form-control-sm"></input>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-success" id="btn_refresh">Actualizar <i class="fa fa-refresh"></i></button>
             </div>
             
 
