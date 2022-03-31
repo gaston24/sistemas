@@ -71,6 +71,7 @@ if(isset($_GET['numRem'])){
 				<th >CANT REM</th>
 				<th >CANT CONTROL</th>
 				<th >CANT DIF</th>
+				<th >PARTIDA</th>
 			</tr>
 		</thead>
         <?php
@@ -91,6 +92,7 @@ if(isset($_GET['numRem'])){
 				<td ><?= $data[0]->CANT_REM ;?></td>
 				<td ><?= $data[0]->CANT_CONTROL ;?></td>
 				<td ><?= $data[0]->DIFERENCIA ;?>
+				<td ><?= $data[0]->PARTIDA ;?>
 				</td>
 				
         </tr>
