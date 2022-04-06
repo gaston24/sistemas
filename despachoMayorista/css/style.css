@@ -1,4 +1,7 @@
 
+@media only screen and (min-width: 1281px) and (max-width: 3000px) {
+
+
 /*Fijar encabezado de tabla*/ 
 
 thead tr th { 
@@ -13,7 +16,7 @@ thead tr th {
 }
 
 .table-responsive { 
-    height:560px;
+    height:700px;
     width: 1300px;
     margin-left: 3.5%;
     margin-top: 1%;
@@ -104,3 +107,116 @@ h3{
     margin-top: 0.5%;
 }
 
+}
+
+
+@media only screen and (min-width: 300px) and (max-width: 1280px) {
+
+
+    /*Fijar encabezado de tabla*/ 
+    
+    thead tr th { 
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .table .thead-dark th {
+        color: white;
+        background-color: #343a40;
+    }
+    
+    .table-responsive { 
+        height:770px;
+        width: 1180px;
+        margin-left: 3.5%;
+        margin-top: 1%;
+        font-size: small;
+    }
+    
+    #totalClientes
+    {
+        position: absolute;
+        margin-left: 30%;
+        margin-top: -0.2%;
+    }
+    
+    #totalArticulos
+    {
+        position: absolute;
+        margin-left: 41%;
+        margin-top: -0.2%;
+    }
+    
+    #totalImporte
+    {
+        position: absolute;
+        margin-left: 52%;
+        margin-top: -0.2%;
+    }
+    
+    #contvendedor
+    {
+        position: absolute;
+        margin-left: 5%;
+    }
+    
+    #btn_filtro
+    {
+        position: absolute;
+        margin-left:20%;
+        margin-top: 2%;
+    }
+    
+    #btn_save
+    {
+        position: absolute;
+        margin-left:25%;
+        margin-top: 1.6%;
+    }
+    
+    #btn_back
+    {
+        position: absolute;
+        margin-top: 18%;
+        margin-left: 50%;
+    }
+    
+    #busqRapida
+    {
+        margin-top: -0.28%;
+        margin-left: 68%;
+        width: 17%;
+    }
+    
+    #busqRapida2
+    {
+        margin-top: 0%;
+        margin-left: 25%;
+        width: 17%;
+    }
+    
+    .total
+    {
+        height: calc(1.5em + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem;
+        font-size: .875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+        width: 70%;
+    }
+    
+    h3{
+        margin-top: 1%;
+        margin-left: 4%;
+    }
+    
+    .semaforo
+    {
+        font-size: 22px;
+        margin-left: 0.3%;
+        margin-top: 0.5%;
+    }
+    
+    }
+    
