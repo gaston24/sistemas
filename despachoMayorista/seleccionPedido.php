@@ -60,7 +60,7 @@ $pedido = new Pedido();
 
         ?>
 
-        <div class="table-responsive" id="tablePedidos" style="width: 1400px;">
+        <div class="table-responsive" id="tablePedidos">
             <table class="table table-hover table-condensed table-striped text-center">
                 <thead class="thead-dark" style="font-size: small;">
                     <th scope="col" style="width: 8%">FECHA</th>

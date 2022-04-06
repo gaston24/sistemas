@@ -95,7 +95,7 @@ $pedido = new Pedido();
 
         ?>
 
-        <div class="table-responsive" id="tablePedidos" >
+        <div class="table-responsive" id="tableIndex" >
             <table class="table table-hover table-condensed table-striped text-center">
                 <thead class="thead-dark" style="font-size: small;">
                     <th scope="col" style="width: 3%">COD_VENDEDOR</th>
