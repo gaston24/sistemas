@@ -175,21 +175,30 @@ $pedido = new Pedido();
 </body>
 <script>
                 window.addEventListener('DOMContentLoaded',iniciarEscucha);
-                               
+                
+                      let row;   
+                      let datos=[];      
                     function iniciarEscucha(){
                         console.log('entraste');
                     let edit = document.querySelectorAll(".btnEdit");
                     /* let button = document.getElementById("btnEdit"); */
                     // input.disabled = true;
                     edit.forEach(ele=>{
-                        console.log('ok');
                         ele.addEventListener('click',habilitarInputs);
                     });
                 }
                     
                     function habilitarInputs(input)
                     {
-                        input.target.disabled=false;
+                        //columna 8 al 11
+                        let row=[];
+                        row=input.target.parentNode.parentNode;
+                        for(let i=8;i<12;i++)
+                        {
+                            row.children[i].children[0].disabled=false;
+                            datos.push(row.children[i].children[0].children[0].text);
+                        }
+                        console.log(datos);
                         document.getElementById("primerSelect").disabled = true;
                     }
     </script>

@@ -100,10 +100,21 @@ td {
     text-align: center;
 }
 
-#btnExport {
-    float: right;
-}
-
 #articulo{
     width: 60px;
-}	
+}
+
+#btnExport {
+    position: absolute;
+    margin-left: 15%;
+    width: 115px;
+    height: 40px;
+}
+
+#btnEnviar
+{
+    position: absolute;
+    margin-left: 55%;
+    width: 115px;
+    height: 40px;
+}

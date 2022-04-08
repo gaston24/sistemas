@@ -71,15 +71,18 @@ if (!isset($_SESSION['username'])) {
 								<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
 							</div>
 						</div>
-						<div class="col">
+						<div>
 							<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
 						</div>
-						<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
-							echo 'enviarMayorista()';
-						} else {
-							echo 'enviar()';
-						} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
-						<div class="spinner-border ml-auto" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
+						<div>
+							<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
+								echo 'enviarMayorista()';
+							} else {
+								echo 'enviar()';
+							} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
+							
+							<div class="spinner-border" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
+						</div>
 					</div>
 				</div>
 			</div>				
