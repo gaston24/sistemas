@@ -158,7 +158,7 @@ $pedido = new Pedido();
                             </td>
                             <td>
                             <?php if($value->TIPO_COMP != ''){ ?>
-                                    <button class="btn btn-success btn-sm" id="btnEdit" href="#"><i class="fa fa-edit" style="font-size: 20px;"></i></button>
+                                    <button class="btn btn-success btn-sm btnEdit"  href="#"><i class="fa fa-edit" style="font-size: 20px;"></i></button>
                                  <?php } else {}?>
                             </td>
                         </tr>
@@ -173,7 +173,26 @@ $pedido = new Pedido();
         </div>
 
 </body>
-
+<script>
+                window.addEventListener('DOMContentLoaded',iniciarEscucha);
+                               
+                    function iniciarEscucha(){
+                        console.log('entraste');
+                    let edit = document.querySelectorAll(".btnEdit");
+                    /* let button = document.getElementById("btnEdit"); */
+                    // input.disabled = true;
+                    edit.forEach(ele=>{
+                        console.log('ok');
+                        ele.addEventListener('click',habilitarInputs);
+                    });
+                }
+                    
+                    function habilitarInputs(input)
+                    {
+                        input.target.disabled=false;
+                        document.getElementById("primerSelect").disabled = true;
+                    }
+    </script>
 <script src="main.js" charset="utf-8"></script>
 
     <!-- Modal -->	
@@ -184,17 +203,5 @@ $pedido = new Pedido();
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <script>
-
-                               
-                    let input = document.querySelectorAll(".edit");
-                    let button = document.getElementById("btnEdit");
-                    // input.disabled = true;
-                    button.addEventListener("click", function(e) {
-                    console.log('Vamos a habilitar el input text');
-                    input.disabled = false;
-                    });
-                    document.getElementById("primerSelect").disabled = true    
-
-    </script>
+   
 </html>
