@@ -34,14 +34,13 @@ function busquedaRapida() {
 function changeStatus(remito){
   
   var status = $('#select-'+remito).val();
-
+  console.log(status);
   let inputAjuste = document.querySelectorAll('.fila-base');
 
   inputAjuste.forEach(
     x=>{
       let td = x.querySelectorAll('td');
-      if(td[6]){
-        if(td[6].querySelector('select').value == 'ACEPTADO' && (td[7].querySelector('INPUT').value == '' || td[7].querySelector('INPUT').value == '0') ){
+        if(status == 'ACEPTADO' && (td[7].querySelector('INPUT').value == '' || td[7].querySelector('INPUT').value == '0') ){
           Swal.fire({
             icon: 'error',
             title: 'Debe indicar un numero de ajuste',
@@ -49,7 +48,6 @@ function changeStatus(remito){
           }).then(()=>{
             location.reload()
           })
-        }
       }else{
         $.ajax({
             url: 'controlador/actuaStatusRemito.php',
@@ -59,15 +57,21 @@ function changeStatus(remito){
                 ncomp : remito, 
                 status: status 
             },
-            success: function(data) {
-                // console.log(data)
+            success: function (data) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Pedido modificado exitosamente!',
+                text: "Remito: " + ncomp,
+                showConfirmButton: true,
+              })
+              .then(()=>{
+                location.reload()
+              })
             }
         });
       }
     }
   )
-
-
 }
 
 function changeNroAjuste(remito, context){

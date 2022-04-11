@@ -53,7 +53,7 @@ class Remito
             ON A.NRO_REMITO = F.NRO_REMITO COLLATE Latin1_General_BIN
             
             WHERE A.COD_CLIENT = '$codClient' 
-            AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$desde' AND '$hasta')
+            AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
                         
             GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, E.DESC_SUCURSAL, A.OBSERVAC_LOGISTICA, NRO_AJUSTE,
             (CASE WHEN F.USER_CHAT = 'ramiro' THEN 0 WHEN F.USER_CHAT != 'ramiro' THEN 1 END)
@@ -116,7 +116,7 @@ class Remito
             ON A.NRO_REMITO = E.NRO_REMITO COLLATE Latin1_General_BIN
                     
             WHERE A.FECHA_REM >= GETDATE()-180
-            AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta' OR CAST( A.FECHA_REM AS DATE) BETWEEN '$desde' AND '$hasta')
+            AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
             AND A.OBSERVAC_LOGISTICA LIKE '$estado'
                             
             GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 

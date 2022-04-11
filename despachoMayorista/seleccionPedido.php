@@ -236,7 +236,7 @@ $pedido = new Pedido();
                 tipoComp: row.children[8].children[0].children[0].innerHTML,
                 embalaje: row.children[9].children[0].children[0].innerHTML,
                 despacho: row.children[10].children[0].children[0].innerHTML,
-                fecha: row.children[11].children[0].value
+                fechaDespacho: row.children[11].children[0].value
             };
             Pedidos.push(infoPedido);
             console.log(Pedidos);
@@ -244,11 +244,18 @@ $pedido = new Pedido();
             console.log('actualizando');
             elementIndex = Pedidos.findIndex((pedido => pedido.codigo == row.children[4].innerHTML));
             Pedidos[elementIndex] = {
-                codigo: row.children[4].innerHTML,
+                codigo: row.children[4].innerHTML,//nro pedido
+                fecha:row.children[0].children[0].innerHTML,
+                hora:row.children[1].children[0].innerHTML,
+                estado:row.children[2].children[0].innerText,
+                talonario:row.children[3].children[0].innerHTML,
+                unidPedido:row.children[5].children[0].innerHTML,
+                unidPendiente:row.children[6].children[0].innerHTML,
+                importePendiente:row.children[7].children[0].innerText.slice(2),
                 tipoComp: (row.children[8].children[0].value != ''?row.children[8].children[0].value:row.children[8].children[0].children[0].innerHTML),
                 embalaje: (row.children[9].children[0].value !=''?row.children[9].children[0].value: row.children[9].children[0].children[0].innerHTML),
                 despacho: (row.children[10].children[0].value !=''?row.children[10].children[0].value:row.children[10].children[0].children[0].innerHTML),
-                fecha: row.children[11].children[0].value
+                fechaDespacho: row.children[11].children[0].value
             };
             console.log(Pedidos[elementIndex]);
         }
