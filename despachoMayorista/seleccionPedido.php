@@ -159,12 +159,7 @@ $pedido = new Pedido();
                             <?php } ?>
                         </td>
                         <td>
-                            <?php if ($value->TIPO_COMP != '') { ?>
-                               
-                                <button class="btn btn-success btn-sm btnEdit" href="#"><i class="fa fa-edit" style="font-size:20px;"></i></button>
-                               
-                            <?php } else {
-                            } ?>
+                            <button class="btn btn-success btn-sm btnEdit" href="#"><i class="fa fa-edit" style="font-size:20px;"></i></button>
                         </td>
                     </tr>
 
@@ -276,10 +271,11 @@ $pedido = new Pedido();
     function procesar() {
         if(conexion.readyState!==4) return; 
         if (conexion.status>=200 && conexion.status<300) {
+            /* let nro_pedidos=Pedidos.map(); */
             Swal.fire({
                 icon: 'success',
                 title: 'Pedido modificado exitosamente!',
-                text: "Numero de pedido: " + datos,
+                text: "Numero de pedido: ",
                 showConfirmButton: true,
                 })
             .then(function () {
@@ -289,7 +285,7 @@ $pedido = new Pedido();
             Swal.fire({
                 icon: 'error',
                 title: 'Error de carga',
-                text: 'No se modificó ningún pedido!'
+                text: 'No se modificó ningún pedido! '+conexion.responseText
                 })
             .then(function () {
             location.reload() 
