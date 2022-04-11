@@ -165,6 +165,9 @@ let cliente;
 let conexion;
 let datosCliente;
 
+
+
+
 $(document).ready(function(){
     /* window.history.pushState(null, null, "http://192.168.0.143:8080/sistemas/despachomayorista/index.php"); */
     let btn=document.querySelectorAll('.BtnAw');
@@ -248,13 +251,12 @@ $(document).ready(function(){
     }
 
 
-    const formatter = new Intl.NumberFormat('en-US', {
+    const formatter = new Intl.NumberFormat('es-ar', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'ARS',
       minimumFractionDigits: 0
     })
 
-    /* console.log(formatter.format(value))  */// "$10,000
 </script>
 
 <?php 
