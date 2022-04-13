@@ -70,4 +70,10 @@ $todosLosClientes = $cliente->traerCuenta($cliente); */
 
 <script>
   /* console.log(datosCliente); */
+  valoresNegativo();
+  function valoresNegativo()
+  {
+  e=document.querySelectorAll('.badge');
+  e.forEach(el=>{if(el.innerText.includes('-')){el.style.background='red';}});
+}
 </script>

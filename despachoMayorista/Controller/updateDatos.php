@@ -14,46 +14,58 @@ if (isset($_GET['datos'])) {
         $despacho = $dato->despacho;
         $fecha_despacho = $dato->fechaDespacho;
     if (existe($dato->codigo)) {
-      
         {
             try {
                 $sql = "UPDATE RO_PEDIDOS_MAYORISTA_ASIGNADOS SET TIPO_COMP = '$tipoComp', EMBALAJE = '$embalaje', DESPACHO = '$despacho', FECHA_DESPACHO = '$fecha_despacho' WHERE NRO_PEDIDO = '$codigo'";
-                $stmt = sqlsrv_query($cid_central, $sql);
+                sqlsrv_query($cid_central, $sql);
                 echo "Datos guardados exitosamente";  
             } catch (Exception $e) {
                 echo 'Se produjo un Error:' . $e->getMessage();
             }
         }
     } else {
-              /*   $fecha=$dato->fecha;
+                $codClient=$dato->cod_client;
+                $cliente=$dato->razon_soci;
+                $localidad=$dato->localidad;
+                $codVended=$dato->cod_vended;
+                $vendedor=$dato->vendedor;
+                $fecha=$dato->fecha;
                 $hora=$dato->hora;
                 $estado=$dato->estado;
                 $talonario=$dato->talonario;
-                $unidPedido=$dato->uniPeido;
+                $unidPedido=$dato->unidPedido;
                 $unidPendiente=$dato->unidPendiente;
-                $importePendiente=$dato->importePendiente; */
-        echo 'El nro de pedido no existe. Insertar.';
-
-      /*   try {
+                $importePendiente=str_replace(".","",$dato->importePendiente);
+               /*  $cantPend=5; */
+                /* $importe=10000; */
+                //faltan codClient, cliente, localidad,,codVendedor,vendedor
+      /*   echo 'El nro de pedido no existe. Insertar.'; */
+ 
+        try {
             $sql = "
     INSERT INTO DBO.RO_PEDIDOS_MAYORISTA_ASIGNADOS (FECHA, ESTADO, HORA_INGRESO, COD_CLIENT, RAZON_SOCI, LOCALIDAD, TALON_PED, NRO_PEDIDO, CANT_PEDIDO, CANT_PENDIENTE, IMP_PENDIENTE, 
     COD_VENDED, VENDEDOR, TIPO_COMP, EMBALAJE, DESPACHO, FECHA_DESPACHO)
-    VALUES ('$fecha', $estado,'$hora','$codClient','$cliente','$localidad', $talonario, $uniPedido, $unidPendiente, $cantPend, $importe, '$codVended', '$vendedor','$tipoComp',
-    '$embalaje','$despacho','$fechaDespacho')
+    VALUES ('$fecha', $estado,'$hora','$codClient','$cliente','$localidad', $talonario,'$codigo', $unidPedido, $unidPendiente, $importePendiente, '$codVended', '$vendedor','$tipoComp',
+    '$embalaje','$despacho','$fecha_despacho')
 
     ";
-            $stmt = sqlsrv_query($cid_central, $sql);
+            $stmt=sqlsrv_query($cid_central, $sql);
+            if( $stmt === false ) {
+                die( print_r( sqlsrv_errors(), true));
+           }
         } catch (Exception $e) {
             echo 'Se produjo un Error:' . $e->getMessage();
-        } */
+        }
     }
+}
 }
 
 function existe($pedido)
 {
     global $cid_central;
     $sql = "select * from RO_PEDIDOS_MAYORISTA_ASIGNADOS where nro_pedido='$pedido'";
-    return sqlsrv_query($cid_central, $sql);
+    return sqlsrv_has_rows( sqlsrv_query($cid_central, $sql));
+
 }
 
 

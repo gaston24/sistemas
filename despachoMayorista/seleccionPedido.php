@@ -3,7 +3,7 @@
 require 'Class/pedido.php';
 
 $cliente = $_GET['cliente'];
-
+$razon_soci = $_GET['razon_soci'];
 $pedido = new Pedido();
 
 ?>
@@ -32,7 +32,7 @@ $pedido = new Pedido();
 <body>
 
     <h3 id="title_nota">
-        <i class="fa fa-bars"></i> Pedidos de cliente: <?php echo $cliente ?>
+        <i class="fa fa-bars"></i> Pedidos de cliente: <?php echo $cliente . ' - ' . $razon_soci ?>
     </h3>
 
     <form class="form-row mt-2">
@@ -80,9 +80,15 @@ $pedido = new Pedido();
             <tbody id="table" style="font-size: small;">
                 <?php
                 $todosLosPedidos = json_decode($todosLosPedidos);
-
+                ?>
+                <input type="text" name="" id="cod_client" value="<?php echo $todosLosPedidos[0]->COD_CLIENT ?>" hidden>
+                <input type="text" name="" id="razon_soci" value="<?php echo $todosLosPedidos[0]->RAZON_SOCI ?>" hidden>
+                <input type="text" name="" id="localidad" value="<?php echo $todosLosPedidos[0]->LOCALIDAD ?>" hidden>
+                <input type="text" name="" id="cod_vended" value="<?php echo $todosLosPedidos[0]->COD_VENDED ?>" hidden>
+                <input type="text" name="" id="vendedor" value="<?php echo $todosLosPedidos[0]->VENDEDOR ?>" hidden>
+                <?php
                 foreach ($todosLosPedidos as $valor => $value) {
-                    // var_dump($value->FECHA);
+
                 ?>
 
 
@@ -186,11 +192,11 @@ $pedido = new Pedido();
 
     function iniciarEscucha() {
         console.log('entraste');
-        let edit = document.querySelectorAll(".btnEdit");
+        let edit = document.querySelectorAll(".fa-edit");
         /* let button = document.getElementById("btnEdit"); */
         // input.disabled = true;
         edit.forEach(ele => {
-            ele.addEventListener('click', editarPedido);
+            ele.addEventListener('click', editarPedido, false);
         });
     }
 
@@ -203,9 +209,13 @@ $pedido = new Pedido();
     function habilitarInputs(input) {
         //columna 8 al 11
         let row = [];
-        row = input.target.parentNode.parentNode;
+        row = input.target.parentNode.parentNode.parentNode;
         for (let i = 8; i < 12; i++) {
             row.children[i].children[0].disabled = false;
+            /* 
+                        row.children[i].children[0].style.borderColor=((row.children[i].children[0].value =='') && (row.children[i].children[0].constructor == HTMLInputElement))?'red':none; */
+            /* row.children[i].children[0].style.borderColor=((row.children[i].children[0].children[0].innerText =='') && (row.children[i].children[0].constructor == HTMLSelectElement))?'red':none; */
+
             /*  if(i==11)
              {
                  console.log(row.children[i].children[0].value);
@@ -231,8 +241,21 @@ $pedido = new Pedido();
         if ((Pedidos.find((valor, indice) => {
                 return valor.codigo == row.children[4].innerHTML
             })) == undefined) {
+            console.log('hola hola');
             const infoPedido = {
                 codigo: row.children[4].innerHTML,
+                fecha: row.children[0].innerHTML,
+                hora: row.children[1].innerHTML,
+                cod_client: document.getElementById('cod_client').value,
+                razon_soci: document.getElementById('razon_soci').value,
+                localidad: document.getElementById('localidad').value,
+                cod_vended: document.getElementById('cod_vended').value,
+                vendedor: document.getElementById('vendedor').value,
+                estado: row.children[2].innerText,
+                talonario: row.children[3].innerHTML,
+                unidPedido: row.children[5].innerHTML,
+                unidPendiente: row.children[6].innerHTML,
+                importePendiente: row.children[7].innerText.slice(2),
                 tipoComp: row.children[8].children[0].children[0].innerHTML,
                 embalaje: row.children[9].children[0].children[0].innerHTML,
                 despacho: row.children[10].children[0].children[0].innerHTML,
@@ -243,63 +266,105 @@ $pedido = new Pedido();
         } else {
             console.log('actualizando');
             elementIndex = Pedidos.findIndex((pedido => pedido.codigo == row.children[4].innerHTML));
-            Pedidos[elementIndex] = {
-                codigo: row.children[4].innerHTML,//nro pedido
-                fecha:row.children[0].children[0].innerHTML,
-                hora:row.children[1].children[0].innerHTML,
-                estado:row.children[2].children[0].innerText,
-                talonario:row.children[3].children[0].innerHTML,
-                unidPedido:row.children[5].children[0].innerHTML,
-                unidPendiente:row.children[6].children[0].innerHTML,
-                importePendiente:row.children[7].children[0].innerText.slice(2),
-                tipoComp: (row.children[8].children[0].value != ''?row.children[8].children[0].value:row.children[8].children[0].children[0].innerHTML),
-                embalaje: (row.children[9].children[0].value !=''?row.children[9].children[0].value: row.children[9].children[0].children[0].innerHTML),
-                despacho: (row.children[10].children[0].value !=''?row.children[10].children[0].value:row.children[10].children[0].children[0].innerHTML),
-                fechaDespacho: row.children[11].children[0].value
-            };
-            console.log(Pedidos[elementIndex]);
+            /*    Pedidos[elementIndex] = {
+                   codigo: row.children[4].innerHTML,//nro pedido
+                   tipoComp: (row.children[8].children[0].value != ''?row.children[8].children[0].value:row.children[8].children[0].children[0].innerHTML),
+                   embalaje: (row.children[9].children[0].value !=''?row.children[9].children[0].value: row.children[9].children[0].children[0].innerHTML),
+                   despacho: (row.children[10].children[0].value !=''?row.children[10].children[0].value:row.children[10].children[0].children[0].innerHTML),
+                   fechaDespacho: row.children[11].children[0].value
+               }; */
+            Pedidos[elementIndex].tipoComp = (row.children[8].children[0].value != '' ? row.children[8].children[0].value : row.children[8].children[0].children[0].innerHTML);
+            Pedidos[elementIndex].embalaje = (row.children[9].children[0].value != '' ? row.children[9].children[0].value : row.children[9].children[0].children[0].innerHTML);
+            Pedidos[elementIndex].despacho = (row.children[10].children[0].value != '' ? row.children[10].children[0].value : row.children[10].children[0].children[0].innerHTML),
+                Pedidos[elementIndex].fechaDespacho = row.children[11].children[0].value;
+            /* console.log(Pedidos[elementIndex]); */
         }
     }
 
     //Funciones ajax para actualizar DB con los cambios en los pedidos
     let conexion;
+
     function actualizarDB() {
-        conexion = new XMLHttpRequest();
-        conexion.onreadystatechange = procesar;
-        let datos=JSON.stringify(Pedidos);
-        conexion.open('GET', './Controller/updateDatos.php?datos='+datos, true);
-       /*    conexion.setRequestHeader('Content-type', 'application/json; charset=UTF-8') */
-       
-       /*  console.log(datos); */
-        conexion.send();
+        /*  if(checkInpustNoVacios())
+         { */
+        if (Pedidos.length > 0) {
+            if (checkInpustNoVacios() == 0) {
+                conexion = new XMLHttpRequest();
+                conexion.onreadystatechange = procesar;
+                let datos = JSON.stringify(Pedidos);
+                conexion.open('GET', './Controller/updateDatos.php?datos=' + datos, true);
+                /*    conexion.setRequestHeader('Content-type', 'application/json; charset=UTF-8') */
+
+                /*  console.log(datos); */
+                conexion.send();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos vacios',
+                    text: 'Deben completar los datos'
+                })
+            }
+        } else {
+            Swal.fire({
+                    icon: 'error',
+                    title: 'No se modificaron datos',
+                    text: 'Cargue datos y haga click en guardar'
+                })
+                .then(function() {
+                    location.reload()
+                });
+            /*  }else{
+                 console.log('completar campos');
+             } */
+        }
     }
 
 
     function procesar() {
-        if(conexion.readyState!==4) return; 
-        if (conexion.status>=200 && conexion.status<300) {
+        if (conexion.readyState !== 4) return;
+        if (conexion.status >= 200 && conexion.status < 300) {
             /* let nro_pedidos=Pedidos.map(); */
             Swal.fire({
-                icon: 'success',
-                title: 'Pedido modificado exitosamente!',
-                text: "Numero de pedido: ",
-                showConfirmButton: true,
+                    icon: 'success',
+                    title: 'Pedido modificado exitosamente!' + conexion.responseText,
+                    text: "Numero de pedido: ",
+                    showConfirmButton: true,
                 })
-            .then(function () {
-                location.reload() 
-        });         
-        }else{
+                .then(function() {
+                    location.reload()
+                });
+        } else {
             Swal.fire({
-                icon: 'error',
-                title: 'Error de carga',
-                text: 'No se modificó ningún pedido! '+conexion.responseText
+                    icon: 'error',
+                    title: 'Error de carga',
+                    text: 'No se modificó ningún pedido! ' + conexion.responseText
                 })
-            .then(function () {
-            location.reload() 
-        }); 
+                .then(function() {
+                    location.reload()
+                });
         }
 
     }
+    let b = 0;
+
+    function checkInpustNoVacios() {
+        let select = document.querySelectorAll('select');
+        select.forEach(el => {
+            if ((el.disabled == false) && (el.innerText == '')) {
+                el.style.borderColor = 'red';
+                b = 1;
+            }
+        })
+        console.log('valor de bandera:' + b);
+        return b;
+        /*   select.forEach(el => {if(el.children[0].innerText===''){console.log('vacio')}}) */
+    }
+
+    /*  const formatter = new Intl.NumberFormat('es-ar', {
+       style: 'currency',
+       currency: 'ARS',
+       minimumFractionDigits: 0
+     }) */
     /*  function verificarCodigoCargadoEnArreglo(codigo) {
 
      } */

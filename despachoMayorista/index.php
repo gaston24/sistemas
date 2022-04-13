@@ -130,7 +130,7 @@ $pedido = new Pedido();
                             <td class="pedido"><?= $value->CANT_PEDIDOS; ?></td>
                             <td class="sumImporte"><?= $value->IMPORTE; ?></td>
                             <td>
-                            <a href="seleccionPedido.php?cliente=<?= $value->COD_CLIENT; ?>"><button type="button" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button></a>
+                            <a href="seleccionPedido.php?cliente=<?= $value->COD_CLIENT; ?>&razon_soci=<?= $value->RAZON_SOCI; ?>"><button type="button" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button></a>
                             </td>
                             <td><button id="myBtn" type="button" class="btn btn-warning btn-sm BtnAw" href="#" data-toggle="modal" data-target="myModal"><i class="fa fa-info-circle" style="font-size: 20px;"></i></button></td>
                         </tr>
@@ -162,6 +162,7 @@ $pedido = new Pedido();
 <script>
 /* (()=>window.history.replaceState(null, null, 'esta'))(); */
 let cliente;
+let razon_soci;
 let conexion;
 let datosCliente;
 
@@ -175,7 +176,6 @@ $(document).ready(function(){
         $(b).click(function(){
             $("#myModal").modal('toggle');
         cliente=b.parentElement.parentElement.childNodes[3].innerHTML;
-       
         buscarCliente(cliente); 
     });
     })
@@ -200,7 +200,7 @@ function procesar()
   {
    console.log(JSON.parse(conexion.responseText));
    datosCliente=JSON.parse(conexion.responseText);
-   document.getElementById('codigoCliente').innerHTML=datosCliente[0][0];
+   document.getElementById('codigoCliente').innerHTML=datosCliente[0][0]+' - '+datosCliente[0][3];
    document.getElementById('spanCupoCred').innerHTML=formatter.format(datosCliente[0][5]);
    document.getElementById('saldo').innerHTML=formatter.format(datosCliente[0][6]);
    document.getElementById('vencidas').innerHTML=formatter.format(datosCliente[0][12]);
@@ -210,7 +210,7 @@ function procesar()
    document.getElementById('totalDeuda').innerHTML=formatter.format(datosCliente[0][9]);
    document.getElementById('totalDisponible').innerHTML=formatter.format(datosCliente[0][10]);
   } 
-  
+  valoresNegativo();
 }
 
 
@@ -257,6 +257,14 @@ $(document).ready(function(){
       minimumFractionDigits: 0
     })
 
+
+    
+  function valoresNegativo()
+  {
+  e=document.querySelectorAll('.badge');
+  e.forEach(el=>{if(el.innerText.includes('-')){el.style.background='#dc3545';}});
+}
+ 
 </script>
 
 <?php 

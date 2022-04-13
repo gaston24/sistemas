@@ -40,7 +40,7 @@ function changeStatus(remito){
   inputAjuste.forEach(
     x=>{
       let td = x.querySelectorAll('td');
-        if(status == 'ACEPTADO' && (td[7].querySelector('INPUT').value == '' || td[7].querySelector('INPUT').value == '0') ){
+        if(status == 'ACEPTADO' && (td[7].querySelector('INPUT').val == '' || td[7].querySelector('INPUT').value == '0') ){
           Swal.fire({
             icon: 'error',
             title: 'Debe indicar un numero de ajuste',
