@@ -50,20 +50,20 @@ if (!isset($_SESSION['username'])) {
 					<a> <strong>Búsqueda rápida</strong> </a>
 						<input type="text" onkeyup="busquedaRapida()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
 				</div>
-				<div class="col-2">
-					<a> <strong>Total de articulos</strong> </a> 
+				<div class="col-2" id="cont">
+					<a> <strong>Total de art.</strong> </a> 
 					<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
 				</div>
 				<div class="col-2"
 					<?php if ($suc < 100) { echo 'hidden'; } ?>
 				>
-					<a> <strong>Importe total:</strong> </a> 
+					<a> <strong>Imp. total:</strong> </a> 
 					<input name="total_precio" size="3" id="totalPrecio" value="0" type="text" onChange="verificarCredito()">
 					<a id="cupoCreditoExcedido"></a>
 					
 				</div>
 			
-				<div class="col-3">
+				<div class="col">
 					<div class="row">
 						<div class="col">
 							<div class="btn-group" role="group" aria-label="Basic example">

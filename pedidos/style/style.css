@@ -85,7 +85,7 @@ td {
 
 #textBox
 {
-    width: 250px;
+    width: 220px;
 }
 
 #total
@@ -106,15 +106,15 @@ td {
 
 #btnExport {
     position: absolute;
-    margin-left: 15%;
-    width: 115px;
+    margin-left: -55%;
+    width: 105px;
     height: 40px;
 }
 
 #btnEnviar
 {
     position: absolute;
-    margin-left: 55%;
-    width: 115px;
+    margin-left: -28%;
+    width: 105px;
     height: 40px;
 }
