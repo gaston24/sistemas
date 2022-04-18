@@ -166,9 +166,6 @@ let razon_soci;
 let conexion;
 let datosCliente;
 
-
-
-
 $(document).ready(function(){
     /* window.history.pushState(null, null, "http://192.168.0.143:8080/sistemas/despachomayorista/index.php"); */
     let btn=document.querySelectorAll('.BtnAw');
@@ -198,6 +195,7 @@ function procesar()
 {
   if(conexion.readyState == 4 && conexion.status == 200)
   {
+   limpiarEstilos();
    console.log(JSON.parse(conexion.responseText));
    datosCliente=JSON.parse(conexion.responseText);
    document.getElementById('codigoCliente').innerHTML=datosCliente[0][0]+' - '+datosCliente[0][3];
@@ -263,6 +261,12 @@ $(document).ready(function(){
   {
   e=document.querySelectorAll('.badge');
   e.forEach(el=>{if(el.innerText.includes('-')){el.style.background='#dc3545';}});
+}
+
+function limpiarEstilos()
+{
+    e=document.querySelectorAll('.badge');
+    e.forEach(el=>{el.style.background='';});
 }
  
 </script>

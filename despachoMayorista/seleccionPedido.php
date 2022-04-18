@@ -112,9 +112,13 @@ $pedido = new Pedido();
                         <td>
                             <?php if ($value->TIPO_COMP != '') { ?>
                                 <select name="Comprobante" id="Comprobante" class="form-control form-control-sm edit" style="font-size: small;" disabled>
-                                    <option value="" selected id="primerSelect"><?= $value->TIPO_COMP; ?></option>
-                                    <option value="REMITO">REMITO</option>
-                                    <option value="FACTURA">FACTURA</option>
+                                    <!--si value es igual a remito entonces mostrar remito
+                                    si value es dintingo a remito entonces mostrar factura-->
+                                    <option value="<?= $value->TIPO_COMP == 'REMITO' ? 'REMITO' : 'FACTURA' ?>" selected id="primerSelect"><?= $value->TIPO_COMP == 'REMITO' ? 'REMITO' : 'FACTURA' ?></option>
+                                    <option value="<?= $value->TIPO_COMP == 'FACTURA' ? 'REMITO' : 'FACTURA' ?>"><?= $value->TIPO_COMP == 'FACTURA' ? 'REMITO' : 'FACTURA'  ?></option>
+                                    <!--  <option value="otro" >otro</option> -->
+                                    <!--  <option value="REMITO">REMITO</option> -->
+                                    <!-- <option value="FACTURA">FACTURA</option> -->
                                 </select>
                             <?php } else { ?>
                                 <select name="Comprobante" id="Comprobante" class="form-control form-control-sm" style="font-size: small;" disabled>
@@ -128,9 +132,9 @@ $pedido = new Pedido();
                         <td>
                             <?php if ($value->EMBALAJE != '') { ?>
                                 <select name="Embalaje" id="Embalaje" class="form-control form-control-sm edit" style="font-size: small;" disabled>
-                                    <option value="" disabled selected id="primerSelect"><?= $value->EMBALAJE; ?></option>
-                                    <option value="BOLSA">BOLSA</option>
-                                    <option value="CAJA">CAJA</option>
+
+                                    <option value="<?= $value->EMBALAJE == 'CAJA' ? 'CAJA' : 'BOLSA' ?>" selected id="primerSelect"><?= $value->EMBALAJE == 'CAJA' ? 'CAJA' : 'BOLSA' ?></option>
+                                    <option value="<?= $value->EMBALAJE == 'BOLSA' ? 'CAJA' : 'BOLSA' ?>"><?= $value->EMBALAJE == 'BOLSA' ? 'CAJA' : 'BOLSA'  ?></option>
                                 </select>
                             <?php } else { ?>
                                 <select name="Embalaje" id="Embalaje" class="form-control form-control-sm" style="font-size: small;" disabled>
@@ -143,10 +147,10 @@ $pedido = new Pedido();
                         <td>
                             <?php if ($value->DESPACHO != '') { ?>
                                 <select name="Despacho" id="Despacho" class="form-control form-control-sm edit" style="font-size: small;" disabled>
-                                    <option value="" selected id="primerSelect"><?= $value->DESPACHO; ?></option>
-                                    <option value="CLIENTE">CLIENTE</option>
-                                    <option value="FLETE">FLETE</option>
-                                    <option value="TRANSPORTE">TRANSPORTE</option>
+                                    <option value="<?= $value->DESPACHO == 'FLETE' ? 'FLETE' : ($value->DESPACHO == 'CLIENTE' ? 'CLIENTE' : 'TRANSPORTE') ?>" selected id="primerSelect"><?= $value->DESPACHO == 'FLETE' ? 'FLETE' : ($value->DESPACHO == 'CLIENTE' ? 'CLIENTE' : 'TRANSPORTE') ?></option>
+                                    <option value="<?= $value->DESPACHO == 'FLETE' ? 'CLIENTE' : ($value->DESPACHO == 'TRANSPORTE' ? 'CLIENTE' : 'TRANSPORTE') ?>"><?= $value->DESPACHO == 'FLETE' ? 'CLIENTE' : ($value->DESPACHO == 'TRANSPORTE' ? 'CLIENTE' : 'TRANSPORTE')  ?></option>
+                                    <option value="<?= $value->DESPACHO == 'TRANSPORTE' ? 'FLETE' : ($value->DESPACHO == 'FLETE' ? 'TRANSPORTE' : 'FLETE') ?>"><?= $value->DESPACHO == 'TRANSPORTE' ? 'FLETE' : ($value->DESPACHO == 'FLETE' ? 'TRANSPORTE' : 'FLETE') ?></option>
+
                                 </select>
                             <?php } else { ?>
                                 <select name="Despacho" id="Despacho" class="form-control form-control-sm" style="font-size: small;" disabled>
@@ -161,7 +165,7 @@ $pedido = new Pedido();
                             <?php if (substr($value->FECHA_DESPACHO->date, 0, 10) != '1900-01-01') { ?>
                                 <input name="" id="primerSelect" type="date" class="form-control form-control-sm edit" style="width: 90%;" value="<?= substr($value->FECHA_DESPACHO->date, 0, 10); ?>" disabled></input>
                             <?php } else { ?>
-                                <input name="" id="" type="date" class="form-control form-control-sm" style="width: 90%;" disabled></input>
+                                <input name="" id="campoFecha" type="date" class="form-control form-control-sm" style="width: 90%;" disabled></input>
                             <?php } ?>
                         </td>
                         <td>
@@ -182,19 +186,20 @@ $pedido = new Pedido();
 <script>
     window.addEventListener('DOMContentLoaded', iniciarEscucha);
     document.getElementById('btn_save').addEventListener('click', actualizarDB);
+    establecerMinFecha(); //setear min en los campos fecha
 
     let row;
     let datos = [];
-    let select = document.querySelectorAll('.form-control');
+    let select = document.querySelectorAll('.form-control'); //almacenar select 
     select.forEach(el => {
-        el.addEventListener('change', guardarDatos)
+        //guardar los cambios de un select junto con los datos del resto de la fila
+        el.addEventListener('change', (el) => {
+            guardarDatos(el.target.parentNode.parentNode)
+        });
     });
 
     function iniciarEscucha() {
-        console.log('entraste');
         let edit = document.querySelectorAll(".fa-edit");
-        /* let button = document.getElementById("btnEdit"); */
-        // input.disabled = true;
         edit.forEach(ele => {
             ele.addEventListener('click', editarPedido, false);
         });
@@ -202,46 +207,33 @@ $pedido = new Pedido();
 
     function editarPedido(pedido) {
         habilitarInputs(pedido);
+        pedido = pedido.target.parentNode.parentNode.parentNode;
         guardarDatos(pedido);
-
     }
 
     function habilitarInputs(input) {
-        //columna 8 al 11
         let row = [];
         row = input.target.parentNode.parentNode.parentNode;
         for (let i = 8; i < 12; i++) {
             row.children[i].children[0].disabled = false;
-            /* 
-                        row.children[i].children[0].style.borderColor=((row.children[i].children[0].value =='') && (row.children[i].children[0].constructor == HTMLInputElement))?'red':none; */
-            /* row.children[i].children[0].style.borderColor=((row.children[i].children[0].children[0].innerText =='') && (row.children[i].children[0].constructor == HTMLSelectElement))?'red':none; */
 
-            /*  if(i==11)
-             {
-                 console.log(row.children[i].children[0].value);
-             }else
-             {
-                 console.log(row.children[i].children[0].children[0].innerHTML);
-             } */
-            /* datos.push(row.children[i].children[0].children[0].children[0].innerHTML); */
-
+            if (row.children[i].children[0].constructor != HTMLInputElement) {
+                row.children[i].children[0].children[0].disabled = true;
+            }
         }
-
-        /* console.log(datos); */
-        document.getElementById("primerSelect").disabled = true;
     }
 
-    /* infoPedido; */
+
     let Pedidos = [];
 
     function guardarDatos(row) {
-        row = row.target.parentNode.parentNode;
+        //row es la fila con el cambios en el pedido
+        /* row = row.target.parentNode.parentNode; */
         console.log(row);
-        /* let indice; */
         if ((Pedidos.find((valor, indice) => {
                 return valor.codigo == row.children[4].innerHTML
             })) == undefined) {
-            console.log('hola hola');
+            //si el pedido no se encuentra en el array pedidos entonce almaceno los valores en el objeto 
             const infoPedido = {
                 codigo: row.children[4].innerHTML,
                 fecha: row.children[0].innerHTML,
@@ -261,41 +253,33 @@ $pedido = new Pedido();
                 despacho: row.children[10].children[0].children[0].innerHTML,
                 fechaDespacho: row.children[11].children[0].value
             };
+            //guardar el pedidos editado en el array Pedidos
             Pedidos.push(infoPedido);
-            console.log(Pedidos);
+            /* console.log(Pedidos); */
         } else {
+            //si el pedido ya se editó, y se vuelve a editar, se realiza un update de los valores dentro del objeto en el array Pedidos
             console.log('actualizando');
             elementIndex = Pedidos.findIndex((pedido => pedido.codigo == row.children[4].innerHTML));
-            /*    Pedidos[elementIndex] = {
-                   codigo: row.children[4].innerHTML,//nro pedido
-                   tipoComp: (row.children[8].children[0].value != ''?row.children[8].children[0].value:row.children[8].children[0].children[0].innerHTML),
-                   embalaje: (row.children[9].children[0].value !=''?row.children[9].children[0].value: row.children[9].children[0].children[0].innerHTML),
-                   despacho: (row.children[10].children[0].value !=''?row.children[10].children[0].value:row.children[10].children[0].children[0].innerHTML),
-                   fechaDespacho: row.children[11].children[0].value
-               }; */
             Pedidos[elementIndex].tipoComp = (row.children[8].children[0].value != '' ? row.children[8].children[0].value : row.children[8].children[0].children[0].innerHTML);
             Pedidos[elementIndex].embalaje = (row.children[9].children[0].value != '' ? row.children[9].children[0].value : row.children[9].children[0].children[0].innerHTML);
             Pedidos[elementIndex].despacho = (row.children[10].children[0].value != '' ? row.children[10].children[0].value : row.children[10].children[0].children[0].innerHTML),
                 Pedidos[elementIndex].fechaDespacho = row.children[11].children[0].value;
-            /* console.log(Pedidos[elementIndex]); */
         }
+        console.log(Pedidos);
     }
 
-    //Funciones ajax para actualizar DB con los cambios en los pedidos
     let conexion;
 
     function actualizarDB() {
-        /*  if(checkInpustNoVacios())
-         { */
+        // si el arreglo Pedidos se encuentra vacio entonces no hubo ningun pedido editado. 
         if (Pedidos.length > 0) {
-            if (checkInpustNoVacios() == 0) {
+            //verificar si los campos en el pedido editado no están vacios 
+            checkInpustNoVacios();
+            if (b == 0) {
                 conexion = new XMLHttpRequest();
                 conexion.onreadystatechange = procesar;
                 let datos = JSON.stringify(Pedidos);
                 conexion.open('GET', './Controller/updateDatos.php?datos=' + datos, true);
-                /*    conexion.setRequestHeader('Content-type', 'application/json; charset=UTF-8') */
-
-                /*  console.log(datos); */
                 conexion.send();
             } else {
                 Swal.fire({
@@ -306,16 +290,11 @@ $pedido = new Pedido();
             }
         } else {
             Swal.fire({
-                    icon: 'error',
-                    title: 'No se modificaron datos',
-                    text: 'Cargue datos y haga click en guardar'
-                })
-                .then(function() {
-                    location.reload()
-                });
-            /*  }else{
-                 console.log('completar campos');
-             } */
+                icon: 'error',
+                title: 'No se modificaron datos',
+                text: 'Cargue datos y haga click en guardar'
+            })
+
         }
     }
 
@@ -323,7 +302,6 @@ $pedido = new Pedido();
     function procesar() {
         if (conexion.readyState !== 4) return;
         if (conexion.status >= 200 && conexion.status < 300) {
-            /* let nro_pedidos=Pedidos.map(); */
             Swal.fire({
                     icon: 'success',
                     title: 'Pedido modificado exitosamente!' + conexion.responseText,
@@ -345,29 +323,51 @@ $pedido = new Pedido();
         }
 
     }
-    let b = 0;
+    //bandera que indica si el pedido se encuentra con campos vacios o no. 1 indica que existen campos sin completar. 
+    let b;
 
     function checkInpustNoVacios() {
+        b = 0;
         let select = document.querySelectorAll('select');
+        let date = dia = document.querySelectorAll('[type=date]');
         select.forEach(el => {
-            if ((el.disabled == false) && (el.innerText == '')) {
+            if (el.disabled == false) {
+                if (el.value == '') {
+                    el.style.borderColor = 'red';
+                    b = 1;
+                } else {
+                    el.style.borderColor = '';
+                }
+            }
+        });
+        date.forEach(el => {
+            if ((el.disabled == false) && (el.value == '')) {
                 el.style.borderColor = 'red';
                 b = 1;
+            } else {
+                el.style.borderColor = '';
             }
         })
-        console.log('valor de bandera:' + b);
-        return b;
-        /*   select.forEach(el => {if(el.children[0].innerText===''){console.log('vacio')}}) */
     }
 
-    /*  const formatter = new Intl.NumberFormat('es-ar', {
-       style: 'currency',
-       currency: 'ARS',
-       minimumFractionDigits: 0
-     }) */
-    /*  function verificarCodigoCargadoEnArreglo(codigo) {
 
-     } */
+    function establecerMinFecha() {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+        let yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        let date = document.querySelectorAll('[type=date]');
+        date.forEach(el => {
+            el.setAttribute("min", today);
+        });
+    }
 </script>
 <script src="main.js" charset="utf-8"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
