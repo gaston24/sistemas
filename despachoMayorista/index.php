@@ -39,6 +39,28 @@ $pedido = new Pedido();
 
 <body>
 
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <img class="navbar-brand" src="images/LOGO XL 2018.jpg" width="40px" height="40px"></img>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <!-- <li class="nav-item">
+        <a class="nav-link" disabled><i class="fa fa-list"></i> Seleccionar ordenes</a>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="pedidosAsignados.php"><i class="fa fa-calendar-check-o"></i> Pedidos asignados</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+    
 <form class="form-row mt-2" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
             <div class="col- mt-2" id="contvendedor">
@@ -84,8 +106,11 @@ $pedido = new Pedido();
 
         <?php
 
-        if (isset($_GET['vendedor'])){ 
+        if (isset($_GET['vendedor'])){ ?>
 
+        <h4 id="title_vendedor"> Vendedor: <?php echo $_GET['vendedor'] ?></h4>
+        
+        <?php
         if ($_GET['vendedor']!= ''){
             $vendedor = $_GET['vendedor'];}
             else {

@@ -27,7 +27,7 @@ class Articulo
 
         $sql = " 
         
-        SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE 'OU%' AND PERFIL != 'N'
+        SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE 'O%' AND PERFIL != 'N'
 
         ";
 

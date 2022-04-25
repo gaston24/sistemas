@@ -15,9 +15,9 @@ $hora = $Object->format("G:i");
 
     $sql = "
     INSERT INTO DBO.RO_PEDIDOS_MAYORISTA_ASIGNADOS (FECHA, ESTADO, HORA_INGRESO, COD_CLIENT, RAZON_SOCI, LOCALIDAD, TALON_PED, NRO_PEDIDO, CANT_PEDIDO, CANT_PENDIENTE, IMP_PENDIENTE, 
-    COD_VENDED, VENDEDOR, TIPO_COMP, EMBALAJE, DESPACHO, FECHA_DESPACHO)
+    COD_VENDED, VENDEDOR, TIPO_COMP, EMBALAJE, DESPACHO, FECHA_DESPACHO, ARREGLO, PRIORIDAD)
     VALUES ('$fechaPed', $estado,'$HoraPed','$codClient','$cliente','$localidad', $talonPed, $nroPedido, $cantPedid, $cantPend, $importe, '$codVended', '$vendedor','$tipoComp',
-    '$embalaje','$despacho','$fechaDespacho')
+    '$embalaje','$despacho','$fechaDespacho', $arreglo, $prioridad)
 
     ";
     $stmt = sqlsrv_query( $cid_central, $sql );

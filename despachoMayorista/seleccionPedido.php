@@ -56,7 +56,6 @@ $pedido = new Pedido();
 
     $todosLosPedidos = $pedido->traerPedidosCliente($cliente);
 
-
     ?>
 
     <div class="table-responsive" id="tablePedidos">
@@ -67,12 +66,14 @@ $pedido = new Pedido();
                 <th scope="col" style="width: 1%">ESTADO</th>
                 <th scope="col" style="width: 1%">TALONARIO</th>
                 <th scope="col" style="width: 3%">NRO. PEDIDO</th>
-                <th scope="col" style="width: 2%">UNID. PEDIDO</th>
-                <th scope="col" style="width: 2%">UNID. PENDIENTE</th>
+                <th scope="col" style="width: 1%">UNID. PEDIDO</th>
+                <th scope="col" style="width: 1%">UNID. PENDIENTE</th>
                 <th scope="col" style="width: 2%">IMPORTE PEND.</th>
                 <th scope="col" style="width: 4%">TIPO COMPROBANTE</th>
                 <th scope="col" style="width: 7%">EMBALAJE</th>
                 <th scope="col" style="width: 10%">DESPACHO</th>
+                <th scope="col" style="width: 5%">ARREGLO</th>
+                <th scope="col" style="width: 5%">PRIORIDAD</th>
                 <th scope="col" style="width: 2%">ASIGNAR FECHA</th>
                 <th scope="col" style="width: 1%;"></th>
             </thead>
@@ -113,7 +114,7 @@ $pedido = new Pedido();
                             <?php if ($value->TIPO_COMP != '') { ?>
                                 <select name="Comprobante" id="Comprobante" class="form-control form-control-sm edit" style="font-size: small;" disabled>
                                     <!--si value es igual a remito entonces mostrar remito
-                                    si value es dintingo a remito entonces mostrar factura-->
+                                    si value es dintinto a remito entonces mostrar factura-->
                                     <option value="<?= $value->TIPO_COMP == 'REMITO' ? 'REMITO' : 'FACTURA' ?>" selected id="primerSelect"><?= $value->TIPO_COMP == 'REMITO' ? 'REMITO' : 'FACTURA' ?></option>
                                     <option value="<?= $value->TIPO_COMP == 'FACTURA' ? 'REMITO' : 'FACTURA' ?>"><?= $value->TIPO_COMP == 'FACTURA' ? 'REMITO' : 'FACTURA'  ?></option>
                                     <!--  <option value="otro" >otro</option> -->
@@ -143,7 +144,8 @@ $pedido = new Pedido();
                                     <option value="CAJA">CAJA</option>
                                 </select>
                             <?php } ?>
-                        </td>
+                        </td>        
+
                         <td>
                             <?php if ($value->DESPACHO != '') { ?>
                                 <select name="Despacho" id="Despacho" class="form-control form-control-sm edit" style="font-size: small;" disabled>
@@ -161,6 +163,39 @@ $pedido = new Pedido();
                                 </select>
                             <?php } ?>
                         </td>
+                        
+                        <td>
+                            <?php if (isset($value->ARREGLO)) { ?>
+                                <select name="Arreglo" id="Arreglo" class="form-control form-control-sm edit" style="font-size: small;" disabled>
+                                    <option value="<?= $value->ARREGLO == 0 ? 0 : 1 ?>" selected id="primerSelect"><?= $value->ARREGLO == '0' ? 'NO' : 'SI' ?></option>
+                                    <option value="<?= $value->ARREGLO == 0 ? 1 : 0 ?>"><?= $value->ARREGLO == '1' ? 'NO' : 'SI'  ?></option>
+                                </select>
+                            <?php } else { ?>
+                                <select name="Arreglo" id="Arreglo" class="form-control form-control-sm" style="font-size: small;" disabled>
+                                    <option value="null" selected></option>
+                                    <option value="0">NO</option>
+                                    <option value="1">SI</option>
+                                </select>
+                            <?php } ?>
+                        </td>
+
+                        <td>
+                            <?php if ($value->PRIORIDAD != '') { ?>
+                                <select name="Prioridad" id="Prioridad" class="form-control form-control-sm edit" style="font-size: small;" disabled>
+                                    <option value="<?= $value->PRIORIDAD == '1' ? '1' : ($value->PRIORIDAD == '2' ? '2' : '3') ?>" selected id="primerSelect"><?= $value->PRIORIDAD == '1' ? '1' : ($value->PRIORIDAD == '2' ? '2' : '3') ?></option>
+                                    <option value="<?= $value->PRIORIDAD == '1' ? '2' : ($value->PRIORIDAD == '3' ? '2' : '3') ?>"><?= $value->PRIORIDAD == '1' ? '2' : ($value->PRIORIDAD == '3' ? '2' : '3')  ?></option>
+                                    <option value="<?= $value->PRIORIDAD == '3' ? '1' : ($value->PRIORIDAD == '1' ? '3' : '1') ?>"><?= $value->PRIORIDAD == '3' ? '1' : ($value->PRIORIDAD == '1' ? '3' : '1') ?></option>   
+                                </select>
+                            <?php } else { ?>
+                                <select name="Prioridad" id="Prioridad" class="form-control form-control-sm" style="font-size: small;" disabled>
+                                    <option value="null" selected></option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            <?php } ?>
+                        </td>
+
                         <td>
                             <?php if (substr($value->FECHA_DESPACHO->date, 0, 10) != '1900-01-01') { ?>
                                 <input name="" id="primerSelect" type="date" class="form-control form-control-sm edit" style="width: 90%;" value="<?= substr($value->FECHA_DESPACHO->date, 0, 10); ?>" disabled></input>
@@ -214,7 +249,7 @@ $pedido = new Pedido();
     function habilitarInputs(input) {
         let row = [];
         row = input.target.parentNode.parentNode.parentNode;
-        for (let i = 8; i < 12; i++) {
+        for (let i = 8; i < 14; i++) {
             row.children[i].children[0].disabled = false;
 
             if (row.children[i].children[0].constructor != HTMLInputElement) {
@@ -251,7 +286,9 @@ $pedido = new Pedido();
                 tipoComp: row.children[8].children[0].children[0].innerHTML,
                 embalaje: row.children[9].children[0].children[0].innerHTML,
                 despacho: row.children[10].children[0].children[0].innerHTML,
-                fechaDespacho: row.children[11].children[0].value
+                arreglo: row.children[11].children[0].children[0].innerHTML,
+                prioridad: row.children[12].children[0].children[0].innerHTML,
+                fechaDespacho: row.children[13].children[0].value
             };
             //guardar el pedidos editado en el array Pedidos
             Pedidos.push(infoPedido);
@@ -263,7 +300,9 @@ $pedido = new Pedido();
             Pedidos[elementIndex].tipoComp = (row.children[8].children[0].value != '' ? row.children[8].children[0].value : row.children[8].children[0].children[0].innerHTML);
             Pedidos[elementIndex].embalaje = (row.children[9].children[0].value != '' ? row.children[9].children[0].value : row.children[9].children[0].children[0].innerHTML);
             Pedidos[elementIndex].despacho = (row.children[10].children[0].value != '' ? row.children[10].children[0].value : row.children[10].children[0].children[0].innerHTML),
-                Pedidos[elementIndex].fechaDespacho = row.children[11].children[0].value;
+            Pedidos[elementIndex].arreglo = (row.children[11].children[0].value != '' ? row.children[11].children[0].value : row.children[11].children[0].children[0].innerHTML),
+            Pedidos[elementIndex].prioridad = (row.children[12].children[0].value != '' ? row.children[12].children[0].value : row.children[12].children[0].children[0].innerHTML),
+            Pedidos[elementIndex].fechaDespacho = row.children[13].children[0].value;
         }
         console.log(Pedidos);
     }
@@ -304,8 +343,8 @@ $pedido = new Pedido();
         if (conexion.status >= 200 && conexion.status < 300) {
             Swal.fire({
                     icon: 'success',
-                    title: 'Pedido modificado exitosamente!' + conexion.responseText,
-                    text: "Numero de pedido: ",
+                    title: 'Pedido modificado exitosamente!',
+                    text: "Numero de pedido: "+ conexion.responseText,
                     showConfirmButton: true,
                 })
                 .then(function() {
@@ -331,15 +370,17 @@ $pedido = new Pedido();
         let select = document.querySelectorAll('select');
         let date = dia = document.querySelectorAll('[type=date]');
         select.forEach(el => {
+            if(el.parentElement.innerHTML.includes('Prioridad')==false && el.parentElement.innerHTML.includes('Arreglo')==false )
+            {
             if (el.disabled == false) {
-                if (el.value == '') {
+                if (el.value == '' ) {
                     el.style.borderColor = 'red';
                     b = 1;
                 } else {
                     el.style.borderColor = '';
                 }
             }
-        });
+        }});
         date.forEach(el => {
             if ((el.disabled == false) && (el.value == '')) {
                 el.style.borderColor = 'red';
