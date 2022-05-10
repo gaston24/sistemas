@@ -50,6 +50,16 @@ $pedido = new Pedido();
             <button type="button" class="btn btn-primary" id="btn_save">Guardar <i class="fa fa-save"></i></button>
         </div>
 
+        <div id="totalArticulos3">
+            <label id="labelTotal">Total $ factura</label>
+            <input name="total_todo" id="total" value=0 type="text" class="form-control text-center total" readonly>
+        </div>
+
+        <div id="totalImporte3">
+            <label id="labelTotal">Total $ remito</label>
+            <input name="total_todo" id="totalImp" value=0 type="text" class="form-control text-center total" readonly>
+        </div>
+
     </form>
 
     <?php
@@ -112,7 +122,7 @@ $pedido = new Pedido();
                         <td id="importe"><?= $value->IMP_PENDIENTE; ?></td>
                         <td>
                             <?php if ($value->TIPO_COMP != '') { ?>
-                                <select name="Comprobante" id="Comprobante" class="form-control form-control-sm edit" style="font-size: small;" disabled>
+                                <select name="Comprobante" id="Comprobante" class="form-control form-control-sm edit Comprobante" style="font-size: small;" disabled>
                                     <!--si value es igual a remito entonces mostrar remito
                                     si value es dintinto a remito entonces mostrar factura-->
                                     <option value="<?= $value->TIPO_COMP == 'REMITO' ? 'REMITO' : 'FACTURA' ?>" selected id="primerSelect"><?= $value->TIPO_COMP == 'REMITO' ? 'REMITO' : 'FACTURA' ?></option>
@@ -122,7 +132,7 @@ $pedido = new Pedido();
                                     <!-- <option value="FACTURA">FACTURA</option> -->
                                 </select>
                             <?php } else { ?>
-                                <select name="Comprobante" id="Comprobante" class="form-control form-control-sm" style="font-size: small;" disabled>
+                                <select name="Comprobante" id="Comprobante" class="form-control form-control-sm Comprobante" style="font-size: small;" disabled>
                                     <option value="" selected></option>
                                     <option value="REMITO">REMITO</option>
                                     <option value="FACTURA">FACTURA</option>
@@ -144,7 +154,7 @@ $pedido = new Pedido();
                                     <option value="CAJA">CAJA</option>
                                 </select>
                             <?php } ?>
-                        </td>        
+                        </td>
 
                         <td>
                             <?php if ($value->DESPACHO != '') { ?>
@@ -163,7 +173,7 @@ $pedido = new Pedido();
                                 </select>
                             <?php } ?>
                         </td>
-                        
+
                         <td>
                             <?php if (isset($value->ARREGLO)) { ?>
                                 <select name="Arreglo" id="Arreglo" class="form-control form-control-sm edit" style="font-size: small;" disabled>
@@ -173,7 +183,6 @@ $pedido = new Pedido();
                             <?php } else { ?>
                                 <select name="Arreglo" id="Arreglo" class="form-control form-control-sm" style="font-size: small;" disabled>
                                     <option value="null" selected></option>
-                                    <option value="0">NO</option>
                                     <option value="1">SI</option>
                                 </select>
                             <?php } ?>
@@ -184,7 +193,7 @@ $pedido = new Pedido();
                                 <select name="Prioridad" id="Prioridad" class="form-control form-control-sm edit" style="font-size: small;" disabled>
                                     <option value="<?= $value->PRIORIDAD == '1' ? '1' : ($value->PRIORIDAD == '2' ? '2' : '3') ?>" selected id="primerSelect"><?= $value->PRIORIDAD == '1' ? '1' : ($value->PRIORIDAD == '2' ? '2' : '3') ?></option>
                                     <option value="<?= $value->PRIORIDAD == '1' ? '2' : ($value->PRIORIDAD == '3' ? '2' : '3') ?>"><?= $value->PRIORIDAD == '1' ? '2' : ($value->PRIORIDAD == '3' ? '2' : '3')  ?></option>
-                                    <option value="<?= $value->PRIORIDAD == '3' ? '1' : ($value->PRIORIDAD == '1' ? '3' : '1') ?>"><?= $value->PRIORIDAD == '3' ? '1' : ($value->PRIORIDAD == '1' ? '3' : '1') ?></option>   
+                                    <option value="<?= $value->PRIORIDAD == '3' ? '1' : ($value->PRIORIDAD == '1' ? '3' : '1') ?>"><?= $value->PRIORIDAD == '3' ? '1' : ($value->PRIORIDAD == '1' ? '3' : '1') ?></option>
                                 </select>
                             <?php } else { ?>
                                 <select name="Prioridad" id="Prioridad" class="form-control form-control-sm" style="font-size: small;" disabled>
@@ -225,13 +234,19 @@ $pedido = new Pedido();
 
     let row;
     let datos = [];
+    let campo;
+    /*   let tipComprobante=document.querySelectorAll('.Comprobante'); */
+    let inputTotalFactura = document.getElementById('total');
+    let inputTotalRemito = document.getElementById('totalImp');
     let select = document.querySelectorAll('.form-control'); //almacenar select 
     select.forEach(el => {
         //guardar los cambios de un select junto con los datos del resto de la fila
         el.addEventListener('change', (el) => {
-            guardarDatos(el.target.parentNode.parentNode)
+            guardarDatos(el.target.parentNode.parentNode, el)
         });
     });
+
+
 
     function iniciarEscucha() {
         let edit = document.querySelectorAll(".fa-edit");
@@ -261,10 +276,11 @@ $pedido = new Pedido();
 
     let Pedidos = [];
 
-    function guardarDatos(row) {
+    function guardarDatos(row, campo) {
         //row es la fila con el cambios en el pedido
         /* row = row.target.parentNode.parentNode; */
-        console.log(row);
+        /* 
+            console.log(campo.srcElement.attributes.id.value); */
         if ((Pedidos.find((valor, indice) => {
                 return valor.codigo == row.children[4].innerHTML
             })) == undefined) {
@@ -290,19 +306,39 @@ $pedido = new Pedido();
                 prioridad: row.children[12].children[0].children[0].innerHTML,
                 fechaDespacho: row.children[13].children[0].value
             };
-            //guardar el pedidos editado en el array Pedidos
             Pedidos.push(infoPedido);
+            try {
+                if (campo.srcElement.attributes.id.value == 'Comprobante') {
+                sumarPorTipoComprobante(infoPedido.tipoComp, '', infoPedido.importePendiente);
+            }
+            } catch (error) {
+                console.log('Valor no definido:'+error);
+                sumarPorTipoComprobante(infoPedido.tipoComp, '', infoPedido.importePendiente);
+            }
+           
+            //guardar el pedidos editado en el array Pedidos
+           
+
+
             /* console.log(Pedidos); */
         } else {
+
             //si el pedido ya se editó, y se vuelve a editar, se realiza un update de los valores dentro del objeto en el array Pedidos
             console.log('actualizando');
+
             elementIndex = Pedidos.findIndex((pedido => pedido.codigo == row.children[4].innerHTML));
+            let tipoCompAnterior = Pedidos[elementIndex].tipoComp;
+            console.log('tipoCompAnterior: ' + tipoCompAnterior);
             Pedidos[elementIndex].tipoComp = (row.children[8].children[0].value != '' ? row.children[8].children[0].value : row.children[8].children[0].children[0].innerHTML);
             Pedidos[elementIndex].embalaje = (row.children[9].children[0].value != '' ? row.children[9].children[0].value : row.children[9].children[0].children[0].innerHTML);
             Pedidos[elementIndex].despacho = (row.children[10].children[0].value != '' ? row.children[10].children[0].value : row.children[10].children[0].children[0].innerHTML),
-            Pedidos[elementIndex].arreglo = (row.children[11].children[0].value != '' ? row.children[11].children[0].value : row.children[11].children[0].children[0].innerHTML),
-            Pedidos[elementIndex].prioridad = (row.children[12].children[0].value != '' ? row.children[12].children[0].value : row.children[12].children[0].children[0].innerHTML),
-            Pedidos[elementIndex].fechaDespacho = row.children[13].children[0].value;
+                Pedidos[elementIndex].arreglo = (row.children[11].children[0].value != '' ? row.children[11].children[0].value : row.children[11].children[0].children[0].innerHTML),
+                Pedidos[elementIndex].prioridad = (row.children[12].children[0].value != '' ? row.children[12].children[0].value : row.children[12].children[0].children[0].innerHTML),
+                Pedidos[elementIndex].fechaDespacho = row.children[13].children[0].value;
+            if (campo.srcElement.attributes.id.value == 'Comprobante') {
+                sumarPorTipoComprobante(Pedidos[elementIndex].tipoComp, tipoCompAnterior, Pedidos[elementIndex].importePendiente);
+            }
+
         }
         console.log(Pedidos);
     }
@@ -344,7 +380,7 @@ $pedido = new Pedido();
             Swal.fire({
                     icon: 'success',
                     title: 'Pedido modificado exitosamente!',
-                    text: "Numero de pedido: "+ conexion.responseText,
+                    text: "Numero de pedido: " + conexion.responseText,
                     showConfirmButton: true,
                 })
                 .then(function() {
@@ -370,17 +406,17 @@ $pedido = new Pedido();
         let select = document.querySelectorAll('select');
         let date = dia = document.querySelectorAll('[type=date]');
         select.forEach(el => {
-            if(el.parentElement.innerHTML.includes('Prioridad')==false && el.parentElement.innerHTML.includes('Arreglo')==false )
-            {
-            if (el.disabled == false) {
-                if (el.value == '' ) {
-                    el.style.borderColor = 'red';
-                    b = 1;
-                } else {
-                    el.style.borderColor = '';
+            if (el.parentElement.innerHTML.includes('Prioridad') == false && el.parentElement.innerHTML.includes('Arreglo') == false) {
+                if (el.disabled == false) {
+                    if (el.value == '') {
+                        el.style.borderColor = 'red';
+                        b = 1;
+                    } else {
+                        el.style.borderColor = '';
+                    }
                 }
             }
-        }});
+        });
         date.forEach(el => {
             if ((el.disabled == false) && (el.value == '')) {
                 el.style.borderColor = 'red';
@@ -394,7 +430,7 @@ $pedido = new Pedido();
 
     function establecerMinFecha() {
         let today = new Date();
-        let dd = today.getDate();
+        let dd = today.getDate() + 2;
         let mm = today.getMonth() + 1;
         let yyyy = today.getFullYear();
         if (dd < 10) {
@@ -408,6 +444,29 @@ $pedido = new Pedido();
         date.forEach(el => {
             el.setAttribute("min", today);
         });
+    }
+
+    function sumarPorTipoComprobante(tipoComprobante, tipoComprobanteAnterior, importe) {
+        console.log('comp anterior: ' + tipoComprobanteAnterior);
+        if (tipoComprobanteAnterior == 'REMITO') {
+            inputTotalRemito.value = (parseFloat(inputTotalRemito.value) - parseFloat(importe)).toFixed(3);
+            inputTotalFactura.value = (parseFloat(inputTotalFactura.value) + parseFloat(importe)).toFixed(3);
+        } else {
+            if (tipoComprobanteAnterior == 'FACTURA') {
+                console.log('entraste a fac');
+                inputTotalRemito.value = (parseFloat(inputTotalRemito.value) + parseFloat(importe)).toFixed(3);
+                inputTotalFactura.value = (parseFloat(inputTotalFactura.value) - parseFloat(importe)).toFixed(3);
+            } else {
+                if (tipoComprobante == 'REMITO') {
+                    inputTotalRemito.value = (parseFloat(inputTotalRemito.value) + parseFloat(importe)).toFixed(3);
+                } else {
+                    if (tipoComprobante == 'FACTURA') {
+                        console.log('entraste a fac');
+                        inputTotalFactura.value = (parseFloat(inputTotalFactura.value) + parseFloat(importe)).toFixed(3);
+                    }
+                }
+            }
+        }
     }
 </script>
 <script src="main.js" charset="utf-8"></script>

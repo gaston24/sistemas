@@ -147,7 +147,7 @@ $maestroArticulos = new Articulo();
             
 
                 <tr>
-                <td><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= $key['COD_ARTICU']; ?>.jpg"><img src="../../../Imagenes/<?= $key['COD_ARTICU'] ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
+                <td><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= $key['COD_ARTICU']; ?>.jpg"><img src="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
                     <td><?=  $key['COD_ARTICU']?></td>
                     <td><?=  $key['DESCRIPCIO']?></td>
                     <td><?=  $key['RUBRO']?></td>

@@ -29,7 +29,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
 <body>
 
 <div id="contenedorList">
-    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-list"></i>  Notas de Pedido por Orden</h3>
+    <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-list"></i>  Notas de Pedido por Orden:  <?php echo $orden ?></h3>
     <div class="row">
         <div class="row ml-1">
             <div class="ml-2">   
