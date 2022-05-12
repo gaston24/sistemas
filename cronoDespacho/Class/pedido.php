@@ -30,7 +30,8 @@ class Pedido
     {
 
         $sql = "SELECT * FROM RO_PEDIDOS_PENDIENTES_DESPACHO WHERE CANAL LIKE '$canal' AND RAZON_SOCI LIKE '$cliente' AND RE_DESPACHO
-        BETWEEN '$desde' AND '$hasta' AND IMPRESO = 'NO'";
+        BETWEEN '$desde' AND '$hasta' AND IMPRESO = 'NO'
+        ORDER BY FECHA";
 
         $rows = $this->retornarArray($sql);
         

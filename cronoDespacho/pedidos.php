@@ -126,17 +126,18 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
         <div class="table-responsive2" id="tablePedidos">
             <table class="table table-hover table-condensed table-striped text-center">
                 <thead class="thead-dark">
-                    <th scope="col" style="width: 3%">FECHA</th>
-                    <th scope="col" style="width: 1%">HORA<br>PEDIDO</th>
-                    <th scope="col" style="width: 2%">COD_CLIENT</th>
-                    <th scope="col" style="width: 16%">CLIENTE</th>
+                    <th scope="col" style="width: 5%">FECHA</th>
+                    <th scope="col" style="width: 1%">HORA</th>
+                    <th scope="col" style="width: 1%">CLIENTE</th>
+                    <th scope="col" style="width: 19%">NOMBRE</th>
                     <th scope="col" style="width: 1%">TALONARIO</th>
                     <th scope="col" style="width: 1%">PEDIDO</th>
-                    <th scope="col" style="width: 1%">CANT_PEDIDO</th>
+                    <th scope="col" style="width: 1%">UNIDADES</th>
                     <th scope="col" style="width: 1%">FECHA<br>DESPACHO</th>
                     <th scope="col" style="width: 1%">2DA FECHA<br>DESPACHO</th>
                     <th scope="col" style="width: 1%">DIA</th>
                     <th scope="col" style="width: 1%">PRIORIDAD</th>
+                    <th scope="col" style="width: 1%">ESTADO</th>
                 </thead>
 
                 <tbody id="table">
@@ -160,6 +161,11 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                             <td><?= substr($value->RE_DESPACHO->date,0,10); ?></td>
                             <td><?= $value->RUTA; ?></td>
                             <td><?= $value->PRIORIDAD; ?></td>
+                            <td id='estado'>
+                                <?php if(substr($value->PROX_DESPACHO->date,0,10) != substr($value->RE_DESPACHO->date,0,10)){ ?>
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?php } else { ?> <?php } ?>
+                            </td>
                         </tr>
                     <?php
                     }
@@ -198,7 +204,7 @@ $(document).ready(function(){
           data.push(parseFloat($(this).text()));
       });
       var suma = data.reduce(function(a,b){ return a+b; },0);
-      $("#total").val(suma);
+      $("#total").val(new Intl.NumberFormat("de-DE").format(suma));
   }
 
   $(document).ready(function(){
@@ -206,7 +212,7 @@ $(document).ready(function(){
         $(".pedido").each(function(){
             rows++;
         })
-        $("#totalPed").val(rows)
+        $("#totalPed").val(new Intl.NumberFormat("de-DE").format(rows))
     });
 
 </script>

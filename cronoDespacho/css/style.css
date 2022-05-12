@@ -1,5 +1,9 @@
 
 /*Fijar encabezado de tabla*/ 
+body
+{
+    overflow: hidden;
+}
 
 thead tr th { 
     position: sticky;
@@ -13,16 +17,25 @@ thead tr th {
 }
 
 .table-responsive { 
-    height:560px;
+    height:80vh;
     width: 1200px;
     margin-left: 3.5%;
 }
 
 .table-responsive2 { 
-    height:560px;
-    width: 1500px;
-    margin-left: 3.5%;
+    height:700px;
+    width: 96%;
+    margin-left: 3%;
     font-size: small;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#estado i{
+    display: flex;
+    text-align: right;
+    color:#ffc107;
+    font-size: medium;
 }
 
 .form
@@ -116,6 +129,14 @@ thead tr th {
     margin-left: 15%;
 }
 
+#btn_edit
+{
+    position: absolute;
+    margin-top: 1.75%;
+    margin-left: 8%;
+    width: 110px;
+}
+
 #btnActive
 {
     position: absolute;
@@ -128,7 +149,7 @@ thead tr th {
 #contCheck
 {
     position: absolute;
-    right: 27%;
+    right: 35%;
     top: 30px;
     font-weight: bold;
 }
@@ -149,3 +170,50 @@ thead tr th {
 {
     margin-top: 5%;
 }
+
+@media only screen and (min-width: 300px) and (max-width: 1400px) {
+
+#btn_edit
+{
+    position: absolute;
+    margin-top: 1.75%;
+    margin-left: 5%;
+    width: 110px;
+}
+
+#contCheck
+{
+    position: absolute;
+    right: 25%;
+    top: 30px;
+    font-weight: bold;
+}
+
+.table-responsive { 
+    font-size: small;
+}
+
+.table-responsive2 { 
+    height:700px;
+    width: 85%;
+    margin-left: 1%;
+    font-size: 11px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#totalPedidos
+{
+    position: absolute;
+    margin-left: 67%;
+    margin-top: -0.5%;
+}
+
+#totalArticulos
+{
+    position: absolute;
+    margin-left: 80%;
+    margin-top: -0.5%;
+}
+
+    }

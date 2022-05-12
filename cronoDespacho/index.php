@@ -90,6 +90,10 @@ foreach ($todosLosTipos as $value) {
             </div>
 
             <div>
+                <button type="button" class="btn btn-warning" id="btn_edit">Editar <i class="fa fa-edit"></i></button>
+            </div>
+
+            <div>
                 <button type="button" class="btn btn-success" id="btn_refresh">Actualizar <i class="fa fa-refresh"></i></button>
             </div>
             
@@ -107,7 +111,7 @@ foreach ($todosLosTipos as $value) {
         $todosLosClientes = $cronoDespacho->traerCronograma($cronoElegido);
 
     ?>
-        <div class="table-responsive mt-3">
+        <div class="table-responsive mt-4">
             <table class="table table-hover table-condensed table-striped text-center">
                 <thead class="thead-dark">
                     <th scope="col" style="width: 2%">NRO_SUC</th>
@@ -139,24 +143,24 @@ foreach ($todosLosTipos as $value) {
                                 <option value="3">3</option>
                             </select>
                             </td>
-                            <td><input type="checkbox" name="LUNES" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->LUNES == 1) {
+                            <td><input type="checkbox" name="LUNES" class="check" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->LUNES == 1) {
                                                                                                                                                     echo 'checked';
-                                                                                                                                                } ?>></td>
-                            <td><input type="checkbox" name="MARTES" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->MARTES == 2) {
+                                                                                                                                                } ?> disabled></td>
+                            <td><input type="checkbox" name="MARTES" class="check" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->MARTES == 2) {
                                                                                                                                                     echo 'checked';
-                                                                                                                                                } ?>></td>
-                            <td><input type="checkbox" name="MIERCOLES" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->MIERCOLES == 3) {
+                                                                                                                                                } ?> disabled></td>
+                            <td><input type="checkbox" name="MIERCOLES" class="check" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->MIERCOLES == 3) {
                                                                                                                                                         echo 'checked';
-                                                                                                                                                    } ?>></td>
-                            <td><input type="checkbox" name="JUEVES" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->JUEVES == 4) {
+                                                                                                                                                    } ?> disabled></td>
+                            <td><input type="checkbox" name="JUEVES" class="check" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->JUEVES == 4) {
                                                                                                                                                     echo 'checked';
-                                                                                                                                                } ?>></td>
-                            <td><input type="checkbox" name="VIERNES" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->VIERNES == 5) {
+                                                                                                                                                } ?> disabled></td>
+                            <td><input type="checkbox" name="VIERNES" class="check" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->VIERNES == 5) {
                                                                                                                                                         echo 'checked';
-                                                                                                                                                    } ?>></td>
-                            <td><input type="checkbox" name="SABADO" id="" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->SABADO == 6) {
+                                                                                                                                                    } ?> disabled></td>
+                            <td><input type="checkbox" name="SABADO" class="check" onclick="actualizarDia('<?= $value->COD_CLIENT ?>', this.name,event)" <?php if ($value->SABADO == 6) {
                                                                                                                                                     echo 'checked';
-                                                                                                                                                } ?>></td>
+                                                                                                                                                } ?> disabled></td>
                         </tr>
                     <?php
                     }

@@ -1,6 +1,9 @@
 const tipoCronograma = document.querySelector("#inputTipo")
+const btnEditar=document.querySelector('.btn-warning');
 
 document.getElementById('btn_refresh').addEventListener('click',updatefechas);
+
+btnEditar.addEventListener('click',habilitarCheck);
 
 const actualizarDia = (codClient, nameDia) => {
 
@@ -168,18 +171,15 @@ function myFunction() {
     }
 
 
-  
+  //habilitar checkbox
 
-  // $(document).ready(function(){
-  //   var data = [];
-  //   $("td.sumTotal").each(function(){
-  //   data.push(parseFloat($(this).text()));
-  //   });
-  //   var suma = data.reduce(function(a,b){ return a+b; },0);
-  //       $("#total").val(suma);
-  //       console.log(suma);
-  //   });
-    
+function habilitarCheck()
+{
+  let checks=document.querySelectorAll('.check');
+
+  checks.forEach(check=>check.disabled=false);
+}
+  
 
 
   

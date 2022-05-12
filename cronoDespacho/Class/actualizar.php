@@ -22,7 +22,9 @@ class actualizar
 
         try {
             //code...
-            $sql = "EXEC SP_RO_FECHA_DESPACHO_CRONO_NORMAL";
+            $sql = "EXEC SP_RO_FECHA_DESPACHO_CRONO_NORMAL
+                    EXEC SP_RO_FECHA_DESPACHO_CRONO_NORMAL_HORA
+            ";
 
             return $this->ejecutarQuery($sql);
         } catch (Exception $th) {

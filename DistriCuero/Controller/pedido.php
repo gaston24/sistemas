@@ -24,6 +24,7 @@ $hora = $Object->format("G:i");
 
 $matriz = $_POST['matriz'];
 
+
 foreach($matriz as $key => $var){
   $articulo = $var[1];
   $descrip = $var[2];
@@ -39,9 +40,7 @@ foreach($matriz as $key => $var){
 
     $sql = "
     INSERT INTO DBO.RO_PEDIDO_PRECOMPRA (FECHA, HORA, COD_CLIENT, NRO_NOTA_PEDIDO, COD_ARTICU, DESCRIPCIO, RUBRO, PRECIO_ESTIMADO, TEMPORADA, CANTIDAD, NRO_ORDEN) VALUES 
-    ('$fecha','$hora','$codClient',$proxNumPed,'$articulo','$descrip', '$rubro', $precio,'$temporada',$cantidad,$nroOrden);
-
-    ";
+    ('$fecha','$hora','$codClient',$proxNumPed,'$articulo','$descrip', '$rubro', $precio,'$temporada',$cantidad,$nroOrden);";
     $stmt = sqlsrv_query( $cid_central, $sql );
 
   }

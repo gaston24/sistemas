@@ -29,7 +29,7 @@ class Canal
     public function traerCanales()
     {
 
-        $sql = "SELECT DISTINCT(CANAL) CANAL FROM RO_PEDIDOS_PENDIENTES_DESPACHO
+        $sql = "SELECT DISTINCT(CANAL) CANAL FROM RO_PEDIDOS_PENDIENTES_DESPACHO WHERE CANAL IS NOT NULL
         GROUP BY CANAL";
 
         $rows = $this->retornarArray($sql);
