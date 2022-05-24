@@ -37,4 +37,14 @@ class Cliente
         return $rows;
     }
 
+    public function traerSinFecha()
+    {
+
+        $sql = "SELECT * FROM RO_CLIENTES_SIN_ASIGNAR";
+
+        $rows = $this->retornarArray($sql);
+
+        return $rows;
+    }
+
 }

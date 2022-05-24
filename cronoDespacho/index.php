@@ -2,11 +2,18 @@
 
 require 'Class/cronograma.php';
 require 'Class/TipoCrono.php';
+require 'Class/cliente.php';
 
 $cronoDespacho = new Cronograma();
 
 $tipo = new TipoCrono();
 $todosLosTipos = $tipo->traerTipo();
+
+$cliente = new Cliente();
+
+/*  */
+/* print_r($todosLosClientesSinFecha); */
+/* die(); */
 
 $cronoElegido = isset($_GET['tipo']) ? $_GET['tipo'] : 'NORMAL';
 
@@ -15,6 +22,7 @@ foreach ($todosLosTipos as $value) {
         $cronoElegido = $value['TIPO_CRONO'];
     }    
 }
+
 ?>
 
 
@@ -70,6 +78,7 @@ foreach ($todosLosTipos as $value) {
                     <?php
                     foreach ($todosLosTipos as $tipo => $key) {
                         $selected = ($key['TIPO_CRONO'] == $cronoElegido) ? 'selected' : '';
+                     
                     ?>
                         <option value="<?= $key['ID'] ?>" <?=$selected ?> ><?= $key['TIPO_CRONO'] ?></option>
                     <?php
@@ -97,13 +106,22 @@ foreach ($todosLosTipos as $value) {
                 <button type="button" class="btn btn-success" id="btn_refresh">Actualizar <i class="fa fa-refresh"></i></button>
             </div>
             
+            <div>
+            <?php 
+            $todosLosClientesSinFecha = $cliente->traerSinFecha();
+            foreach($todosLosClientesSinFecha as $val)
+            if ($val['CANT'] == 1){?>
+                <i class="fa fa-exclamation-circle area" id='alert' aria-hidden="true" data-toggle="modal" data-target="#myModal"></i>
+            <?php }?>
+            </div>
+           
 
     </form>
 
     <?php
 
     if (isset($_GET['tipo'])) {
-
+      
         if ($_GET['tipo'] != '') {
             $tipo = $_GET['tipo'];
         }
@@ -175,6 +193,46 @@ foreach ($todosLosTipos as $value) {
         ?>
         </div>
 
+                <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Clientes sin asignar</h5>
+                </div>
+                <div class="modal-body">
+                
+                <div class="table">
+                    <table class="table table-hover table-condensed table-striped text-center">
+                        <thead class="thead-dark">
+                            <th scope="col" style="width: 1%">CRONOGRAMA</th>
+                            <th scope="col" style="width: 1%">COD_CLIENT</th>
+                            <th scope="col" style="width: 3%">SUCURSAL</th>
+                        </thead>
+
+                    <tbody id="table">
+
+                    <?php
+                        foreach ($todosLosClientesSinFecha as $key)
+                        {
+                    ?>
+                        <tr>
+                            <td><?= $key['CRONOGRAMA']?> </td>
+                            <td><?= $key['COD_CLIENT']?> </td>
+                            <td><?= $key['SUCURSAL']?> </td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
 </body>
 <script src="main.js" charset="utf-8"></script>
 </html>
@@ -191,5 +249,6 @@ foreach ($todosLosTipos as $value) {
 
 <script>
   
+  $("#myModal").modal('show.bs.modal');
   
 </script>

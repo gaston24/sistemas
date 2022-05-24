@@ -163,7 +163,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                             <td><?= $value->PRIORIDAD; ?></td>
                             <td id='estado'>
                                 <?php if(substr($value->PROX_DESPACHO->date,0,10) != substr($value->RE_DESPACHO->date,0,10)){ ?>
-                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true" title="Pedido demorado"></i>
                                 <?php } else { ?> <?php } ?>
                             </td>
                         </tr>
