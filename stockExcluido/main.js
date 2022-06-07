@@ -28,46 +28,7 @@ function myFunction() {
     }
   }
 
-  //Verifica si el artículo existe en la STA11//
-
-function traerDescripcion() {
-  $("#inputDescrip").val("");
-
-  var codigoAbuscar = $("#codArticulo").val();
-
-  $.ajax({
-    url: "Controller/buscarCodigo.php",
-    method: "POST",
-    data: {
-      codArticu: codigoAbuscar,
-    },
-    success: function (data) {
-      let datos = JSON.parse(data);
-      if (datos.code != 200) {
-        $("#inputDescrip").val("NO EXISTE EL ARTICULO SELECCIONADO");
-      } else {
-        let codigo = JSON.parse(datos.msg);
-        $("#inputDescrip").val(codigo[0].DESCRIPCIO);
-      }
-    },
-  });
-}
-
-let conexion;
-
-function insertarArticulo() {
-//agregar condición
-    let articulo = document.getElementById("codArticulo").value;
-    let descripcion = document.getElementById("inputDescrip").value;
-    let precio = document.getElementById("inputCant").value;
-    let temporada = document.getElementById("inputObs").value;
-
-    conexion = new XMLHttpRequest();
-    conexion.onreadystatechange = procesarEvento;
-    conexion.open("GET","Controller/insertArticulo.php?articulo="+articulo+"&descrip="+descripcion+"&cantidad="+cantidad+"&observaciones="+observaciones, true);
-    conexion.send();
-    
-  }
+  //Matriz de artículos a eliminar//
 
   function matrizOrdenes()
     {
@@ -96,7 +57,7 @@ function insertarArticulo() {
 
     }
 
-    //Revisa que se haya seleccionado alguna orden y actualiza el campo ACTIVA//
+    //Revisa que se haya seleccionado algún artículo y lo borra de la tabla//
 
     function deleteArticulo() {
       const matriz = matrizOrdenes();
@@ -143,5 +104,47 @@ function insertarArticulo() {
       });
     
     }
+
+      //Verifica si el artículo existe en la STA11//
+
+      function traerDescripcion() {
+        $("#inputDescrip").val("");
+
+        var codigoAbuscar = $("#codArticulo").val();
+
+        $.ajax({
+          url: "Controller/buscarCodigo.php",
+          method: "POST",
+          data: {
+            codArticu: codigoAbuscar,
+          },
+          success: function (data) {
+            let datos = JSON.parse(data);
+            if (datos.code != 200) {
+              $("#inputDescrip").val("NO EXISTE EL ARTICULO SELECCIONADO");
+            } else {
+              let codigo = JSON.parse(datos.msg);
+              $("#inputDescrip").val(codigo[0].DESCRIPCIO);
+            }
+          },
+        });
+      }
+
+    let conexion;
+
+    function insertarArticulo() {
+    //agregar condición
+        let articulo = document.getElementById("codArticulo").value;
+        let descripcion = document.getElementById("inputDescrip").value;
+        let precio = document.getElementById("inputCant").value;
+        let temporada = document.getElementById("inputObs").value;
+
+        conexion = new XMLHttpRequest();
+        conexion.onreadystatechange = procesarEvento;
+        conexion.open("GET","Controller/insertArticulo.php?articulo="+articulo+"&descrip="+descripcion+"&cantidad="+cantidad+"&observaciones="+observaciones, true);
+        conexion.send();
+        
+      }
+
 
     

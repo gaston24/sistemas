@@ -1,6 +1,4 @@
 
-
-
 .contenedor-info{
         width: 100%;
         display: flex;
@@ -8,32 +6,32 @@
         justify-content: space-evenly;
        margin:0 auto;
 }
+
 .form-control.text-center.total
 {
-    width: 10rem;
+    width: 8rem;
+    margin-inline: 0.5rem;
 }
 
 .contenedor-info2{
-  width: auto;
+    width: auto;
     display: flex;
     flex-direction: row;
-   /*  justify-content: space-around; */
     margin:auto auto;
 }
 
 .contenedor-info2 button{
     margin-top: 20px;
   }
+
 .contenedor-info3{
- /*    width: 100%; */
     display: flex;
     flex-direction: row;
-  /*   justify-content: space-around; */
-   margin:0 auto;
+    margin:0 auto;
 }
 
 .contenedor-info4{
-    width: auto;
+      width: auto;
       display: flex;
       flex-direction: row;
       justify-content: space-around;

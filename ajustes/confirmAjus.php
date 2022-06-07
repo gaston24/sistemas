@@ -49,11 +49,12 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 		$nuevo = $_POST['articulo'][$i];
 		$codigo = $_POST['codigo'][$i];
 		$cant = $_POST['cant'][$i];
+		$ncomp = $_POST['ncomp'][$i];
 		
-		if($_POST['ncomp'][$i] == ''){
-			$comp = 'TRANSFERENCIA';
+		if($_POST['tcomp'][$i] == ''){
+			$tcomp = 'TRANSFERENCIA';
 		}else{
-			$comp = $_POST['ncomp'][$i];
+			$tcomp = $_POST['tcomp'][$i];
 		}
 		
 		$sqlArt = "
@@ -80,7 +81,7 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 					//var_dump('if');
 				
 					//ACTUALIZAR CODIGO NUEVO
-					$sqlUpdate = "UPDATE SOF_CONFIRMA SET COD_NUEVO = '$nuevo' WHERE COD_ARTICU = '$codigo' AND NCOMP_ORIG = '$comp';";
+					$sqlUpdate = "UPDATE SOF_CONFIRMA SET COD_NUEVO = '$nuevo' WHERE COD_ARTICU = '$codigo' AND N_COMP = '$ncomp';";
 					//var_dump('$sqlUpdate', $sqlUpdate);
 
 					odbc_exec($cid, $sqlUpdate);
@@ -111,18 +112,18 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 					$sqlEncabezado = "
 					INSERT INTO STA14 
 					(
-					COTIZ, EXPORTADO, EXP_STOCK, FECHA_ANU, FECHA_MOV, HORA, 
+					COD_PRO_CL, COTIZ, EXPORTADO, EXP_STOCK, FECHA_ANU, FECHA_MOV, HORA, 
 					LISTA_REM, LOTE, LOTE_ANU, MON_CTE, N_COMP, NCOMP_IN_S, 
 					NRO_SUCURS, T_COMP, TALONARIO, TCOMP_IN_S, USUARIO, HORA_COMP,
 					ID_A_RENTA, DOC_ELECTR, IMP_IVA, IMP_OTIMP, IMPORTE_BO, IMPORTE_TO, 
 					DIFERENCIA, SUC_DESTIN, DCTO_CLIEN, FECHA_INGRESO, HORA_INGRESO, 
 					USUARIO_INGRESO, TERMINAL_INGRESO, IMPORTE_TOTAL_CON_IMPUESTOS, 
-					CANTIDAD_KILOS, COD_PRO_CL
+					CANTIDAD_KILOS
 					)
 					VALUES
 					(
-					4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'AJU', 850, 'AJ', 'AJUSTES', 
-					'$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0, 'GTCENT'
+					'GTCENT', 4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'AJU', 850, 'AJ', 'AJUSTES', 
+					'$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0
 					)
 					;";
 					//var_dump('$sqlEncabezado', $sqlEncabezado);
@@ -178,7 +179,7 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 				}
 				
 				//ACTUALIZA REGISTROS PENDIENTES
-				$sqlActuaPend = "UPDATE SOF_CONFIRMA SET N_ORDEN_CO = '1' WHERE N_ORDEN_CO = '' AND NCOMP_ORIG = '$comp' AND COD_ARTICU = '$codigo'";
+				$sqlActuaPend = "UPDATE SOF_CONFIRMA SET N_ORDEN_CO = '1' WHERE N_ORDEN_CO = '' AND N_COMP = '$ncomp' AND COD_ARTICU = '$codigo'";
 				$resultActuaPend = odbc_exec($cid, $sqlActuaPend);
 			
 			}

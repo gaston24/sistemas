@@ -33,7 +33,7 @@ include 'checkBrowser.php';
 
 	
 
-	<header>
+	<header id="encabezado">
 		<h1 align="center">XL GESTION</h1>
 
 	</header>

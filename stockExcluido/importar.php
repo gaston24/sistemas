@@ -18,7 +18,7 @@
 
     
 <div class="modal fade" id="altaModalImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 40%;" role="document">
+  <div class="modal-dialog" style="max-width: 45%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Importar artículos</h5>
@@ -35,22 +35,23 @@
             </div>
             <div class="w3-responsive table-responsive2">
             <h3 class="w3-center"><i class="fa fa-cloud-upload text-info" aria-hidden="true"></i><strong> Artículos a importar </strong></h3>
-            <table id="tblItems" class="table w3-table-all w3-hoverable">
+            <table id="tblItems" class="table ">
                 <thead class="thead-dark" style="font-size: small;">
                 <tr>
                     <th scope="col" style="width: 2%">ARTICULO</th>
                     <th scope="col" style="width: 1%">CANTIDAD</th>
-                    <th scope="col" style="width: 8%">OBSERVACIONES</th>
+                    <th scope="col" style="width: 15%">OBSERVACIONES</th>
+                    <th scope="col" style="width: 15%">DESCRIPCION</th>
                 </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody style="font-size: small;"></tbody>
             </table>
             </div>
 
         </div>
       <div class="modal-footer">
-        <button class="btn btn-success" onclick="">Importar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button class="btn btn-success" id='save' onclick="">Guardar</button>
+        <button type="button" id='close' class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
       </div>
     </div>
@@ -60,56 +61,8 @@
     
 </body>
 
+<script src="main2.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.0/dist/xlsx.full.min.js"></script>
-
-<script>
-
-var ExcelToJSON = function() {
-      this.parseExcel = function(file) {
-        var reader = new FileReader();
-    
-        reader.onload = function(e) {
-          var data = e.target.result;
-          var workbook = XLSX.read(data, {
-            type: 'binary'
-          });
-          workbook.SheetNames.forEach(function(sheetName) {
-            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-            var productList = JSON.parse(JSON.stringify(XL_row_object));
-    
-            var rows = $('#tblItems tbody');
-            // console.log(productList)
-            for (i = 0; i < productList.length; i++) {
-              var columns = Object.values(productList[i])
-              rows.append(`
-                            <tr>
-                                <td>${columns[0]}</td>
-                                <td>${columns[1]}</td>
-                                <td>${columns[2]}</td>
-                            </tr>
-                        `);
-            }
-    
-          })
-        };
-        reader.onerror = function(ex) {
-          console.log(ex);
-        };
-    
-        reader.readAsBinaryString(file);
-      };
-    };
-    
-    function handleFileSelect(evt) {
-      var files = evt.target.files; // FileList object
-      var xl2json = new ExcelToJSON();
-      xl2json.parseExcel(files[0]);
-    }
-    
-    document.getElementById('fileupload').addEventListener('change', handleFileSelect, false);
-
-
-</script>
 
 </html>

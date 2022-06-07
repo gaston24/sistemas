@@ -26,7 +26,8 @@ class Local
 
         $sql= "
             SET DATEFORMAT YMD
-            select * from sof_usuarios where is_outlet = 1 and nro_sucurs < 100 and nombre like 'GT%'
+            SELECT * FROM SOF_USUARIOS WHERE IS_OUTLET = 1 AND NRO_SUCURS < 100 AND NOMBRE LIKE 'GT%'
+            ORDER BY DESCRIPCION
             ";
      
         return $this->getData($sql);

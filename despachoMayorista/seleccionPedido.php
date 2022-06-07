@@ -298,7 +298,7 @@ $pedido = new Pedido();
                 talonario: row.children[3].innerHTML,
                 unidPedido: row.children[5].innerHTML,
                 unidPendiente: row.children[6].innerHTML,
-                importePendiente: row.children[7].innerText.slice(2),
+                importePendiente: parseFloat(row.children[7].innerText.slice(2)).toFixed(3),
                 tipoComp: row.children[8].children[0].children[0].innerHTML,
                 embalaje: row.children[9].children[0].children[0].innerHTML,
                 despacho: row.children[10].children[0].children[0].innerHTML,

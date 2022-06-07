@@ -37,8 +37,9 @@ $localesOutlet = $local->traerLocales();
                 <form action="ajusteLocal.php" method="post">
             
                     <div class="row">
-                        <div class="col">
+                        <div>
                             <select class="form form-control" name="localSeleccionado" id="">
+                            <option value="" selected disabled></option>
                             <?php
                             foreach ($localesOutlet as $key => $value) {
                             ?>

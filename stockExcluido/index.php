@@ -57,11 +57,10 @@ $articulo = new Articulo();
                     <th scope="col" style="width: 1%">FECHA</th>
                     <th scope="col" style="width: 1%">HORA</th>
                     <th scope="col" style="width: 2%">ARTICULO</th>
-                    <th scope="col" style="width: 3%">DESCRIPCION</th>
+                    <th scope="col" style="width: 4%">DESCRIPCION</th>
                     <th scope="col" style="width: 1%">CANTIDAD</th>
-                    <th scope="col" style="width: 8%">OBSERVACIONES</th>
-                    <th style="width:0.5%"></th>
-                    <th style="width:0.5%"></th>
+                    <th scope="col" style="width: 7%">OBSERVACIONES</th>
+                    <th style="width:0.5%">SELECCIONAR</th>
                 </thead>
 
                 <tbody id="table" style="font-size: small;">
@@ -82,9 +81,6 @@ $articulo = new Articulo();
                             <td><?= $value->DESCRIPCION ?></td>
                             <td><?= $value->CANT ?></td>
                             <td><?= $value->OBSERVACIONES ?></td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button></a>
-                            </td>
                             <td><input id="check" type="checkbox" onclick="contar(this);"></td>
                         </tr>
 

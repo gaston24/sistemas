@@ -28,14 +28,14 @@ if (isset($_GET['datos'])) {
                         ARREGLO = $arreglo, PRIORIDAD = $prioridad, FECHA_DESPACHO = '$fecha_despacho', FECHA_MODIF = '$fechaModif', HORA_MODIF = '$horaModif' 
                         WHERE NRO_PEDIDO = '$codigo'
                         
-                        UPDATE SJ_PICKING_ENCABEZADO_TESTING SET TIPO_COMP = '$tipoComp', EMBALAJE = '$embalaje', DESPACHO = '$despacho', 
+                        UPDATE SJ_PICKING_ENCABEZADO SET TIPO_COMP = '$tipoComp', EMBALAJE = '$embalaje', DESPACHO = '$despacho', 
                         ARREGLO = $arreglo, PRIORIDAD = $prioridad, 
                         PROX_DESPACHO = (CASE WHEN (PROX_DESPACHO != '$fecha_despacho' OR PROX_DESPACHO IS NULL) THEN '$fecha_despacho' ELSE PROX_DESPACHO END),
                         RE_DESPACHO = (CASE WHEN (RE_DESPACHO != '$fecha_despacho' OR RE_DESPACHO IS NULL) THEN '$fecha_despacho' ELSE RE_DESPACHO END)
-                        WHERE NRO_PEDIDO = '$codigo'
+                        WHERE NRO_PEDIDO = '$codigo' AND ESTADO LIKE 'ABIERTO'
 
-                        UPDATE SJ_PICKING_ENCABEZADO_TESTING SET RUTA = UPPER(DATENAME(DW, RE_DESPACHO))
-                        WHERE NRO_PEDIDO = '$codigo' AND (RUTA != UPPER(DATENAME(DW, RE_DESPACHO)) OR RUTA IS NULL)
+                        UPDATE SJ_PICKING_ENCABEZADO SET RUTA = UPPER(DATENAME(DW, RE_DESPACHO))
+                        WHERE NRO_PEDIDO = '$codigo' AND (RUTA != UPPER(DATENAME(DW, RE_DESPACHO)) OR RUTA IS NULL) AND ESTADO LIKE 'ABIERTO'
                         ";
                 sqlsrv_query($cid_central, $sql);
                 // echo "Datos guardados exitosamente";  
@@ -66,14 +66,14 @@ if (isset($_GET['datos'])) {
                     VALUES ('$fecha', $estado,'$hora','$codClient','$cliente','$localidad', $talonario,'$codigo', $unidPedido, $unidPendiente, $importePendiente, '$codVended', '$vendedor','$tipoComp',
                     '$embalaje','$despacho', $arreglo, $prioridad, '$fechaModif', '$horaModif','$fecha_despacho')
 
-                    UPDATE SJ_PICKING_ENCABEZADO_TESTING SET TIPO_COMP = '$tipoComp', EMBALAJE = '$embalaje', DESPACHO = '$despacho', 
+                    UPDATE SJ_PICKING_ENCABEZADO SET TIPO_COMP = '$tipoComp', EMBALAJE = '$embalaje', DESPACHO = '$despacho', 
                     ARREGLO = $arreglo, PRIORIDAD = $prioridad, 
                     PROX_DESPACHO = (CASE WHEN (PROX_DESPACHO != '$fecha_despacho' OR PROX_DESPACHO IS NULL) THEN '$fecha_despacho' ELSE PROX_DESPACHO END),
                     RE_DESPACHO = (CASE WHEN (RE_DESPACHO != '$fecha_despacho' OR RE_DESPACHO IS NULL) THEN '$fecha_despacho' ELSE RE_DESPACHO END)
-                    WHERE NRO_PEDIDO = '$codigo'
+                    WHERE NRO_PEDIDO = '$codigo' AND ESTADO LIKE 'ABIERTO'
                     
-                    UPDATE SJ_PICKING_ENCABEZADO_TESTING SET RUTA = UPPER(DATENAME(DW, RE_DESPACHO))
-                    WHERE NRO_PEDIDO = '$codigo' AND (RUTA != UPPER(DATENAME(DW, RE_DESPACHO)) OR RUTA IS NULL)
+                    UPDATE SJ_PICKING_ENCABEZADO SET RUTA = UPPER(DATENAME(DW, RE_DESPACHO))
+                    WHERE NRO_PEDIDO = '$codigo' AND (RUTA != UPPER(DATENAME(DW, RE_DESPACHO)) OR RUTA IS NULL) AND ESTADO LIKE 'ABIERTO'
                     ";
             $stmt=sqlsrv_query($cid_central, $sql);
             if( $stmt === false ) {

@@ -35,9 +35,8 @@ thead tr th {
     width: 1250px;
 }
 
-.table-responsive2 { 
-    width: 550px;
-    margin-left: 2%;
+#tblItems { 
+    width: 700px;
 }
 
 .w3-half

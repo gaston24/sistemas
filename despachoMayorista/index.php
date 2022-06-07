@@ -158,7 +158,9 @@ $pedido = new Pedido();
                             <td class="pedido"><?= $value->CANT_PEDIDOS; ?></td>
                             <td class="sumImporte"><?= $value->IMPORTE; ?></td>
                             <td>
+                            <?php if($value->IMPRESO == 'NO'){ ?>
                                 <a href="seleccionPedido.php?cliente=<?= $value->COD_CLIENT; ?>&razon_soci=<?= $value->RAZON_SOCI; ?>"><button type="button" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button></a>
+                                <?php } ?>
                             </td>
                             <td><button id="myBtn" type="button" class="btn btn-warning btn-sm BtnAw" href="#" data-toggle="modal" data-target="myModal"><i class="fa fa-info-circle" style="font-size: 20px;"></i></button></td>
                         </tr>

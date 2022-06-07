@@ -81,7 +81,7 @@ td{
 		<thead>
 			<tr>
 				<th>FECHA</th>
-				<th>COMP ORIGEN</th>
+				<th>TIPO COMP</th>
 				<th>COMP LOCAL</th>
 				<th>CODIGO</th>
 				<th>DESCRIPCION</th>
@@ -103,14 +103,14 @@ td{
 		
         	<tr>
                 <td><?php echo $v['FECHA_MOV'] ;?></td>
-				<td><input class="form-control input" name="ncomp[]" type="text" value="<?php echo $v['NCOMP_ORIG'] ;?>" readonly></td>
-                <td><?php echo $v['N_COMP'] ;?></a></td>
+				<td><input class="form-control input" name="tcomp[]" type="text" value="<?php echo $v['NCOMP_ORIG'] ;?>" readonly></td>
+                <td><input class="form-control input" name="ncomp[]" type="text" value="<?php echo $v['N_COMP'] ;?>" readonly></a></td>
 				<td><input class="form-control input" name="codigo[]" type="text" value="<?php echo $v['COD_ARTICU'] ;?>"  readonly></td>
 				<td><?php echo $v['DESCRIPCIO'] ;?></td>
 				<td><input class="form-control input" name="cant[]" type="text" value="<?php echo $v['CANT'] ;?>"  readonly></td>
 				<!-- <td><input class="form-control" name="nuevo[]" type="text" tabindex="1" value="<?php //echo $v['COD_NUEVO'] ;?>" onchange="contar()"></td> -->
 				<td>
-				<div class="col- ">
+				<div class="col">
                     <select id="controlBuscador<?=$contador?>" class="ctr-busc" name="articulo[]" onchange="contar();">
                         <option selected></option>
                         <?php
