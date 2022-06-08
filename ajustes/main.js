@@ -72,9 +72,9 @@ function myFunction() {
           text: 'Debe ingresar al menos un artículo!',
           showConfirmButton: true,
           })
-            .then(function () {
+          .then(function () {
+            window.location = "ajusteLocal.php";
             });
-          event.preventDefault();
       };
     }
 
