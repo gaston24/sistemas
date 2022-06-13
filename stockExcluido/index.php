@@ -22,6 +22,7 @@ $articulo = new Articulo();
     <!-- Including Font Awesome CSS from CDN to show icons -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/dataTables.bootstrap4.min.css">
+    <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
     <link rel="stylesheet" href="Css/style.css">
 
 </head>
@@ -35,7 +36,7 @@ $articulo = new Articulo();
 <div class="row">
 <h3><i class="fa fa-calendar-times-o" aria-hidden="true"></i> Articulos excluidos</h3>
         <div>       
-            <a type="button" class="btn btn-info" id="btn_insert" data-toggle="modal" data-target="#altaModal"><i class="fa fa-plus"></i>  Agregar</a>
+            <a type="button" class="btn btn-warning" id="btn_edit" data-toggle="modal" data-target="#altaModal"><i class="fa fa-edit"></i>  Editar</a>
         </div>
         <div>       
             <a type="button" class="btn btn-success" id="btn_import" data-toggle="modal" data-target="#altaModalImport"><i class="fa fa-file-excel-o"></i>  Importar</a>
@@ -53,12 +54,12 @@ $articulo = new Articulo();
 <div class="table-responsive" id="tableIndex">
             <table class="table table-hover table-condensed table-striped text-center">
                 <thead class="thead-dark" style="font-size: small;">
-                    <th scope="col" style="width: 1%">ID</th>
-                    <th scope="col" style="width: 1%">FECHA</th>
-                    <th scope="col" style="width: 1%">HORA</th>
-                    <th scope="col" style="width: 2%">ARTICULO</th>
-                    <th scope="col" style="width: 4%">DESCRIPCION</th>
-                    <th scope="col" style="width: 1%">CANTIDAD</th>
+                    <th scope="col" style="width: 0.5%">ID</th>
+                    <th scope="col" style="width: 2%">FECHA</th>
+                    <th scope="col" style="width: 0.5%">HORA</th>
+                    <th scope="col" style="width: 1%">ARTICULO</th>
+                    <th scope="col" style="width: 8%">DESCRIPCION</th>
+                    <th scope="col" style="width: 0.5%">CANTIDAD</th>
                     <th scope="col" style="width: 7%">OBSERVACIONES</th>
                     <th style="width:0.5%">SELECCIONAR</th>
                 </thead>

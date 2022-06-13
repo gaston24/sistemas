@@ -1,6 +1,7 @@
 body
 {
-    width: max-content;
+    max-width: max-content;
+    overflow-y: hidden;
 }
 
 #tableIndex
@@ -32,7 +33,7 @@ thead tr th {
 
 .table-responsive { 
     height:630px;
-    width: 1250px;
+    max-width: 1150px;
 }
 
 #tblItems { 
@@ -50,11 +51,11 @@ thead tr th {
     background-color: #343a40;
 }
 
-#btn_insert
+#btn_edit
 {
     position: relative;
-    margin-top: 28%;
-    margin-left: 600%;
+    margin-top: 33%;
+    margin-left: 595%;
     color: white;
 }
 
@@ -62,7 +63,7 @@ thead tr th {
 {
     position: relative;
     margin-top: 28%;
-    margin-left: 630%;
+    margin-left: 540%;
     color: white;
 }
 
@@ -70,6 +71,6 @@ thead tr th {
 {
     position: relative;
     margin-top: 26.5%;
-    margin-left: 580%;
+    margin-left: 500%;
     color: white;
 }

@@ -1,6 +1,7 @@
 
 //Búsqueda rápida table//
 document.getElementById('btn_delete').addEventListener('click',matrizOrdenes);
+/* document.getElementById('save').addEventListener('click',guardar); */
 
 function myFunction() {
     var input, filter, table, tr, td, td2, i, txtValue;
@@ -38,7 +39,7 @@ function myFunction() {
     {
       matriz[i]=checked[i].parentElement.parentElement.childNodes[1].textContent;
     }
-    // console.log(matriz);
+    //console.log(matriz);
     return matriz;
     }
 
@@ -52,6 +53,7 @@ function myFunction() {
       for (var x=0; x < checkbox.length; x++) {
       if (checkbox[x].checked) {
         cont = cont + 1;
+        //console.log(cont);
       }
       }
 
@@ -61,7 +63,6 @@ function myFunction() {
 
     function deleteArticulo() {
       const matriz = matrizOrdenes();
-      
       if (cont != 0) {
 
         postear(matriz);
@@ -93,7 +94,7 @@ function myFunction() {
             Swal.fire({
               icon: 'success',
               title: 'Articulo/s eliminado/s exitosamente!',
-              // text: "Articulo: " + data,
+           
               showConfirmButton: true,
             })
               .then(function () {
@@ -146,5 +147,10 @@ function myFunction() {
         
       }
 
+      function guardar()
+      {
+        //traer el json con las filas del excel
+        console.log(columns);
+      }
 
     

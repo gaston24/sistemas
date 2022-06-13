@@ -42,6 +42,7 @@ $hora = (date("H")-5).date("i").date("s");
 odbc_exec($cid, $sqlNuevos);
 
 for($i=0;$i<count($_POST['ncomp']);$i++){
+	var_dump($_POST);
 	
 	if($_POST['articulo'][$i] != ''){
 	
@@ -58,7 +59,7 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 		}
 		
 		$sqlArt = "
-		SELECT * FROM STA11 WHERE COD_ARTICU = '$nuevo'
+		SELECT * FROM SJ_VIEW_STA11 WHERE COD_ARTICU = '$nuevo'
 		";
 
 		$resultArt = odbc_exec($cid, $sqlArt);

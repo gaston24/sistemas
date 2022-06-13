@@ -4,8 +4,7 @@ body
 {
     overflow: hidden;
 }
-
-thead tr th { 
+.thead-dark{ 
     position: sticky;
     top: 0;
     z-index: 10;
@@ -17,18 +16,10 @@ thead tr th {
 }
 
 .table-responsive { 
-    height:70vh;
-    width: 1200px;
-    margin-left: 3.5%;
-}
-
-.table-responsive2 { 
-    height:60%;
-    width: 96%;
-    margin-left: 3%;
+    height:75vh;
+    max-width: fit-content;
+    margin-left: 0.5%;
     font-size: small;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 #estado i
@@ -39,6 +30,14 @@ thead tr th {
     font-size: medium;
 }
 
+#estado1 i
+{
+    display: flex;
+    text-align: right;
+    color:#28a745;
+    font-size: medium;
+}
+
 .form
 {
     margin-left: 3%;
@@ -46,7 +45,7 @@ thead tr th {
 
 #contenedorTitle
 {
-    margin-left: 2%;
+    font-size: small;
 }
 
 .contenedor
@@ -82,8 +81,8 @@ thead tr th {
 #btn_filtro_2
 {
     position: absolute;
-    margin-left: 58%;
-    margin-top: 1.6%;
+    margin-left: 56%;
+    margin-top: 1.7%;
 }
 
 #busqRapida2
@@ -211,6 +210,19 @@ thead tr th {
 
 @media only screen and (min-width: 300px) and (max-width: 1400px) {
 
+.thead-dark
+{ 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+    
+.table .thead-dark th 
+{
+    color: white;
+    background-color: #343a40;
+}
+
 #btn_edit
 {
     position: absolute;
@@ -231,14 +243,14 @@ thead tr th {
     font-size: small;
 }
 
-.table-responsive2 { 
+/* .table-responsive2 { 
     height:700px;
     width: 85%;
     margin-left: 1%;
     font-size: 11px;
     overflow-y: scroll;
     overflow-x: hidden;
-}
+} */
 
 #totalPedidos
 {

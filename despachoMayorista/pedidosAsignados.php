@@ -89,7 +89,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
 
       
 
-        <div class="contenedor-info2">
+        <div class="contenedor-info3">
             <div id="">
                 <label id="labelTotal">Total unidades</label>
                 <input name="total_todo" id="total" value="0" type="text" class="form-control text-center total" readonly>
