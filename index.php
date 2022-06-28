@@ -16,6 +16,12 @@ $dashboard = $_SESSION['dashboard'];
 
 $habPedidos = $_SESSION['habPedidos'];
 
+require 'class/fechaEntrega.php';
+
+$fechaEntrega = new Fecha();
+$proximaEntrega = $fechaEntrega->traerFechaEntrega($codClient);
+$proximaEntrega = json_decode($proximaEntrega);
+
 try {
 
 	// include_once '../Controlador/sql/sql_conexion.php';
@@ -38,7 +44,7 @@ try {
 
 // while( $v = sqlsrv_fetch_array( $stmt) ) {
 	// $proximaEntrega = $v['A']	;
-	$proximaEntrega = ''	;
+	//$proximaEntrega = ''	;
 // }
 
 ?>
@@ -48,6 +54,7 @@ try {
 <head>
 <title>XL Extralarge - Inicio</title>	
 <meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="assets/css/icono.jpg" />
 <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css" >
 <script src="assets/css/bootstrap/jquery-3.5.1.slim.min.js" ></script>
@@ -70,44 +77,37 @@ include_once 'Controlador/nav_menu.php';
 
 ?>
 
-	<div class="row" style="text-align: center; margin-top: 1rem;">
-		
-		<div class="col-1">
-			
-		</div>
-		<div class="col-10">
-			<div class="row">
-				<div class="col-1"></div>
-				<div class="col-10"><h1>Bienvenido: <?php echo $local; ?></h1></div>
-				<div class="col-1"></div>
-			</div>
-			<?php
-				if($_SESSION['tipo']!= 'MAYORISTA'){
-			?>
-				<div class="row">
-					<div class="col-1"></div>
-					<div class="col-10"><h5>Próximo despacho:<?php echo ' '.$proximaEntrega; ?></h5></div>
-					<div class="col-1"></div>
+	<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
+		<div class="col-">
+			<div class="mb-4">
+				<div class="row" style="display: flex; justify-content: center;">
+				<div class="col-"><h2>Bienvenido/a</h2></div>
 				</div>
-			<?php		
-				}
-			?>
-			
-		</div>
-		
+				<div class="row" style="display: flex; justify-content: center;">
+					<div class="col-"><h2 class="text-secondary"><?php echo $local; ?></h2></div>
+				</div>
+			</div>
+				<?php
+					if($_SESSION['tipo']!= 'MAYORISTA'){
+				?>
+					<div class="col-" style="display: flex; justify-content: center;">
+						<div class="col-"><h5>Próximo despacho: <a class="text-secondary"><?=' '.substr( $proximaEntrega[0]->FECHA->date, 0, 10);?></a></h5></div>
+					</div>
+				<?php		
+					}
+				?>
+			</div>
+			<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;"> 
+				<img src="Controlador/logo.jpg" style="height: 150px; width: 200px">
+			</div>
 	</div>
-
 	
+		
 	
-	<div class="row"> 	
-		<div class="col-10" style="margin-top: 2rem; text-align: center; margin-left: 50px;"> 
-			<img src="Controlador/logo.jpg" style="height: 180px; width: 270px">
-		</div>
-	</div>
 
 		
-	<div class="row" style="margin-top: 2rem;">
-		<div class="col-5" style="margin-left: 280px;">
+	<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
+		<div style="text-align: center; width: 24rem">
 	
 		<?php
 		if($_SESSION['tipo'] == 'MAYORISTA'){
@@ -162,6 +162,7 @@ include_once 'Controlador/nav_menu.php';
 			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
 			}
 	?>
+</div>
 </div>
 
 

@@ -14,7 +14,7 @@ if(!isset($_SESSION['username'])){
 	<body>	
 
 <button type="button" class="btn btn-primary" OnClick="location.href='/sistemas/login.php' " style="margin:5px">Cerrar Sesion</button>
-<h1 align="center">Bienvenido Ramiro</h1>
+<h1 align="center">Bienvenido/a <?= $_SESSION['descLocal'] ?></h1>
 
 
 <div align="center" style="margin-top:10px"> 

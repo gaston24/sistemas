@@ -13,10 +13,7 @@ $sql =
 EXEC SJ_APP_LOGIN '$user', '$pass'
 ";
 
-
 $cid = odbc_connect($dsn, $nom, $con);
-
-
 
 $result = odbc_exec($cid, $sql);
 
@@ -73,7 +70,7 @@ while($v=odbc_fetch_array($result)){
 		header("Location: ../levi/eliminaPedidoLevi.php");	
 	}elseif($_SESSION['username']== 'salta'){
 		header("Location: ../salta/eliminaPedidoSalta.php");	
-	}elseif($_SESSION['username']== 'ramiro'){
+	}elseif($_SESSION['permisos']== '6'){
 		header("Location: ../conteos/index.php");			
 	}elseif($_SESSION['username']== 'estadisticas'){
 		header("Location: ../../estadisticas/index.php");	

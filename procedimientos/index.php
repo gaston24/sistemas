@@ -6,6 +6,7 @@ if(!isset($_SESSION['username'])){
 }else{
     header("Content-Type: text/html;charset=utf-8");
 include 'class/procedimiento.php';
+
 $proce = new Procedimiento();
 $list = $proce->traerProcedimientos();
 
@@ -28,39 +29,33 @@ $list = $proce->traerProcedimientos();
 	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/svg-with-js.min.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../sistemas/assets/css/fontawesome/css/v4-shims.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <div>
             <button type="button" class="btn btn-primary" onclick="location.href='../index.php'" style="margin-top:1%">Inicio</button>
         </div>
-    <h1 class="text-center">Procedimientos</h1>
+    <h1 class="text-center">Políticas y Procedimientos</h1>
 
 <div class="row">
-<div class="col-1"></div>
-<div class="col-10">
+<div class="col"></div>
+<div class="col-12">
 
 <table class="table table-responsive table-hover">
-<thead>
-    <th>NOMBRE</th>
-    <th>DESCRIPCION</th>
-    <th>DESCARGAR</th>
+<thead class="thead-dark">
+    <th class="col-">NOMBRE</th>
+    <th class="col-">DESCRIPCION</th>
+    <th class="col-">VER</th>
 </thead>
 <tbody>
 <?php
 foreach ($list as $value) {
     ?>
     <tr>
-    <td><?=$value['NOMBRE_PROCEDIMIENTO']; ?></td>
-    <td><?=$value['DESC_PROCEDIMIENTO']; ?></td>
-    <td>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col"><a href="archivos/<?=$value['NOMBRE_ARCHIVO'];?>"> <i class="fas fa-file-download"></i></a></div>
-        <div class="col"></div>
-    </div>
-    
-    </td>
+        <td><?=$value['NOMBRE_PROCEDIMIENTO']; ?></td>
+        <td><?=$value['DESC_PROCEDIMIENTO']; ?></td>
+        <td><a href="archivos/<?=$value['NOMBRE_ARCHIVO'];?>"> <i class="fas fa-search"></i></a></td>
     </tr>
     <?php
 }

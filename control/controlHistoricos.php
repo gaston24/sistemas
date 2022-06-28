@@ -27,6 +27,7 @@ $remitosHistoricos = $remitos->traerHistoricos($codClient, $fechaDesde, $fechaHa
 <head>
 <title>Control Remitos</title>	
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="../../../css/icono.jpg" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -47,19 +48,19 @@ $remitosHistoricos = $remitos->traerHistoricos($codClient, $fechaDesde, $fechaHa
 <div >
 <form action="" method="GET" >
 
-	<div class="form-group row">
+	<div class="form-group row" style="display: flex; ">
 		
-		<div class="col-sm-1">
+		<div class="col- col-sm-1">
 			<button type="button" class="btn btn-primary btn-sm" onClick="window.location.href= 'index.php'">Inicio</button>
 		</div>
 		
-		<label class="col-sm-1 col-form-label">Desde</label>
-		<div class="col-sm-2">
+		<label class="col- col-form-label mr-1 ml-3">Desde</label>
+		<div class="col-">
 			<input type="date" class="form-control" name="fechaDesde" value="<?= $fechaDesde;?>">
 		</div>
 		
-		<label class="col-sm-1 col-form-label">Hasta</label>
-		<div class="col-sm-2">
+		<label class="col- col-form-label mr-1 ml-2">Hasta</label>
+		<div class="col-">
 			<input type="date" class="form-control" name="fechaHasta" value="<?= $fechaHasta;?>">
 		</div>
 				
@@ -67,8 +68,8 @@ $remitosHistoricos = $remitos->traerHistoricos($codClient, $fechaDesde, $fechaHa
 			<input type="submit" class="btn btn-primary btn-sm" value="Consultar">
 		</div>
 		
-		<label class="col-sm col-form-label">Busqueda Rapida:</label>
-		<div id="busqueda" >
+		<label class="col- col-form-label mr-1">Busqueda Rapida:</label>
+		<div id="busqueda">
 			<input type="textBox" class="form-control form-control-sm" onkeyup="busquedaRapida()"  id="textBox" name="factura" placeholder="Sobre cualquier campo.." autofocus>
 		</div>
 		

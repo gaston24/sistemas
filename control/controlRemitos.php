@@ -22,6 +22,11 @@ if (!isset($_SESSION['username'])) {
 
 	<head>
 		<title>Control Remitos</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- Font Awesome -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/style.css">
 		<?php include '../../css/header_simple.php'; ?>
 
 	</head>
@@ -30,20 +35,25 @@ if (!isset($_SESSION['username'])) {
 
 
 		<div style="margin: 5px">
-			<button onClick="window.location.href= 'index.php'" class="btn btn-primary">Cancelar</button>
-			<h3 align="center">Remito: <?= $rem ?> 
-				<?php 
-					if (isset($_POST['codigo'])) {
-						echo ' - Ultimo codigo: ' . $_POST['codigo'];
-					} 
-				?>
-
+			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mb-1">Cancelar</button>
+			<h4 align="center">Remito: <a class="text-secondary"><?= $rem ?></a> 
+				<a>Ultimo escaneado:</a>
+				<a class="text-secondary">
+					<?php 
+						if (isset($_POST['codigo'])) {
+							echo $_POST['codigo'];
+						} 
+					?>
+				</a>
+			</h4>
 		</div>
 
-		<form action="" style="margin:20px" align="center" method="POST">
-			<label>Leer Codigo</label>
-			<input type="text" name="codigo" placeholder="Ingrese codigo" autofocus></input>
-			<input type="submit" value="Ingresar" class="btn btn-primary">
+		<form action="" style="margin-top:1rem" align="center" method="POST">
+			<div class="col- row" style="display: flex; justify-content: center;">
+				<label>Escaneo</label>
+				<input class="form-control form-control-sm ml-2" type="text" name="codigo" placeholder="Ingrese codigo..." style="width:200px;" autofocus></input>
+				<input type="submit" value="Ingresar" class="btn btn-primary ml-2" style="margin-top: -5px;">
+			</div>
 		</form>
 
 		<?php
@@ -72,27 +82,27 @@ if (!isset($_SESSION['username'])) {
 
 			$codigosControlados = $control->traerControladoTemporal($user);
 
-
 			?>
-			<div class="container">
-
-				<table class="table table-striped" style="margin-left:50px; margin-right:50px" id="tabla">
-					<tr>
-						<td class="col-" style="width:20%"><h4>CODIGO</h4></td>
-						<td class="col-" style="width:50%"><h4>DESCRIPCION</h4></td>
-						<td class="col-" style="width:2%"><h4>CANTIDAD</h4></td>
-						<td class="col-"></td>
-					</tr>
-
+			<div class="container table-responsive">
+				<table class="table table-striped mt-2" id="tabla">
+					<thead class="thead-dark">
+						<tr>
+							<td class="col-" style="width:4em">CODIGO</td>
+							<td class="col-" style="width:10em">DESCRIPCION</td>
+							<td class="col-" style="width:5em">CANTIDAD</td>	
+							<td class="col-" style="width:5em"></td>
+						</tr>
+					</thead>
+					<tbody id="table">
 					<?php
 					$total = 0;
 					foreach ($codigosControlados as $key => $value) {
 						?>
-
+	
 							<tr class="fila-base">
-								<td class="col-" style="width:20%"><?=$value[0]->COD_ARTICU; ?></td>
-								<td class="col-" style="width:50%"><?=$value[0]->DESCRIPCIO; ?></td>
-								<td class="col-" style="width:2%" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
+								<td class="col-" style="width:6rem"><?=$value[0]->COD_ARTICU; ?></td>
+								<td class="col-" style="width:10rem"><?=$value[0]->DESCRIPCIO; ?></td>
+								<td class="col-" style="width:3rem" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
 								<td class="col-"><img src="eliminar.png" width="23px" height="23px" align="left" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
 							</tr>
 
@@ -100,17 +110,16 @@ if (!isset($_SESSION['username'])) {
 							$total += $value[0]->CANT_CONTROL;
 					}
 					?>
+					</tbody>
 
 				</table>
+			</div>
 
-
-				<div class="text-center fixed fixed-bottom bg-white" style="height: 30px!important; background-color: white; margin-bottom: 5px">
-					<a style="text-align: left; margin-right:10px"> <strong>Ultimo controlado:</strong> <a id="lastCodigoControlado" style="text-align: left; margin-right:50px"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
-					<a style="display:none" id="valueGetData"></a>
-					<a style="margin-right:15px"> <strong>Total de articulos:</strong> <?= $total; ?></a>
-					<button onClick="window.location.href= 'controlador/procesar.php'" class="btn btn-primary btn-sm">Procesar</button>
-				</div>
-
+			<div class="col- text-center bg-white">
+					<a style="text-align: left; margin-right:0.5em; font-size: 0.9em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.9em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
+					
+					<a style="margin-right:0.5em; font-size: 0.9em"> <strong>Total articulos:</strong> <?= $total; ?></a>
+					<button onClick="window.location.href= 'controlador/procesar.php'" class="btn btn-success mt-2">Procesar</button>
 			</div>
 
 			<?php

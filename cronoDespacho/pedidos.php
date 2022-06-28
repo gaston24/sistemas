@@ -103,7 +103,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
 
 </form>
 
-        <?php
+        <?php       
 
         if (isset($_GET['canal'])){ 
 

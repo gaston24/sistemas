@@ -9,10 +9,11 @@ $fechaModif= Date('Y-m-d');
 date_default_timezone_set('Etc/GMT+3');
 $Object = new DateTime();  
 $horaModif = $Object->format("G:i");
-
+// var_dump($_GET['datos']);
 if (isset($_GET['datos'])) {
     //si el nro de pedido existe se procede a actualizar los campos. En caso de no existir el pedido en la tabla se realiza un insert.
     $datos = json_decode(stripslashes($_GET['datos']));
+    /* print_r($datos); */
     foreach ($datos as $dato){
         $codigo = $dato->codigo;
         $tipoComp = $dato->tipoComp;
@@ -44,8 +45,10 @@ if (isset($_GET['datos'])) {
             }
         }
     } else {
+
                 $codClient=$dato->cod_client;
-                $cliente=$dato->razon_soci;
+                $cliente=str_replace("&","",( str_replace("'"," ",$dato->razon_soci)));
+        /*  $cliente=$dato->razon_soci; */
                 $localidad=$dato->localidad;
                 $codVended=$dato->cod_vended;
                 $vendedor=$dato->vendedor;
@@ -56,6 +59,7 @@ if (isset($_GET['datos'])) {
                 $unidPedido=$dato->unidPedido;
                 $unidPendiente=$dato->unidPendiente;
                 $importePendiente=str_replace(".","",$dato->importePendiente);
+                echo $codigo.",";
                /*  $cantPend=5; */
                 /* $importe=10000; */
                 //faltan codClient, cliente, localidad,,codVendedor,vendedor
@@ -79,10 +83,12 @@ if (isset($_GET['datos'])) {
             if( $stmt === false ) {
                 die( print_r( sqlsrv_errors(), true));
            }
+           
         } catch (Exception $e) {
             echo 'Se produjo un Error:' . $e->getMessage();
         }
     }
+   
 }
 }
 
@@ -93,8 +99,6 @@ function existe($pedido)
     return sqlsrv_has_rows( sqlsrv_query($cid_central, $sql));
 
 }
-
-echo $codigo;
 
 
 ?>

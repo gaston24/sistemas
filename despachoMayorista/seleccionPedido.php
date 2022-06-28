@@ -32,7 +32,7 @@ $pedido = new Pedido();
 <body>
 
     <h3 id="title_nota">
-        <i class="fa fa-bars"></i> Pedidos de cliente: <?php echo $cliente . ' - ' . $razon_soci ?>
+        <i class="fa fa-bars"></i> Pedidos de cliente: <a id="nomCliente"><?php echo $cliente . ' - ' . $razon_soci ?></a>
     </h3>
 
     <form class="form-row mt-2">
@@ -289,8 +289,8 @@ $pedido = new Pedido();
                 codigo: row.children[4].innerHTML,
                 fecha: row.children[0].innerHTML,
                 hora: row.children[1].innerHTML,
-                cod_client: document.getElementById('cod_client').value,
-                razon_soci: document.getElementById('razon_soci').value,
+                cod_client:(document.getElementById('cod_client').value).replace('&','%26'),
+                razon_soci: (document.getElementById('razon_soci').value).replace('&','%26'),
                 localidad: document.getElementById('localidad').value,
                 cod_vended: document.getElementById('cod_vended').value,
                 vendedor: document.getElementById('vendedor').value,
@@ -380,7 +380,7 @@ $pedido = new Pedido();
             Swal.fire({
                     icon: 'success',
                     title: 'Pedido modificado exitosamente!',
-                    text: "Numero de pedido: " + conexion.responseText,
+                    text: "Numero de pedido/s: " + conexion.responseText,
                     showConfirmButton: true,
                 })
                 .then(function() {

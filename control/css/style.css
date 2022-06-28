@@ -1,0 +1,29 @@
+
+body
+{  
+    overflow-x: hidden;
+}
+
+.thead-dark{ 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.thead-dark{
+    color: white;
+    background-color: #343a40;
+}
+
+.table-responsive { 
+    display: flex;
+    justify-content:space-around;
+    height:535px;
+    margin-bottom: 0;
+}
+
+th, td
+{
+    font-size: 0.66em;
+    text-align: center;
+}

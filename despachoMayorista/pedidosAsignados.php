@@ -142,7 +142,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                         <tr>
                             <td><?= substr($value->FECHA_DESPACHO->date, 0, 10); ?></td>
                             <td><?= $value->COD_CLIENT; ?></td>
-                            <td><?= $value->RAZON_SOCI; ?></td>
+                            <td><?= str_replace("&#38","&",( str_replace("&#39","'",$value->RAZON_SOCI))); ?></td>
                             <td class="pedido"><?= $value->CANT_PEDIDOS; ?></td>
                             <td class="sumTotal"><?= $value->UNID_PENDIENTE; ?></td>
                             <td class="sumImporte"><?= $value->IMP_PENDIENTE; ?></td>
@@ -220,7 +220,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
         $("#btnExport").click(function() {
             $("#tableIndex").table2excel({
                 // exclude CSS class
-                exclude: ".noExl",
+                exclude: ".noE  xl",
                 name: "Detalle pedidos",
                 filename: "Detalle pedidos asignados", //do not include extension
                 fileext: ".xls" // file extension

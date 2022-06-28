@@ -8,13 +8,14 @@ if(!isset($_SESSION['username'])){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Control de Remitos</title>
 <?php include '../../css/header.php'; ?>
 </head>
 <body>
 
 <button type="button" class="btn btn-primary" onclick="location.href='../index.php'" style="margin:5px">Inicio</button>
-<button type="button" class="btn btn-primary" onclick="location.href='controlHistoricos.php'" style="margin:5px">Historial</button>
+<button type="button" class="btn btn-secondary" onclick="location.href='controlHistoricos.php'" style="margin:5px">Historial</button>
 
 
 <div align="center" style="margin-top:10%">
@@ -25,14 +26,14 @@ if(!isset($_SESSION['username'])){
 	
 	<div style="display: inline-block">
 		<label>Remito</label>
-		<input type="text" name="rem" placeholder="Numero de Remito" class="form-control form-control-sm col-sm-13"  required autofocus >
+		<input type="text" name="rem" placeholder="Numero de Remito" class="form-control form-control-sm col-sm-13" style="width: 250px;" required autofocus >
 	</div>
 	
 	
 	
 	<div class="form-group col-sm-3" style="display: inline-block">
       <label for="inputState">Usuario</label>
-      <select id="inputState" class="form-control form-control-sm" name="usuario" required>
+      <select id="inputState" class="form-control form-control-sm" name="usuario" style="width: 250px;" required>
         <option value="" selected >Usuario</option>
 <?php
 $dsn = '1 - CENTRAL'; $user = 'sa'; $pass = 'Axoft1988';  $nroSucurs = $_SESSION['numsuc'];
@@ -63,7 +64,6 @@ while($v=odbc_fetch_array($result)){
 	
 	
 </div>
-<br>
 <input type="submit" value="CONSULTAR" class="btn btn-primary btn-sm"></br>
 </form>
 </div>

@@ -1,0 +1,19 @@
+
+thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table .thead-dark th {
+    color: white;
+    background-color: #343a40;
+}
+
+.table-responsive { 
+    height:600px;
+    width: 1500px;
+    margin-left: 3.5%;
+    margin-top: 1%;
+    font-size: small;
+}

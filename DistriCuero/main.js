@@ -16,7 +16,7 @@ function myFunction() {
     for (j = 0; j < td.length; j++) {
       if (td[j] && td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
         visible = true;
-      }
+      } 
     }
     if (visible === true) {
       tr[i].style.display = "";
@@ -155,7 +155,7 @@ function matrizOrdenes()
    matriz[i]=checked[i].parentElement.parentElement.childNodes[5].textContent;
  }
  return matriz;
-}
+} 
 
 //Count checkbox gestion de ordenes//
 
