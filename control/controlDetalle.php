@@ -17,6 +17,7 @@ $codClient = $_GET['codClient'];
 <head>
 <title>Control Remitos</title>	
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="../../../css/icono.jpg" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -24,15 +25,26 @@ $codClient = $_GET['codClient'];
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>	
 
-<a href="javascript:window.print();"><img src="print.png"></a>
-<div style="margin: 5px">
+<div>
+	<div class="row mt-2">
+		<a href="javascript:window.print();"><i class="fa fa-print" style="font-size: 2.2rem; margin-left: 2em" aria-hidden="true"></i></a>
+		<button onClick="window.location.href= 'index.php'" class="btn btn-success" style="margin-left: 10em">Inicio</button>
+	</div>
+</div>
 
-<h3 align="center">Remito: <?php echo $rem; ?> - <div id="vendNom"></div> </h3>
+<div>
+
+<div id="titleDif">
+	<div><a>Remito: <a class="text-secondary"><?php echo $rem; ?></a></div>
+	<div id="vendNom"></div></a>
+</div>
 
 </div>
 <script>
@@ -75,24 +87,18 @@ ini_set('max_execution_time', 300);
 $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
-<div class="container">
+<div class="container table-responsive tableDetalle">
 
-<table class="table table-striped table-fh table-6c" id="id_tabla" style="width:90%;" align="center">
+<table class="table table-striped table-fh table-6c" id="id_tabla" align="center">
 			
-		<thead>
+		<thead class="thead-dark">
 			<tr style="font-size:smaller">
-
-				<td style="width: 10%"><h6>CODIGO</h6></td>
-				
-				<td style="width: 30%"><h6>DESCRIPCION</h6></td>
-		
-                <td style="width: 10%"><h6>CANT<br>REMITO</h6></td>
-				
-				<td style="width: 10%"><h6>CANT<br>CONTROL</h6></td>
-				
-				<td style="width: 10%"><h6>DIF</h6></td>
-
-        </tr>
+				<td>CODIGO</td>
+				<td >DESCRIPCION</td>
+				<td >CANT<br>REMITO</td>
+				<td >CANT<br>CONTROL</td>
+				<td >DIF</td>
+        	</tr>
 		</thead>
 		<tbody>
         <?php
@@ -114,16 +120,11 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				<?php
 			}
 			?>
-
-				<td style="width: 10%" ><?= $v['COD_ARTICU'] ;?></td>
-		
-                <td style="width: 30%" ><?= $v['DESCRIPCIO'] ;?></td>
-				
-				<td style="width: 10%; padding-left: 4%" ><?= $v['CANT_REM'] ;?></td>
-				
-				<td style="width: 10%; padding-left: 4%" ><?= $v['CANT_CONTROL'] ;?></td>
-				
-				<td style="width: 10%; padding-left: 4%" ><?= $v['DIFERENCIA'] ;?></td>
+				<td><?= $v['COD_ARTICU'] ;?></td>
+                <td><?= $v['DESCRIPCIO'] ;?></td>
+				<td><?= $v['CANT_REM'] ;?></td>
+				<td><?= $v['CANT_CONTROL'] ;?></td>
+				<td><?= $v['DIFERENCIA'] ;?></td>
 
         </tr>
 		
@@ -138,22 +139,22 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         ?>
 		<tr style="font-weight: bold;">
 		
-				<td style="width: 10%" ></td>
+				<td  ></td>
 		
-                <td style="width: 20%" >TOTALES</td>
+                <td>TOTALES</td>
 				
-				<td style="width: 10%; padding-left: 4%" ><?= $total1 ;?></td>
+				<td ><?= $total1 ;?></td>
 				
-				<td style="width: 10%; padding-left: 4%" ><?= $total2 ;?></td>
+				<td ><?= $total2 ;?></td>
 				
-				<td style="width: 10%; padding-left: 4%" ><?= $total3 ;?></td>
+				<td ><?= $total3 ;?></td>
 
         </tr>
 		
 		</tbody>
      		
 </table>
-</br></br>
+
 
 
 
@@ -168,14 +169,13 @@ $nombreVen = trim(str_replace($arrayNo, "", $nombreVen));
 <script>
 	var date = new Date();
 	var fechaControl = '<?= date_format(date_create($fechaControl),"Y/m/d H:i:s"); ?>';
+	// var nombreVen = 'RAMIRO OROZCO';
 	var nombreVen = '<?= $nombreVen; ?>';
 	$(document).ready(function(){
-		console.log(nombreVen);
+		// console.log(nombreVen);
 		$('#vendNom').html(nombreVen + ' - ' + fechaControl);
 	});
 </script>
 
-<button onClick="window.location.href= 'index.php'" class="btn btn-primary" style="margin-left:80%">Ir a Inicio</button>
-<br><br>
 </body>
 </html>

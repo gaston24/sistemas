@@ -45,11 +45,11 @@ $todosLosPedidos = $pedido->traerDetallePedidosCom($orden);
         <table class="table table-hover table-condensed table-striped text-center ml-4" id="tablePedidosCom" style="width: 70%">
             <thead class="thead-dark">
                 <th scope="col" style="width: 10%">Fecha</th>
-                <th scope="col" style="width: 15%">Nota pedido</th>
-                <th scope="col" style="width: 15%">Cliente</th>
+                <th scope="col" style="width: 5%">Nota pedido</th>
+                <th scope="col" style="width: 5%">Cliente</th>
                 <th scope="col" style="width: 15%">Articulo</th>
                 <th scope="col" style="width: 15%">Descripcion</th> 
-                <th scope="col" style="width: 8%">Cantidad</th> 
+                <th scope="col" style="width: 5%">Cantidad</th> 
             </thead>
 
             <tbody id="table">

@@ -40,7 +40,7 @@ class Remito
             NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
             SUM(CASE WHEN CANT_REM <> CANT_CONTROL THEN 1 ELSE 0 END) DIFERENCIA, 
             A.OBSERVAC_LOGISTICA, NRO_AJUSTE, 
-            ISNULL((CASE WHEN F.USER_CHAT = 'ramiro' THEN 0 WHEN F.USER_CHAT != 'ramiro' THEN 1 END), 2) ULTIMO_CHAT
+            ISNULL((CASE WHEN F.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN F.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2) ULTIMO_CHAT
                         
             FROM SJ_CONTROL_AUDITORIA A
             
@@ -56,7 +56,7 @@ class Remito
             AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
                         
             GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, E.DESC_SUCURSAL, A.OBSERVAC_LOGISTICA, NRO_AJUSTE,
-            (CASE WHEN F.USER_CHAT = 'ramiro' THEN 0 WHEN F.USER_CHAT != 'ramiro' THEN 1 END)
+            (CASE WHEN F.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN F.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END)
             ORDER BY A.FECHA_CONTROL
 
             ";
@@ -105,7 +105,7 @@ class Remito
             FECHA_CONTROL, A.COD_CLIENT, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
             NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
             SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, 
-            ISNULL((CASE WHEN E.USER_CHAT = 'ramiro' THEN 0 WHEN E.USER_CHAT != 'ramiro' THEN 1 END), 2) ULTIMO_CHAT
+            ISNULL((CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2) ULTIMO_CHAT
                                         
             FROM SJ_CONTROL_AUDITORIA A
                                 
@@ -120,7 +120,7 @@ class Remito
             AND A.OBSERVAC_LOGISTICA LIKE '$estado'
                             
             GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
-            A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, (CASE WHEN E.USER_CHAT = 'ramiro' THEN 0 WHEN E.USER_CHAT != 'ramiro' THEN 1 END)
+            A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, (CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END)
             ORDER BY A.FECHA_CONTROL            
             ";
 

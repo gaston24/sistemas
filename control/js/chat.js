@@ -37,7 +37,7 @@ function updateChat(data){
             var message = element.message;
             var datetime = element.datetime;
 
-            if(user == 'ramiro'){
+            if(user == 'ramiro' || user == 'eduardo' ||user == 'Agustinal' ){
                 var_add_chat += '<div class="row mr-2">';
                     var_add_chat += '<div class="col-2" ></div>';
 

@@ -41,61 +41,61 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
             </div>
         </div>
         
-        <div class="row col-md-auto align-items-end ml-4">
-        <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="row ml-4">
+        <div class="col-xs-3 mb-4">
             <div class="card">
               <div class="card-body">
-                <div class="d-flex justify-content-between px-md-1">
+                <div class="d-flex">
                   <div class="align-self-center">
                     <i class="fas fa-shopping-bag text-success fa-3x"></i>
                   </div>
                   <div class="text-end ml-2 text-center">
-                    <h4><input type="text" value="" id="inputCliente" style="width: 100px; text-align: center;border: none; outline:none"></h4>
+                    <h4><input type="text" value="" id="inputCliente" style="width: 80px; text-align: center;border: none; outline:none; font-size: 1.25rem"></h4>
                     <p class="mb-0">NP cargadas</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>  
-          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+          <div class="col-xs-3 mb-4 ml-2">
             <div class="card">
               <div class="card-body">
-                <div class="d-flex justify-content-between px-md-1">
+                <div class="d-flex  ">
                   <div class="align-self-center">
                     <i class="fas fa-chart-pie text-warning fa-3x"></i>
                   </div>
                   <div class="text-end ml-2 text-center">
-                    <h4><input type="text" value="" id="inputSolicitados" style="width: 50px; text-align: center;border: none; outline:none">%</h4>
+                    <h4><input type="text" value="" id="inputSolicitados" style="width: 50px; text-align: center;border: none; outline:none; font-size: 1.25rem">%</h4>
                     <p class="mb-0">% Cargadas</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+          <div class="col-xs-3 mb-4 ml-2">
             <div class="card">
               <div class="card-body">
-                <div class="d-flex justify-content-between px-md-1">
+                <div class="d-flex  ">
                   <div class="align-self-center">
                     <i class="fa fa-shopping-cart text-success fa-3x"></i>
                   </div>
                   <div class="text-end ml-2">
-                  <h4><input type="text" value="" id="inputCant" style="width: 100px; text-align: center;border: none; outline:none"></h4>
+                  <h4><input type="text" value="" id="inputCant" style="width: 100px; text-align: center;border: none; outline:none; font-size: 1.25rem"></h4>
                     <p class="mb-0 text-center">Total Unid.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-xl-3 col-sm-6 col-12 mb-4">
+          <div class="col-xs-3 mb-4 ml-2">
             <div class="card">
               <div class="card-body">
-                <div class="d-flex justify-content-between px-md-1">
+                <div class="d-flex  ">
                   <div class="align-self-center">
                     <i class="fas fa-money text-success fa-3x"></i>
                   </div>
                   <div class="text-end ml-2">
-                    <h4><input type="text" value="" id="input$" style="width: 100px; text-align: center;border: none; outline:none"></h4>
+                    <h4><input type="text" value="" id="input$" style="width: 100px; text-align: center;border: none; outline:none; font-size: 1.25rem"></h4>
                     <p class="mb-0 text-center">Total $</p>
                   </div>
                 </div>
@@ -107,7 +107,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableOrdenVsNota" style="width: 70%">
+        <table class="table table-hover table-condensed table-striped text-center ml-4" id="tableOrdenVsNota" style="width: 75%">
             <thead class="thead-dark">
                 <th scope="col" style="width: 15%">N° sucursal</th>
                 <th scope="col" style="width: 15%">Cliente</th>

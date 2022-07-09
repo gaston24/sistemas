@@ -1,7 +1,9 @@
 
 body
 {  
-    overflow-x: hidden;
+    overflow-x: none;
+    margin:0;
+
 }
 
 .thead-dark{ 
@@ -15,11 +17,9 @@ body
     background-color: #343a40;
 }
 
-.table-responsive { 
-    display: flex;
-    justify-content:space-around;
-    height:535px;
-    margin-bottom: 0;
+.container { 
+    height:36rem;
+    width: 35rem;
 }
 
 th, td
@@ -27,3 +27,53 @@ th, td
     font-size: 0.66em;
     text-align: center;
 }
+
+#titleDif
+{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 3rem;
+}
+
+@media only screen and (max-width: 1281px) {
+
+    body {
+      width: 22rem;
+    }
+  
+    th, td
+    {
+        font-size: 0.55em;
+        text-align: center;
+    }
+
+    .container 
+    { 
+        margin: 0 auto;
+        height:19rem;
+        width: 95vw;
+        padding: 0;
+        margin-bottom: 0;
+        overflow-x: hidden;
+    }
+
+    .tableDetalle
+    {
+        height: 70vh;
+       /*  background: red; */
+    }
+
+    #titleDif
+    {
+        margin-top: 0.8rem;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .thead-dark
+    { 
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+  }
