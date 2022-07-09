@@ -36,7 +36,7 @@ if (!isset($_SESSION['username'])) {
 
 		<div style="margin: 5px">
 			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mb-1">Cancelar</button>
-			<h4 align="center">Remito: <a class="text-secondary"><?= $rem ?></a> 
+			<h6 align="center">Remito: <a class="text-secondary"><?= $rem ?></a> 
 				<a>Ultimo escaneado:</a>
 				<a class="text-secondary">
 					<?php 
@@ -45,12 +45,12 @@ if (!isset($_SESSION['username'])) {
 						} 
 					?>
 				</a>
-			</h4>
+			</h6>
 		</div>
 
-		<form action="" style="margin-top:1rem" align="center" method="POST">
+		<form action="" style="margin-top:0.5rem" align="center" method="POST">
 			<div class="col- row" style="display: flex; justify-content: center;">
-				<label>Escaneo</label>
+				<!-- <label>Escaneo</label> -->
 				<input class="form-control form-control-sm ml-2" type="text" name="codigo" placeholder="Ingrese codigo..." style="width:200px;" autofocus></input>
 				<input type="submit" value="Ingresar" class="btn btn-primary ml-2" style="margin-top: -5px;">
 			</div>
@@ -84,12 +84,12 @@ if (!isset($_SESSION['username'])) {
 
 			?>
 			<div class="container table-responsive">
-				<table class="table table-striped mt-2" id="tabla">
+				<table class="table table-striped mt-2" id="tablaControl">
 					<thead class="thead-dark">
 						<tr>
-							<td class="col-" style="width:4em">CODIGO</td>
-							<td class="col-" style="width:10em">DESCRIPCION</td>
-							<td class="col-" style="width:5em">CANTIDAD</td>	
+							<td class="col-" style="width:3.5em">CODIGO</td>
+							<td class="col-" style="width:15em; padding-left:0; padding-right:0;">DESCRIPCION</td>
+							<td class="col-" style="width:2em">CANTIDAD</td>	
 							<td class="col-" style="width:5em"></td>
 						</tr>
 					</thead>
@@ -100,10 +100,10 @@ if (!isset($_SESSION['username'])) {
 						?>
 	
 							<tr class="fila-base">
-								<td class="col-" style="width:6rem"><?=$value[0]->COD_ARTICU; ?></td>
-								<td class="col-" style="width:10rem"><?=$value[0]->DESCRIPCIO; ?></td>
-								<td class="col-" style="width:3rem" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
-								<td class="col-"><img src="eliminar.png" width="23px" height="23px" align="left" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
+								<td class="col-" style="width:6em"><?=$value[0]->COD_ARTICU; ?></td>
+								<td class="col-" style="width:5em"><?=$value[0]->DESCRIPCIO; ?></td>
+								<td class="col-" style="width:3em" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
+								<td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
 							</tr>
 
 						<?php
@@ -116,9 +116,9 @@ if (!isset($_SESSION['username'])) {
 			</div>
 
 			<div class="col- text-center bg-white">
-					<a style="text-align: left; margin-right:0.5em; font-size: 0.9em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.9em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
+					<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
 					
-					<a style="margin-right:0.5em; font-size: 0.9em"> <strong>Total articulos:</strong> <?= $total; ?></a>
+					<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Total articulos:</strong> <?= $total; ?></a>
 					<button onClick="window.location.href= 'controlador/procesar.php'" class="btn btn-success mt-2">Procesar</button>
 			</div>
 
