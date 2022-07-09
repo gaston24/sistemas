@@ -43,18 +43,18 @@ if (!isset($_SESSION['username'])) {
 		<?php
 		include_once('Controlador/checkTipoPedido.php');
 		?>
-
-		<div style="width:98%; height:50%; padding-bottom:1%; padding-top:1%; margin-left:10px" id="pantalla">
-			<div id="menu" class="row mt-3 mb-2" >
-				<div class="col-4">
+	<div class="row">
+		<div class="menuPedidos" id="pantalla">
+			<div id="menu" class="row" >
+				<div class="col-">
 					<a> <strong>Búsqueda rápida</strong> </a>
 						<input type="text" onkeyup="busquedaRapida()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
 				</div>
-				<div class="col-2" id="cont">
+				<div class="col-" id="cont">
 					<a> <strong>Total de art.</strong> </a> 
 					<input name="total_todo" size="3" id="total" value="0" type="text" readonly>
 				</div>
-				<div class="col-2"
+				<div class="col-"
 					<?php if ($suc < 100) { echo 'hidden'; } ?>
 				>
 					<a> <strong>Imp. total:</strong> </a> 
@@ -88,15 +88,17 @@ if (!isset($_SESSION['username'])) {
 			</div>				
 		
 		</div>
-			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
+	</div>
+		<div>
+			<table class="table table-striped table-condensed table-fh table-11c" id="id_tabla">
 
 				<thead class="bg-secondary text-white">
 
 					<tr style="font-size:smaller">
 						<th>FOTO</th>
-						<th>CODIGO</th>
-						<th style="width: 80px;">DESCRIPCION</th>
-						<th style="width: 50px;">RUBRO</th>
+						<th class="col-">CODIGO</th>
+						<th class="col-">DESCRIPCION</th>
+						<th class="col-">RUBRO</th>
 						<th>STOCK<br>CENTRAL</th>
 
 						<?php if ($_SESSION['tipo'] != 'MAYORISTA') { ?>
@@ -109,6 +111,7 @@ if (!isset($_SESSION['username'])) {
 						</th>
 
 						<th>PEDIDO</th>
+						<th class="col-">CANTIDAD</th>
 						<th>PRECIO</th>
 
 					</tr>
@@ -153,9 +156,9 @@ if (!isset($_SESSION['username'])) {
 
 							<td><?= $v['COD_ARTICU']; ?></td>
 
-							<td style="width: 80px;"><?= $v['DESCRIPCIO']; ?></td>
+							<td><?= $v['DESCRIPCIO']; ?></td>
 
-							<td style="width: 50px;"><?= $v['RUBRO']; ?></td>
+							<td ><?= $v['RUBRO']; ?></td>
 
 							<td id="stock"><?= (int)($v['CANT_STOCK']); ?></td>
 
@@ -170,6 +173,8 @@ if (!isset($_SESSION['username'])) {
 							<td id="cant"><?= (int)($v['DISTRI']); ?></td>
 
 							<td id="cant"><input type="number" name="cantPed[]" value="0" min="0" size="4" tabindex="1" id="articulo" class="form-control form-control-sm" onchange="total();verifica();precioTotal()"></td>
+							
+							<td><input type="button" name="minus" value="-" id="restar"><input type="number"  name="cantPed[]" value="0" min="0" size="4" tabindex="1" id="articulo" class="cantidadPedido"><input type="button" name="plus" value="+" id="sumar"></td>	
 
 							<td id="precio">
 								<?php
@@ -208,8 +213,6 @@ if (!isset($_SESSION['username'])) {
 			</table>
 		</div>
 
-		</div>
-
 	<?php
 	$suc = $_SESSION['numsuc'];
 	$codClient = $_SESSION['codClient'];
@@ -231,7 +234,7 @@ if (!isset($_SESSION['username'])) {
 	<script src="js/main.js"></script>
 	<script src="js/envio.js"></script>
 	<script src="js/jquery.table2excel.js"></script>
-
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	</body>
 	</html>
 

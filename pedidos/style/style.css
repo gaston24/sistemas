@@ -1,6 +1,7 @@
 
 table.table-fh {
     width: 100%;
+    margin-left: 1rem;
 }
 table.table-fh, table.table-fh > tbody > tr > td {
     border-collapse: collapse;
@@ -104,17 +105,31 @@ td {
     width: 60px;
 }
 
-#btnExport {
-    position: absolute;
-    margin-left: -55%;
+#btnExport 
+{
     width: 105px;
     height: 40px;
+    margin-left: 3rem;
 }
 
 #btnEnviar
 {
-    position: absolute;
-    margin-left: -28%;
     width: 105px;
     height: 40px;
+    margin-left: 2rem;
+}
+
+input
+{
+    width: 25px;
+    text-align: center;
+    font-size: small;
+    
+}
+
+.menuPedidos
+{
+    margin-left: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
