@@ -5,14 +5,20 @@ if(!isset($_SESSION['username'])){
 	header("Location:login.php");
 }else{
 
-$codClient = $_SESSION['codClient'];  
-
+$codClient = $_SESSION['codClient'];
 $numeroOrden = $_GET['orden'];
 
 require_once 'Class/Orden.php';
+require_once 'Class/PPP.php';
 
 $orden = new Orden();
 $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
+
+$credito = new PPP();
+$creditoDisp = $credito->detalleCuenta($codClient);
+
+$creditoDisp = json_decode($creditoDisp);
+$creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
 
 ?> 
 
@@ -77,12 +83,16 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                     <label id="labelTotal">Importe Total</label> 
                     <input name="total_todo" id="totalPrecio" value="0" type="text" class="form-control" readonly>
                 </div>
+                <div class="ml-4 classCredit">
+                    <label id="labelTotal">Credito Disponible</label> 
+                    <input name="total_todo" id="totalPPP" value="<?= '$'.number_format((int)$creditoDisp,0,'','.'); ?>" type="text" class="form-control" style="width: 7rem; text-align: center; color:whitesmoke; background-color: #454545;" readonly>
+                </div>
             </div>
             <!-- <div class="col-1">   
                 <a type="button" class="btn btn-primary" id="btn_back" href="listOrdenesActivas.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div> -->
             <div>
-                <button type="submit" class="btn btn-success" id="btn_enviar" onclick="enviaPedido()">Enviar
+                <button type="submit" class="btn btn-success" id="btn_enviar" onclick="validarCredito()">Enviar
                 <i class="fa fa-cloud-upload"></i>
                 </button>
             </div>
@@ -125,7 +135,7 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
                             <a>LANZAMIENTO!</a>
                             <?php } else { ?> <?php } ?>
                         </td>
-                        <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
+                        <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" max="<?= $key['CANT_MAX'] ?>" title="Cantidad máxima a solicitar <?= $key['CANT_MAX'] ?>" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
                         <?php if($key['RUBRO']== 'KITS'){ ?>
                         <td>
                             <a href="detalleKits.php?cod_kit=<?= $key['COD_ARTICU'] ?>"><button type="button" class="btn btn-sm btn-warning" style="width: 80px;"><i class="fa fa-search"></i>  Ver</button></a>
@@ -159,7 +169,8 @@ $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
 		
 		var codClient = "<?= $codClient; ?>"; 
         var orden = "<?= $numeroOrden; ?>"; 
-	
+        var creditoDisp = "<?= $creditoDisp; ?>";
+        
 	</script>
         
     <script src="main.js" charset="utf-8"></script>

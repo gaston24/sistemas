@@ -24,14 +24,16 @@ class PPP
 
     }
    
-    public function detalleCuenta($cliente){
+    public function detalleCuenta($codClient){
 
-        $sql = "SELECT * FROM RO_PPP_FRANQUICIAS_PRECOMPRA WHERE COD_CLIENTE = '$cliente'
+        $sql = "SELECT * FROM RO_PPP_FRANQUICIAS_PRECOMPRA WHERE COD_CLIENTE = '$codClient'
         ";
 
         $rows = $this->retornarArray($sql);
+
+        $json = json_encode($rows);
             
-        return $rows;
+        return $json;
 
     }
 }

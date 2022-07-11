@@ -22,7 +22,8 @@ foreach($matriz as $key => $var){
   $rubro = $var[3];
   $precio = $var[4];
   $temporada = $var[5];
-  $lanzamiento = $var[6];
+  $topeCant = $var[6];
+  $lanzamiento = $var[7];
 
   require_once 'Conexion.php';
 
@@ -31,8 +32,8 @@ foreach($matriz as $key => $var){
 
     $sql = "
     
-    INSERT INTO RO_ORDENES_PRECOMPRA (FECHA, HORA, NRO_ORDEN, COD_ARTICU, DESCRIPCIO, RUBRO, PRECIO_ESTIMADO, TEMPORADA, LANZAMIENTO)
-    VALUES ('$fecha','$hora',$proxNumOrd,'$articulo','$descrip','$rubro',$precio,'$temporada','$lanzamiento')
+    INSERT INTO RO_ORDENES_PRECOMPRA (FECHA, HORA, NRO_ORDEN, COD_ARTICU, DESCRIPCIO, RUBRO, PRECIO_ESTIMADO, TEMPORADA, LANZAMIENTO, CANT_MAX)
+    VALUES ('$fecha','$hora',$proxNumOrd,'$articulo','$descrip','$rubro',$precio,'$temporada','$lanzamiento','$topeCant')
 
     ";
     $stmt = sqlsrv_query( $cid_central, $sql );

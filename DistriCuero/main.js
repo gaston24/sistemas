@@ -133,7 +133,9 @@ function matrizOrden()  {
           else if(z==4) {another[z] = x.innerHTML.replace(".","")}
           else if(z==6) {another[z] = x.firstChild.value}
           else if(z==7) {another[z] = x.firstChild.value}
-          else if(z==7) {another[z] = ''}
+          else if(z==7) {another[z] = x.firstChild.value}
+          else if(z==8) {another[z] = x.firstChild.value}
+          else if(z==9) {another[z] = ''}
         else{another[z] = x.innerHTML};
           //another[z] = (z==0) ? '' : ( (z==7) ? x.firstChild.value : (z==7 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );//verificar 2da condicion z==5
       })
@@ -322,6 +324,20 @@ function postearOrdenes3(matriz) {
 
 }
 
+function validarCredito(){  
+  var importeNP = document.getElementById('totalPrecio').value;      
+  if(parseInt(creditoDisp.replace(/[$.]/g, "")) < parseInt(importeNP.replace(/[$.]/g, ""))){
+    Swal.fire({
+      icon: 'info',
+      title: 'Atención',
+      text: 'El crédito disponible es insuficiente!',
+    })
+  }else{
+      //alert(creditoDisp.replace(/[$.]/g, ""))
+        enviaPedido();
+      }
+  }
+
 
 //Suma el total de artículos del pedido//
 
@@ -337,7 +353,6 @@ function total() {
 };
 
 //Revisa que el pedido tenga unidades cargadas y envía el pedido//
-
 
 function enviaPedido() {
   const matriz = matrizPedidos();
@@ -494,7 +509,8 @@ function precioTotal() {
           precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
          }
 
-      document.getElementById('totalPrecio').value = precioTodos;
+      document.getElementById('totalPrecio').value = new Intl.NumberFormat("es-ar",{style: "currency", currency: "ARS", minimumFractionDigits: 0}).format(precioTodos);
+      // new Intl.NumberFormat("es-ar",{style: "currency", currency: "ARS", minimumFractionDigits: 0}).format(precioTodos);
       
   }
 

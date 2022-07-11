@@ -71,7 +71,7 @@ function totalizar() {
     .toLocaleString("en-US", { maximumFractionDigits: 2 }); //.replaceAll(".", "|").replaceAll(".", ",").replaceAll("|", ".");
   console.log(diferencia);
 
-  if (cupoCredi < totalPedido) {
+  if (cupoCredi < totalPedido) {git 
     document.getElementById("cupoCreditoExcedido").innerHTML =
       "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN " +
       diferencia +

@@ -133,6 +133,7 @@ $maestroArticulos = new Articulo();
                     <th scope="col" style="width: 20%">Rubro</th>
                     <th scope="col" style="width: 10%">Precio estimado</th>
                     <th scope="col" style="width: 20%">Temporada</th>
+                    <th scope="col" style="width: 2%">Tope Cantidad</th>
                     <th scope="col" style="width: 5%">Lanzamiento</th>
                     <th scope="col" style="width: 5%">Activo</th>
                     <th scope="col" style="width: 5%">Detalle kit</th>
@@ -153,6 +154,7 @@ $maestroArticulos = new Articulo();
                     <td><?=  $key['RUBRO']?></td>
                     <td><?=  number_format($key['PRECIO'],0,",",".")?></td>
                     <td><?=  $key['TEMPORADA']?></td>
+                    <td><input type="number" min="0" id="topeCant"></td>
                     <td><select name="select" id="select">
                             <option value="" disabled selected></option>
                             <option value="0">NO</option>

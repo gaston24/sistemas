@@ -96,16 +96,16 @@ body{
     text-align: center;
 }
 
-#total, #totalPrecio, #totalOrdenes{
-    width: 70px;
+#total, #totalPrecio, #totalOrdenes, #TotalPPP{
+    width: 80px;
     text-align: center;
-    font-size: 20px;
+    font-size: 16px;
     color:whitesmoke;
     background-color: #454545;
 }
 
-#totalPrecio{
-    width: 6rem;
+#totalPrecio, #TotalPPP{
+    width: 7rem;
     text-align: center;
     color:whitesmoke;
     background-color: #454545;
@@ -210,6 +210,16 @@ thead tr th {
 #contCountOrdenes
 {
     margin-left: 5%;
+}
+
+#topeCant
+{
+    width: 3rem;
+}
+
+.classCredit
+{
+    visibility: hidden;
 }
 
 
