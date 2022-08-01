@@ -1,0 +1,76 @@
+body
+{
+    max-width: max-content;
+    overflow-y: hidden;
+}
+
+#tableIndex
+{
+    margin-top: 2%;
+}
+
+#busqRapida
+{
+    position: absolute;
+    margin-left: 30%;
+}
+
+.table {
+    width: 98%;
+    margin-left: 2%;
+}
+
+h3{
+    margin-left: 3%;
+    margin-top: 2%;
+}
+
+thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table-responsive { 
+    height:630px;
+    max-width: 1150px;
+}
+
+#tblItems { 
+    width: 700px;
+}
+
+.w3-half
+{
+    margin-left: 7%;
+    margin-top: 5%;
+}
+
+.table .thead-dark th {
+    color: white;
+    background-color: #343a40;
+}
+
+#btn_edit
+{
+    position: relative;
+    margin-top: 33%;
+    margin-left: 595%;
+    color: white;
+}
+
+#btn_delete
+{
+    position: relative;
+    margin-top: 28%;
+    margin-left: 540%;
+    color: white;
+}
+
+#btn_import
+{
+    position: relative;
+    margin-top: 26.5%;
+    margin-left: 500%;
+    color: white;
+}

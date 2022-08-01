@@ -1,9 +1,9 @@
 <?php
 session_start();
 if(!isset($_SESSION['username'])){
-	header("Location:index.php");
+	header("Location:../index.php");
 }elseif($_SESSION['ajuste'] != 1){
-	header("Location:index.php");
+	header("Location:../index.php");
 }else{
 //include 'conex.php';
 include 'consultas.php';
@@ -40,6 +40,7 @@ $todosLosArticulos = $maestroArticulos->traerArticulos();
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="select2/select2.min.css">
 
 <script src="select2/select2.min.js"></script>
@@ -70,6 +71,7 @@ td{
         <label id="labelTotal">Total artículos</label> 
 		<input name="total_todo" id="total" value="0" type="text" class="form-control" readonly>
 	</div>
+	<button class="btn btn-danger" onclick="rechazarAjuste()" >Rechazar</button>
 
 </div>
 <br>
@@ -79,13 +81,15 @@ td{
 
 		<thead>
 			<tr>
-				<th>FECHA</th>
-				<th>TIPO COMP</th>
-				<th>COMP LOCAL</th>
-				<th>CODIGO</th>
-				<th>DESCRIPCION</th>
-				<th>CANT</th>
-				<th>CODIGO NUEVO</th>
+				<th class="col-">ID</th>
+				<th class="col-">FECHA</th>
+				<th class="col-">TIPO COMP</th>
+				<th class="col-">COMP LOCAL</th>
+				<th class="col-">CODIGO</th>
+				<th class="col-">DESCRIPCION</th>
+				<th class="col-">CANT</th>
+				<th class="col-">CODIGO NUEVO</th>
+				<th class="col-">SELECT</th>
 			</tr>
 		</thead>
 
@@ -101,12 +105,13 @@ td{
         ?>
 		
         	<tr>
-                <td><?php echo $v['FECHA_MOV'] ;?></td>
-				<td><input class="form-control input" name="tcomp[]" type="text" value="<?php echo $v['NCOMP_ORIG'] ;?>" readonly></td>
-                <td><input class="form-control input" name="ncomp[]" type="text" value="<?php echo $v['N_COMP'] ;?>" readonly></a></td>
-				<td><input class="form-control input" name="codigo[]" type="text" value="<?php echo $v['COD_ARTICU'] ;?>"  readonly></td>
-				<td><?php echo $v['DESCRIPCIO'] ;?></td>
-				<td><input class="form-control input" name="cant[]" type="text" value="<?php echo $v['CANT'] ;?>"  readonly></td>
+				<td><?= $v['ID_STA20'] ;?></td>
+                <td><?= $v['FECHA_MOV'] ;?></td>
+				<td><input class="form-control input" name="tcomp[]" type="text" value="<?= $v['NCOMP_ORIG'] ;?>" readonly></td>
+                <td><input class="form-control input" name="ncomp[]" type="text" value="<?= $v['N_COMP'] ;?>" readonly></a></td>
+				<td><input class="form-control input" name="codigo[]" type="text" value="<?= $v['COD_ARTICU'] ;?>"  readonly></td>
+				<td><?= $v['DESCRIPCIO'] ;?></td>
+				<td><input class="form-control input" name="cant[]" type="text" value="<?= $v['CANT'] ;?>"  readonly></td>
 				<td>
 				<div class="col">
                     <select id="controlBuscador<?=$contador?>" class="ctr-busc" name="articulo[]" onchange="contar();">
@@ -121,6 +126,7 @@ td{
                     </select>
 					</div>
 				</td>
+				<td><input type="checkbox" id='checkbox1' class="btnCheck" value="<?= $v['ID_STA20'] ;?>"></td>
 			</tr>
         <?php
 		$contador++;
@@ -141,7 +147,7 @@ td{
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
@@ -154,3 +160,4 @@ td{
 }
 ?>
 </html>
+

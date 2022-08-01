@@ -79,11 +79,11 @@ include 'checkBrowser.php';
 						</div>
 					</div>
 				</div>
-										
-				<div class="alert alert-danger mt-2" role="alert" id="label" style="display:none" >
-				<a > No existe el usuario! </a>
+				<div class="row" style="justify-content:center">			
+					<div class="col-md-3 col-md-offset-3 alert alert-danger mt-2" role="alert" id="alertError" style="display:none;" >
+					<strong>Error!</strong><a> No existe el usuario </a>
+					</div>
 				</div>
-
 
 			</form>
 		</article>

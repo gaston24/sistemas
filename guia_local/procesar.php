@@ -13,14 +13,19 @@ $clave="Axoft1988";
 $cid = odbc_connect($dsn, $usuario, $clave);
 
 foreach($_POST['orden'] as $key =>$a){
+
     $orden = $_POST['orden'][$key];
     $fecha =  date("Y-m-d H:i:s");
+    
+    date_default_timezone_set('Etc/GMT+3');
+    $Object = new DateTime();  
+    $hora = $Object->format("G:i");
 
     echo $orden.' - '.$fecha.'<br>';
 
     $sql=
 	"
-    UPDATE SJ_LOCAL_ENTREGA_TABLE SET ENTREGADO = 1, FECHA_ENTREGADO = '$fecha' 
+    UPDATE SJ_LOCAL_ENTREGA_TABLE SET ENTREGADO = 1, FECHA_ENTREGADO = '$fecha', HORA_ENTREGA = '$hora' 
     WHERE NRO_ORDEN_ECOMMERCE =  '$orden' AND ENTREGADO = 0
     ";
 

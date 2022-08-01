@@ -84,7 +84,7 @@ $sql=
 
 	SELECT CAST(A.FECHA_PEDI AS DATE) FECHA, A.LEYENDA_2 NOMBRE, E.N_COMP, A.NRO_PEDIDO PEDIDO, CAST(E.IMPORTE AS DECIMAL(10,2)) IMP_COMPROBANTE, B.COD_ARTICU, F.DESCRIPCIO, CAST(B.CANT_PEDID AS INT) CANT, CAST(B.PRECIO AS DECIMAL(10,2)) IMP_ARTICULO,
 	ISNULL(I.CARD_FIRST_DIGITS+'-'+I.CARD_LAST_DIGITS, '') TARJETA , I.ISSUER BANCO, J.N_CUIT,
-	ISNULL(REPLACE(G.NOMBRE_SUC, 'RT - SUC - ', ''), C.XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK) ORIGEN, C.XML_CA_1111_METODO_ENTREGA TIPO_ENVIO,  
+	ISNULL(REPLACE(G.NOMBRE_SUC, 'RT - SUC - ', ''), C.XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK) ORIGEN, C.XML_CA_1111_METODO_ENTREGA TIPO_ENVIO, L.TIENDA,  
 	CASE WHEN AUDITORIA = 1 THEN 1 ELSE 0 END CONTROLADO,
 	CASE WHEN E.N_COMP IS NOT NULL THEN 1 ELSE 0 END FACTURADO FROM GVA21 A
 	INNER JOIN GVA03 B ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
@@ -106,12 +106,13 @@ $sql=
 	LEFT JOIN GVA38 J ON J.T_COMP = 'PED' AND A.NRO_PEDIDO = J.N_COMP
 	LEFT JOIN (SELECT NRO_PEDIDO, NRO_ORDEN_ECOMMERCE, AUDITORIA FROM SOF_AUDITORIA GROUP BY NRO_PEDIDO, NRO_ORDEN_ECOMMERCE, AUDITORIA) K ON A.ORDER_ID_TIENDA = K.NRO_ORDEN_ECOMMERCE COLLATE Latin1_General_BIN
 	LEFT JOIN 
-	(
-		SELECT NRO_SUCURSAL,
-		SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'char') XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
-		FROM SUCURSAL
-		OUTER APPLY SUCURSAL.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as SUCURSAL_CAMPOS_ADICIONALES(XML_CA)
-	) L ON H.ID_DIRECCION_SUCURSAL_ENTREGA = L.XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
+		(
+			SELECT NRO_SUCURSAL, DESC_SUCURSAL TIENDA,
+			SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
+			FROM SUCURSAL
+			OUTER APPLY SUCURSAL.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as SUCURSAL_CAMPOS_ADICIONALES(XML_CA)
+			WHERE SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') != ''
+		) L ON A.LEYENDA_3 = L.XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
 	WHERE (E.N_COMP = '$comp' OR A.LEYENDA_2 LIKE '%$comp%') AND
 	A.COD_CLIENT = '000000'	AND A.FECHA_PEDI BETWEEN '$desde' AND '$hasta' AND A.TALON_PED = '99'   
 	ORDER BY A.NRO_PEDIDO
@@ -124,23 +125,24 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 ?>
 
 <div class="container-fluid">
-<table class="table table-sm table-striped table-condensed table-bordered"  >
-	<thead>
+<table class="table table-sm table-striped table-condensed table-bordered">
+	<thead style="background-color: #343a40; color: white">
         <tr >
-			<td class="col-1"><h6>FECHA</h6></td>
-			<td class="col-2"><h6>NOMBRE</h6></td>
-			<td class="col-"><h6>COMPROBANTE</h6></td>
-			<td class="col-"><h6>PEDIDO</h6></td>
-			<td class="col-"><h6>IMP_COMP</h6></td>
-			<td class="col-1"><h6>CODIGO</h6></td>
-			<td class="col-3"><h6>DESCRIPCION</h6></td>
-			<td class="col-"><h6>CANT</h6></td>
-			<td class="col-"><h6>IMP_ART</h6></td>
-			<td class="col-"><h6>DNI</h6></td>
-			<td class="col-"><h6>BANCO</h6></td>
-			<td class="col-1"><h6>TARJETA</h6></td>
-			<td class="col-"><h6>ORIGEN</h6></td>
-			<td class="col-"><h6>METODO<br>ENTREGA</h6></td>
+			<td class="col-1" style="font-size: 12px; font-weight:bold;">FECHA</td>
+			<td class="col-2" style="font-size: 12px; font-weight:bold;">NOMBRE</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">COMPROBANTE</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">PEDIDO</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">IMP_COMP</td>
+			<td class="col-1" style="font-size: 12px; font-weight:bold;">CODIGO</td>
+			<td class="col-3" style="font-size: 12px; font-weight:bold;">DESCRIPCION</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">CANT</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">IMP_ART</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">DNI</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">BANCO</td>
+			<td class="col-1" style="font-size: 12px; font-weight:bold;">TARJETA</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">ORIGEN</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">METODO<br>ENTREGA</td>
+			<td class="col-" style="font-size: 12px; font-weight:bold;">TIENDA</td>
 			<td width="1%"></td>
 			<td width="1%"></td>
 			<td width="1%"></td>
@@ -154,36 +156,33 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 		<tr>
 
-		<td class="col-1"><small><?= $v['FECHA'] ;?></small></td>
-		<td class="col-3"><small><?= $v['NOMBRE'] ;?></small></td>
-		<td class="col-"><small><?= $v['N_COMP'] ;?></small></td>
-		<td class="col-"><small><?= $v['PEDIDO'] ;?></small></td>
-		<td class="col-"><small><?= $v['IMP_COMPROBANTE'] ;?></small></td>
-		<td class="col-1"><small><?= $v['COD_ARTICU'] ;?></small></td>
-		<td class="col-2"><small><?= $v['DESCRIPCIO'] ;?></small></td>
-		<td class="col-"><small><?= $v['CANT'] ;?></small></td>
-		<td class="col-"><small><?= $v['IMP_ARTICULO'] ;?></small></td>
-		<td class="col-"><small><?= $v['N_CUIT'] ;?></small></td>
-		<td class="col-3"><small><?= $v['BANCO'] ;?></small></td>
-		<td class="col-1"><small><?= $v['TARJETA'] ;?></small></td>
-		<td class="col-1"><small><?= $v['ORIGEN'] ;?></small></td>
-		<td class="col-"><small><?= $v['TIPO_ENVIO'] ;?></small></td>
+		<td class="col-1" style="font-size: 11px;"><?= $v['FECHA'] ;?></td>
+		<td class="col-3" style="font-size: 11px;"><?= $v['NOMBRE'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['N_COMP'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['PEDIDO'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['IMP_COMPROBANTE'] ;?></td>
+		<td class="col-1" style="font-size: 11px;"><?= $v['COD_ARTICU'] ;?></td>
+		<td class="col-2" style="font-size: 11px;"><?= $v['DESCRIPCIO'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['CANT'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['IMP_ARTICULO'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['N_CUIT'] ;?></td>
+		<td class="col-3" style="font-size: 11px;"><?= $v['BANCO'] ;?></td>
+		<td class="col-1" style="font-size: 11px;"><?= $v['TARJETA'] ;?></td>
+		<td class="col-1" style="font-size: 11px;"><?= $v['ORIGEN'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['TIPO_ENVIO'] ;?></td>
+		<td class="col-" style="font-size: 11px;"><?= $v['TIENDA'] ;?></td>
 		<td width="1%"> <a href="remitoEntrega/?nComp=<?= $v['N_COMP'] ;?>" target=”_blank”> <i class="fas fa-file-invoice" title="Print" id="iconPrint"></i></a></td>
 		<td width="1%">
-			<small>
 				<?php if($v['FACTURADO']== 1){ ?>
 					<i class="fas fa-receipt" title="Facturado" id="iconFacturado"></i>
 						<?php }else if($v['FACTURADO']== 0){?>
 						<?php } ?>
-			</small>
 		</td>
 		<td width="1%">
-			<small>
 				<?php if($v['CONTROLADO']== 1){ ?>
 					<i class="fa fa-clipboard-check" title="Controlado" id="iconControlado"></i>
 						<?php }else if($v['CONTROLADO']== 0){?>
 						<?php } ?>
-			</small>
 		</td>
 			
 

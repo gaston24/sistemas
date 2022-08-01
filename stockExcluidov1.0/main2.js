@@ -1,5 +1,5 @@
 document.getElementById("save").addEventListener("click", guardar);
-let articulos = [];
+
 //Importar excel//
 let descripcion;
 let b = 0;
@@ -30,10 +30,6 @@ var ExcelToJSON = function () {
             columns[2] != undefined && columns != "" ? columns[2] : " ";
           buscarCodigo(columns[0]);
           columns.push(descripcion); //agregar descripción al objeto
-          if (articulos.includes(columns[0])) {
-            /* columns[3]='ARTICULO EXISTENTE'; */
-            descripcion='ARTICULO YA EXCLUIDO';
-          }
           console.log(columns);
           articulosAImportar.push(columns); //arreglo con objetos para guardar en la db
           console.log("art a imp: " + articulosAImportar);
@@ -45,10 +41,10 @@ var ExcelToJSON = function () {
                                   <td id=${columns[0]}>${descripcion}</td>
                               </tr>
                           `);
-          if (descripcion.includes("CODIGO INEXISTENTE")||descripcion.includes('ARTICULO YA EXCLUIDO')) {
+          if (descripcion.includes("CODIGO INEXISTENTE")) {
+            console.log("entraste");
             document.getElementById(columns[0]).style.color = "red";
           }
-        
         }
 
         //  console.log(articulosAImportar);
@@ -165,10 +161,3 @@ function guardar() {
     conexion.send(articulos);
   }
 }
-
-(function () {
-  let table = document.getElementById("table");
-  for (let i = 0; i < table.children.length; i++) {
-    articulos.push(table.children[i].children[3].innerHTML);
-  }
-})();

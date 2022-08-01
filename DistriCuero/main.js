@@ -180,7 +180,7 @@ function contarGestion() {
 
 function activaOrdenes() {
   const matriz = matrizOrdenes();
-  contar2 = $('#totalOrdenes').val();
+  let contar2 = $('#totalOrdenes').val();
 
   if (contar2 != 0) {
 
@@ -326,7 +326,7 @@ function postearOrdenes3(matriz) {
 
 function validarCredito(){  
   var importeNP = document.getElementById('totalPrecio').value;      
-  if(parseInt(creditoDisp.replace(/[$.]/g, "")) < parseInt(importeNP.replace(/[$.]/g, ""))){
+  if((parseInt(creditoDisp.replace(/[$.]/g, "")) < parseInt(importeNP.replace(/[$.]/g, ""))) && (parseInt(importeNP.replace(/[$.]/g, "")) > 0)){
     Swal.fire({
       icon: 'info',
       title: 'Atención',
@@ -361,8 +361,22 @@ function enviaPedido() {
 
   if (suma != 0) {
 
-    postear(matriz, codClient, orden);
-
+    Swal.fire({
+      icon: 'info',
+      title: 'Desea guardar la nota de pedido?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: '<i class="fa fa-thumbs-up"></i> Guardar',
+      denyButtonText: '<i class="fa fa-thumbs-down"></i> Descartar',
+      cancelButtonText: '<i class="fa fa-times"></i> Cancelar',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        postear(matriz, codClient, orden);
+      } else if (result.isDenied) {
+        Swal.fire('La nota de pedido no fue guardada', '', 'info')
+      }
+    })
   } else {
     Swal.fire({
       icon: 'error',
@@ -370,7 +384,6 @@ function enviaPedido() {
       text: 'No hay ningun articulo seleccionado!'
     });
   }
-
 }
 
 // Envía pedido //
@@ -379,7 +392,6 @@ function postear(matriz, codClient, orden) {
   // variable env = 0 - no hace nada
   let env = 1;
   let url = (env == 1) ? 'pedido.php' : 'PedidoTest.php';
-  console.log(orden);
   $.ajax({
       url: 'Controller/'+url,
       method: 'POST',
@@ -388,7 +400,6 @@ function postear(matriz, codClient, orden) {
           codClient: codClient,
           orden: orden,
       },
-
       success: function (data) {
         Swal.fire({
           icon: 'success',
@@ -574,3 +585,5 @@ total_notaPedidos();
     console.log(total_$);
     console.log(cantidad);
   }
+
+   

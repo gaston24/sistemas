@@ -13,3 +13,29 @@
     color: #007bff; 
     font-size: 20px;
 }
+
+thead{ 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.thead-dark{
+    color: white;
+    background-color: #343a40;
+}
+
+.table-responsive{ 
+    height:600px;
+    width: 1300px;
+    margin-left: 3.5%;
+    margin-top: 1%;
+    font-size: small;
+}
+
+
+.form-row
+{
+    margin-left: 5rem;
+}
+
