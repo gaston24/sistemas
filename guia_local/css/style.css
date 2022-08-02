@@ -1,3 +1,6 @@
+body{
+    overflow-x: hidden;
+ }
 
 #iconControlado{
     color: #28a745; 
@@ -9,8 +12,14 @@
     font-size: 20px;
 }
 
+#iconEntregado
+{
+    color: #007bff;
+    font-size: 20px;
+}
+
 #iconPrint{
-    color: #007bff; 
+    color: #17a2b8; 
     font-size: 20px;
 }
 
@@ -39,3 +48,14 @@ thead{
     margin-left: 5rem;
 }
 
+.bi-check-circle-fill
+{
+    font-size: 18px;
+}
+
+.bi-check-circle-fill:hover
+{
+    color: #28a745;
+    cursor: pointer;
+    font-size: 22px;
+}
