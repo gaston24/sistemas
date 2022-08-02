@@ -12,11 +12,17 @@ $numsuc = $_SESSION['numsuc'];
 <html>
 
 <head>
+<link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
 	<title>Comprobantes de ecommerce</title>	
 <?php include '../../css/header_simple.php'; ?>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"></script>
-<script src="https://kit.fontawesome.com/2c36e9b7b1.js"></script>
+<link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css" >
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Including Font Awesome CSS from CDN to show icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -37,30 +43,30 @@ if(!isset($_GET['desde'])){
 ?>
 	
 	
-	<form id="sucu" method="GET" style="margin:20px">
+	<form id="sucu" method="GET" style="margin-top:15px">
 	<div class="container col mb-3">
 		<div class="form-row mb-1">
 			<button type="button" class="btn btn-primary" style="margin-left:1%; width:max-content; height:max-content" onClick="window.location.href='../index.php'">Inicio</button>
 			
 		<div class="col-sm-2">
 			<label class="col-sm col-form-label">Desde:</label>
-			<input type="date" class="form-control form-control ml-2 col" name="desde" value="<?php if(!isset($_GET['desde'])){	echo date("Y-m-d",strtotime($hoy."- 30 days"));}else{ echo $_GET['desde'] ;}?>">
+			<input type="date" class="form-control form-control-sm ml-2 col" name="desde" value="<?php if(!isset($_GET['desde'])){	echo date("Y-m-d",strtotime($hoy."- 30 days"));}else{ echo $_GET['desde'] ;}?>">
 		</div>
 	  
 		<div class="col-sm-2">
 			<label class="col-sm col-form-label">Hasta:</label>
-			<input type="date"  class="form-control form-control ml-2 col" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $hoy;}else{ echo $_GET['hasta'] ;}?>">
+			<input type="date"  class="form-control form-control-sm ml-2 col" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $hoy;}else{ echo $_GET['hasta'] ;}?>">
 		</div>
 			<div class="col">
 				<label class="col-sm col-form-label ml-3">Búsqueda:</label>
-				<input type="text" style="display: inline-block; margin-left: 30px; width:50%;" id="textBox1" name="comprobante" placeholder="Factura o cliente" class="form-control form-control"></input>
+				<input type="text" style="display: inline-block; margin-left: 30px; width:50%;" class="form-control form-control-sm" id="textBox1" name="comprobante" placeholder="Factura o cliente" class="form-control form-control"></input>
 					<!--<button><i class="fas fa-search"></i></button>-->
 				<input type="submit" value="Buscar" class="btn btn-primary ml-2">
 			</div>
 				
-			<div class="col">
-				<label class="col-sm col-form-label" style="margin-left: 210px;">Búsqueda rápida:</label>
-				<input type="text" style="margin-left: 30px; width:60%; float: right;" onkeyup="myFunction()" id="textBox" name="comprobante2" placeholder="Sobre cualquier campo..." class="form-control form-control"></input>
+			<div class="col-sm-2">
+				<label class="col-sm col-form-label">Búsqueda rápida:</label>
+				<input type="text" style="margin-left: 30px; float: right;" class="form-control form-control-sm" onkeyup="myFunction()" id="textBox" name="comprobante2" placeholder="Sobre cualquier campo..." class="form-control form-control"></input>
 			</div>
 		</div>
 	</div>
@@ -86,7 +92,10 @@ $sql=
 	ISNULL(I.CARD_FIRST_DIGITS+'-'+I.CARD_LAST_DIGITS, '') TARJETA , I.ISSUER BANCO, J.N_CUIT,
 	ISNULL(REPLACE(G.NOMBRE_SUC, 'RT - SUC - ', ''), C.XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK) ORIGEN, C.XML_CA_1111_METODO_ENTREGA TIPO_ENVIO, L.TIENDA,  
 	CASE WHEN AUDITORIA = 1 THEN 1 ELSE 0 END CONTROLADO,
-	CASE WHEN E.N_COMP IS NOT NULL THEN 1 ELSE 0 END FACTURADO FROM GVA21 A
+	CASE WHEN E.N_COMP IS NOT NULL THEN 1 ELSE 0 END FACTURADO, 
+	CASE WHEN M.FECHA_ENTREGADO  IS NOT NULL THEN 1 ELSE 0 END ENTREGADO, 
+	M.FECHA_ENTREGADO 
+	FROM GVA21 A
 	INNER JOIN GVA03 B ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
 	INNER JOIN 
 	(
@@ -113,8 +122,9 @@ $sql=
 			OUTER APPLY SUCURSAL.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as SUCURSAL_CAMPOS_ADICIONALES(XML_CA)
 			WHERE SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') != ''
 		) L ON A.LEYENDA_3 = L.XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
+	LEFT JOIN (SELECT PEDIDO, FECHA_ENTREGADO FROM SJ_LOCAL_ENTREGA_TABLE GROUP BY PEDIDO, FECHA_ENTREGADO	) M ON A.NRO_PEDIDO = M.PEDIDO COLLATE Latin1_General_BIN
 	WHERE (E.N_COMP = '$comp' OR A.LEYENDA_2 LIKE '%$comp%') AND
-	A.COD_CLIENT = '000000'	AND A.FECHA_PEDI BETWEEN '$desde' AND '$hasta' AND A.TALON_PED = '99'   
+	A.COD_CLIENT = '000000'	AND A.FECHA_PEDI BETWEEN '$desde' AND '$hasta' AND A.TALON_PED = '99'
 	ORDER BY A.NRO_PEDIDO
 
 	";
@@ -146,6 +156,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 			<td width="1%"></td>
 			<td width="1%"></td>
 			<td width="1%"></td>
+			<td width="1%"></td>
         </tr>
 	</thead>
 	<tbody id="table">
@@ -171,20 +182,25 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		<td class="col-1" style="font-size: 11px;"><?= $v['ORIGEN'] ;?></td>
 		<td class="col-" style="font-size: 11px;"><?= $v['TIPO_ENVIO'] ;?></td>
 		<td class="col-" style="font-size: 11px;"><?= $v['TIENDA'] ;?></td>
-		<td width="1%"> <a href="remitoEntrega/?nComp=<?= $v['N_COMP'] ;?>" target=”_blank”> <i class="fas fa-file-invoice" title="Print" id="iconPrint"></i></a></td>
+		<td width="1%"> <a href="remitoEntrega/?nComp=<?= $v['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" title="Print" id="iconPrint"></i></a></td>
 		<td width="1%">
 				<?php if($v['FACTURADO']== 1){ ?>
-					<i class="fas fa-receipt" title="Facturado" id="iconFacturado"></i>
+					<i class="bi bi-file-earmark-text-fill" data-toggle="tooltip" data-placement="left" title="Facturado" id="iconFacturado"></i>
 						<?php }else if($v['FACTURADO']== 0){?>
 						<?php } ?>
 		</td>
 		<td width="1%">
 				<?php if($v['CONTROLADO']== 1){ ?>
-					<i class="fa fa-clipboard-check" title="Controlado" id="iconControlado"></i>
+					<i class="bi bi-clipboard2-check-fill" data-toggle="tooltip" data-placement="left" title="Controlado" id="iconControlado"></i>
 						<?php }else if($v['CONTROLADO']== 0){?>
 						<?php } ?>
 		</td>
-			
+		<td width="1%">
+				<?php if($v['ENTREGADO']== 1){ ?>
+					<i class="bi bi-box-seam-fill" data-toggle="tooltip" data-placement="left" title="Entregado <?php echo $v['FECHA_ENTREGADO'] ?>" id="iconEntregado"></i>
+						<?php }else if($v['ENTREGADO']== 0){?>
+						<?php } ?>
+		</td>
 
 		</tr>
 
@@ -207,41 +223,15 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 }
 ?>
 
-<script>
-/* function pulsar(e) {
-  tecla = (document.all) ? e.keyCode : e.which;
-  return (tecla != 13);
-  } */
+<script src="main.js"></script>
 
-function myFunction() {
-	var input, filter, table, tr, td, td2, i, txtValue;
-	input = document.getElementById('textBox');
-	filter = input.value.toUpperCase();
-	table = document.getElementById("table");
-	tr = table.getElementsByTagName('tr');
-	//tr = document.getElementById('tr');
-	
-	 for (i = 0; i < tr.length; i++) {
-    visible = false;
-    /* Obtenemos todas las celdas de la fila, no sólo la primera */
-    td = tr[i].getElementsByTagName("td");
-	
-    for (j = 0; j < td.length; j++) {
-      if (td[j] && td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-        visible = true;
-      }
-    }
-    if (visible === true) {
-      tr[i].style.display = "";
-    } else {
-      tr[i].style.display = "none";
-    }
-  }
-}
+<script>
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 </script>
-
-
 
 </body>
 </html>
