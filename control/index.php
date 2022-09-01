@@ -71,10 +71,13 @@ while($v=odbc_fetch_array($result)){
 
 <?php
 if($_SESSION['conteo'] == 1){
-	echo '</br></br><div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">	El remito no existe en este local!</div>';
+	echo '</br></br><div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">	El remito no pertenece al local!</div>';
 	$_SESSION['conteo'] = 0;
 }elseif($_SESSION['conteo'] == 2){
 	echo '</br></br><div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">	El remito ya fue controlado</div>';
+	$_SESSION['conteo'] = 0;
+}elseif($_SESSION['conteo'] == 3){
+	echo '</br></br><div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">	El remito no fue ingresado en TANGO, debe realizar el ingreso antes de realizar el control</div>';
 	$_SESSION['conteo'] = 0;
 }
 

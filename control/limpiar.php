@@ -27,15 +27,24 @@ if( odbc_num_rows( $result2 ) ) {
 
 	//BUSCA QUE NO ESTE CONTROLADO EL REMITO
 	$sqlRemitoPasado = "SELECT * FROM CTA115 WHERE N_COMP = '$rem' AND TALONARIO = 1";
-	
+
 	$result3 = odbc_exec($cid_2, $sqlRemitoPasado);
 	//SI YA FUE CONTROLADO, TE ENVIA AL INDEX CON CARTEL DE AVISO
 	if( odbc_num_rows( $result3 ) ) { 
 		$_SESSION['conteo'] = 2;
 		header("Location:index.php");
-
 	}
 
+	//BUSCA QUE ESTE INGRESADO EL REMITO
+	$sqlRemitoNoIngresado = "SELECT * FROM CTA115 WHERE N_COMP = '$rem' AND ESTADO = 'P'";
+	
+	$result4 = odbc_exec($cid_2, $sqlRemitoNoIngresado);
+	//SI NO FUE INGRESADO, TE ENVIA AL INDEX CON CARTEL DE AVISO
+	if( odbc_num_rows( $result4 ) ) { 
+		$_SESSION['conteo'] = 3;
+		header("Location:index.php");
+
+	}
 
 	// echo $_SESSION['rem'];
 
