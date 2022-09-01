@@ -89,9 +89,11 @@ if(!isset($_SESSION['username'])){
 		
 		
 	</body>
-	<script src="js/main.js"></script>
 
-		</html>
+	<script src="js/main.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	</html>
 
 		<?php
 

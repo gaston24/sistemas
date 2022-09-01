@@ -42,7 +42,7 @@ $hora = (date("H")-5).date("i").date("s");
 odbc_exec($cid, $sqlNuevos);
 
 for($i=0;$i<count($_POST['ncomp']);$i++){
-	var_dump($_POST);
+	
 	
 	if($_POST['articulo'][$i] != ''){
 	

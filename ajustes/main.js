@@ -36,7 +36,7 @@ function myFunction() {
 
   //Cuenta la cantidad de artículos a ajustar//
 
-   function contar(){
+   function contara(){
     let elems = document.querySelectorAll("option:checked");
     let cont = 0;
         for(var k=0;k<elems.length;k++){
@@ -74,46 +74,10 @@ function myFunction() {
           showConfirmButton: true,
           })
           .then(function () {
-            window.location = "ajusteLocal.php";
-            });
+            event.preventDefault();
+        });
       };
     }
-
-
-
-  
-
-      //   //Captura el ID de la fila seleccionada//
-      //   let length_id = 0;
-		  //   let btn = document.querySelector('.btnCheck');
-      //   let id = [];
-      //   btn.addEventListener('click', (event) => {
-      //  /*    length_id=0; */
-      //     id=[];
-      //       let checkboxes = document.querySelectorAll(".btnCheck:checked");
-      //       checkboxes.forEach((checkbox) => {
-              
-      //           id.push(checkbox.value);
-      //           length_id = id.length;
-      //       });
-      //       // return id, length_id;
-      //       alert(length_id);
-      //   	});
-
-
-      //     function rechazarAjuste(){
-      //       console.log(length_id);
-      //     if(length_id == 0){ 
-      //       Swal.fire({
-      //         icon: 'error',
-      //         title: 'Oops...',
-      //         text: 'Something went wrong!',
-      //         footer: '<a href="">Why do I have this issue?</a>'
-      //       })
-      //     } else {
-      //       alert('ok');
-      //     }
-      //   }
 
         //Matriz de checkbox seleccionados//
         
@@ -156,6 +120,7 @@ function myFunction() {
               title: 'Desea eliminar el artículo?',
               showDenyButton: true,
               showCancelButton: true,
+              cancelButtonText: 'Salir',
               confirmButtonText: 'Aceptar',
               denyButtonText: 'Cancelar',
             }).then((result) => {

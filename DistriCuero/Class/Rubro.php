@@ -14,9 +14,12 @@ class Rubro
                  echo $e->getMessage();
          }
 
-        $sql = "
-        SELECT REPLACE(DESCRIP, '_', '') DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_][ZD]%' AND DESCRIP NOT LIKE 'Todos' 
-        AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT IN ('ALHAJEROS','PACKAGING','LENTES')
+        $sql = "SELECT * FROM
+                (
+                SELECT REPLACE(DESCRIP, '_', '') DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_][ZDH]%' AND DESCRIP NOT LIKE 'Todos' 
+                AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT IN ('ALHAJEROS','PACKAGING','LENTES')
+                ) A
+                ORDER BY 1
         ";
         $stmt = sqlsrv_query( $cid_central, $sql );
 

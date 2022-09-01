@@ -42,7 +42,6 @@ thead{
     font-size: small;
 }
 
-
 .form-row
 {
     margin-left: 5rem;
@@ -57,5 +56,12 @@ thead{
 {
     color: #28a745;
     cursor: pointer;
+    font-size: 22px;
+}
+
+#iconPrint:hover
+{
+    color: #28a745;
+    cursor: pointer; 
     font-size: 22px;
 }

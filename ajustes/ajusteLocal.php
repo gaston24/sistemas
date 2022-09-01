@@ -101,7 +101,6 @@ td{
 
 		while($v=odbc_fetch_array($result)){
 
-
         ?>
 		
         	<tr>
@@ -113,8 +112,7 @@ td{
 				<td><?= $v['DESCRIPCIO'] ;?></td>
 				<td><input class="form-control input" name="cant[]" type="text" value="<?= $v['CANT'] ;?>"  readonly></td>
 				<td>
-				<div class="col">
-                    <select id="controlBuscador<?=$contador?>" class="ctr-busc" name="articulo[]" onchange="contar();">
+                    <select id="controlBuscador<?=$contador?>" class="ctr-busc" name="articulo[]" onchange="contara();">
                         <option selected></option>
                         <?php
                     foreach($todosLosArticulos as $articulo => $key){
@@ -124,7 +122,6 @@ td{
                     }
                     ?>
                     </select>
-					</div>
 				</td>
 				<td><input type="checkbox" id='checkbox1' class="btnCheck" value="<?= $v['ID_STA20'] ;?>"></td>
 			</tr>

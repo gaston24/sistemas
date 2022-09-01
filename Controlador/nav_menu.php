@@ -75,7 +75,7 @@ include('estado_cuenta.php');
            Ecommerce
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#" onclick="location.href='guia_local'">Seguimiento de Pedidos</a>
+            <a class="dropdown-item" href="#" onclick="location.href='guia_local'">Registrar Pedidos</a>
             <a class="dropdown-item" href="#" onclick="location.href='guia_local/buscar_factura.php'">Buscar Factura</a>
             <a class="dropdown-item" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a>
           </div>

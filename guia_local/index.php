@@ -58,6 +58,7 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 				<td class="col-">METODO ENTREGA</td>
 				<td class="col-">GUIA</td>
 				<td class="col-">FECHA GUIA</td>
+				<td class="col-">IMPRIMIR</td>
 				<td class="col-">RETIRO</td>
 		</thead>
 
@@ -77,16 +78,15 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 				<td class="col-"><?= $key['METODO_ENVIO'] ;?></td>
 				<td class="col-"><?= $key['GC_GDT_NUM_GUIA'] ;?></td>
 				<td class="col-"><?php if(isset($key['FECHA'])){echo $key['FECHA']->format('Y-m-d');} ?></td>
+				<td class="col-"> <a href="remitoEntrega/?nComp=<?= $key['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" id="iconPrint"></i></a></td>
 				<td class="col-" type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden()" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
 			</tr>
-
 
 			<?php
 
 			}
 
 			?>
-
 
 		</tbody>
 	</table>
@@ -106,6 +106,14 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    
+	<script>
+
+		$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+		})
+
+	</script>
+
 </body>
 
 </html>
