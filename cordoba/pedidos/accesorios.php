@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start(); 
 
 if(!isset($_SESSION['username'])){
@@ -43,7 +43,8 @@ if(!isset($_SESSION['username'])){
 		?>
 
 
-		<form method="POST" action="cargarPedidoNuevoCordoba.php" onkeypress = "return pulsar(event)">
+	<!-- 	<form method="POST" action="cargarPedidoNuevoCordoba.php" onkeypress = "return pulsar(event)"> -->
+	<form id='formulario' method="POST">
 		<div style="width:100%">
 		  
 		<table class="table table-striped table-fh table-12c" id="id_tabla">
@@ -98,4 +99,3 @@ if(!isset($_SESSION['username'])){
 	
 }
 ?>
-

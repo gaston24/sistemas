@@ -1,5 +1,4 @@
 const form = document.getElementById("formulario");
-let b = 0;
 let stock;
 let stockModificado = [];
 let indice;
@@ -197,7 +196,6 @@ function traerStock() {
     if (conexion1.readyState == 4 && conexion1.status == 200) {
       console.log("entraste a traerStock");
       stock = JSON.parse(conexion1.responseText);
-      console.log('erer: '+stock);
       controlarStockActual();
     }
   };

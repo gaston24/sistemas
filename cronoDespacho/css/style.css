@@ -27,7 +27,7 @@ body
     display: flex;
     text-align: right;
     color:#ffc107;
-    font-size: medium;
+    font-size: 1.5em;
 }
 
 #estado1 i
@@ -35,7 +35,15 @@ body
     display: flex;
     text-align: right;
     color:#28a745;
-    font-size: medium;
+    font-size: 1.5em;
+}
+
+#condicion i
+{
+    display: flex;
+    text-align: right;
+    color:#17a2b8;
+    font-size: 1.5em;
 }
 
 .form

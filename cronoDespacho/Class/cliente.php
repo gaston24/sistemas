@@ -29,8 +29,11 @@ class Cliente
     public function traerClientes()
     {
 
-        $sql = "SELECT DISTINCT(RAZON_SOCI) RAZON_SOCI FROM RO_PEDIDOS_PENDIENTES_DESPACHO
-        GROUP BY RAZON_SOCI";
+        $sql = "SELECT DISTINCT(COD_CLIENT) COD_CLIENT, RAZON_SOCI FROM RO_PEDIDOS_PENDIENTES_DESPACHO
+                WHERE COD_CLIENT != ''
+                GROUP BY RAZON_SOCI, COD_CLIENT
+                ORDER BY COD_CLIENT
+                ";
 
         $rows = $this->retornarArray($sql);
 

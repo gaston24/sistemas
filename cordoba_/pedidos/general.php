@@ -42,7 +42,8 @@ if(!isset($_SESSION['username'])){
 
 		?>
 
-<!-- <form method="POST" action="cargarPedidoNuevoCordoba.php" onkeypress = "return pulsar(event)"> -->
+<!-- 
+		<form method="POST" action="cargarPedidoNuevoCordoba.php" onkeypress = "return pulsar(event)"> -->
 		<form id='formulario' method="POST">
 		<div style="width:100%">
 		  

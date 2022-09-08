@@ -26,17 +26,18 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedidos pendientes</title>
     <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.css" />
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css" >
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Including Font Awesome CSS from CDN to show icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
 
 </head>
 
@@ -65,7 +66,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                         <?php
                     foreach($todosLosClientes as $cliente => $key){
                     ?>
-                    <option value="<?= $key['RAZON_SOCI'] ?>"><?= $key['RAZON_SOCI'] ?></option>
+                    <option value="<?= $key['RAZON_SOCI'] ?>"><?= $key['COD_CLIENT'].' - '.$key['RAZON_SOCI'] ?></option>
                     <?php   
                     }
                     ?>
@@ -139,6 +140,7 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                     <th scope="col" style="width: 1%">PRIORIDAD</th>
                     <th scope="col" style="width: 1%"></th>
                     <th scope="col" style="width: 1%"></th>
+                    <th scope="col" style="width: 1%"></th>
                 </thead>
 
                 <tbody id="table">
@@ -162,14 +164,19 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                             <td><?= substr($value->RE_DESPACHO->date,0,10); ?></td>
                             <td><?= $value->RUTA; ?></td>
                             <td><?= $value->PRIORIDAD; ?></td>
+                            <td id='condicion'>
+                                <?php if(isset($value->TIPO_COMP)){ ?>
+                                    <i class="bi bi-info-circle-fill" aria-hidden="true" title="<?= $value->TIPO_COMP.' / '.$value->EMBALAJE.' / '.$value->DESPACHO?>" data-toggle="tooltip" data-placement="top"></i>
+                                <?php } else { ?> <?php } ?>
+                            </td>
                             <td id='estado1'>
                                 <?php if($value->IMPRESO == 'SI'){ ?>
-                                    <i class="fa fa-cart-plus" aria-hidden="true" title="Preparacion"></i>
+                                    <i class="fa fa-cart-plus" aria-hidden="true" title="PREPARACION" data-toggle="tooltip" data-placement="top"></i>
                                 <?php } else { ?> <?php } ?>
                             </td>
                             <td id='estado'>
                                 <?php if(substr($value->PROX_DESPACHO->date,0,10) != substr($value->RE_DESPACHO->date,0,10)){ ?>
-                                    <i class="fa fa-exclamation-triangle" aria-hidden="true" title="Demorado"></i>
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true" title="DEMORADO" data-toggle="tooltip" data-placement="top"></i>
                                 <?php } else { ?> <?php } ?>
                             </td>
                         </tr>
@@ -191,12 +198,6 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
 
 <script src="main.js" charset="utf-8"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
 
@@ -220,6 +221,12 @@ $(document).ready(function(){
         })
         $("#totalPed").val(new Intl.NumberFormat("de-DE").format(rows))
     });
+
+ 
+
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
 
 </script>
 

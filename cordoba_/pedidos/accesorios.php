@@ -34,7 +34,7 @@ if(!isset($_SESSION['username'])){
 		$sql="
 		SET DATEFORMAT YMD
 		
-		EXEC SJ_TIPO_PEDIDO_CORDOBA_1
+		EXEC SJ_TIPO_PEDIDO_CORDOBA_2
 		
 		";
 
@@ -42,8 +42,9 @@ if(!isset($_SESSION['username'])){
 
 		?>
 
-<!-- <form method="POST" action="cargarPedidoNuevoCordoba.php" onkeypress = "return pulsar(event)"> -->
-		<form id='formulario' method="POST">
+
+	<!-- 	<form method="POST" action="cargarPedidoNuevoCordoba.php" onkeypress = "return pulsar(event)"> -->
+	<form id='formulario' method="POST">
 		<div style="width:100%">
 		  
 		<table class="table table-striped table-fh table-12c" id="id_tabla">
@@ -89,11 +90,9 @@ if(!isset($_SESSION['username'])){
 		
 		
 	</body>
-
 	<script src="js/main.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-	</html>
+		</html>
 
 		<?php
 

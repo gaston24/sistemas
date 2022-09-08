@@ -12,6 +12,7 @@ $local = $_SESSION['descLocal'];
 
 
 
+
 ?>
 <!DOCTYPE HTML>
 <html charset="UTF-8">
