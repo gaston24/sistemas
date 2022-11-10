@@ -4,15 +4,18 @@
 class Conexion{
 
     function __construct(){
-        require_once(__DIR__.'/../vars.php');
+        require_once(__DIR__.'/classEnv.php');
+
+        $vars = new DotEnv(__DIR__ . '/../.env');
+        $envVars = $vars->listVars();
         
-        $this->host_central = $HOST_CENTRAL;
-        $this->database_central = $DATABASE_CENTRAL;
-        $this->host_locales = $HOST_LOCALES;
-        $this->database_locales = $DATABASE_LOCALES;
-        $this->user = $USER;
-        $this->pass = $PASS;
-        $this->character = $CHARACTER;
+        $this->host_central = $envVars['HOST_CENTRAL'];
+        $this->database_central = $envVars['DATABASE_CENTRAL'];
+        $this->host_locales = $envVars['HOST_LOCALES'];
+        $this->database_locales = $envVars['DATABASE_LOCALES'];
+        $this->user = $envVars['USER'];
+        $this->pass = $envVars['PASS'];
+        $this->character = $envVars['CHARACTER'];
     }
 
     private function servidor($nameServer) {

@@ -1,7 +1,7 @@
 <?php
 	session_start(); 
+
 	if(!isset($_SESSION['username'])){
-		
 		header("Location:../login.php");
 	}else{	
 ?>
@@ -16,11 +16,8 @@
 <?php
 
 		require_once __DIR__."/../class/extralarge.php";
-	
 		$xl = new Extralarge;
-
 		$suc = $_SESSION['numsuc'];
-		
 		$xl->deletePedidos($suc);
 
 	}

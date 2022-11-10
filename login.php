@@ -2,10 +2,9 @@
 session_start();
 
 if(isset($_SESSION['username'])){
-		session_destroy();
+	session_destroy();
 }
 
-include 'checkBrowser.php';
 ?>
 
 <!doctype html>
@@ -19,13 +18,8 @@ include 'checkBrowser.php';
 
 </head>
 
-
-
-
 <body>
 	<div id="contenedor">
-
-	
 
 	<header id="encabezado">
 		<h1 align="center">XL GESTION</h1>
@@ -35,11 +29,6 @@ include 'checkBrowser.php';
 	<aside id="logo">
 		<img src="Controlador/logo.jpg">
 	</aside>
-
-	<?php 
-		// if(get_the_browser() == 'Google Chrome'){
-		if(1==1){
-	?>
 	
 	<section id="contenido">
 		<article>
@@ -81,24 +70,6 @@ include 'checkBrowser.php';
 			</form>
 		</article>
 	</section>
-
-	<?php
-		}else{
-	?>
-		<div class="row">
-			<h1 align="center">Para un correcto funcionamiento de la plataforma de carga de pedidos, por favor usar el navegador Google Chrome</h1>
-		</div>
-		<div class="row">
-		<div class="col"></div>
-		<div class="col">
-			<img src="Controlador/chrome.jpg">
-		</div>
-		<div class="col"></div>
-		</div>
-	<?php
-		}
-	?>
-	
 		
 	</div>
 	

@@ -1,6 +1,5 @@
 <?php
 
-namespace DevCoder;
 
 class DotEnv
 {
@@ -20,7 +19,7 @@ class DotEnv
         $this->path = $path;
     }
 
-    public function load() :void
+    private function load() :void
     {
         if (!is_readable($this->path)) {
             throw new \RuntimeException(sprintf('%s file is not readable', $this->path));
@@ -44,4 +43,26 @@ class DotEnv
             }
         }
     }
+
+    public function listVars(){
+        (new DotEnv(__DIR__ . '/../.env'))->load();
+
+        $vars = array(
+
+            'HOST_CENTRAL' => getenv('HOST_CENTRAL'),
+            'HOST_LOCALES' => getenv('HOST_LOCALES'),
+            'DATABASE_CENTRAL' => getenv('DATABASE_CENTRAL'),
+            'DATABASE_LOCALES' => getenv('DATABASE_LOCALES'),
+            'USER' => getenv('USER'),
+            'PASS' => getenv('PASS'),
+            'PASS_LOCALES' => getenv('PASS_LOCALES'),
+            'CHARACTER' => getenv('CHARACTER'),
+
+        );
+
+        return $vars;
+
+
+    }
+
 }

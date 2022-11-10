@@ -26,7 +26,6 @@ if(!isset($_SESSION['username'])){
 <?php
 
 	require_once __DIR__."/../class/extralarge.php";
-	
 	$xlLocales = new Extralarge;
 
 	try {
@@ -35,7 +34,7 @@ if(!isset($_SESSION['username'])){
 
 	} catch (\Throwable $th) {
 
-		die(exit("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$_SESSION['descLocal']."</H2></br></br><H2 ALIGN='CENTER'>Chequee la conexion de internet</H2>"));
+		die("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$_SESSION['descLocal']."</H2></br></br><H2 ALIGN='CENTER'>Chequee la conexion de internet</H2>");
 		print_r($th);
 	}
 
