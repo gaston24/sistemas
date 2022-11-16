@@ -66,10 +66,10 @@ if (!isset($_SESSION['username'])) {
 				<div class="col">
 					<div class="row">
 						<div class="col">
-							<div class="btn-group" role="group" aria-label="Basic example">
+							<!-- <div class="btn-group" role="group" aria-label="Basic example">
 								<button type="button" class="btn btn-secondary" id="btnGrabarPedido">Grabar</button>
 								<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
-							</div>
+							</div> -->
 						</div>
 						<div>
 							<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
@@ -105,7 +105,7 @@ if (!isset($_SESSION['username'])) {
 						<?php } ?>
 
 						<th id="distribucion">DIST
-							<span class="d-inline-block" tabindex="0" id="tool" data-toggle="tooltip" title="Articulos en distribucion, pendientes de entrega"></span>
+							<span class="d-inline-block" tabindex="0" id="tool" data-toggle="tooltip" title="Articulos pendientes de remitir y artículos remitidos sin guia"></span>
 						</th>
 
 						<th>PEDIDO</th>

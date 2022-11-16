@@ -3,6 +3,8 @@ let b = 0;
 let stock;
 let stockModificado = [];
 let indice;
+let preloader=document.querySelector('.container');
+let documentTitle=document.title;//será usado para identificar si se deberá traer stock de art generales o accesorios en traerStock.php
 
 let totalArticulos = document.getElementById("total");
 let totalPrecio = document.getElementById("totalPrecio");
@@ -175,6 +177,7 @@ function buscarArticulo(codigo) {
 /*  formulario.addEventListener("submit",controlar); */
 formulario.addEventListener("submit", function (e) {
   e.preventDefault();
+  preloader.style.display='block';
   traerStock();
 
   /*  e.preventDefault() */
@@ -202,7 +205,7 @@ function traerStock() {
     }
   };
 
-  conexion1.open("GET", "traerStock.php", true);
+  conexion1.open("GET", "traerStock.php?title="+documentTitle, true);
   conexion1.send();
 }
 var encontrado;
@@ -228,6 +231,7 @@ function controlarStockActual() {
       el.COD_ARTICU = artCargados[i].codigo.trim()
     ); */
   }
+  preloader.style.display='none';
   console.log("encontrado: " + encontrado);
   if (stockModificado.length > 0) {
     Swal.fire({

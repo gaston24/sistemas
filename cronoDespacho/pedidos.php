@@ -87,19 +87,17 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
             <div>
                 <button type="submit" class="btn btn-primary" id="btn_filtro_2">Filtrar<i class="fa fa-filter"></i></button>
             </div>
-
-            <!-- <div id="busqRapida2">
+            <div id="totalPedidos">
+                <label id="labelTotal">Pedidos</label> 
+                <input name="total_todo" id="totalPed" value="0" type="text" class="form-control form-control-sm text-center total" readonly>
+            </div>
+            <div id="totalArticulos">
+                <label id="labelTotal">Artículos</label> 
+                <input name="total_todo" id="total" value="0" type="text" class="form-control form-control-sm text-center total" readonly>
+            </div>            
+            <div id="busqRapida2">
                 <label id="textBusqueda">Busqueda rapida:</label>
                 <input type="text" id="textBox" placeholder="Sobre cualquier campo..." onkeyup="myFunction()" class="form-control form-control-sm"></input>
-            </div> -->
-            <div id="totalArticulos">
-                <label id="labelTotal">Total artículos</label> 
-                <input name="total_todo" id="total" value="0" type="text" class="form-control form-control-sm text-center total" readonly>
-            </div>
-
-            <div id="totalPedidos">
-                <label id="labelTotal">Total pedidos</label> 
-                <input name="total_todo" id="totalPed" value="0" type="text" class="form-control form-control-sm text-center total" readonly>
             </div>
 
 </form>

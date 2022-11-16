@@ -27,6 +27,7 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/preloader.css">
     <title>Seleccion de ordenes</title>
   </head>
 

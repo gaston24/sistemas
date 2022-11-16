@@ -1,176 +1,243 @@
-<?php 
+<?php
 
-session_start(); 
-if(!isset($_SESSION['username'])){
+session_start();
+if (!isset($_SESSION['username'])) {
 	header("Location:login.php");
-}else{
+} else {
 
-$permiso = $_SESSION['permisos'];
+	$permiso = $_SESSION['permisos'];
 
-$codClient = $_SESSION['codClient'];
-$deposi = $_SESSION['deposi'];
-$ven =	$_SESSION['vendedor'];
+	$codClient = $_SESSION['codClient'];
+	$deposi = $_SESSION['deposi'];
+	$ven =	$_SESSION['vendedor'];
 
-$local = $_SESSION['descLocal'];
-$dashboard = $_SESSION['dashboard'];
+	$local = $_SESSION['descLocal'];
+	$dashboard = $_SESSION['dashboard'];
 
-$habPedidos = $_SESSION['habPedidos'];
+	$habPedidos = $_SESSION['habPedidos'];
 
-require 'class/fechaEntrega.php';
+	require 'class/fechaEntrega.php';
 
-$fechaEntrega = new Fecha();
-$proximaEntrega = $fechaEntrega->traerFechaEntrega($codClient);
-$proximaEntrega = json_decode($proximaEntrega);
+	$fechaEntrega = new Fecha();
+	$proximaEntrega = $fechaEntrega->traerFechaEntrega($codClient);
+	$proximaEntrega = json_decode($proximaEntrega);
 
-try {
+	try {
 
-	// include_once '../Controlador/sql/sql_conexion.php';
-    // $cid = $cid_central;
-    
-} catch (PDOException $e){
-        echo $e->getMessage();
-}
+		// include_once '../Controlador/sql/sql_conexion.php';
+		// $cid = $cid_central;
+
+	} catch (PDOException $e) {
+		echo $e->getMessage();
+	}
 
 
-// $sqlProx =
-// "
-// EXEC SOF_FECHAS_2'$codClient';
+	// $sqlProx =
+	// "
+	// EXEC SOF_FECHAS_2'$codClient';
 
-// ";
+	// ";
 
-// $stmt = sqlsrv_query( $cid, $sqlProx );
+	// $stmt = sqlsrv_query( $cid, $sqlProx );
 
-// $rows = array();
+	// $rows = array();
 
-// while( $v = sqlsrv_fetch_array( $stmt) ) {
+	// while( $v = sqlsrv_fetch_array( $stmt) ) {
 	// $proximaEntrega = $v['A']	;
 	//$proximaEntrega = ''	;
-// }
+	// }
 
 ?>
-<!DOCTYPE HTML>
-<html charset="UTF-8">
+	<!DOCTYPE HTML>
+	<html charset="UTF-8">
 
-<head>
-<title>XL Extralarge - Inicio</title>	
-<meta charset="UTF-8"></meta>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<link rel="shortcut icon" href="assets/css/icono.jpg" />
-<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css" >
-<script src="assets/css/bootstrap/jquery-3.5.1.slim.min.js" ></script>
-<script src="assets/css/bootstrap/popper.min.js" ></script>
-<script src="assets/css/bootstrap/bootstrap.min.js" ></script>
-
-
-
-<?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
+	<head>
+		<title>XL Extralarge - Inicio</title>
+		<meta charset="UTF-8">
+		</meta>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="shortcut icon" href="assets/css/icono.jpg" />
+		<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css">
+		<script src="assets/css/bootstrap/jquery-3.5.1.slim.min.js"></script>
+		<script src="assets/css/bootstrap/popper.min.js"></script>
+		<script src="assets/css/bootstrap/bootstrap.min.js"></script>
 
 
 
-</head>
-<body>	
+		<?php include_once __DIR__ . '/assets/css/fontawesome/css.php'; ?>
 
-<div class="container">
-<?php
 
-include_once 'Controlador/nav_menu.php';
 
-?>
+	</head>
 
-	<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
-		<div class="col-">
-			<div class="mb-4">
-				<div class="row" style="display: flex; justify-content: center;">
-				<div class="col-"><h2>Bienvenido/a</h2></div>
-				</div>
-				<div class="row" style="display: flex; justify-content: center;">
-					<div class="col-"><h2 class="text-secondary"><?php echo $local; ?></h2></div>
-				</div>
-			</div>
-				<?php
-					if($_SESSION['tipo']!= 'MAYORISTA'){
-				?>
-					<div class="col-" style="display: flex; justify-content: center;">
-						<div class="col-"><h5>Próximo despacho: <a class="text-secondary"><?=' '.substr( $proximaEntrega[0]->FECHA->date, 0, 10);?></a></h5></div>
-					</div>
-				<?php		
-					}
-				?>
-			</div>
-			<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;"> 
-				<img src="Controlador/logo.jpg" style="height: 150px; width: 200px">
-			</div>
-	</div>
-	
-		
-	
+	<body>
 
-		
-	<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
-		<div style="text-align: center; width: 24rem">
-	
-		<?php
-		if($_SESSION['tipo'] == 'MAYORISTA'){
-			include __DIR__.'\ppp\mayoristas\ppp_function.php';
-			$datos = traer_datos($codClient, $ven);
+		<div class="container">
+			<?php
+
+			include_once 'Controlador/nav_menu.php';
+
 			?>
 
-			<ul class="list-group">
+			<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
+				<div class="col-">
+					<div class="mb-4">
+						<div class="row" style="display: flex; justify-content: center;">
+							<div class="col-">
+								<h2>Bienvenido/a</h2>
+							</div>
+						</div>
+						<div class="row" style="display: flex; justify-content: center;">
+							<div class="col-">
+								<h2 class="text-secondary"><?php echo $local; ?></h2>
+							</div>
+						</div>
+					</div>
+					<?php
+					if ($_SESSION['tipo'] != 'MAYORISTA') {
+					?>
+						<div class="col-" style="display: flex; justify-content: center;">
+							<div class="col-">
+								<h5>Próximo despacho: <a class="text-secondary"><?= ' ' . substr($proximaEntrega[0]->FECHA->date, 0, 10); ?></a></h5>
+							</div>
+						</div>
+					<?php
+					}
+					?>
+				</div>
+				<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
+					<img src="Controlador/logo.jpg" style="height: 150px; width: 200px">
+				</div>
+			</div>
 
 
-			<li class="list-group-item list-group-item-secondary" style="text-align: center;">
-				Plazo Promedio de Pago
-				
-			</li>
-			<li class="list-group-item">
-				Plazo 12 meses 
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['ppp12meses'], 0, ".",".");;  ?></span>
-			</li>
-			<li class="list-group-item">
-				Saldo CC
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['saldo'], 0, ".",".");  ?></span>
-			</li>
-			<li class="list-group-item">
-				Vencidas
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['vencidas'], 0, ".",".");;  ?></span>
-			</li>
-			<li class="list-group-item">
-				A vencer
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['aVencer'], 0, ".",".");;  ?></span>
-			</li>
-			<li class="list-group-item list-group-item-info" >
-				<a href="ppp/mayoristas/pppDetalle.php?cliente=<?php echo $codClient;?>">Detalles comprobantes
-				
-		
-			</li>
-
-		</ul>	
-	
-		<?php
-		}
-		?>
 
 
-	
-		
 
-		</div>
-	
-	</div>
-	<?php if($habPedidos == 0 && $_SESSION['numsuc'] > 300)
-            {
-			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
+			<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
+				<div style="text-align: center; width: 24rem">
+
+					<?php
+					if ($_SESSION['tipo'] == 'MAYORISTA') {
+						include __DIR__ . '\ppp\mayoristas\ppp_function.php';
+						$datos = traer_datos($codClient, $ven);
+					?>
+
+						<ul class="list-group">
+
+
+							<li class="list-group-item list-group-item-secondary" style="text-align: center;">
+								Plazo Promedio de Pago
+
+							</li>
+							<li class="list-group-item">
+								Plazo 12 meses
+								<span class="badge badge-primary badge-pill"><?php echo "$" . number_format((int)$datos['ppp12meses'], 0, ".", ".");;  ?></span>
+							</li>
+							<li class="list-group-item">
+								Saldo CC
+								<span class="badge badge-primary badge-pill"><?php echo "$" . number_format((int)$datos['saldo'], 0, ".", ".");  ?></span>
+							</li>
+							<li class="list-group-item">
+								Vencidas
+								<span class="badge badge-primary badge-pill"><?php echo "$" . number_format((int)$datos['vencidas'], 0, ".", ".");;  ?></span>
+							</li>
+							<li class="list-group-item">
+								A vencer
+								<span class="badge badge-primary badge-pill"><?php echo "$" . number_format((int)$datos['aVencer'], 0, ".", ".");;  ?></span>
+							</li>
+							<li class="list-group-item list-group-item-info">
+								<a href="ppp/mayoristas/pppDetalle.php?cliente=<?php echo $codClient; ?>">Detalles comprobantes
+
+
+							</li>
+
+						</ul>
+
+					<?php
+					}
+					?>
+
+
+
+
+
+				</div>
+
+			</div>
+			<?php if ($habPedidos == 0 && $_SESSION['numsuc'] > 300) {
+				echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
 			}
-	?>
-</div>
-</div>
+			?>
+		</div>
+		</div>
 
 
 
 
-<?php include_once __DIR__.'\assets\css\fontawesome\js.php';?>
-</body>
+		<?php include_once __DIR__ . '\assets\css\fontawesome\js.php'; ?>
+		<script>
+			/* onclick="location.href='pedidos/pedidos.php?tipo=1'" */
+			window.addEventListener('DOMContentLoaded', traerCantidadPedidos);
+
+
+			document.getElementById('buttonPedidoGeneral').addEventListener('click', () => {
+				if (estado[0] != null && estado[0].CANT_PEDIDOS == 5) {
+					alerta();
+				} else {
+					location.href = 'pedidos/pedidos.php?tipo=1';
+				}
+			})
+
+			document.getElementById('buttonPedidoAccesorios').addEventListener('click', () => {
+				if (estado[1] != null && estado[1].CANT_PEDIDOS == 5) {
+					alerta();
+				} else {
+					location.href = 'pedidos/pedidos.php?tipo=2';
+				}
+			})
+
+			document.getElementById('buttonPedidoOutlet').addEventListener('click', () => {
+				if (estado[2] != null && estado[2].CANT_PEDIDOS == 5) {
+					alerta();
+				} else {
+					location.href = 'pedidos/pedidos.php?tipo=3';
+				}
+			})
+
+
+			function alerta() {
+				Swal.fire({
+					icon: "error",
+					title: "No puede continuar",
+					text: "TIENE REALIZADO 2 PEDIDOS ESTA SEMANA"
+				});
+			}
+
+			var codClient = '<?= $codClient; ?>'
+
+
+			let conexion1;
+
+			/*********************************************************** */
+			let estado;
+
+			function traerCantidadPedidos() {
+
+				conexion1 = new XMLHttpRequest();
+				conexion1.onreadystatechange = () => {
+					if (conexion1.readyState == 4 && conexion1.status == 200) {
+						estado = JSON.parse(conexion1.responseText);
+					}
+				};
+				conexion1.open("GET", "pedidos/Controlador/limitePedidos.php?traerInfo=1&cliente=" + codClient, true);
+				conexion1.send();
+			}
+
+			/******************************************* */
+		</script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	</body>
 <?php
 }
 ?>
-

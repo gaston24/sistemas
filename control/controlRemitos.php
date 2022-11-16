@@ -103,7 +103,7 @@ if (!isset($_SESSION['username'])) {
 								<td class="col-" style="width:6em"><?=$value[0]->COD_ARTICU; ?></td>
 								<td class="col-" style="width:5em"><?=$value[0]->DESCRIPCIO; ?></td>
 								<td class="col-" style="width:3em" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
-								<td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
+								<td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" style="cursor: pointer;" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
 							</tr>
 
 						<?php

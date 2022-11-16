@@ -38,6 +38,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/style.css"></link>
 
 <script defer src="main.js"></script>
 <script defer src="js/chat.js"></script>
@@ -47,7 +48,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 <body>	
 <div class="container-fluid mt-3">
 
-<div >
+<div>
 <form action="" method="GET" >
 
 	<div class="form-group row">
@@ -94,8 +95,8 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 
 		<table class="table table-striped " id="id_tabla">
 		
-		<thead>
-			<tr style="font-size:smaller">
+		<thead class="thead-dark">
+			<tr>
 				<th >SUC CONTROLÓ</th>
 				<th >NRO<br>REMITO</th>
 				<th >FECHA<br>CONTROL</th>
@@ -126,7 +127,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 		
 		?>
 		
-        <tr class="fila-base" style="font-size:smaller" >
+        <tr  style="font-size:1em" >
 
 				<td ><?= $data[0]->COD_CLIENT.' ('.$data[0]->SUC_DESTIN.')' ;?></td>
 				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data[0]->NRO_REMITO ;?>">  <?= $data[0]->NRO_REMITO ;?> </a></td>

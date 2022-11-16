@@ -1,35 +1,39 @@
-<?php 
-session_start(); 
-if(!isset($_SESSION['username'])){
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
 	header("Location:login.php");
-}else{
+} else {
 
-$vendedor = $_SESSION['vendedor'];
+	$vendedor = $_SESSION['vendedor'];
 
 ?>
-<!doctype html>
-<head>
-<title>Carga Inicial</title>
-<?php include '../../css/header.php'; ?>
+	<!doctype html>
+
+	<head>
+		<title>Carga Inicial</title>
+		<?php include '../../css/header.php'; ?>
 
 
-</head>
-<body>
+	</head>
 
-</br>
-<div class="container-fluid">
+	<body>
 
-<?php
+		</br>
+		<div class="container-fluid">
 
-$dsn = "1 - CENTRAL";
-$user = "sa";
-$pass = "Axoft1988";
+			<?php
 
-$cid = odbc_connect($dsn, $user, $pass);
+			$dsn = "1 - CENTRAL";
+			$user = "sa";
+			$pass = "Axoft1988";
 
-if(!$cid){echo "</br>Imposible conectarse a la base de datos!</br>";}
+			$cid = odbc_connect($dsn, $user, $pass);
 
-$sql="
+			if (!$cid) {
+				echo "</br>Imposible conectarse a la base de datos!</br>";
+			}
+
+			$sql = "
 
 
 SELECT N_IMPUESTO, A.COD_CLIENT, NOM_COM, B.DSN
@@ -49,97 +53,116 @@ WHERE A.COD_CLIENT IN
 
 ";
 
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+			$result = odbc_exec($cid, $sql) or die(exit("Error en odbc_exec"));
 
-?>
+			?>
 
 
-<h2 align="center">Seleccionar Sucursales</h2></br>
+			<h2 align="center">Seleccionar Sucursales</h2></br>
 
-<nav style="margin-left:20%; margin-right:20%">
+			<nav style="margin-left:20%; margin-right:20%">
 
-<form action="cargaPedidoCordoba.php" method="post">
-<table class="table table-striped" id="id_tabla">
+				<form action="cargaPedidoCordoba.php" method="post">
+					<table class="table table-striped" id="id_tabla">
 
-        <tr>
+						<tr>
 
-				<td ><strong>NUM SUC</strong></td>
-				
-				<td ></td>
-				
-				<td ><strong>CODIGO</strong></td>
-				
-				<td ></td>
-				
-				<td ><strong>NOMBRE</strong></td>
-				
-				<td ><strong>SELEC</strong></td>
-					
-        </tr>
+							<td><strong>NUM SUC</strong></td>
 
-		
-        <?php
-	
-		$total = 0;
-       
-		while($v=odbc_fetch_array($result)){
+							<td></td>
 
-        ?>
+							<td><strong>CODIGO</strong></td>
 
-		
-        <tr ><!--style="font-size:smaller">-->
+							<td></td>
 
-                <td><?php echo $v['N_IMPUESTO'] ;?></td>
-				
-				<td><input type="text" name="suc[]" value="<?php echo $v['N_IMPUESTO'] ;?>" hidden></td>
-					
-				<td><?php echo $v['COD_CLIENT'] ;?></td>
-				
-				<td><input type="text" name="dsn[]" value="<?php echo $v['DSN'] ;?>" hidden></td>
-				
-				<td><?php echo $v['NOM_COM'] ;?></td>
-				
-				<td>
-				<select type="option" name="selec[]" class="form-control form-control-sm col-md-6">
-				<option value="si">SI</option>
-				<option value="no">NO</option>
-				</select>
-				</td>
-				
-				<!--<td><input type="checkbox" name="selec[]" checked></td>-->
-						
-		</tr>
+							<td><strong>NOMBRE</strong></td>
 
-		
-		
-        <?php
+							<td><strong>SELEC</strong></td>
 
-		$total = $total+1;
-		
-        }
+						</tr>
 
-        ?>
 
-		
-			
-			
-</table>
+						<?php
 
-<input type="submit" value="Pedidos" class="btn btn-primary btn-sm">
+						$total = 0;
 
-</form>
+						while ($v = odbc_fetch_array($result)) {
+
+						?>
+
+
+							<tr>
+								<!--style="font-size:smaller">-->
+
+								<td><?php echo $v['N_IMPUESTO']; ?></td>
+
+								<td><input type="text" name="suc[]" value="<?php echo $v['N_IMPUESTO']; ?>" hidden></td>
+
+								<td><?php echo $v['COD_CLIENT']; ?></td>
+
+								<td><input type="text" name="dsn[]" value="<?php echo $v['DSN']; ?>" hidden></td>
+
+								<td><?php echo $v['NOM_COM']; ?></td>
+
+								<td>
+									<select type="option" name="selec[]" class="form-control form-control-sm col-md-6">
+										<option value="si">SI</option>
+										<option value="no">NO</option>
+									</select>
+								</td>
+
+								<!--<td><input type="checkbox" name="selec[]" checked></td>-->
+
+							</tr>
+
+
+
+						<?php
+
+							$total = $total + 1;
+						}
+
+						?>
 
 
 
 
+					</table>
 
-</nav>
+					<input type="submit" value="Pedidos" class="btn btn-primary btn-sm">
 
-</div>
+				</form>
 
 
-</body>
-</html>
+
+
+
+			</nav>
+
+		</div>
+		<script>
+			//*******TRAER CANTIDAD DE PEDIDOS DE LOS LOCALES DE S.LOPEZ */
+			window.addEventListener('DOMContentLoaded', traerCantidadPedidos);
+			let estado;
+
+			function traerCantidadPedidos() {
+
+				conexion1 = new XMLHttpRequest();
+				conexion1.onreadystatechange = () => {
+					if (conexion1.readyState == 4 && conexion1.status == 200) {
+						estado = JSON.parse(conexion1.responseText);
+						console.log(estado);
+						localStorage.setItem("infoCordoba", JSON.stringify(estado));
+					}
+				};
+				conexion1.open("GET", "pedidos/limitePedidosCordoba.php", true);
+				conexion1.send();
+			}
+		</script>
+
+	</body>
+
+	</html>
 
 <?php
 }
