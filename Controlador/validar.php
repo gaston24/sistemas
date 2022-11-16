@@ -21,6 +21,8 @@ if( count($loginRes) == 0 ){
 	$_SESSION['numsuc'] = $loginRes['NRO_SUCURS'];
 	$_SESSION['codClient'] = $loginRes['COD_CLIENT'];
 	$_SESSION['descLocal'] = $loginRes['DESCRIPCION'];
+	$_SESSION['conexion_dns'] = $loginRes['CONEXION_DNS'];
+	$_SESSION['base_nombre'] = $loginRes['BASE_NOMBRE'];
 	$_SESSION['nuevoPedido'] = 1;
 	$_SESSION['cargaPedido'] = 1;
 	$_SESSION['ajuste'] = 1;
@@ -86,7 +88,7 @@ if( count($loginRes) == 0 ){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");		
-	}elseif($_SESSION['tipo'] == 'LOCAL_PROPIO'){
+	}elseif( in_array($_SESSION['tipo'], ['LOCAL_PROPIO', 'FRANQUICIA']) ){
 		header("Location: eliminaPedido.php");
 	}else{
 		header('Location:../login.php');
