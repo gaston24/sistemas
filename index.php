@@ -5,47 +5,27 @@ if(!isset($_SESSION['username'])){
 	header("Location:login.php");
 }else{
 
-$permiso = $_SESSION['permisos'];
-
-$codClient = $_SESSION['codClient'];
-$deposi = $_SESSION['deposi'];
-$ven =	$_SESSION['vendedor'];
-
-$local = $_SESSION['descLocal'];
-$dashboard = $_SESSION['dashboard'];
-
+$permiso 	= $_SESSION['permisos'];
+$codClient 	= $_SESSION['codClient'];
+$deposi 	= $_SESSION['deposi'];
+$ven 		= $_SESSION['vendedor'];
+$local 		= $_SESSION['descLocal'];
+$dashboard	= $_SESSION['dashboard'];
 $habPedidos = $_SESSION['habPedidos'];
+
 
 require 'class/fechaEntrega.php';
 
-$fechaEntrega = new Fecha();
-$proximaEntrega = $fechaEntrega->traerFechaEntrega($codClient);
-$proximaEntrega = json_decode($proximaEntrega);
 
 try {
 
-	// include_once '../Controlador/sql/sql_conexion.php';
-    // $cid = $cid_central;
+	$fechaEntrega 	= new Fecha();
+	$proximaEntrega = $fechaEntrega->traerFechaEntrega($codClient);
+	$proximaEntrega = json_decode($proximaEntrega);
     
 } catch (PDOException $e){
         echo $e->getMessage();
 }
-
-
-// $sqlProx =
-// "
-// EXEC SOF_FECHAS_2'$codClient';
-
-// ";
-
-// $stmt = sqlsrv_query( $cid, $sqlProx );
-
-// $rows = array();
-
-// while( $v = sqlsrv_fetch_array( $stmt) ) {
-	// $proximaEntrega = $v['A']	;
-	//$proximaEntrega = ''	;
-// }
 
 ?>
 <!DOCTYPE HTML>
@@ -55,118 +35,90 @@ try {
 <title>XL Extralarge - Inicio</title>	
 <meta charset="UTF-8"></meta>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<link rel="shortcut icon" href="assets/css/icono.jpg" />
-<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css" >
-<script src="assets/css/bootstrap/jquery-3.5.1.slim.min.js" ></script>
-<script src="assets/css/bootstrap/popper.min.js" ></script>
-<script src="assets/css/bootstrap/bootstrap.min.js" ></script>
-
-
-
+<?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
 <?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
-
-
-
 </head>
+
 <body>	
 
-<div class="container">
-<?php
-
-include_once 'Controlador/nav_menu.php';
-
-?>
-
-	<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
-		<div class="col-">
-			<div class="mb-4">
-				<div class="row" style="display: flex; justify-content: center;">
-				<div class="col-"><h2>Bienvenido/a</h2></div>
+	<div class="container">
+		<?php
+		include_once 'Controlador/nav_menu.php';
+		?>
+		<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
+			<div class="col-">
+				<div class="mb-4">
+					<div class="row" style="display: flex; justify-content: center;">
+						<div class="col-"><h2>Bienvenido/a</h2></div>
+					</div>
+					<div class="row" style="display: flex; justify-content: center;">
+						<div class="col-"><h2 class="text-secondary"><?php echo $local; ?></h2></div>
+					</div>
 				</div>
-				<div class="row" style="display: flex; justify-content: center;">
-					<div class="col-"><h2 class="text-secondary"><?php echo $local; ?></h2></div>
-				</div>
-			</div>
 				<?php
-					if($_SESSION['tipo']!= 'MAYORISTA'){
+				if($_SESSION['tipo']!= 'MAYORISTA'){
 				?>
 					<div class="col-" style="display: flex; justify-content: center;">
 						<div class="col-"><h5>Próximo despacho: <a class="text-secondary"><?=' '.substr( $proximaEntrega[0]->FECHA->date, 0, 10);?></a></h5></div>
 					</div>
 				<?php		
-					}
+				}
 				?>
 			</div>
+
 			<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;"> 
 				<img src="Controlador/logo.jpg" style="height: 150px; width: 200px">
 			</div>
-	</div>
-	
+		</div>
 		
-	
+							
+		<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
+			<div style="text-align: center; width: 24rem">
+				<?php
+				if($_SESSION['tipo'] == 'MAYORISTA'){
+					include __DIR__.'\class\extralarge.php';
+					$xl = new Extralarge();
+					$datos = $xl->traerDatosMayorista($codClient, $ven);
+				?>
+					<ul class="list-group">
 
-		
-	<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
-		<div style="text-align: center; width: 24rem">
-	
-		<?php
-		if($_SESSION['tipo'] == 'MAYORISTA'){
-			include __DIR__.'\ppp\mayoristas\ppp_function.php';
-			$datos = traer_datos($codClient, $ven);
-			?>
+						<li class="list-group-item list-group-item-secondary" style="text-align: center;">
+							Plazo Promedio de Pago	
+						</li>
+						<li class="list-group-item">
+							Plazo 12 meses 
+							<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$datos['ppp12meses'], 0, ".",".");;  ?></span>
+						</li>
+						<li class="list-group-item">
+							Saldo CC
+							<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$datos['saldo'], 0, ".",".");  ?></span>
+						</li>
+						<li class="list-group-item">
+							Vencidas
+							<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$datos['vencidas'], 0, ".",".");;  ?></span>
+						</li>
+						<li class="list-group-item">
+							A vencer
+							<span class="badge badge-primary badge-pill"><?= "$".number_format((int)$datos['aVencer'], 0, ".",".");;  ?></span>
+						</li>
+						<li class="list-group-item list-group-item-info" >
+							<a href="ppp/mayoristas/pppDetalle.php?cliente=<?= $codClient;?>">Detalles comprobantes
+						</li>
 
-			<ul class="list-group">
+					</ul>	
+				<?php
+				}
+				?>	
 
-
-			<li class="list-group-item list-group-item-secondary" style="text-align: center;">
-				Plazo Promedio de Pago
-				
-			</li>
-			<li class="list-group-item">
-				Plazo 12 meses 
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['ppp12meses'], 0, ".",".");;  ?></span>
-			</li>
-			<li class="list-group-item">
-				Saldo CC
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['saldo'], 0, ".",".");  ?></span>
-			</li>
-			<li class="list-group-item">
-				Vencidas
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['vencidas'], 0, ".",".");;  ?></span>
-			</li>
-			<li class="list-group-item">
-				A vencer
-				<span class="badge badge-primary badge-pill"><?php echo "$".number_format((int)$datos['aVencer'], 0, ".",".");;  ?></span>
-			</li>
-			<li class="list-group-item list-group-item-info" >
-				<a href="ppp/mayoristas/pppDetalle.php?cliente=<?php echo $codClient;?>">Detalles comprobantes
-				
-		
-			</li>
-
-		</ul>	
-	
-		<?php
-		}
-		?>
-
-
-	
-		
-
+			</div>	
 		</div>
 	
-	</div>
-	<?php if($habPedidos == 0 && $_SESSION['numsuc'] > 300)
-            {
+		<?php if($habPedidos == 0 && $_SESSION['numsuc'] > 300) {
 			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
-			}
-	?>
-</div>
-</div>
-
-
-
+		}
+		?>
+	</div>
+	</div>
 
 <?php include_once __DIR__.'\assets\css\fontawesome\js.php';?>
 </body>

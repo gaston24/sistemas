@@ -7,15 +7,15 @@ class Conexion{
         require_once(__DIR__.'/classEnv.php');
 
         $vars = new DotEnv(__DIR__ . '/../.env');
-        $envVars = $vars->listVars();
+        $this->envVars = $vars->listVars();
         
-        $this->host_central = $envVars['HOST_CENTRAL'];
-        $this->database_central = $envVars['DATABASE_CENTRAL'];
-        $this->host_locales = $envVars['HOST_LOCALES'];
-        $this->database_locales = $envVars['DATABASE_LOCALES'];
-        $this->user = $envVars['USER'];
-        $this->pass = $envVars['PASS'];
-        $this->character = $envVars['CHARACTER'];
+        $this->host_central = $this->envVars['HOST_CENTRAL'];
+        $this->database_central = $this->envVars['DATABASE_CENTRAL'];
+        $this->host_locales = $this->envVars['HOST_LOCALES'];
+        $this->database_locales = $this->envVars['DATABASE_LOCALES'];
+        $this->user = $this->envVars['USER'];
+        $this->pass = $this->envVars['PASS'];
+        $this->character = $this->envVars['CHARACTER'];
     }
 
     private function servidor($nameServer) {
@@ -25,13 +25,12 @@ class Conexion{
         }elseif($nameServer == 'locales'){
             return array($this->host_locales, $this->database_locales);
         }else{
-            $local = $this->buscarLocal($nameServer);
-            return array($local['CONEXION_DNS'], $local['BASE_NOMBRE']);
+            return array($_SESSION['conexion_dns'], $_SESSION['base_nombre']);
         }
 
     }
 
-    public function conectar($nameServer) {
+    public function conectar($nameServer = null) {
         try {
 
             $serverDB = $this->servidor($nameServer);
@@ -85,4 +84,5 @@ class Conexion{
 
         }
     }
+    
 }

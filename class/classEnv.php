@@ -57,6 +57,7 @@ class DotEnv
             'PASS' => getenv('PASS'),
             'PASS_LOCALES' => getenv('PASS_LOCALES'),
             'CHARACTER' => getenv('CHARACTER'),
+            'ENV' => getenv('ENV'),
 
         );
 

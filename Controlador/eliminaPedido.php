@@ -16,8 +16,15 @@
 <?php
 
 		require_once __DIR__."/../class/extralarge.php";
-		$xl = new Extralarge;
 		$suc = $_SESSION['numsuc'];
+
+		$xl = new Extralarge;
+
+		if($xl->getEnv() == 'DEV'){
+			header('Location: ../index.php');
+			die();
+		}
+
 		$xl->deletePedidos($suc);
 
 	}

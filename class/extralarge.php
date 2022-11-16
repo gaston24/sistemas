@@ -60,7 +60,7 @@ class Extralarge {
 
     }
 
-    public function insertarPedidos($codArticu,$cantStock,$cantVend,$suc){
+    public function insertarPedidos($codArticu, $cantStock, $cantVend, $suc){
 
         $cid = $this->conn->conectar('central');
 
@@ -83,7 +83,6 @@ class Extralarge {
 
 
     }
-
 
     public function traerDatosArticulos($localName){
 
@@ -150,5 +149,42 @@ class Extralarge {
 
     }
 
+    public function traerDatosMayorista($codClient, $ven){
+
+        $cid = $this->conn->conectar('central');
+        
+
+        $sql = "EXEC SJ_TRAER_DATOS_MAYORISTA '$codClient', '$ven'";
+
+        $stmt = sqlsrv_query($cid, $sql);
+
+        try {
+
+            $next_result = sqlsrv_next_result($stmt);
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+    
+            return $v[0];
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+        
+    }
+
+    public function getEnv(){
+
+        $envVars = $this->conn->envVars;
+        return $envVars['ENV'];
+
+
+    }
 
 }
