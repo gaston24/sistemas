@@ -69,7 +69,11 @@ td {
     font-size: 11px;
 }
 
-#cant {
+#cantVendida {
+    font-size: 14px;
+}
+
+#cantStock {
     font-size: 14px;
 }
 

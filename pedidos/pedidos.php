@@ -125,7 +125,7 @@ if (!isset($_SESSION['username'])) {
 							<?php
 						} else {
 							?>
-							<tr>
+							<tr id="trPedido">
 							<?php
 						}
 							?>
@@ -147,7 +147,7 @@ if (!isset($_SESSION['username'])) {
 								</div>
 							</div>
 
-							<td><?= $v['COD_ARTICU']; ?></td>
+							<td id="codArticu"><?= $v['COD_ARTICU']; ?></td>
 
 							<td style="width: 80px;"><?= $v['DESCRIPCIO']; ?></td>
 
@@ -157,9 +157,9 @@ if (!isset($_SESSION['username'])) {
 
 							<?php if ($_SESSION['tipo'] != 'MAYORISTA') { ?>
 
-								<td id="cant"><?= (int)($v['STOCK_LOCAL']); ?></td>
+								<td id="cantStock">0</td>
 
-								<td id="cant"><?= (int)($v['VENDIDO_LOCAL']); ?></td>
+								<td id="cantVendida">0</td>
 
 							<?php } ?>
 

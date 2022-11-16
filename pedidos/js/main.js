@@ -1,6 +1,28 @@
 $(document).ready(function(){
   $("#aguarde").fadeOut()
+
+  actualizarDatosTabla();
+
 });
+
+const actualizarDatosTabla = () => {
+
+  let datosLocal = localStorage.getItem('datosLocal');
+  datosLocal = JSON.parse(datosLocal);
+
+  let registros = document.querySelectorAll("#trPedido");
+
+  registros.forEach(x=>{
+    datosLocal.forEach(y=>{
+      if(x.querySelector("#codArticu").innerHTML == y.COD_ARTICU){
+        x.querySelector("#cantStock").innerHTML = (y.CANT_STOCK) ? y.CANT_STOCK : 0;
+        x.querySelector("#cantVendida").innerHTML = (y.VENDIDO) ? y.VENDIDO : 0;
+      }
+    })
+  })
+
+
+}
 
 
 function pulsar(e) {

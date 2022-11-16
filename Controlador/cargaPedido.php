@@ -32,36 +32,30 @@ if(!isset($_SESSION['username'])){
 		
 		$datosLocal = $xlLocales->traerDatosArticulos($_SESSION['username']);
 
+		$datosLocal = json_encode($datosLocal);
+
 	} catch (\Throwable $th) {
 
 		die("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$_SESSION['descLocal']."</H2></br></br><H2 ALIGN='CENTER'>Chequee la conexion de internet</H2>");
 		print_r($th);
 	}
 
-	try {
-		
-		$suc = $_SESSION['numsuc'];
+	?>
 
-		foreach($datosLocal as $v){
+	<script>
+		let datosLocal = '<?php echo $datosLocal?>';
 
-			$codArticu 	= $v['COD_ARTICU'];
-			$cantStock 	= $v['CANT_STOCK'];
-			$cantVend  	= $v['VENDIDO'];
+		localStorage.removeItem('datosLocal');
 
-			$xlLocales->insertarPedidos($codArticu,$cantStock,$cantVend,$suc);
+		localStorage.setItem('datosLocal', datosLocal);
 
-			ini_set('max_execution_time', 300);
-	
-		}
-		
+		let server = window.location.href.split('/sistemas')[0];
 
+		window.location.href = server+'/sistemas/index.php';
 
-	} catch (\Throwable $th) {
-		print_r($th);
-		die();
-	}
-	
-	header("Location:../index.php");
+	</script>
+
+	<?php
 
 }
 ?>
