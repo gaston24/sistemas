@@ -2,7 +2,7 @@
 <?php
 
 class Conexion{
-    private $servidor = 'extralarge.dyndns.biz,5020';
+    private $servidor = 'servidor';
     private $database = 'LAKER_SA';
     private $user = 'sa';
     private $pass = 'Axoft1988';
