@@ -81,7 +81,7 @@ if( count($loginRes) == 0 ){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");
-	}elseif($v['NOMBRE']=='COMERCIAL'){
+	}elseif($loginRes['NOMBRE']=='COMERCIAL'){
 		header("Location: ../inicial/admin.php");
 	}elseif($_POST['conecta']=='no' && $_SESSION['numsuc'] > 104){
 		$_SESSION['dsn']= 'SIN';
