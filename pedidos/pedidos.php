@@ -69,7 +69,7 @@ if (!isset($_SESSION['username'])) {
 							<div class="btn-group" role="group" aria-label="Basic example">
 								<button type="button" class="btn btn-secondary" id="btnGrabarPedido">Grabar</button>
 								<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
-								<a id="sinConexion" style="color: red; font-weight: bold; margin-left:5px; margin-top: 5px; display: none">SIN CONEXIÓN</a>
+								<a id="sinConexion" >SIN CONEXIÓN</a>
 							</div>
 						</div>
 						<div>
