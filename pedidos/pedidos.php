@@ -117,6 +117,8 @@ if (!isset($_SESSION['username'])) {
 
 					<?php
 					foreach ($pedidos as $v ) {
+						$imageName = substr($v['COD_ARTICU'], 0, 13);
+						$imageUrl = "../../Imagenes/".$imageName.".jpg";
 					?>
 
 						<?php
@@ -132,14 +134,14 @@ if (!isset($_SESSION['username'])) {
 							?>
 
 							<td>
-								<a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($v['COD_ARTICU'], 0, 13); ?>" href="../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a>
+								<a target="_blank" data-toggle="modal" data-target="#exampleModal<?= $imageName; ?>" href="<?= $imageUrl; ?>"><img src="<?= $imageUrl; ?>" alt="Sin imagen" height="50" width="50"></a>
 							</td>
 
-							<div class="modal fade" id="exampleModal<?= substr($v['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade" id="exampleModal<?= $imageName; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-body" align="center">
-											<img src="../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg" alt="<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg - imagen no encontrada" height="400" width="400">
+											<img src="<?=$imageUrl;?>" alt="<?= $imageName; ?>.jpg - imagen no encontrada" height="400" width="400">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
