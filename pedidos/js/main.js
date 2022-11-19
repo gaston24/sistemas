@@ -12,14 +12,31 @@ const actualizarDatosTabla = () => {
 
   let registros = document.querySelectorAll("#trPedido");
 
-  registros.forEach(x=>{
-    datosLocal.forEach(y=>{
-      if(x.querySelector("#codArticu").innerHTML == y.COD_ARTICU){
-        x.querySelector("#cantStock").innerHTML = (y.CANT_STOCK) ? y.CANT_STOCK : 0;
-        x.querySelector("#cantVendida").innerHTML = (y.VENDIDO) ? y.VENDIDO : 0;
-      }
+  if(datosLocal){
+
+    registros.forEach(x=>{
+      datosLocal.forEach(y=>{
+        if(x.querySelector("#codArticu").innerHTML == y.COD_ARTICU){
+          x.querySelector("#cantStock").innerHTML = (y.CANT_STOCK) ? y.CANT_STOCK : 0;
+          x.querySelector("#cantVendida").innerHTML = (y.VENDIDO) ? y.VENDIDO : 0;
+        }
+      })
     })
-  })
+
+  }else{
+
+    registros.forEach(x=>{
+      console.log(x.querySelector("#cantStock").innerHTML)
+      x.querySelector("#cantStock").style.color="red";
+      x.querySelector("#cantStock").style.fontWeight = "bold";
+      x.querySelector("#cantVendida").style.color="red";
+      x.querySelector("#cantVendida").style.fontWeight = "bold";
+    })
+
+    document.querySelector("#sinConexion").style.display = "block";
+
+  }
+
 
 
 }
