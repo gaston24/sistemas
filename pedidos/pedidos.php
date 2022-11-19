@@ -118,7 +118,7 @@ if (!isset($_SESSION['username'])) {
 					<?php
 					foreach ($pedidos as $v ) {
 						$imageName = substr($v['COD_ARTICU'], 0, 13);
-						$imageUrl = "../../Imagenes/".$imageName.".jpg";
+						$imageUrl = file_exists("../../Imagenes/".$imageName.".jpg") ? "../../Imagenes/".$imageName.".jpg" : "";
 					?>
 
 						<?php
