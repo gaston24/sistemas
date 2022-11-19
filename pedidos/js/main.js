@@ -26,7 +26,6 @@ const actualizarDatosTabla = () => {
   }else{
 
     registros.forEach(x=>{
-      console.log(x.querySelector("#cantStock").innerHTML)
       x.querySelector("#cantStock").style.color="red";
       x.querySelector("#cantStock").style.fontWeight = "bold";
       x.querySelector("#cantVendida").style.color="red";
