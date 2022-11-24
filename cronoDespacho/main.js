@@ -30,8 +30,8 @@ const actualizarDia = (codClient, nameDia) => {
 function updatefechas()
 {
   conexion = new XMLHttpRequest();
-  conexion.onreadystatechange = ejecutarQuery;
   conexion.open("GET", "./Class/actualizar.php?estado=1", true);
+  conexion.onreadystatechange = ejecutarQuery;
   conexion.send();
 }
 
@@ -44,9 +44,9 @@ function ejecutarQuery()
         title: 'Cronograma actualizado exitosamente!',
         showConfirmButton: true,
       })
-        // .then(function () {
-        //     window.location = "index.php";
-        // });
+        .then(function () {
+            window.location.reload();
+        });
     } else {
       console.log('error');
     }

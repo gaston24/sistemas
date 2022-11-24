@@ -104,7 +104,7 @@ if (!isset($_SESSION['username'])) {
 						<?php } ?>
 
 						<th id="distribucion">DIST
-							<span class="d-inline-block" tabindex="0" id="tool" data-toggle="tooltip" title="Articulos en distribucion, pendientes de entrega"></span>
+							<span class="d-inline-block" tabindex="0" id="tool" data-toggle="tooltip" title="Articulos pendientes de remitir y artículos remitidos sin guia"></span>
 						</th>
 
 						<th>PEDIDO</th>

@@ -69,60 +69,54 @@ body
 
 #contCanal
 {
-    position: absolute;
-    margin-left: 5%;
+    position: relative;
+    margin-left: 1rem;
 }
 
 #contCliente
 {
-    position: absolute;
-    margin-left: 17%;
+    position: relative;
+    margin-left: 0.3rem;
 }
 
 #contDate
 {
-    position: absolute;
-    margin-left: 35%;
+    position: relative;
+    margin-left: 1rem;
     margin-top: -0.4%;
 }
 
 #btn_filtro_2
 {
-    position: absolute;
-    margin-left: 56%;
-    margin-top: 1.7%;
+    position: relative;
+    margin-left: 0.4rem;
+    margin-top: 1.6rem;
 }
 
-#busqRapida2
-{
-    margin-top: 0%;
-    margin-left: 30%;
-    width: 25%;
-}
-
-#labelTotal
-{
-    margin-left: 10%;
+#busqRapida2{
+    position: relative;
+    margin-left: 2rem;
 }
 
 .total
 {
-    width: 70%;
-
+    width: 5rem;
 }
 
 #totalPedidos
 {
-    position: absolute;
-    margin-left: 70%;
-    margin-top: -0.2%;
+    position: relative;
+    margin-left: 0.5rem;
 }
 
 #totalArticulos
 {
-    position: absolute;
-    margin-left: 80%;
-    margin-top: -0.2%;
+    position: relative;
+    margin-left: 0.5rem;
+}
+
+#textBox{
+    width: 12rem;
 }
 
 #btn_filtro
@@ -176,7 +170,7 @@ body
 
 #tablePedidos
 {
-    margin-top: 5%;
+    margin-top: 1.5rem;
 }
 
 #alert
@@ -262,16 +256,14 @@ body
 
 #totalPedidos
 {
-    position: absolute;
-    margin-left: 67%;
-    margin-top: -0.5%;
+    position: relative;
+    margin-left: 0.5rem;
 }
 
 #totalArticulos
 {
-    position: absolute;
-    margin-left: 80%;
-    margin-top: -0.5%;
+    position: relative;
+    margin-left: 0.5rem;
 }
 
 #alert

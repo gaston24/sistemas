@@ -11,7 +11,8 @@ if(!isset($_SESSION['username'])){
 		<!doctype html>
 		<html>
 		<head>
-		<title>Carga de Pedidos</title>
+		<title>Carga de Pedidos - General</title>
+		<link rel="stylesheet" href="css/preloader.css">
 		<?php include '../../../css/header.php'; ?>
 		</head>
 		<body>
@@ -86,10 +87,25 @@ if(!isset($_SESSION['username'])){
 		</div>
 
 		
-		
+		<div class="container">
+        <div class="cubo">
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span></span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+          </div>
+          <div>
+            <div class="loading">
+                <h1>Aguarde un momento...</d>
+                <p></p>
+            </div>
+        </div>
+      </div>
 		
 	</body>
-
+	<script src="js/controlCantidad.js"></script>
 	<script src="js/main.js"></script>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

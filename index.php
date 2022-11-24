@@ -1,9 +1,9 @@
-<?php 
+<?php
 
-session_start(); 
-if(!isset($_SESSION['username'])){
+session_start();
+if (!isset($_SESSION['username'])) {
 	header("Location:login.php");
-}else{
+} else {
 
 $permiso 	= $_SESSION['permisos'];
 $codClient 	= $_SESSION['codClient'];
@@ -17,7 +17,7 @@ $habPedidos = $_SESSION['habPedidos'];
 require 'class/fechaEntrega.php';
 
 
-try {
+	try {
 
 	$fechaEntrega 	= new Fecha();
 	$proximaEntrega = $fechaEntrega->traerFechaEntrega($codClient);
@@ -28,8 +28,8 @@ try {
 }
 
 ?>
-<!DOCTYPE HTML>
-<html charset="UTF-8">
+	<!DOCTYPE HTML>
+	<html charset="UTF-8">
 
 <head>
 <title>XL Extralarge - Inicio</title>	
@@ -120,9 +120,69 @@ try {
 	</div>
 	</div>
 
-<?php include_once __DIR__.'\assets\css\fontawesome\js.php';?>
-</body>
+		<?php include_once __DIR__ . '\assets\css\fontawesome\js.php'; ?>
+		<script>
+			/* onclick="location.href='pedidos/pedidos.php?tipo=1'" */
+			window.addEventListener('DOMContentLoaded', traerCantidadPedidos);
+
+
+			document.getElementById('buttonPedidoGeneral').addEventListener('click', () => {
+				if (estado[0] != null && estado[0].CANT_PEDIDOS == 5) {
+					alerta();
+				} else {
+					location.href = 'pedidos/pedidos.php?tipo=1';
+				}
+			})
+
+			document.getElementById('buttonPedidoAccesorios').addEventListener('click', () => {
+				if (estado[1] != null && estado[1].CANT_PEDIDOS == 5) {
+					alerta();
+				} else {
+					location.href = 'pedidos/pedidos.php?tipo=2';
+				}
+			})
+
+			document.getElementById('buttonPedidoOutlet').addEventListener('click', () => {
+				if (estado[2] != null && estado[2].CANT_PEDIDOS == 5) {
+					alerta();
+				} else {
+					location.href = 'pedidos/pedidos.php?tipo=3';
+				}
+			})
+
+
+			function alerta() {
+				Swal.fire({
+					icon: "error",
+					title: "No puede continuar",
+					text: "TIENE REALIZADO 2 PEDIDOS ESTA SEMANA"
+				});
+			}
+
+			var codClient = '<?= $codClient; ?>'
+
+
+			let conexion1;
+
+			/*********************************************************** */
+			let estado;
+
+			function traerCantidadPedidos() {
+
+				conexion1 = new XMLHttpRequest();
+				conexion1.onreadystatechange = () => {
+					if (conexion1.readyState == 4 && conexion1.status == 200) {
+						estado = JSON.parse(conexion1.responseText);
+					}
+				};
+				conexion1.open("GET", "pedidos/Controlador/limitePedidos.php?traerInfo=1&cliente=" + codClient, true);
+				conexion1.send();
+			}
+
+			/******************************************* */
+		</script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	</body>
 <?php
 }
 ?>
-

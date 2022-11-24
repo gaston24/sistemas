@@ -24,7 +24,8 @@ body
 
 th, td
 {
-    font-size: 0.66em;
+    /* font-size: 0.66em; */
+    font-size: 0.9em;
     text-align: center;
 }
 

@@ -64,6 +64,8 @@ if( count($loginRes) == 0 ){
 	}elseif($_SESSION['username']== 'salta'){
 		header("Location: ../salta/eliminaPedidoSalta.php");	
 	}elseif($_SESSION['permisos']== '6'){
+		header("Location: ../conteos/index.php");
+	}elseif($_SESSION['permisos']== '5'){
 		header("Location: ../conteos/index.php");			
 	}elseif($_SESSION['username']== 'estadisticas'){
 		header("Location: ../../estadisticas/index.php");	

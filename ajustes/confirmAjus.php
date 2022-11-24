@@ -166,7 +166,7 @@ for($i=0;$i<count($_POST['ncomp']);$i++){
 					)
 					VALUES
 					(
-					1, 0, 0, 0, 0, '$cant', '$nuevo', (SELECT COD_SUCURS FROM STA22 WHERE INHABILITA = 0 AND DIR_SUCURS != '' AND COD_SUCURS NOT IN ('OU','RV')),'', 1, 
+					1, 0, 0, 0, 0, '$cant', '$nuevo', (SELECT COD_SUCURS FROM STA22 WHERE INHABILITA = 0 AND DIR_SUCURS != '' AND COD_SUCURS NOT IN ('OU','RV') AND ABASTECE != 1),'', 1, 
 					'$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
 					);";
 					//var_dump('$sqlDetEntrada', $sqlDetEntrada);
