@@ -8,7 +8,17 @@ if (!isset($_SESSION['username'])) {
 
 	header("Location:../index.php");
 } else {
+	include_once __DIR__.'/../class/pedido.php';
 
+	// CONSULTAS EL DEPO
+	$_SESSION['depo'] = '01';
+
+	$suc = $_SESSION['numsuc'];
+	$codClient = $_SESSION['username'];
+	$tipo_cli = $_SESSION['tipo'];
+
+	$pedido = new Pedido();
+	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient);
 ?>
 	<!doctype html>
 	<html>
@@ -19,13 +29,7 @@ if (!isset($_SESSION['username'])) {
 		<meta charset="UTF-8">
 		</meta>
 		<link rel="shortcut icon" href="../../css/icono.jpg" />
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<?php include_once __DIR__.'/../ajustes/css/headers/include_pedidos.php' ;?>
 		<link rel="stylesheet" href="style/style.css">
 
 	</head>
@@ -39,10 +43,6 @@ if (!isset($_SESSION['username'])) {
 				</div>
 			</h1>
 		</div>
-
-		<?php
-		include_once('Controlador/checkTipoPedido.php');
-		?>
 
 		<div style="width:98%; height:50%; padding-bottom:1%; padding-top:1%; margin-left:10px" id="pantalla">
 			<div id="menu" class="row mt-3 mb-2" >
@@ -66,20 +66,19 @@ if (!isset($_SESSION['username'])) {
 				<div class="col">
 					<div class="row">
 						<div class="col">
-							<!-- <div class="btn-group" role="group" aria-label="Basic example">
+							<div class="btn-group" role="group" aria-label="Basic example">
 								<button type="button" class="btn btn-secondary" id="btnGrabarPedido">Grabar</button>
 								<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
-							</div> -->
+								<a id="sinConexion" >SIN CONEXIÓN</a>
+							</div>
 						</div>
 						<div>
 							<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
 						</div>
 						<div>
-							<button class="btn btn-primary" id="btnEnviar" onClick="<?php if ($_SESSION['tipo'] == 'MAYORISTA') {
-								echo 'enviarMayorista()';
-							} else {
-								echo 'enviar()';
-							} ?>"><i class="fa fa-cloud-upload"></i> Enviar</button>
+							<button class="btn btn-primary" id="btnEnviar" 
+							onClick="<?= ($_SESSION['tipo'] == 'MAYORISTA') ? 'enviarMayorista()' : 'enviar()';?>">
+							<i class="fa fa-cloud-upload"></i> Enviar</button>
 							
 							<div class="spinner-border" id="spinnerEnviar" role="status" aria-hidden="true" style="display:none"></div>
 						</div>
@@ -117,9 +116,9 @@ if (!isset($_SESSION['username'])) {
 				<tbody id="tabla">
 
 					<?php
-
-					while ($v = odbc_fetch_array($result)) {
-
+					foreach ($pedidos as $v ) {
+						$imageName = substr($v['COD_ARTICU'], 0, 13);
+						$imageUrl = file_exists("../../Imagenes/".$imageName.".jpg") ? "../../Imagenes/".$imageName.".jpg" : "";
 					?>
 
 						<?php
@@ -129,20 +128,20 @@ if (!isset($_SESSION['username'])) {
 							<?php
 						} else {
 							?>
-							<tr>
+							<tr id="trPedido">
 							<?php
 						}
 							?>
 
 							<td>
-								<a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($v['COD_ARTICU'], 0, 13); ?>" href="../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a>
+								<a target="_blank" data-toggle="modal" data-target="#exampleModal<?= $imageName; ?>" href="<?= $imageUrl; ?>"><img src="<?= $imageUrl; ?>" alt="Sin imagen" height="50" width="50"></a>
 							</td>
 
-							<div class="modal fade" id="exampleModal<?= substr($v['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade" id="exampleModal<?= $imageName; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-body" align="center">
-											<img src="../../Imagenes/<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg" alt="<?= substr($v['COD_ARTICU'], 0, 13); ?>.jpg - imagen no encontrada" height="400" width="400">
+											<img src="<?=$imageUrl;?>" alt="<?= $imageName; ?>.jpg - imagen no encontrada" height="400" width="400">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -151,7 +150,7 @@ if (!isset($_SESSION['username'])) {
 								</div>
 							</div>
 
-							<td><?= $v['COD_ARTICU']; ?></td>
+							<td id="codArticu"><?= $v['COD_ARTICU']; ?></td>
 
 							<td style="width: 80px;"><?= $v['DESCRIPCIO']; ?></td>
 
@@ -161,9 +160,9 @@ if (!isset($_SESSION['username'])) {
 
 							<?php if ($_SESSION['tipo'] != 'MAYORISTA') { ?>
 
-								<td id="cant"><?= (int)($v['STOCK_LOCAL']); ?></td>
+								<td id="cantStock">0</td>
 
-								<td id="cant"><?= (int)($v['VENDIDO_LOCAL']); ?></td>
+								<td id="cantVendida">0</td>
 
 							<?php } ?>
 
@@ -219,13 +218,12 @@ if (!isset($_SESSION['username'])) {
 	?>
 
 	<script>
-		var suc = '<?= $suc; ?>'
-		var codClient = '<?= $codClient; ?>'
-		var t_ped = '<?= $t_ped; ?>'
-		var depo = '<?= $depo; ?>'
-		var talon_ped = '<?= $talon_ped; ?>'
-
-		var cupo_credito = '<?= (int)$_SESSION['cupoCredi'];  ?>'
+		let suc = '<?= $suc; ?>'
+		let codClient = '<?= $codClient; ?>'
+		let t_ped = '<?= $t_ped; ?>'
+		let depo = '<?= $depo; ?>'
+		let talon_ped = '<?= $talon_ped; ?>'
+		let cupo_credito = '<?= (int)$_SESSION['cupoCredi'];  ?>'
 	</script>
 
 	<script src="js/main.js"></script>

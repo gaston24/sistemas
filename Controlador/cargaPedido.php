@@ -25,77 +25,38 @@ if(!isset($_SESSION['username'])){
 		
 <?php
 
-	if($_SESSION['nuevoPedido']==1 && $_SESSION['cargaPedido']==1){
+	require_once __DIR__."/../class/extralarge.php";
+	$xlLocales = new Extralarge;
 
-	$dsn = $_SESSION['dsn'];
-	$suc = $_SESSION['numsuc'];
-	$local = $_SESSION['descLocal'];
-	$user = 'sa';
-	$pass = 'Axoft1988';
-	
-	
-	$sql1 = "
-	SET DATEFORMAT YMD
-	SELECT COD_ARTICU, CANT_STOCK, CASE WHEN VENDIDO IS NULL THEN 0 ELSE VENDIDO END VENDIDO  FROM
-	(
-	SELECT A.COD_ARTICU, A.CANT_STOCK, B.VENDIDO FROM STA19 A
-	LEFT JOIN 
-	(
-	SELECT COD_ARTICU, SUM(CASE T_COMP WHEN 'NCR' THEN CANTIDAD*-1 ELSE CANTIDAD END)VENDIDO FROM GVA53 WHERE FECHA_MOV > (GETDATE()-30) GROUP BY COD_ARTICU
-	)B
-	ON A.COD_ARTICU = B.COD_ARTICU
-	WHERE A.COD_ARTICU IN 
-	(
-		SELECT DISTINCT(COD_ARTICU) FROM GVA53 WHERE FECHA_MOV > (GETDATE()-180)
-		UNION 
-		SELECT COD_ARTICU FROM ( SELECT A.COD_ARTICU, A.CANT_STOCK, B.VENDIDO FROM STA19 A
-		LEFT JOIN (SELECT COD_ARTICU, SUM(CASE T_COMP WHEN 'NCR' THEN CANTIDAD*-1 ELSE CANTIDAD END)VENDIDO FROM GVA53 WHERE FECHA_MOV > (GETDATE()-30) GROUP BY COD_ARTICU)B
-		ON A.COD_ARTICU = B.COD_ARTICU WHERE COD_DEPOSI LIKE '[0-9]%' )A WHERE CANT_STOCK > 0 AND VENDIDO IS NULL 
-	)
-
-	AND COD_DEPOSI LIKE '[0-9]%'
+	try {
 		
-	GROUP BY A.COD_ARTICU, A.CANT_STOCK, B.VENDIDO
-	)A
-	";
+		$datosLocal = $xlLocales->traerDatosArticulos($_SESSION['username']);
 
-	$cid = @odbc_connect($dsn, $user, $pass)or die(exit("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$local."</H2></br></br><H2 ALIGN='CENTER'>Chequee la conexion de internet</H2>"));
+		$datosLocal = json_encode($datosLocal);
 
-	ini_set('max_execution_time', 300);
-	$result1 = odbc_exec($cid, $sql1)or die(exit("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$local."</H2></br></br><H2 ALIGN='CENTER'>Chequee la conexion de internet</H2>"));
+	} catch (\Throwable $th) {
 
-	while($v=odbc_fetch_array($result1)){
-	//echo 'Codigo: '.$v['COD_ARTICU'].' - Stock:'.$v['CANT_STOCK'].'</br>';
-		$dsn_cen = '1 - CENTRAL';
-		$user_cen = 'Axoft';
-		$pass_cen = 'Axoft';
-
-		$codArticu = $v['COD_ARTICU'];
-		$cantStock = $v['CANT_STOCK'];
-		$cantVend  = $v['VENDIDO'];
-
-		$sql2=
-		"
-		INSERT INTO SOF_PEDIDOS_CARGA (NUM_SUC, COD_ARTICU, CANT_STOCK, VENDIDO) VALUES ($suc, '$codArticu', $cantStock, $cantVend);
-		"
-		;
-		
-		$cid2 = odbc_connect($dsn_cen, $user_cen, $pass_cen);
-		
-		ini_set('max_execution_time', 300);
-		odbc_exec($cid2, $sql2)or die(exit("Error en odbc_exec"));
-
+		die("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$_SESSION['descLocal']."</H2></br></br><H2 ALIGN='CENTER'>Chequee la conexion de internet</H2>");
+		print_r($th);
 	}
-	
-	$_SESSION['nuevoPedido']=0;
-	
-	header("Location:../index.php");
-	
-	}
-	
-	else{
-		header("Location:../login.php");
-	}
+
+	?>
+
+	<script>
+		let datosLocal = '<?php echo $datosLocal?>';
+
+		localStorage.removeItem('datosLocal');
+
+		localStorage.setItem('datosLocal', datosLocal);
+
+		let server = window.location.href.split('/sistemas')[0];
+
+		window.location.href = server+'/sistemas/index.php';
+
+	</script>
+
+	<?php
+
 }
 ?>
 

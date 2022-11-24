@@ -21,41 +21,12 @@ $permiso = $_SESSION['permisos'];
 <body>	
 
 <?php
+require_once __DIR__.'/../class/pedido.php';
 
-	
-$dsn = "1 - CENTRAL";
-
-
-
-$dsn = "1 - CENTRAL";
-$usuario = "sa";
-$clave="Axoft1988";
+$pedido = new Pedido();
 $suc = $_SESSION['numsuc'];
 $codClient = $_SESSION['codClient'];
-
-$cid=odbc_connect($dsn, $usuario, $clave);
-
-
-
-
-
-$sql=
-	"
-	SET DATEFORMAT YMD
-
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.NRO_PEDIDO, LEYENDA_1, B.CANT FROM GVA21 A
-	INNER JOIN
-	(
-	SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 WHERE TALON_PED IN (96, 97) GROUP BY NRO_PEDIDO
-	)B
-	ON A.NRO_PEDIDO = B.NRO_PEDIDO
-	WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-60) AND A.TALON_PED IN (96, 97)
-	ORDER BY 1 desc, 2 desc
-
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$pedidos = $pedido->traerHistorial($codClient);
 
 ?>
 <a href="../index.php"><img src="imagenes/botonAtras.png"></a>
@@ -82,20 +53,20 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         <?php
 
        
-		while($v=odbc_fetch_array($result)){
-
+		foreach ($pedidos as $v) {
+			$fecha = $v['FECHA']->format('d/m/Y'); 
         ?>
 
 		
         <tr >
 		
-                <td class="col-"><?php echo $v['FECHA'] ;?></td>
+                <td class="col-"><?= $fecha ;?></td>
 				
-				<td class="col-"><a href="detallePed.php?pedido=<?php echo $v['NRO_PEDIDO'] ;?>&suc=<?php echo $codClient ;?>&tipo=<?php echo $v['LEYENDA_1'] ;?>"><?php echo $v['NRO_PEDIDO'] ;?></a></td>
+				<td class="col-"><a href="detallePed.php?pedido=<?= $v['NRO_PEDIDO'] ;?>&suc=<?= $codClient ;?>&tipo=<?= $v['LEYENDA_1'] ;?>"><?= $v['NRO_PEDIDO'] ;?></a></td>
 				
-				<td class="col-"><?php echo $v['LEYENDA_1'] ;?></td>
+				<td class="col-"><?= $v['LEYENDA_1'] ;?></td>
 
-				<td class="col-" align="center"><?php echo (int)($v['CANT']) ;?></td>
+				<td class="col-" align="center"><?= (int)($v['CANT']) ;?></td>
 				
 				<!--<td class="col-"><?php //echo $v['FECHA_GUIA'] ;?></td>-->
 

@@ -18,41 +18,20 @@ $permiso = $_SESSION['permisos'];
 <body>	
 
 <?php
-	
-$dsn = "1 - CENTRAL";
-$usuario = "sa";
-$clave="Axoft1988";
-
+require_once __DIR__.'/../class/pedido.php';
 $suc = $_GET['suc'];
-$pedido = $_GET['pedido'];
+$nroPedido = $_GET['pedido'];
 $tipo = $_GET['tipo'];
 
-$cid=odbc_connect($dsn, $usuario, $clave);
-
-
-
-$sql=
-	"
-	SET DATEFORMAT YMD
-
-	SELECT CAST(A.FECHA_PEDI AS DATE)FECHA, B.COD_ARTICU, C.DESCRIPCIO, CAST(B.CANT_PEDID AS FLOAT) CANT FROM GVA03 B
-	INNER JOIN GVA21 A
-	ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
-	INNER JOIN STA11 C
-	ON B.COD_ARTICU = C.COD_ARTICU
-	WHERE A.TALON_PED IN (96, 97) AND A.NRO_PEDIDO = '$pedido'
-	AND A.COD_CLIENT = '$suc'
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$pedido = new Pedido();
+$pedidos = $pedido->traerDetallePedido($nroPedido, $suc);
 
 ?>
 
 <div class="container">
 	<div class="row mb-2">
 		<div class="col-2"><a href="historial.php"><img src="imagenes/botonAtras.png"></a> </div>
-		<div class="col-10"><?php echo '<h3>Pedido: '.$pedido.' - '.$tipo.'</h3>' ?></div>
+		<div class="col-10"><?= '<h3>Pedido: '.$nroPedido.' - '.$tipo.'</h3>' ?></div>
 	</div>
 	
 	
@@ -71,14 +50,16 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 <tbody>
 		
         <?php
-			while($v=odbc_fetch_array($result)){
+		foreach ($pedidos as $v) {
+			$fecha = $v['FECHA']->format('d/m/Y'); 
+
 		?>
 	
         <tr style="font-size:smaller; height: 5px">
-			<td style="height: 5px"><?php echo $v['FECHA'] ;?></a></td>
-			<td style="height: 5px"><?php echo $v['COD_ARTICU'] ;?></a></td>
-			<td style="height: 5px"><?php echo $v['DESCRIPCIO'] ;?></a></td>
-			<td style="height: 5px"><?php echo (int) ($v['CANT']) ;?></a></td>
+			<td style="height: 5px"><?= $fecha ;?></a></td>
+			<td style="height: 5px"><?= $v['COD_ARTICU'] ;?></a></td>
+			<td style="height: 5px"><?= $v['DESCRIPCIO'] ;?></a></td>
+			<td style="height: 5px"><?= (int) ($v['CANT']) ;?></a></td>
         </tr>
 		
         <?php

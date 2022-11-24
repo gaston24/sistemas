@@ -1,62 +1,55 @@
 <?php
 session_start();
-
-$dsn = '1 - CENTRAL';
-$nom = 'sa';
-$con = 'Axoft1988';
+require_once __DIR__.'/../Class/extralarge.php';
 
 $user = $_POST['user'];
 $pass = $_POST['pass'];
 
-$sql = 
-"
-EXEC SJ_APP_LOGIN '$user', '$pass'
-";
-
-$cid = odbc_connect($dsn, $nom, $con);
-
-$result = odbc_exec($cid, $sql);
+$login = new Extralarge();
+$loginRes = $login->login($user, $pass);
 
 
-if(odbc_num_rows($result)==0){
-header('Location:../login.php');
+if( count($loginRes) == 0 ){
+
+	header('Location:../login.php');
+
 }else{
-	
 
-while($v=odbc_fetch_array($result)){
-
-	$_SESSION['username'] = $v['NOMBRE'];
-	$_SESSION['permisos'] = $v['PERMISOS'];
-	$_SESSION['dsn'] = $v['DSN'];
-	$_SESSION['numsuc'] = $v['NRO_SUCURS'];
-	$_SESSION['codClient'] = $v['COD_CLIENT'];
-	$_SESSION['descLocal'] = $v['DESCRIPCION'];
+	$_SESSION['username'] = $loginRes['NOMBRE'];
+	$_SESSION['permisos'] = $loginRes['PERMISOS'];
+	$_SESSION['dsn'] = $loginRes['DSN'];
+	$_SESSION['numsuc'] = $loginRes['NRO_SUCURS'];
+	$_SESSION['codClient'] = $loginRes['COD_CLIENT'];
+	$_SESSION['descLocal'] = $loginRes['DESCRIPCION'];
+	$_SESSION['conexion_dns'] = $loginRes['CONEXION_DNS'];
+	$_SESSION['base_nombre'] = $loginRes['BASE_NOMBRE'];
 	$_SESSION['nuevoPedido'] = 1;
 	$_SESSION['cargaPedido'] = 1;
 	$_SESSION['ajuste'] = 1;
-	$_SESSION['vendedor'] = $v['COD_VENDED'];
+	$_SESSION['vendedor'] = $loginRes['COD_VENDED'];
 	$_SESSION['conteo'] = 0;
-	$_SESSION['dashboard'] = $v['URL_DASHBOARD'];
-	$_SESSION['deposi'] = $v['COD_DEPOSI'];
-	$_SESSION['tipo'] = $v['TIPO'];
-	$_SESSION['habPedidos'] = $v['EXCLUYE_PEDIDOS'];
-	$_SESSION['esOutlet'] = $v['IS_OUTLET'];
+	$_SESSION['dashboard'] = $loginRes['URL_DASHBOARD'];
+	$_SESSION['deposi'] = $loginRes['COD_DEPOSI'];
+	$_SESSION['tipo'] = $loginRes['TIPO'];
+	$_SESSION['habPedidos'] = $loginRes['EXCLUYE_PEDIDOS'];
+	$_SESSION['esOutlet'] = $loginRes['IS_OUTLET'];
 	
 	// datos de credito del cliente
 	// cupoCredi es lo real disponible para pedidos
-	$_SESSION['cupoCredi'] = $v['CUPO_CREDI'];
+	$_SESSION['cupoCredi'] = $loginRes['CUPO_CREDI'];
 	// cupo de credito dispuesto por la empresa
-	$_SESSION['cupoCrediCliente'] = $v['CUPO_CREDITO_CLIENTE'];
+	$_SESSION['cupoCrediCliente'] = $loginRes['CUPO_CREDITO_CLIENTE'];
 	// esto es al pedo
-	$_SESSION['totalDisponible'] = $v['TOTAL_DISPONIBLE'];
+	$_SESSION['totalDisponible'] = isset($loginRes['TOTAL_DISPONIBLE']) ? $loginRes['TOTAL_DISPONIBLE'] : 0;
 	// pedidos abiertos
-	$_SESSION['pedidos'] = $v['PEDIDOS'];
+	$_SESSION['pedidos'] = $loginRes['PEDIDOS'];
 	// total de deuda
-	$_SESSION['totalDeuda'] = $v['TOTAL_DEUDA'];
+	$_SESSION['totalDeuda'] = $loginRes['TOTAL_DEUDA'];
+
 
 
 	
-	if($v['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
+	if($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../mayoristas/index.php");
@@ -90,22 +83,18 @@ while($v=odbc_fetch_array($result)){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");
-	}elseif($v['NOMBRE']=='COMERCIAL'){
+	}elseif($loginRes['NOMBRE']=='COMERCIAL'){
 		header("Location: ../inicial/admin.php");
 	}elseif($_POST['conecta']=='no' && $_SESSION['numsuc'] > 104){
 		$_SESSION['dsn']= 'SIN';
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../index.php");		
-	}else{
-		
+	}elseif( in_array($_SESSION['tipo'], ['LOCAL_PROPIO', 'FRANQUICIA']) ){
 		header("Location: eliminaPedido.php");
+	}else{
+		header('Location:../login.php');
 	}
-
-
-	
-}
-	
 	
 }
 

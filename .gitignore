@@ -2,3 +2,5 @@
 #Ignorar los archivos de procedimientos 
 
 procedimientos/archivos
+.env
+test.php
