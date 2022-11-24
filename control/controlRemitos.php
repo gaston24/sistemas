@@ -8,12 +8,10 @@ if (!isset($_SESSION['username'])) {
 	$user = $_SESSION['codClient'];
 	$rem = $_SESSION['rem'];
 
-	require_once 'class/control.php';
+	require_once __DIR__.'/../class/remito.php';
 
-	$control = new Remito();
-
-	$verificacion = $control->verificacion($user);
-
+	$remito = new Remito();
+	$verificacion = $remito->verificacion($user);
 
 ?>
 	<!DOCTYPE HTML>
@@ -26,8 +24,8 @@ if (!isset($_SESSION['username'])) {
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Font Awesome -->
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/style.css">
-		<?php include '../../css/header_simple.php'; ?>
+		<!-- <link rel="stylesheet" href="css/style.css"> -->
+		<?php require_once __DIR__.'/../assets/css/header.php';?>
 
 	</head>
 
@@ -39,101 +37,57 @@ if (!isset($_SESSION['username'])) {
 			<h6 align="center">Remito: <a class="text-secondary"><?= $rem ?></a> 
 				<a>Ultimo escaneado:</a>
 				<a class="text-secondary">
-					<?php 
-						if (isset($_POST['codigo'])) {
-							echo $_POST['codigo'];
-						} 
-					?>
+					<a id="lastCodigoControlado"></a>
 				</a>
 			</h6>
 		</div>
 
-		<form action="" style="margin-top:0.5rem" align="center" method="POST">
+		<form id="formControlRemito">
 			<div class="col- row" style="display: flex; justify-content: center;">
-				<!-- <label>Escaneo</label> -->
-				<input class="form-control form-control-sm ml-2" type="text" name="codigo" placeholder="Ingrese codigo..." style="width:200px;" autofocus></input>
+				<input class="form-control form-control-sm ml-2" type="text" name="codigo" id="codigoName" placeholder="Ingrese codigo..." style="width:200px;" autofocus></input>
 				<input type="submit" value="Ingresar" class="btn btn-primary ml-2" style="margin-top: -5px;">
 			</div>
 		</form>
 
 		<?php
 
-		if (isset($_POST['codigo']) || $verificacion != 0) {
+			// 	$wrongCode = '';
+			// 	$wrongCode = $control->wrongCode($codigo);
+			// 	echo $wrongCode;
 
-			$user_local = $_SESSION['usuario'];
+		?>
+	<div class="container table-responsive" id="bodyControl" style="display: none;">
+		<table class="table table-striped mt-2" id="tablaControl" >
+			<thead class="thead-dark">
+				<tr>
+					<td class="col-" style="width:3.5em">CODIGO</td>
+					<td class="col-" style="width:15em; padding-left:0; padding-right:0;">DESCRIPCION</td>
+					<td class="col-" style="width:2em">CANTIDAD</td>	
+					<td class="col-" style="width:5em"></td>
+				</tr>
+			</thead>
+			<tbody id="table">
 
-			if (isset($_POST['codigo'])) {
+			</tbody>
 
-				$codigo = str_replace("'", "-", $_POST['codigo']);
-				$codigo = str_replace(" ", "", $_POST['codigo']);
-				$codigo = strtoupper($codigo);
+		</table>
+		
+		<div class="col- text-center bg-white">
+			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
+			<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Total articulos:</strong></a> <a id="totalArt"></a>
+			<button class="btn btn-success mt-2" id="btnProcesar">Procesar</button>
+		</div>
 
+	</div>
 
-				$existe = $control->buscarSinonimo($codigo);
-				
-
-				if(count($existe) != 0){
-					$control->insertarControlLocal($user, $rem, $codigo, $user_local);
-				}
-
-				$wrongCode = '';
-				$wrongCode = $control->wrongCode($codigo);
-				echo $wrongCode;
-
-			$codigosControlados = $control->traerControladoTemporal($user);
-
-			?>
-			<div class="container table-responsive">
-				<table class="table table-striped mt-2" id="tablaControl">
-					<thead class="thead-dark">
-						<tr>
-							<td class="col-" style="width:3.5em">CODIGO</td>
-							<td class="col-" style="width:15em; padding-left:0; padding-right:0;">DESCRIPCION</td>
-							<td class="col-" style="width:2em">CANTIDAD</td>	
-							<td class="col-" style="width:5em"></td>
-						</tr>
-					</thead>
-					<tbody id="table">
-					<?php
-					$total = 0;
-					foreach ($codigosControlados as $key => $value) {
-						?>
+	<script src="js/main.js"></script>
 	
-							<tr class="fila-base">
-								<td class="col-" style="width:6em"><?=$value[0]->COD_ARTICU; ?></td>
-								<td class="col-" style="width:5em"><?=$value[0]->DESCRIPCIO; ?></td>
-								<td class="col-" style="width:3em" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
-								<td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" style="cursor: pointer;" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
-							</tr>
+	</body>
+	
+	</html>
 
-						<?php
-							$total += $value[0]->CANT_CONTROL;
-					}
-					?>
-					</tbody>
+<?php
 
-				</table>
-			</div>
-
-			<div class="col- text-center bg-white">
-					<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
-					
-					<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Total articulos:</strong> <?= $total; ?></a>
-					<button onClick="window.location.href= 'controlador/procesar.php'" class="btn btn-success mt-2">Procesar</button>
-			</div>
-
-			<?php
-		}
-	}
 }
-	?>
-	<script>
-		let user = '<?=$user?>'
-	</script>
 
-	<script src="js/axios.js"></script>
-	<script src="js/historial.js"></script>
-
-</body>
-
-</html>
+?>

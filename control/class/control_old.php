@@ -147,7 +147,7 @@ class Remito
         $sql=
         "
         SET DATEFORMAT YMD
-	    SELECT COD_ARTICU FROM STA11 WHERE (COD_ARTICU = '$codigo' OR SINONIMO = '$codigo') AND USA_ESC = 'S'
+	    SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU = '$codigo' OR SINONIMO = '$codigo'
         ";
 
         $array = $this->getDatos($sql);    
@@ -174,9 +174,7 @@ class Remito
         $sqlValida =
             "
             SET DATEFORMAT YMD
-            SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU LIKE '$codigo' AND USA_ESC = 'S'
-            UNION ALL
-            SELECT COD_ARTICU FROM STA11 WHERE SINONIMO LIKE '$codigo' AND USA_ESC = 'S'
+            SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU = '$codigo'
             ";
 
         ini_set('max_execution_time', 300);
@@ -187,7 +185,7 @@ class Remito
             <audio src="Wrong.ogg" autoplay></audio>
             </br></br>
             <div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">
-            ATENCION!! El codigo <strong>' . strtoupper($codigo) . '</strong> no es valido
+            ATENCION!! El codigo <strong>' . strtoupper($codigo) . '</strong> no existe
             </div>';
         }else{
             return '';
@@ -207,13 +205,8 @@ class Remito
 					WHERE COD_CLIENT = '$user'
 					GROUP BY COD_ARTICU
 				)A
-				INNER JOIN
-                (
-                    SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE '[XO]%' AND USA_ESC = 'S' AND PERFIL != 'N'
-                       UNION ALL
-                    SELECT SINONIMO COLLATE Latin1_General_BIN, DESCRIPCIO FROM STA11 WHERE SINONIMO != '' AND USA_ESC = 'S' AND SINONIMO LIKE '[XO]%'
-                ) B
-                ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
+				INNER JOIN STA11 B
+				ON A.COD_ARTICU COLLATE Latin1_General_BIN= B.COD_ARTICU COLLATE Latin1_General_BIN
             ";
         $array = $this->getDatos($sql);    
 

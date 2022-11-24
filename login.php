@@ -75,8 +75,6 @@ if(isset($_SESSION['username'])){
 	
 </body>
 
-<script src="Controlador/validar_usuario.js"></script>
-
 <script>
 
 window.onload = function(){$("#showPassword").hide();}

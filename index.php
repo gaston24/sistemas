@@ -161,22 +161,16 @@ require 'class/fechaEntrega.php';
 
 			var codClient = '<?= $codClient; ?>'
 
-
-			let conexion1;
-
 			/*********************************************************** */
-			let estado;
 
 			function traerCantidadPedidos() {
 
-				conexion1 = new XMLHttpRequest();
-				conexion1.onreadystatechange = () => {
-					if (conexion1.readyState == 4 && conexion1.status == 200) {
-						estado = JSON.parse(conexion1.responseText);
-					}
-				};
-				conexion1.open("GET", "pedidos/Controlador/limitePedidos.php?traerInfo=1&cliente=" + codClient, true);
-				conexion1.send();
+				let estado;
+				
+				fetch("pedidos/Controlador/limitePedidos.php?traerInfo=1&cliente=" + codClient)
+				.then(x=>{
+					console.log('x', x)
+				})
 			}
 
 			/******************************************* */
