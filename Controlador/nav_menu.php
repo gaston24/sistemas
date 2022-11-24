@@ -21,9 +21,9 @@ include('estado_cuenta.php');
                     ?>
 
                         <!-- GENERALES -->
-                        <a class="dropdown-item" href="#" id="buttonPedidoGeneral">Generales</a>
+                        <a class="dropdown-item" href="#" onClick="nuevoPedido('PEDIDO GENERAL', 1)" id="buttonPedidoGeneral">Generales</a>
                         <!-- ACCESORIOS -->
-                        <a class="dropdown-item" href="#" id="buttonPedidoAccesorios">Accesorios</a>
+                        <a class="dropdown-item" href="#" onClick="nuevoPedido('PEDIDO ACCESORIOS', 2)" id="buttonPedidoAccesorios">Accesorios</a>
 
 
                     <?php
@@ -33,13 +33,10 @@ include('estado_cuenta.php');
                     if ($_SESSION['esOutlet'] == 1) {
                     ?>
                         <!-- OUTLET -->
-                        <a class="dropdown-item" href="#" id="buttonPedidoOutlet">Outlet</a>
+                        <a class="dropdown-item" href="#" onClick="nuevoPedido('PEDIDO OUTLET', 3)" id="buttonPedidoOutlet">Outlet</a>
                     <?php
-                    } else {
-                    ?>
-                        <a class="dropdown-item" href="#" id="buttonPedidoOutlet" disabled hidden>Outlet</a>
-                    <?php
-                    }
+                    } 
+
                     if ($deposi != '00') {
                     ?>
                         <!-- DESABASTECIMIENTO -->

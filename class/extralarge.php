@@ -187,4 +187,46 @@ class Extralarge {
 
     }
 
+    public function limitePedidos($cliente){
+
+        $cid = $this->conn->conectar('central');
+
+        $tiposPedidos = ['PEDIDO GENERAL', 'PEDIDO ACCESORIOS', 'PEDIDO OUTLET'];
+
+        $sql = "SELECT LEYENDA_1 AS TIPO, COD_CLIENT, COUNT(NRO_PEDIDO) CANT_PEDIDOS 
+        FROM GVA21
+        WHERE COD_CLIENT = 'GTSHSO' 
+        AND FECHA_PEDI BETWEEN DATEADD(wk,DATEDIFF(wk,0,GETDATE()),0) AND DATEADD(wk,DATEDIFF(wk,0,GETDATE()),6) 
+        AND TALON_PED = '97' 
+        AND LEYENDA_1 IN ('PEDIDO GENERAL', 'PEDIDO ACCESORIOS', 'PEDIDO OUTLET')
+        GROUP BY COD_CLIENT, LEYENDA_1 ;";
+
+        $stmt = sqlsrv_query($cid, $sql);
+
+        $v = [];
+
+        try {
+
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            sqlsrv_close($cid);
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+        sqlsrv_close($cid);
+
+        return $result;
+
+    }
+
 }

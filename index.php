@@ -122,34 +122,30 @@ require 'class/fechaEntrega.php';
 
 		<?php include_once __DIR__ . '\assets\css\fontawesome\js.php'; ?>
 		<script>
-			/* onclick="location.href='pedidos/pedidos.php?tipo=1'" */
-			window.addEventListener('DOMContentLoaded', traerCantidadPedidos);
+			
+			let codClient = '<?= $codClient; ?>'
+			let estado = [];
 
+			let consultado = null;
+			
+			traerCantidadPedidos(codClient);
 
-			document.getElementById('buttonPedidoGeneral').addEventListener('click', () => {
-				if (estado[0] != null && estado[0].CANT_PEDIDOS == 5) {
+			const nuevoPedido = (tipo, idTipo) => {
+
+				consultado = buscarTipo(estado, tipo);
+
+				if (consultado.CANT_PEDIDOS >= 5) {
 					alerta();
 				} else {
-					location.href = 'pedidos/pedidos.php?tipo=1';
+					location.href = 'pedidos/pedidos.php?tipo='+idTipo;
 				}
-			})
+			}
 
-			document.getElementById('buttonPedidoAccesorios').addEventListener('click', () => {
-				if (estado[1] != null && estado[1].CANT_PEDIDOS == 5) {
-					alerta();
-				} else {
-					location.href = 'pedidos/pedidos.php?tipo=2';
-				}
-			})
-
-			document.getElementById('buttonPedidoOutlet').addEventListener('click', () => {
-				if (estado[2] != null && estado[2].CANT_PEDIDOS == 5) {
-					alerta();
-				} else {
-					location.href = 'pedidos/pedidos.php?tipo=3';
-				}
-			})
-
+			const buscarTipo = (x, tipo) => {
+				return estado.filter(x=>{ 
+					return x.TIPO == tipo
+				})
+			}
 
 			function alerta() {
 				Swal.fire({
@@ -159,18 +155,16 @@ require 'class/fechaEntrega.php';
 				});
 			}
 
-			var codClient = '<?= $codClient; ?>'
 
 			/*********************************************************** */
 
-			function traerCantidadPedidos() {
+			function traerCantidadPedidos(codClient) {
 
-				let estado;
+				let server = window.location.href.split('/sistemas')[0];
 				
-				fetch("pedidos/Controlador/limitePedidos.php?traerInfo=1&cliente=" + codClient)
-				.then(x=>{
-					console.log('x', x)
-				})
+				fetch(server+"/sistemas/Controlador/extralargeController.php?action=limitePedidos&codClient=" + codClient)
+					.then((response) => response.json())
+  					.then((data) => { estado = data; } );
 			}
 
 			/******************************************* */
