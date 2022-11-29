@@ -383,6 +383,63 @@ class Remito {
             return ("Error en sqlsrv_exec");
         };
     }
+
+    // CONTROL REMITOS
+
+    public function marcarRemitoRegistrado($rem){
+
+        $cid = $this->conn->conectar('local');
+        
+
+        $sql = "UPDATE CTA115 SET TALONARIO = 1 WHERE N_COMP = '$rem'";
+
+        try {
+
+            $stmt = sqlsrv_prepare($cid, $sql);
+            $stmt = sqlsrv_execute($stmt);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+    
+            
+    }
+
+    public function traerTodosLosArticulosRemito($rem){
+
+        $cid = $this->conn->conectar('local');
+        
+
+        $sql = "select b.COD_ARTICU, cast(b.CANTIDAD as int) CANTIDAD  from cta115 a
+        inner join cta116 b on a.NCOMP_IN_S = b.NCOMP_IN_S and a.TCOMP_IN_S = b.TCOMP_IN_S
+        where a.n_comp = '$rem'";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    
+                $v[] = $row;
+
+            }
+
+            sqlsrv_close($cid);
+    
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+    
+            
+    }
 }
 
 

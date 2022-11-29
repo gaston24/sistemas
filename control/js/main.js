@@ -171,7 +171,30 @@ btnProcesar.addEventListener("click", ()=>{
     })
 
 
-    console.log("aprete", controlados)
-
+    procesarRemito(controlados, remito, codClient);
 
 })
+
+
+const procesarRemito = (articulosControlados, remito, codClient) => {
+
+    let server = window.location.href.split('/sistemas')[0];
+
+    fetch(server+'/sistemas/control/controlador/procesar.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({data: articulosControlados}) 
+      })
+        .then((response) => response.json())
+        .then((data) => { 
+            if(data == 1){
+                window.location.href= 'controlDetalle.php?rem='+remito+'&codClient='+codClient
+            }else{
+                console.log("HA OCURRIDO UN ERROR EN EL SERVER")
+            }
+         } );
+
+}

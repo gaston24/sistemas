@@ -81,6 +81,10 @@ if (!isset($_SESSION['username'])) {
 	</div>
 
 	<script src="js/main.js"></script>
+	<script>
+		let remito = '<?= $rem ?>';
+		let codClient = '<?= $user ?>';
+	</script>
 	
 	</body>
 	

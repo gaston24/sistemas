@@ -35,6 +35,9 @@ if( count($result) > 0 ){
 	}
 
 	$_SESSION['nro_sucurs'] = $result[0]['NRO_SUCURS'];
+	$_SESSION['suc_orig'] = $result[0]['SUC_ORIG'];
+	$_SESSION['suc_destin'] = $result[0]['SUC_DESTIN'];
+	$_SESSION['fecha_mov'] = $result[0]['FECHA_MOV'];
 
 
 	// BORRAR TABLAS
