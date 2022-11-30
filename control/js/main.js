@@ -25,7 +25,9 @@ form.addEventListener("submit", (e)=>{
         document.querySelector("#codigoName").focus();
 
     }else{
-        alert('Codigo incorrecto!');
+        document.querySelector("audio").play();
+        
+        alert('El codigo no existe!');
 
         e.target.querySelector("#codigoName").value = '';
 
