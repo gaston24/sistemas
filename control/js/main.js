@@ -24,6 +24,12 @@ form.addEventListener("submit", (e)=>{
 
         document.querySelector("#codigoName").focus();
 
+    }else{
+        alert('Codigo incorrecto!');
+
+        e.target.querySelector("#codigoName").value = '';
+
+        document.querySelector("#codigoName").focus();
     }
 
 })
@@ -56,15 +62,27 @@ const verificarCodigo = (codigo) =>{
 
     maestroArt = JSON.parse(maestroArt);
 
+    let flag = false;
+
     maestroArt.forEach((x)=>{
         if(x.COD_ARTICU == codigo || x.SINONIMO == codigo){
+
+            flag = true;
+
             addArticulo(x)
             
             updateUltimoCodigo(x.COD_ARTICU);
 
             ultimosChequeados(x.COD_ARTICU)
         }
+
     })
+
+            
+    if(!flag){
+        document.querySelector("audio").play();
+        alert('El codigo no existe!');
+    }
 }
 
 const checkVisibility = ()=>{

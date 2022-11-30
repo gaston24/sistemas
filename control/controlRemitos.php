@@ -49,13 +49,8 @@ if (!isset($_SESSION['username'])) {
 			</div>
 		</form>
 
-		<?php
+		<audio src="Wrong.ogg"></audio>
 
-			// 	$wrongCode = '';
-			// 	$wrongCode = $control->wrongCode($codigo);
-			// 	echo $wrongCode;
-
-		?>
 	<div class="container table-responsive" id="bodyControl" style="display: none;">
 		<table class="table table-striped mt-2" id="tablaControl" >
 			<thead class="thead-dark">
