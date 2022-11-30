@@ -12,21 +12,21 @@ try {
 	$sucOrig = $_SESSION['suc_orig'];
 	$sucDestin = $_SESSION['suc_destin'];
 	$fechaRem = $_SESSION['fecha_mov'];
+	$codVend = $_SESSION['codVen'];
 	
-
 	$_post = json_decode(file_get_contents('php://input'),true);
 	$articulosControlados = $_post['data'];
-	
-	$_SESSION['articulosControlados'] = json_encode($articulosControlados);
 
-	// TRAER TODOS LOS ARTICULOS DEL REMITO PARA LUEGO COMPARARLO
-	$_SESSION['articulosRemito'] = json_encode($remito->traerTodosLosArticulosRemito($rem));
+	foreach($articulosControlados as $art){
+		$codArticu = $art[0];
+		$cantRem = $art[1];
+		$cantControl = $art[2];
 
-	//MARCAR REMITO COMO REGISTRADO
-	$remito->marcarRemitoRegistrado($rem);
+		$remito->insertarAuditoria($codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend);
+	}
 
+	echo 'Datos cargados satisfactoriamente';
 
-	echo true;
 } catch (\Throwable $th) {
 	throw $th;
 }

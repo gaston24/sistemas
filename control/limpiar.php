@@ -9,6 +9,8 @@ require_once __DIR__.'/../class/remito.php';
 $user = $_SESSION['codClient'];
 $_SESSION['usuario'] = $_GET['usuario'];
 $_SESSION['ultimoCodigo'] = '';
+$_SESSION['vendedor'] = substr(str_replace("_", " ", $_GET['usuario']), 0, strpos($_SESSION['usuario'], "++"));
+$_SESSION['codVen'] = substr(str_replace("_", " ", $_GET['usuario']), strpos($_SESSION['usuario'], "++")+2, 3);
 
 $_SESSION['rem'] = trim($_GET['rem']);
 $rem = $_SESSION['rem'];

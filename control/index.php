@@ -42,7 +42,7 @@ if (!isset($_SESSION['username'])) {
       <label for="inputState">Usuario</label>
       <select id="inputState" class="form-control form-control-sm" name="usuario" style="width: 250px;" required>
         <option value="" selected >Usuario</option>
-<?php
+	<?php
 	require_once __DIR__.'/../class/remito.php';
 	$nroSucurs = $_SESSION['numsuc'];
 	
@@ -50,7 +50,7 @@ if (!isset($_SESSION['username'])) {
 	$usuarios = $data->listarUsuarios($nroSucurs);
 
 	foreach ($usuarios as $v) {
-		echo '<option value="'.$v['BLOQUE'].'">'.$v['APELLIDO'].' '.$v['NOMBRE'].'</option>';
+		echo '<option value="'.$v['APELLIDO'].'_'.$v['NOMBRE'].'++'.$v['BLOQUE'].'">'.$v['APELLIDO'].' '.$v['NOMBRE'].'</option>';
 	}
 ?>
 	       
