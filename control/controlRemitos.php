@@ -24,7 +24,7 @@ if (!isset($_SESSION['username'])) {
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Font Awesome -->
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-		<!-- <link rel="stylesheet" href="css/style.css"> -->
+		<link rel="stylesheet" href="css/style.css">
 		<?php require_once __DIR__.'/../assets/css/header.php';?>
 
 	</head>
@@ -52,7 +52,7 @@ if (!isset($_SESSION['username'])) {
 		<audio src="Wrong.ogg"></audio>
 
 	<div class="container table-responsive" id="bodyControl" style="display: none;">
-		<table class="table table-striped mt-2" id="tablaControl" >
+		<table class="table table-striped mt-2" id="tablaControl">
 			<thead class="thead-dark">
 				<tr>
 					<td class="col-" style="width:3.5em">CODIGO</td>
@@ -66,14 +66,14 @@ if (!isset($_SESSION['username'])) {
 			</tbody>
 
 		</table>
-		
+	</div>
 		<div class="col- text-center bg-white">
 			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
-			<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Total articulos:</strong></a> <a id="totalArt"></a>
+			<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Articulos:</strong></a> <a id="totalArt"></a>
 			<button class="btn btn-success mt-2" id="btnProcesar">Procesar</button>
 		</div>
 
-	</div>
+	
 
 	<script src="js/main.js"></script>
 	<script>

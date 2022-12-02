@@ -3,7 +3,10 @@ body
 {  
     overflow-x: none;
     margin:0;
+}
 
+.btn-danger{
+    margin-left: 27%;
 }
 
 .thead-dark{ 
@@ -17,9 +20,18 @@ body
     background-color: #343a40;
 }
 
+#bodyControl{
+    width: 70rem;
+}
+
 .container { 
     height:36rem;
-    width: 35rem;
+    /* width: 15rem; */
+}
+
+#tablaControl{
+    margin: auto;
+    width: 60%;
 }
 
 th, td
@@ -40,6 +52,7 @@ th, td
 
     body {
       width: 22rem;
+      height: 50rem;
     }
   
     th, td
@@ -51,7 +64,7 @@ th, td
     .container 
     { 
         margin: 0 auto;
-        height:19rem;
+        height:70vh;
         width: 95vw;
         padding: 0;
         margin-bottom: 0;
@@ -77,4 +90,5 @@ th, td
         top: 0;
         z-index: 10;
     }
+
   }
