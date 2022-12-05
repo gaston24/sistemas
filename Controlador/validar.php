@@ -67,7 +67,7 @@ if( count($loginRes) == 0 ){
 		header("Location: ../conteos/index.php");
 	}elseif($_SESSION['permisos']== '5'){
 		header("Location: ../conteos/index.php");			
-	}elseif($_SESSION['username']== 'estadisticas'){
+	}elseif($_SESSION['permisos']== '2'){
 		header("Location: ../../estadisticas/index.php");	
 	}elseif($_SESSION['username']== 'LOGISTICA'){
 		header("Location: ../control/control_logistica.php");	
