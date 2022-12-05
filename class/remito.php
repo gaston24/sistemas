@@ -444,6 +444,8 @@ class Remito {
     public function insertarAuditoria($codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor){
 
         $cid = $this->conn->conectar('central');
+
+        $estado = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'APROBADO';
         
 
         $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
@@ -456,7 +458,7 @@ class Remito {
         (
             getdate(), '$codClient', getdate(), '$rem', $sucOrig,
             $sucDestin, '$codArticu', $cantRem, $cantControl, '$vendedor', 
-            'PENDIENTE'
+            '$estado'
         )";
 
         try {
