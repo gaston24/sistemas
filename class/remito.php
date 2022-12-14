@@ -120,41 +120,6 @@ class Remito {
         return $array;
     }    
 
-    public function traerHistoricosAuditoria($desde, $hasta, $estado){
-
-        $sql=
-            "
-            SET DATEFORMAT YMD
-
-            SELECT 
-                    
-            FECHA_CONTROL, A.COD_CLIENT, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
-            NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
-            SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, 
-            ISNULL((CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2) ULTIMO_CHAT
-                                        
-            FROM SJ_CONTROL_AUDITORIA A
-                                
-            INNER JOIN GVA23 D
-            ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-            
-            LEFT JOIN SJ_CONTROL_AUDIRTORIA_CHAT_ULTIMO_MSG E
-            ON A.NRO_REMITO = E.NRO_REMITO COLLATE Latin1_General_BIN
-                    
-            WHERE A.FECHA_REM >= GETDATE()-180
-            AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
-            AND A.OBSERVAC_LOGISTICA LIKE '$estado'
-                            
-            GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
-            A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, (CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END)
-            ORDER BY A.FECHA_CONTROL            
-            ";
-
-        $array = $this->getArray($sql);    
-
-        return $array;
-    }   
-
     public function verificacion($user){
 
         $cid = $this->conn->conectar('central');
@@ -471,6 +436,116 @@ class Remito {
 
         
     } 
+
+    public function traerHistoricosAuditoria($desde, $hasta, $estado){
+
+        $cid = $this->conn->conectar('central');
+        
+
+        $sql = 
+        "
+        SET DATEFORMAT YMD
+
+        SELECT 
+                
+        FECHA_CONTROL, A.COD_CLIENT, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
+        NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
+        SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, 
+        ISNULL((CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2) ULTIMO_CHAT
+                                    
+        FROM SJ_CONTROL_AUDITORIA A
+                            
+        INNER JOIN GVA23 D
+        ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
+        
+        LEFT JOIN SJ_CONTROL_AUDIRTORIA_CHAT_ULTIMO_MSG E
+        ON A.NRO_REMITO = E.NRO_REMITO COLLATE Latin1_General_BIN
+                
+        WHERE A.FECHA_REM >= GETDATE()-180
+        AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
+        AND A.OBSERVAC_LOGISTICA LIKE '$estado'
+                        
+        GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
+        A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, (CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END)
+        ORDER BY A.FECHA_CONTROL   
+        ";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    
+                $v[] = $row;
+
+            }
+
+            sqlsrv_close($cid);
+    
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+    }   
+
+    // HISTORIAL REMITOS
+
+    public function ajusteRemitoNumero($ajuste, $ncomp){
+
+        $cid = $this->conn->conectar('central');
+       
+
+        $sql = "	
+        SET DATEFORMAT YMD
+        UPDATE SJ_CONTROL_AUDITORIA SET NRO_AJUSTE = '$ajuste' WHERE NRO_REMITO = '$ncomp'
+        ";
+
+        try {
+
+            $stmt = sqlsrv_prepare($cid, $sql);
+            $stmt = sqlsrv_execute($stmt);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+        
+    } 
+
+    public function ajusteRemitoStatus($status, $ncomp){
+
+        $cid = $this->conn->conectar('central');
+       
+
+        $sql = "	
+        SET DATEFORMAT YMD
+
+        UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = '$status' WHERE NRO_REMITO = '$ncomp'
+        ";
+
+        try {
+
+            $stmt = sqlsrv_prepare($cid, $sql);
+            $stmt = sqlsrv_execute($stmt);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+        
+    } 
+
 }
 
 

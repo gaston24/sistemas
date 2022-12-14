@@ -31,52 +31,48 @@ function busquedaRapida() {
   }
 }
 
-function changeStatus(remito){
-  
-  var status = $('#select-'+remito).val();
-  console.log(status);
-  let inputAjuste = document.querySelectorAll('.fila-base');
+function changeStatus(select){
 
-  inputAjuste.forEach(
-    x=>{
-      let td = x.querySelectorAll('td');
-        if(status == 'ACEPTADO' && (td[7].querySelector('INPUT').val == '' || td[7].querySelector('INPUT').value == '0') ){
+  // let select = document.querySelector("#select-R0014500024543")
+  let input = select.parentElement.parentElement.querySelector("#nroAjuste");
+  let numAjuste = input.value;
+  let remito = select.id.split('-')[1];
+  let status = select.value;
+
+
+  if(status == 'ACEPTADO' && (numAjuste == '' || numAjuste == '0') ){
+    Swal.fire({
+      icon: 'error',
+      title: 'Debe indicar un numero de ajuste',
+      showConfirmButton: true,
+    })
+  }
+  else{
+    $.ajax({
+        url: 'controlador/actuaStatusRemito.php',
+        method: 'POST',
+        dateType: 'json',
+        data: {
+            ncomp : remito, 
+            status: status 
+        },
+        success: function (data) {
           Swal.fire({
-            icon: 'error',
-            title: 'Debe indicar un numero de ajuste',
+            icon: 'success',
+            title: 'Pedido modificado exitosamente!',
+            text: "Remito: " + remito,
             showConfirmButton: true,
-          }).then(()=>{
+          })
+          .then(()=>{
             location.reload()
           })
-      }else{
-        $.ajax({
-            url: 'controlador/actuaStatusRemito.php',
-            method: 'POST',
-            dateType: 'json',
-            data: {
-                ncomp : remito, 
-                status: status 
-            },
-            success: function (data) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Pedido modificado exitosamente!',
-                text: "Remito: " + ncomp,
-                showConfirmButton: true,
-              })
-              .then(()=>{
-                location.reload()
-              })
-            }
-        });
-      }
-    }
-  )
+        }
+    });
+  }
+
 }
 
 function changeNroAjuste(remito, context){
-  console.log(remito);
-  console.log(context.value)
 
   $.ajax({
     url: 'controlador/actuaAjusteRemito.php',
@@ -87,7 +83,7 @@ function changeNroAjuste(remito, context){
         ajuste: context.value 
     },
     success: function(data) {
-        // console.log(data)
+      location.reload()
     }
   });
 
