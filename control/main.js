@@ -59,7 +59,7 @@ function changeStatus(select){
         success: function (data) {
           Swal.fire({
             icon: 'success',
-            title: 'Pedido modificado exitosamente!',
+            title: 'El cambio de estado ha sido satisfactorio! <i class="bi bi-hand-thumbs-up-fill"></i>',
             text: "Remito: " + remito,
             showConfirmButton: true,
           })
