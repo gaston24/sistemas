@@ -462,6 +462,8 @@ class Remito {
 
         try {
 
+            $v = array();
+
             $stmt = sqlsrv_query($cid, $sql);
 
             while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
