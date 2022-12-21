@@ -17,7 +17,7 @@ try {
 	$_post = json_decode(file_get_contents('php://input'),true);
 	$articulosControlados = $_post['data'];
 
-	$status = 'APROBADO';
+	$status = 'ACEPTADO';
 	$statusFlag = true;
 
 	foreach($articulosControlados as $art){

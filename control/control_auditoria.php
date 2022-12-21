@@ -73,7 +73,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 			<select class="form-control"  name="estado" id="">
 				<option value="%">Todos</option>
 				<option value="PENDIENTE">Pendiente</option>
-				<option value="APROBADO">Aprobado</option>
+				<option value="ACEPTADO">Aceptado</option>
 				<option value="RECHAZADO">Rechazado</option>
 			</select>
 		</div>
@@ -140,7 +140,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 				<td >
 					<select class="form-control form-control-sm" <?php if($data['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'style="background: #f2ff00;"' ; }?> id="select-<?= $data['NRO_REMITO'] ;?>" onChange="changeStatus(this)" id="estadoRemito">
 						<option value="PENDIENTE"  <?php if($data['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
-						<option value="ACEPTADO" <?php if($data['OBSERVAC_LOGISTICA'] == 'APROBADO'){echo 'selected'; }?>>Aprobado</option>
+						<option value="ACEPTADO" <?php if($data['OBSERVAC_LOGISTICA'] == 'ACEPTADO'){echo 'selected'; }?>>Aceptado</option>
 						<option value="RECHAZADO" <?php if($data['OBSERVAC_LOGISTICA'] == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
 					</select>
 				</td>
