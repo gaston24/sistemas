@@ -1,3 +1,9 @@
+const selectPedido = document.querySelectorAll(".bi-trash-fill");
+
+selectPedido.forEach((select) =>
+    select.addEventListener("click", eliminarPedido)
+  );
+
 //Búsqueda rápida table//
 
 function myFunction() {
@@ -586,4 +592,44 @@ total_notaPedidos();
     console.log(cantidad);
   }
 
+
+  //Eliminar pedido//
+
+function eliminarPedido(e){
+  let Dato = e.target;
+  let notaPedido = Dato.parentElement.parentElement.children[5].textContent;
+  console.log(notaPedido)
+  Swal.fire({
+    title: "Desea eliminar la nota de pedido?",
+    text: "Ya no se podra recuperar la informacion!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Aceptar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let env = 1;
+      let url = env == 1 ? "eliminarPedido.php" : "test.php";
+      $.ajax({
+        url: "controller/" + url,
+        method: "POST",
+        data: {
+          notaPedido: notaPedido.replace(/\s+/g, ""),
+        },
+        success: function (data) {
+          Swal.fire({
+            icon: "success",
+            title: "Nota de pedido eliminada correctamente!",
+            text: "Nota de pedido: " + data,
+            showConfirmButton: true,
+          }).then(function () {
+            window.history.back();
+          });
+        },
+      });
+    }
+  });
+}
    

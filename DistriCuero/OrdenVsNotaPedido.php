@@ -22,6 +22,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"rel="stylesheet"/>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
     <link rel="stylesheet" href="css/style.css">
     <title>Lista notas de pedidos</title>
@@ -118,7 +119,7 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
                 <th scope="col" style="width: 10%">Total</th>
                 <th scope="col" style="width: 5%">Unidades</th>  
                 <th scope="col" style="width: 10%">Estado</th>
-                <!-- <th scope="col" style="width: 5%"></th>    -->
+                <th scope="col" style="width: 5%"></th>   
             </thead>
 
             <tbody id="table">
@@ -144,6 +145,11 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
                     <!-- <td>
                       <a href="detallePedidoSuc.php?notaPedido=<?= $key['NRO_NOTA_PEDIDO'] ?>"><i class="fa fa-search" style="color: #ffc107; font-size: 20px;"></i></a>
                     </td>           -->
+                    <?php if(isset($key['NRO_NOTA_PEDIDO'])) {?>
+                    <td><i class="bi bi-trash-fill" aria-hidden="true" title="Eliminar"></i></td>
+                    <?php } else { ?> 
+                    <td></td>
+                    <?php } ?>  
                 </tr>   
                 
                 <?php

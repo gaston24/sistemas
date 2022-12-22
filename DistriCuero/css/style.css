@@ -233,6 +233,11 @@ thead tr th {
     opacity: .8;
   }
 
+  .bi-trash-fill{
+    font-size: large;
+    color: #ffc107;
+  }
+
 
 
 
