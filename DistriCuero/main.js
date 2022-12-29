@@ -1,8 +1,13 @@
 const selectPedido = document.querySelectorAll(".bi-trash-fill");
+const selectPedidoActivar = document.querySelectorAll(".bi-check-circle-fill");
 
 selectPedido.forEach((select) =>
     select.addEventListener("click", eliminarPedido)
   );
+
+  selectPedidoActivar.forEach((select) =>
+   select.addEventListener("click", activarPedido)
+ );
 
 //Búsqueda rápida table//
 
@@ -632,4 +637,47 @@ function eliminarPedido(e){
     }
   });
 }
+
+  //Revertir rechazo de orden (activar pedido)//
+
+  function activarPedido(e){
+    let Dato = e.target;
+    let codClient = Dato.parentElement.parentElement.children[1].textContent;//
+    let NroOrden= document.getElementById('nroOrden').value ;
+    console.log(codClient)
+    console.log(NroOrden)
+    Swal.fire({
+      title: "Desea revertir el rechazo de la orden?",
+      text: "La orden quedará nuevamente activa para el cliente!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Aceptar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let env = 1;
+        let url = env == 1 ? "anulaRechazoOrden.php" : "test.php";
+        $.ajax({
+          url: "controller/" + url,
+          method: "POST",
+          data: {
+            codClient: codClient.replace(/\s+/g, ""),
+            NroOrden:NroOrden
+          },
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "La orden fue habilitada correctamente!",
+              text: "Orden: " + data,
+              showConfirmButton: true,
+            }).then(function () {
+              window.history.back();
+            });
+          },
+        });
+      }
+    });
+  }
    
