@@ -97,47 +97,36 @@ class Remito {
             "
             SET DATEFORMAT YMD
 
-            SELECT A.*, B.DESCRIPCIO FROM 
-            (
-                SELECT COD_CLIENT, SUC_DESTIN, FECHA_CONTROL, 
-                CASE WHEN FECHA_REM IS NULL THEN FECHA_MOV ELSE FECHA_REM END FECHA_REM,
-                NOMBRE_VEN, NRO_REMITO, 
-                CASE WHEN COD_ARTICU IS NULL THEN COD_ARTICULO COLLATE Latin1_General_BIN  ELSE COD_ARTICU COLLATE Latin1_General_BIN  END COD_ARTICU,
-                CANT_CONTROL, 
-                CAST((CASE WHEN CANT_REM IS NULL THEN CANTIDAD ELSE CANT_REM END) AS INT) CANT_REM,  
-                DIFERENCIA, PARTIDA, 
-                CASE WHEN COD_ARTICU IS NULL THEN 0 ELSE 1 END AUDITADO 
-            
-                FROM
-                (
-                    SELECT * FROM 
-                    (
-                        SELECT 
-                        COD_CLIENT, SUC_DESTIN, 
-                        FECHA_CONTROL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
-                        NOMBRE_VEN, A.NRO_REMITO, 
-                        A.COD_ARTICU, 
-                        A.CANT_CONTROL, A.CANT_REM, A.CANT_CONTROL - A.CANT_REM DIFERENCIA, ISNULL(E.ULTIMA_PARTIDA, '') PARTIDA
+			SELECT A.*, B.DESCRIPCIO FROM
+			(
+				SELECT ISNULL(COD_CLIENT, COD_PRO_CL) COD_CLIENT, ISNULL(A.SUC_DESTIN, B.SUC_DESTIN) SUC_DESTIN, FECHA_CONTROL, ISNULL(FECHA_REM, B.FECHA_MOV) FECHA_REM, NOMBRE_VEN, A.NRO_REMITO, ISNULL(A.COD_ARTICU, B.COD_ARTICULO) COD_ARTICU, ISNULL(A.CANT_CONTROL, 0) CANT_CONTROL, 
+				ISNULL(A.CANT_REM, B.CANTIDAD) CANT_REM, ISNULL(DIFERENCIA, 0-B.CANTIDAD) DIFERENCIA, ISNULL(PARTIDA, '') PARTIDA, CASE WHEN A.COD_ARTICU IS NULL THEN 0 ELSE 1 END AUDITADO  FROM 
+				(
+					SELECT 
+					COD_CLIENT, SUC_DESTIN, 
+					FECHA_CONTROL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
+					NOMBRE_VEN, A.NRO_REMITO, 
+					A.COD_ARTICU, 
+					A.CANT_CONTROL, A.CANT_REM, A.CANT_CONTROL - A.CANT_REM DIFERENCIA, ISNULL(E.ULTIMA_PARTIDA, '') PARTIDA
                                         
-                        FROM SJ_CONTROL_AUDITORIA A
+					FROM SJ_CONTROL_AUDITORIA A
             
-                        INNER JOIN GVA23 D
-                        ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-                        LEFT JOIN SOF_PARTIDAS E
-                        ON A.COD_ARTICU = E.COD_ARTICU COLLATE Latin1_General_BIN
-                        WHERE A.NRO_REMITO = '$numRem' 
-                    ) A
-                    FULL JOIN 
-                    (
-                        select B.FECHA_MOV, B.COD_ARTICU COD_ARTICULO, B.CANTIDAD from [LAKERBIS].locales_lakers.DBO.CTA09 a
-                        inner join [LAKERBIS].locales_lakers.DBO.CTA11 b 
-                        on a.NCOMP_IN_S = b.NCOMP_IN_S and a.TCOMP_IN_S = b.TCOMP_IN_S and a.NRO_SUCURS = b.NRO_SUCURS
-                        where a.ncomp_orig = '$numRem'
-                    ) B
-                    ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICULO COLLATE Latin1_General_BIN 
-                ) A
-            )A
-            LEFT JOIN STA11 B
+					INNER JOIN GVA23 D
+					ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
+					LEFT JOIN SOF_PARTIDAS E
+					ON A.COD_ARTICU = E.COD_ARTICU COLLATE Latin1_General_BIN
+					WHERE A.NRO_REMITO = '$numRem' 
+				) A
+				FULL OUTER JOIN 
+				(
+					SELECT B.FECHA_MOV, A.N_COMP, A.COD_PRO_CL, A.SUC_DESTIN, B.COD_ARTICU COD_ARTICULO, B.CANTIDAD from STA14 A
+					INNER JOIN STA20 B ON A.TCOMP_IN_S = B.TCOMP_IN_S AND A.NCOMP_IN_S = B.NCOMP_IN_S
+					INNER JOIN (SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE PROMO_MENU != 'P') C ON B.COD_ARTICU = C.COD_ARTICU
+					WHERE A.N_COMP = '$numRem'
+				) B
+				ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICULO COLLATE Latin1_General_BIN 
+			) A
+             LEFT JOIN STA11 B
             ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
             ";
 
