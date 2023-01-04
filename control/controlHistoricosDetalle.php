@@ -77,7 +77,8 @@ if(isset($_GET['numRem'])){
         <?php
 
 	foreach($remitosHistoricosDetalle as $data){
-		$dateControl =$data['FECHA_CONTROL']->format('d/m/Y'); 
+		$dateControl = ($data['AUDITADO']) ? $data['FECHA_CONTROL']->format('d/m/Y') : ''; 
+		$partida = ($data['AUDITADO']) ? $data['PARTIDA'] : 'ARTICULO NO AUDITADO';
 		
 		$style= ($data['CANT_REM'] <> $data['CANT_CONTROL']) ? "font-size:smaller;font-weight:bold;color:#FE2E2E" : '';
 		?>
@@ -91,16 +92,19 @@ if(isset($_GET['numRem'])){
 				<td ><?= $data['CANT_REM'] ;?></td>
 				<td ><?= $data['CANT_CONTROL'] ;?></td>
 				<td ><?= $data['DIFERENCIA'] ;?>
-				<td ><?= $data['PARTIDA'] ;?>
+				<td ><?= $partida ;?>
 				</td>
 				
         </tr>
 		
         <?php
+		
+			if($data['AUDITADO'] == 1){
+				$nombreVen = $data['NOMBRE_VEN'];
+				$numSuc = $data['SUC_DESTIN'];
+				$codSuc = $data['COD_CLIENT'];
+			}
 
-		$nombreVen = $data['NOMBRE_VEN'];
-		$numSuc = $data['SUC_DESTIN'];
-		$codSuc = $data['COD_CLIENT'];
         }
 
         ?>

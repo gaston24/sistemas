@@ -97,21 +97,48 @@ class Remito {
             "
             SET DATEFORMAT YMD
 
-            SELECT 
-            COD_CLIENT, SUC_DESTIN, 
-            FECHA_CONTROL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
-            NOMBRE_VEN, A.NRO_REMITO, 
-            A.COD_ARTICU, B.DESCRIPCIO,
-            A.CANT_CONTROL, A.CANT_REM, A.CANT_CONTROL - A.CANT_REM DIFERENCIA, ISNULL(E.ULTIMA_PARTIDA, '') PARTIDA
-                
-            FROM SJ_CONTROL_AUDITORIA A
+            SELECT A.*, B.DESCRIPCIO FROM 
+            (
+                SELECT COD_CLIENT, SUC_DESTIN, FECHA_CONTROL, 
+                CASE WHEN FECHA_REM IS NULL THEN FECHA_MOV ELSE FECHA_REM END FECHA_REM,
+                NOMBRE_VEN, NRO_REMITO, 
+                CASE WHEN COD_ARTICU IS NULL THEN COD_ARTICULO COLLATE Latin1_General_BIN  ELSE COD_ARTICU COLLATE Latin1_General_BIN  END COD_ARTICU,
+                CANT_CONTROL, 
+                CAST((CASE WHEN CANT_REM IS NULL THEN CANTIDAD ELSE CANT_REM END) AS INT) CANT_REM,  
+                DIFERENCIA, PARTIDA, 
+                CASE WHEN COD_ARTICU IS NULL THEN 0 ELSE 1 END AUDITADO 
+            
+                FROM
+                (
+                    SELECT * FROM 
+                    (
+                        SELECT 
+                        COD_CLIENT, SUC_DESTIN, 
+                        FECHA_CONTROL, CAST(A.FECHA_REM AS DATE) FECHA_REM, 
+                        NOMBRE_VEN, A.NRO_REMITO, 
+                        A.COD_ARTICU, 
+                        A.CANT_CONTROL, A.CANT_REM, A.CANT_CONTROL - A.CANT_REM DIFERENCIA, ISNULL(E.ULTIMA_PARTIDA, '') PARTIDA
+                                        
+                        FROM SJ_CONTROL_AUDITORIA A
+            
+                        INNER JOIN GVA23 D
+                        ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
+                        LEFT JOIN SOF_PARTIDAS E
+                        ON A.COD_ARTICU = E.COD_ARTICU COLLATE Latin1_General_BIN
+                        WHERE A.NRO_REMITO = '$numRem' 
+                    ) A
+                    FULL JOIN 
+                    (
+                        select B.FECHA_MOV, B.COD_ARTICU COD_ARTICULO, B.CANTIDAD from [LAKERBIS].locales_lakers.DBO.CTA09 a
+                        inner join [LAKERBIS].locales_lakers.DBO.CTA11 b 
+                        on a.NCOMP_IN_S = b.NCOMP_IN_S and a.TCOMP_IN_S = b.TCOMP_IN_S and a.NRO_SUCURS = b.NRO_SUCURS
+                        where a.ncomp_orig = '$numRem'
+                    ) B
+                    ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICULO COLLATE Latin1_General_BIN 
+                ) A
+            )A
             LEFT JOIN STA11 B
             ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
-            INNER JOIN GVA23 D
-            ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-			LEFT JOIN SOF_PARTIDAS E
-			ON A.COD_ARTICU = E.COD_ARTICU COLLATE Latin1_General_BIN
-            WHERE A.NRO_REMITO = '$numRem' 
             ";
 
         $array = $this->getArray($sql);    
