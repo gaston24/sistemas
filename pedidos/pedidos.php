@@ -124,7 +124,7 @@ if (!isset($_SESSION['username'])) {
 						<?php
 						if (substr($v['DESCRIPCIO'], -11) == '-- SALE! --') {
 						?>
-							<tr style="font-weight:bold;color:#FE2E2E">
+							<tr id="trPedido" style="font-weight:bold;color:#FE2E2E">
 							<?php
 						} else {
 							?>
