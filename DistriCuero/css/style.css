@@ -236,6 +236,13 @@ thead tr th {
   .bi-trash-fill{
     font-size: large;
     color: #ffc107;
+    cursor: pointer;
+  }
+
+  .bi-check-circle-fill{
+    font-size: large;
+    color: #28a745;
+    cursor: pointer;
   }
 
 
