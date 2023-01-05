@@ -1,6 +1,5 @@
 
 function getChat(remito){
-
     $.ajax({
         url: 'controlador/chatControlador.php',
         method: 'POST',
@@ -9,7 +8,6 @@ function getChat(remito){
             ncomp : remito
         },
         success: function(data) {
-            // console.log(typeof(data));
             clearChat();
             updateChat(data);
         }
@@ -61,14 +59,12 @@ function updateChat(data){
     
     $('#chatShow').append(var_add_chat);
 }
-
+function borrarChatNew(){
+    $('#chatNew').val("");
+}
 function sendChat( user){
-
     var msg = $('#chatNew').val();
     var remito = $('#numRemito').html();
-
-    console.log(remito, user, msg);
-
     $.ajax({
         url: 'controlador/sendChatControlador.php',
         method: 'POST',

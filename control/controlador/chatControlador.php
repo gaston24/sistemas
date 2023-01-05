@@ -1,13 +1,14 @@
 
 <?php 
 
-$dsn = '1 - CENTRAL';
-$usuario = "sa";
-$clave="Axoft1988";
+require_once __DIR__ .'/../../class/conexion.php' ;
+
+$cid = new Conexion();
+$cid_central = $cid->conectar('central');  
+
 
 $ncomp = $_POST['ncomp'];
 
-$cid=odbc_connect($dsn, $usuario, $clave);
 
 header('Content-Type: application/json');
 
@@ -18,19 +19,21 @@ $sql=
 	SELECT * FROM SJ_CONTROL_AUDIRTORIA_CHAT WHERE NRO_REMITO = '$ncomp'
 	";
 
+
 ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$result=sqlsrv_query($cid_central,$sql)or die(exit("Error en odbc_exec"));
 
 $chat = [];
 
-while($v=odbc_fetch_array($result)){
-    $date=date_create($v['DATE_TIME']);
+
+while($v=sqlsrv_fetch_array($result)){
+    $date=$v['DATE_TIME']->format('Y-m-d H:i:s');
 
     $chat[] = array(
         "remito" => $v['NRO_REMITO'], 
         "user" => $v['USER_CHAT'], 
         "message" => $v['MESSAGE'], 
-        "datetime" => date_format($date,"Y/m/d H:i:s"),
+        "datetime" => $date,
     );
 }
 

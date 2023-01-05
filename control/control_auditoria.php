@@ -176,7 +176,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Chat auditoria</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=borrarChatNew()>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -186,8 +186,8 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
       </div>
       <div class="modal-footer">
 		<input type="text" class="form-control mb-2" id="chatNew">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>'), actuaNumRemito('<?= $data['FECHA_REM'] ;?>')">Enviar mensaje</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=borrarChatNew()>Cerrar</button>
+        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>')">Enviar mensaje</button>
       </div>
     </div>
   </div>

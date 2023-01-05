@@ -30,7 +30,7 @@ try {
 			$statusFlag = false;
 		}
 
-		$remito->insertarAuditoria($codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend);
+		$remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend);
 	}
 
 	if($statusFlag == false){
