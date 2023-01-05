@@ -17,25 +17,17 @@ try {
 	$_post = json_decode(file_get_contents('php://input'),true);
 	$articulosControlados = $_post['data'];
 
-	$status = 'ACEPTADO';
-	$statusFlag = true;
-
 	foreach($articulosControlados as $art){
 		$codArticu = $art[0];
 		$cantRem = $art[1];
 		$cantControl = $art[2];
 
-		if($cantRem <> $cantControl){
-			$status = 'PENDIENTE';
-			$statusFlag = false;
-		}
+		$status = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'ACEPTADO';
 
-		$remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend);
+		$remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status);
 	}
 
-	if($statusFlag == false){
-		$remito->ajusteRemitoStatus($status, $rem);
-	}
+	$remito->ajusteRemitoStatus($rem);
 
 	echo 'Datos cargados satisfactoriamente';
 

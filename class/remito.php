@@ -414,12 +414,9 @@ class Remito {
             
     }
 
-    public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor){
+    public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status){
 
         $cid = $this->conn->conectar('central');
-
-        $estado = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'ACEPTADO';
-        
 
         $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
         (
@@ -431,7 +428,7 @@ class Remito {
         (
             getdate(), '$codClient', '$fechaRem', '$rem', $sucOrig,
             $sucDestin, '$codArticu', $cantRem, $cantControl, '$vendedor', 
-            '$estado'
+            '$status'
         )";
 
         try {
@@ -527,29 +524,66 @@ class Remito {
         
     } 
 
-    public function ajusteRemitoStatus($status, $ncomp){
+    public function ajusteRemitoStatus($ncomp){
 
         $cid = $this->conn->conectar('central');
-       
+        
 
-        $sql = "	
-        SET DATEFORMAT YMD
-
-        UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = '$status' WHERE NRO_REMITO = '$ncomp'
+        $sql = 
+        "
+        SELECT distinct OBSERVAC_LOGISTICA FROM SJ_CONTROL_AUDITORIA where NRO_REMITO = '$ncomp'
         ";
 
         try {
 
-            $stmt = sqlsrv_prepare($cid, $sql);
-            $stmt = sqlsrv_execute($stmt);
+            $data = array();
 
-            return true;
+            $stmt = sqlsrv_query($cid, $sql);
+
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    
+                $data[] = $row;
+
+            }
+
+            sqlsrv_close($cid);
 
         } catch (\Throwable $th) {
 
             print_r($th);
 
         }
+
+        $estados = array();
+
+        foreach($data as $value){
+            $estados[] = $value['OBSERVAC_LOGISTICA'];
+        } 
+       
+        if(in_array("PENDIENTE", $estados)){
+
+            $sql = "	
+            SET DATEFORMAT YMD
+    
+            UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = 'PENDIENTE' WHERE NRO_REMITO = '$ncomp'
+            ";
+    
+            try {
+    
+                $stmt = sqlsrv_prepare($cid, $sql);
+                $stmt = sqlsrv_execute($stmt);
+    
+                return true;
+    
+            } catch (\Throwable $th) {
+    
+                print_r($th);
+    
+            }
+
+        }
+
+      
 
         
     } 
