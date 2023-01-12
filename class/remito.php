@@ -418,6 +418,8 @@ class Remito {
 
         $cid = $this->conn->conectar('central');
 
+        $fechaRemFormat = $fechaRem->format('Y-m-d H:i:s');
+
         $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
         (
             FECHA_CONTROL, COD_CLIENT, FECHA_REM, NRO_REMITO, SUC_ORIG, 
@@ -426,7 +428,7 @@ class Remito {
         )
         VALUES
         (
-            getdate(), '$codClient', '$fechaRem', '$rem', $sucOrig,
+            getdate(), '$codClient', '$fechaRemFormat', '$rem', $sucOrig,
             $sucDestin, '$codArticu', $cantRem, $cantControl, '$vendedor', 
             '$status'
         )";
