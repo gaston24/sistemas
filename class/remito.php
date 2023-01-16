@@ -419,6 +419,8 @@ class Remito {
         $cid = $this->conn->conectar('central');
 
         $fechaRemFormat = $fechaRem->format('Y-m-d H:i:s');
+        
+        var_dump($fechaRemFormat);
 
         $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
         (
