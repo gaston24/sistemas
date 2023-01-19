@@ -29,8 +29,6 @@ try {
 
 	$remito->ajusteRemitoStatus($rem);
 
-	echo 'Datos cargados satisfactoriamente';
-
 } catch (\Throwable $th) {
 	throw $th;
 }

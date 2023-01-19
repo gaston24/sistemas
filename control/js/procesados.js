@@ -22,22 +22,26 @@ const llenarTabla = (articulosRemito, articulosControlados)=>{
         
     });
 
-    
-    let artSobran = articulosControlados.filter(y=>{
+    let artSobran = [];
+
+    articulosRemito.forEach(y=>{
+
         let flag = false;
-        
-        articulosRemito.forEach(x => {
-            if(x.COD_ARTICU == y[0]){
+
+        articulosControlados.forEach(x=>{
+            if(y.COD_ARTICU == x[0]){
                 flag = true;
             }
         })
 
-        if(flag==false) return y;
-
+        if(!flag){
+            artSobran.push(y)
+        }
+        
     })
 
     artSobran.forEach(x=>{
-        row(x[0], 0, x[1]);
+        row(x.COD_ARTICU, x.CANTIDAD, 0);
     })
 
 
@@ -150,9 +154,5 @@ const procesarRemitoControlado = (datosTotal) => {
         },
         body: JSON.stringify({data: datosTotal}) 
       })
-        .then((response) => response.json())
-        .then((data) => { 
-            console.log('data', data)
-        });
 
 }

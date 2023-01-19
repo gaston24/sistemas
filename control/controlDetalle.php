@@ -23,6 +23,14 @@ $codClient = $_GET['codClient'];
 <?php require_once __DIR__.'/../assets/css/header.php';?>
 <link rel="stylesheet" href="css/style.css">
 
+<style>
+	table.table-fh > thead > tr >th, table.table-fh > tbody > tr > td {
+		padding: 15px;
+		word-break: break-all;
+		text-align: right;
+	}
+</style>
+
 </head>
 <body>	
 

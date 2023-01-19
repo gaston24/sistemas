@@ -422,7 +422,10 @@ class Remito {
         
         var_dump($fechaRemFormat);
 
-        $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
+        $sql = "
+        SET DATEFORMAT YMD
+        
+        INSERT INTO SJ_CONTROL_AUDITORIA
         (
             FECHA_CONTROL, COD_CLIENT, FECHA_REM, NRO_REMITO, SUC_ORIG, 
             SUC_DESTIN, COD_ARTICU, CANT_REM, CANT_CONTROL, USUARIO_LOCAL, 
@@ -550,7 +553,6 @@ class Remito {
 
             }
 
-            sqlsrv_close($cid);
 
         } catch (\Throwable $th) {
 
@@ -563,18 +565,17 @@ class Remito {
         foreach($data as $value){
             $estados[] = $value['OBSERVAC_LOGISTICA'];
         } 
-       
+
         if(in_array("PENDIENTE", $estados)){
 
-            $sql = "	
-            SET DATEFORMAT YMD
-    
+            $sql2 = "	
             UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = 'PENDIENTE' WHERE NRO_REMITO = '$ncomp'
             ";
+
     
             try {
     
-                $stmt = sqlsrv_prepare($cid, $sql);
+                $stmt = sqlsrv_prepare($cid, $sql2);
                 $stmt = sqlsrv_execute($stmt);
     
                 return true;
