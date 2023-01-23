@@ -116,6 +116,8 @@ class Remito {
 					LEFT JOIN SOF_PARTIDAS E
 					ON A.COD_ARTICU = E.COD_ARTICU COLLATE Latin1_General_BIN
 					WHERE A.NRO_REMITO = '$numRem' 
+                    AND A.COD_ARTICU LIKE '[XO]%'
+
 				) A
 				FULL OUTER JOIN 
 				(
@@ -123,6 +125,7 @@ class Remito {
 					INNER JOIN STA20 B ON A.TCOMP_IN_S = B.TCOMP_IN_S AND A.NCOMP_IN_S = B.NCOMP_IN_S
 					INNER JOIN (SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE PROMO_MENU != 'P') C ON B.COD_ARTICU = C.COD_ARTICU
 					WHERE A.N_COMP = '$numRem'
+                    AND B.COD_ARTICU LIKE '[XO]%'
 				) B
 				ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICULO COLLATE Latin1_General_BIN 
 			) A
@@ -471,7 +474,8 @@ class Remito {
 			FROM SJ_CONTROL_AUDITORIA A
 			INNER JOIN GVA23 B ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = B.COD_VENDED
 			LEFT JOIN SJ_CONTROL_AUDIRTORIA_CHAT_ULTIMO_MSG C ON A.NRO_REMITO = C.NRO_REMITO COLLATE Latin1_General_BIN
-			--WHERE A.NRO_REMITO = 'R0014500024543'
+            WHERE COD_ARTICU LIKE '[XO]%'
+            --AND A.NRO_REMITO = 'R0014500027088'
 		) A
 		WHERE OBSERVAC_LOGISTICA LIKE '$estado' AND FECHA_REM >= GETDATE()-180 AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
 		GROUP BY FECHA_CONTROL, COD_CLIENT, SUC_ORIG, SUC_DESTIN, FECHA_REM, NOMBRE_VEN, NRO_REMITO, OBSERVAC_LOGISTICA, NRO_AJUSTE, ULTIMO_CHAT
@@ -588,6 +592,32 @@ class Remito {
 
       
 
+        
+    } 
+
+
+
+    public function ajusteRemitoStatusDirecto($status, $ncomp){
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "	
+        UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = '$status' WHERE NRO_REMITO = '$ncomp'
+        ";
+
+
+        try {
+
+            $stmt = sqlsrv_prepare($cid, $sql);
+            $stmt = sqlsrv_execute($stmt);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
         
     } 
 
