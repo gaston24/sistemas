@@ -52,7 +52,7 @@ $codClient = $_GET['codClient'];
 
 <div class="container table-responsive tableDetalle">
 
-<table class="table table-striped table-fh table-6c" id="id_tabla" align="center">
+<table class="table table-striped" id="id_tabla" align="center">
 			
 		<thead class="thead-dark">
 			<tr style="font-size:smaller">

@@ -422,6 +422,8 @@ class Remito {
         $cid = $this->conn->conectar('central');
 
         $fechaRemFormat = $fechaRem->format('Y-m-d H:i:s');
+        
+        var_dump($fechaRemFormat);
 
         $sql = "
         SET DATEFORMAT YMD
