@@ -542,7 +542,7 @@ class Remito {
 
         $sql = 
         "
-        SELECT distinct OBSERVAC_LOGISTICA FROM SJ_CONTROL_AUDITORIA where NRO_REMITO = '$ncomp'
+        SELECT distinct OBSERVAC_LOGISTICA FROM SJ_CONTROL_AUDITORIA where NRO_REMITO = '$ncomp' AND COD_ARTICU LIKE '[XO]%'
         ";
 
         try {
