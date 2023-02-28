@@ -1,0 +1,15 @@
+.seincomp-msj
+    {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+    }
+
+.seincomp-msj h1{
+    color: brown;
+}
+
+.seincomp-msj .name
+{
+    color:rgb(54, 114, 173);
+}

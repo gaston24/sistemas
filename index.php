@@ -37,6 +37,7 @@ require 'class/fechaEntrega.php';
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
 <?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
+<link rel="stylesheet" href="ajustes/css/msj-seincomp.css">
 </head>
 
 <body>	
@@ -117,6 +118,12 @@ require 'class/fechaEntrega.php';
 			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
 		}
 		?>
+		<?php if($_SESSION['numsuc']>800)
+		{
+			include('Seincomp/msjSeincomp.php');
+		}
+?>
+
 	</div>
 	</div>
 
