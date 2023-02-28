@@ -8,20 +8,26 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 const llenarTabla = (articulosRemito, articulosControlados)=>{
-
     let cantArticuCompara = 0;
-
+    let codigosDeArticulo = [];
     articulosRemito.forEach(x => {
-
+        codigosDeArticulo.push(x.COD_ARTICU);
         articulosControlados.forEach(y=>{
+
             if(x.COD_ARTICU == y[0]){
                 cantArticuCompara = (x.COD_ARTICU == y[0]) ? y[1] : 0;
-                row(x.COD_ARTICU, x.CANTIDAD, cantArticuCompara);
+                row(x.COD_ARTICU, x.CANTIDAD, cantArticuCompara);  
             }
         })
         
     });
 
+    articulosControlados.forEach(l=>{
+        if(!codigosDeArticulo.includes(l[0])){
+            row(l[0], 0,l[1]);  
+        }
+    });
+    
     let artSobran = [];
 
     articulosRemito.forEach(y=>{
@@ -80,8 +86,10 @@ const actualizarDatos = () =>{
             }
             
         })
+
+        let dif = parseInt(x.querySelector("#cantRem").innerHTML) - parseInt(x.querySelector("#cantControl").innerHTML);
     
-        x.querySelector("#dif").innerHTML = parseInt(x.querySelector("#cantRem").innerHTML) - parseInt(x.querySelector("#cantControl").innerHTML)
+        x.querySelector("#dif").innerHTML = ((dif<0) ? (dif*-1) : dif);
         
     })
 
@@ -144,9 +152,9 @@ const datosVarios = ()=> {
 
 const procesarRemitoControlado = (datosTotal) => {
 
-    let server = window.location.href.split('/sistemas')[0];
+    let server = (window.location.href.includes("sistemas")) ? window.location.href.split('/sistemas')[0]+'/sistemas' : window.location.origin;
 
-    fetch(server+'/sistemas/control/controlador/procesarRemito.php', {
+    fetch(server+'/control/controlador/procesarRemito.php', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

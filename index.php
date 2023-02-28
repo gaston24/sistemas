@@ -160,9 +160,9 @@ require 'class/fechaEntrega.php';
 
 			function traerCantidadPedidos(codClient) {
 
-				let server = window.location.href.split('/sistemas')[0];
+				let server = (window.location.href.includes("sistemas")) ? window.location.href.split('/sistemas')[0]+'/sistemas' : window.location.origin;
 				
-				fetch(server+"/sistemas/Controlador/extralargeController.php?action=limitePedidos&codClient=" + codClient)
+				fetch(server+"/Controlador/extralargeController.php?action=limitePedidos&codClient=" + codClient)
 					.then((response) => response.json())
   					.then((data) => { estado = data; } );
 			}

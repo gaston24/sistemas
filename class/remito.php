@@ -421,14 +421,7 @@ class Remito {
 
         $cid = $this->conn->conectar('central');
 
-        $fechaRemFormat = $fechaRem->format('Y-m-d H:i:s');
-        
-        var_dump($fechaRemFormat);
-
-        $sql = "
-        SET DATEFORMAT YMD
-        
-        INSERT INTO SJ_CONTROL_AUDITORIA
+        $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
         (
             FECHA_CONTROL, COD_CLIENT, FECHA_REM, NRO_REMITO, SUC_ORIG, 
             SUC_DESTIN, COD_ARTICU, CANT_REM, CANT_CONTROL, USUARIO_LOCAL, 
@@ -436,7 +429,7 @@ class Remito {
         )
         VALUES
         (
-            getdate(), '$codClient', '$fechaRemFormat', '$rem', $sucOrig,
+            getdate(), '$codClient', '$fechaRem', '$rem', $sucOrig,
             $sucDestin, '$codArticu', $cantRem, $cantControl, '$vendedor', 
             '$status'
         )";
@@ -476,8 +469,7 @@ class Remito {
 			FROM SJ_CONTROL_AUDITORIA A
 			INNER JOIN GVA23 B ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = B.COD_VENDED
 			LEFT JOIN SJ_CONTROL_AUDIRTORIA_CHAT_ULTIMO_MSG C ON A.NRO_REMITO = C.NRO_REMITO COLLATE Latin1_General_BIN
-            WHERE COD_ARTICU LIKE '[XO]%'
-            --AND A.NRO_REMITO = 'R0014500027088'
+			--WHERE A.NRO_REMITO = 'R0014500024543'
 		) A
 		WHERE OBSERVAC_LOGISTICA LIKE '$estado' AND FECHA_REM >= GETDATE()-180 AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
 		GROUP BY FECHA_CONTROL, COD_CLIENT, SUC_ORIG, SUC_DESTIN, FECHA_REM, NOMBRE_VEN, NRO_REMITO, OBSERVAC_LOGISTICA, NRO_AJUSTE, ULTIMO_CHAT
@@ -542,7 +534,7 @@ class Remito {
 
         $sql = 
         "
-        SELECT distinct OBSERVAC_LOGISTICA FROM SJ_CONTROL_AUDITORIA where NRO_REMITO = '$ncomp' AND COD_ARTICU LIKE '[XO]%'
+        SELECT distinct OBSERVAC_LOGISTICA FROM SJ_CONTROL_AUDITORIA where NRO_REMITO = '$ncomp'
         ";
 
         try {
@@ -557,6 +549,7 @@ class Remito {
 
             }
 
+            sqlsrv_close($cid);
 
         } catch (\Throwable $th) {
 
@@ -569,17 +562,18 @@ class Remito {
         foreach($data as $value){
             $estados[] = $value['OBSERVAC_LOGISTICA'];
         } 
-
+       
         if(in_array("PENDIENTE", $estados)){
 
-            $sql2 = "	
+            $sql = "	
+            SET DATEFORMAT YMD
+    
             UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = 'PENDIENTE' WHERE NRO_REMITO = '$ncomp'
             ";
-
     
             try {
     
-                $stmt = sqlsrv_prepare($cid, $sql2);
+                $stmt = sqlsrv_prepare($cid, $sql);
                 $stmt = sqlsrv_execute($stmt);
     
                 return true;
@@ -594,32 +588,6 @@ class Remito {
 
       
 
-        
-    } 
-
-
-
-    public function ajusteRemitoStatusDirecto($status, $ncomp){
-
-        $cid = $this->conn->conectar('central');
-
-        $sql = "	
-        UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = '$status' WHERE NRO_REMITO = '$ncomp'
-        ";
-
-
-        try {
-
-            $stmt = sqlsrv_prepare($cid, $sql);
-            $stmt = sqlsrv_execute($stmt);
-
-            return true;
-
-        } catch (\Throwable $th) {
-
-            print_r($th);
-
-        }
         
     } 
 

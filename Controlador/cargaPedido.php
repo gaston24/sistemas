@@ -49,9 +49,9 @@ if(!isset($_SESSION['username'])){
 
 		localStorage.setItem('datosLocal', datosLocal);
 
-		let server = window.location.href.split('/sistemas')[0];
+		let server = (window.location.href.includes("sistemas")) ? window.location.href.split('/sistemas')[0]+'/sistemas' : window.location.origin;
 
-		window.location.href = server+'/sistemas/index.php';
+		window.location.href = server+'/index.php';
 
 	</script>
 
