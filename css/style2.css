@@ -34,3 +34,11 @@ body {
 .login-button{margin-top:10px;}
 .login-options{margin-bottom:0px;}
 .login-forgot{float: right;}
+
+
+.seincomp-msj
+{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+}

@@ -336,7 +336,7 @@ function postearOrdenes3(matriz) {
 }
 
 function validarCredito(){  
-  var importeNP = document.getElementById('totalPrecio').value;      
+ var importeNP = document.getElementById('totalPrecio').value;      
   if((parseInt(creditoDisp.replace(/[$.]/g, "")) < parseInt(importeNP.replace(/[$.]/g, ""))) && (parseInt(importeNP.replace(/[$.]/g, "")) > 0)){
     Swal.fire({
       icon: 'info',
@@ -344,11 +344,11 @@ function validarCredito(){
       text: 'El crédito disponible es insuficiente!',
     })
   }else{
-      //alert(creditoDisp.replace(/[$.]/g, ""))
+      // alert(creditoDisp.replace(/[$.]/g, ""))
         enviaPedido();
-      }
+  
   }
-
+}
 
 //Suma el total de artículos del pedido//
 

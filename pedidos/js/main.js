@@ -109,7 +109,7 @@ var diferencia = parseInt(((cupoCredi - totalPedido)*-1), 10);
 const number = diferencia;
 diferencia = number.toLocaleString().toLocaleString('en-US', { maximumFractionDigits: 2 });//.replaceAll(".", "|").replaceAll(".", ",").replaceAll("|", ".");
 console.log(diferencia);
-
+/* 
 
 if( cupoCredi < totalPedido ) {
     document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
@@ -125,7 +125,7 @@ if( cupoCredi < totalPedido ) {
   document.getElementById("btnAceptar").disabled = false;
   }
 
-
+ */
 
 
 }
