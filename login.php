@@ -50,6 +50,8 @@ if(isset($_SESSION['username'])){
 						</span>  
 								</div>
 								<button class="btn btn-primary btn-block login-button" type="submit"><i class="fa fa-sign-in"></i> Ingresar</button>
+								<!-- spinner -->
+								<div id="boxLoading"></div>
 								<div class="checkbox login-options mt-2">
 									<label for="">Conexión con el local</label>
 									<select id="inputState" name="conecta" >
@@ -101,6 +103,14 @@ $(".reveal").on('click',function() {
         $pwd.attr('type', 'password');
     }
 });
+
+
+
+//Spinner listOrdenesActivas.php//
+var btn = document.querySelectorAll('.login-button');
+   btn.forEach(el => {
+     el.addEventListener("click", ()=>{$("#boxLoading").addClass("loading")});
+   })
 
 </script>
 
