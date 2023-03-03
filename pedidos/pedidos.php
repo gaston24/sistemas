@@ -99,8 +99,8 @@ if (!isset($_SESSION['username'])) {
 					</div>
 				</div>
 			</div>				
-		
 		</div>
+
 			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
 
 				<thead class="bg-secondary text-white">
