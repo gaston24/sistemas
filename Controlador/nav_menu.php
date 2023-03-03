@@ -33,7 +33,7 @@ include('estado_cuenta.php');
                     if ($_SESSION['esOutlet'] == 1) {
                     ?>
                         <!-- OUTLET -->
-                        <a class="dropdown-item" href="#" onClick="nuevoPedido('PEDIDO OUTLET', 3)" id="buttonPedidoOutlet">Outlet</a>
+                        <a class="dropdown-item spinner" href="#" onClick="nuevoPedido('PEDIDO OUTLET', 3)" id="buttonPedidoOutlet">Outlet</a>
                     <?php
                     } 
 
@@ -45,7 +45,7 @@ include('estado_cuenta.php');
                     }
                     ?>
                     <!-- HISTORIAL  -->
-                    <a class="dropdown-item" href="#" onclick="location.href='pedidos/historial.php'">Historial</a>
+                    <a class="dropdown-item spinner" href="#" onclick="location.href='pedidos/historial.php'">Historial</a>
 
                 </div>
             </li>
@@ -59,9 +59,9 @@ include('estado_cuenta.php');
                         Ecommerce
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#" onclick="location.href='guia_local'">Registrar Pedidos</a>
-                        <a class="dropdown-item" href="#" onclick="location.href='guia_local/buscar_factura.php'">Buscar Factura</a>
-                        <a class="dropdown-item" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='guia_local'">Registrar Pedidos</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='guia_local/buscar_factura.php'">Buscar Factura</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a>
                     </div>
                 </li>
             <?php
@@ -77,7 +77,7 @@ include('estado_cuenta.php');
                         Reportes
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#" onclick="
+                        <a class="dropdown-item spinner" href="#" onclick="
                 <?php
                 if (substr($codClient, 0, 2) == 'FR') {
                     echo "location.href='guiasf/index.php'";
@@ -90,12 +90,12 @@ include('estado_cuenta.php');
                         <?php
                         if ($dashboard != 'SIN_URL') {
                         ?>
-                            <a class="dropdown-item" href="#" onclick="window.open('<?php echo $dashboard; ?>');">Dashboard</a>
+                            <a class="dropdown-item spinner" href="#" onclick="window.open('<?php echo $dashboard; ?>');">Dashboard</a>
                         <?php
                         }
                         ?>
                         <?php if ($_SESSION['numsuc'] > 100) { ?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php } ?>
-                        <a class="dropdown-item" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
                     </div>
                 </li>
 
@@ -107,7 +107,7 @@ include('estado_cuenta.php');
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
+                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
                         <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                     </div>
                 </li>
