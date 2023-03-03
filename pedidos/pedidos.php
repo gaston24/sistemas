@@ -247,6 +247,7 @@ if (!isset($_SESSION['username'])) {
 	<script src="js/main.js"></script>
 	<script src="js/envio.js"></script>
 	<script src="js/jquery.table2excel.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	</body>
 	</html>
