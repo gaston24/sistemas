@@ -135,10 +135,22 @@ function enviarMayorista() {
         suma = $('#total').val();
 
         if (suma != 0) {
-            $("#aguarde").show();
-            $("#pantalla").fadeOut();
-            postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-
+            Swal.fire({
+                title: 'Desea registrar el pedido?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Enviar',
+                // denyButtonText: `No enviar`,
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $("#aguarde").show();
+                    $("#pantalla").fadeOut();
+                    postear(matriz, suc, codClient, t_ped, depo, talon_ped);
+                } else if (result.isDenied) {
+                  Swal.fire('El pedido no fue enviado', '', 'info')
+                }
+              })
         } else {
             swal({
                 title: "Error!",

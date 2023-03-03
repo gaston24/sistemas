@@ -38,6 +38,7 @@ require 'class/fechaEntrega.php';
 <?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
 <?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
 <link rel="stylesheet" href="ajustes/css/msj-seincomp.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>	

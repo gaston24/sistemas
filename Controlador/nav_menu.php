@@ -21,9 +21,9 @@ include('estado_cuenta.php');
                     ?>
 
                         <!-- GENERALES -->
-                        <a class="dropdown-item" href="#" onClick="nuevoPedido('PEDIDO GENERAL', 1)" id="buttonPedidoGeneral">Generales</a>
+                        <a class="dropdown-item spinner" href="#" onClick="nuevoPedido('PEDIDO GENERAL', 1)" id="buttonPedidoGeneral">Generales</a>
                         <!-- ACCESORIOS -->
-                        <a class="dropdown-item" href="#" onClick="nuevoPedido('PEDIDO ACCESORIOS', 2)" id="buttonPedidoAccesorios">Accesorios</a>
+                        <a class="dropdown-item spinner" href="#" onClick="nuevoPedido('PEDIDO ACCESORIOS', 2)" id="buttonPedidoAccesorios">Accesorios</a>
 
 
                     <?php
@@ -157,9 +157,20 @@ include('estado_cuenta.php');
                 }
             }
             ?>
-
+            <!-- spinner -->
+		    <div id="boxLoading"></div>
 
 
         </ul>
     </div>
 </nav>
+
+<script>
+
+    //Spinner listOrdenesActivas.php//
+    var btn = document.querySelectorAll('.spinner');
+    btn.forEach(el => {
+     el.addEventListener("click", ()=>{$("#boxLoading").addClass("loading")});
+   })
+
+</script>
