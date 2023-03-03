@@ -53,7 +53,7 @@ function enviar() {
         if (suma != 0) {
 
             if (suc > 100 && (parseInt(totalPedido, 10) > parseInt(cupo_credito, 10))) {
-                swal({
+                swal.fire({
                     title: "Atencion!",
                     text: "El limite de crédito fue excedido en " + diferencia + " pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
                     icon: "warning",
@@ -80,23 +80,24 @@ function enviar() {
             }
 
         } else {
-            swal({
+            swal.fire({
                 title: "Error!",
                 text: "No hay ningun articulo seleccionado!",
                 icon: "warning",
                 button: "Aceptar",
             });
+            $('#btnEnviar').show();
+            $('#spinnerEnviar').hide();
         }
 
     } else {
-        swal({
+        swal.fire({
             title: "Error!",
             text: "Error al cargar los articulos, solo se aceptan numeros! Revise los campos cargados por favor",
             icon: "warning",
             button: "Aceptar",
         });
     }
-
 
 }
 
@@ -112,15 +113,15 @@ function enviarEcommerce() {
         postear(matriz, suc, codClient, t_ped, depo, talon_ped);
 
     } else {
-        swal({
+        swal.fire({
             title: "Error!",
             text: "No hay ningun articulo seleccionado!",
             icon: "warning",
             button: "Aceptar",
         });
+        $('#btnEnviar').show();
+        $('#spinnerEnviar').hide();
     }
-
-
 }
 
 // PEDIDOS MAYORISTAS
@@ -135,33 +136,24 @@ function enviarMayorista() {
         suma = $('#total').val();
 
         if (suma != 0) {
-            Swal.fire({
-                title: 'Desea registrar el pedido?',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Enviar',
-                // denyButtonText: `No enviar`,
-              }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    $("#aguarde").show();
-                    $("#pantalla").fadeOut();
-                    postear(matriz, suc, codClient, t_ped, depo, talon_ped);
-                } else if (result.isDenied) {
-                  Swal.fire('El pedido no fue enviado', '', 'info')
-                }
-              })
+
+            $("#aguarde").show();
+            $("#pantalla").fadeOut();
+            postear(matriz, suc, codClient, t_ped, depo, talon_ped);
+            
         } else {
-            swal({
+            swal.fire({
                 title: "Error!",
                 text: "No hay ningun articulo seleccionado!",
                 icon: "warning",
                 button: "Aceptar",
             });
+            $('#btnEnviar').show();
+            $('#spinnerEnviar').hide();
         }
 
     } else {
-        swal({
+        swal.fire({
             title: "Error!",
             text: "Error al cargar los articulos, solo se aceptan numeros! Revise los campos cargados por favor",
             icon: "warning",
@@ -216,7 +208,7 @@ function muestraDiferencia(resultCompara){
     });
     texto += ' -- Los articulos seran realtados, por favor, modifique las cantidades solicitadas';
 
-    swal({
+    swal.fire({
         title: "Error! El stock de central se ha modificado",
         text: texto,
         icon: "warning",
@@ -263,31 +255,48 @@ function postear(matriz, suc, codClient, t_ped, depo, talon_ped) {
 
     let url = (env == 1) ? 'cargarPedidoNuevo.php' : 'cargarPedidoNuevoTest.php';
 
-    $.ajax({
-        url: 'Controlador/'+url,
-        method: 'POST',
-        data: {
-            matriz: matriz,
-            numsuc: suc,
-            codClient: codClient,
-            tipo_pedido: t_ped,
-            depo: depo,
-            talon_ped: talon_ped
-        },
-
-        success: function (data) {
-            swal({
-                title: "Pedido cargado exitosamente!",
-                text: "Numero de pedido: " + data,
-                icon: "success",
-                button: "Aceptar",
-            })
-            .then(function () {
-                window.location = "../index.php";
+    Swal.fire({
+        title: 'Desea registrar el pedido?',
+        icon: 'info',
+        showDenyButton: true,
+        // showCancelButton: true,
+        confirmButtonText: 'Enviar',
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'Controlador/'+url,
+                method: 'POST',
+                data: {
+                    matriz: matriz,
+                    numsuc: suc,
+                    codClient: codClient,
+                    tipo_pedido: t_ped,
+                    depo: depo,
+                    talon_ped: talon_ped
+                },
+                success: function (data) {
+                    Swal.fire({
+                        title: "Pedido cargado exitosamente!",
+                        text: "Numero de pedido: " + data,
+                        icon: "success",
+                        button: "Aceptar",
+                    })
+                    .then(function () {
+                        window.location = "../index.php";
+                    });
+                }
+        
             });
+        } else if (result.isDenied) {
+          Swal.fire('El pedido no fue enviado', '', 'info')
+          $("#aguarde").fadeOut();
+          $("#pantalla").show();
+          $('#btnEnviar').show();
+          $('#spinnerEnviar').hide();
         }
-
-    });
+      })
 
 }
 
