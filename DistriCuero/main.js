@@ -341,10 +341,10 @@ function validarCredito(){
     Swal.fire({
       icon: 'info',
       title: 'Atención',
-      text: 'El crédito disponible es insuficiente!',
+      text: 'El crédito disponible es insuficiente! $',
     })
   }else{
-      // alert(creditoDisp.replace(/[$.]/g, ""))
+      alert(creditoDisp.replace(/[$.]/g, ""))
         enviaPedido();
   
   }

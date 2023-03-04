@@ -133,7 +133,7 @@ include('estado_cuenta.php');
                             Distribucion Inicial
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedido Inicial</a>
+                            <!-- <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedido Inicial</a> -->
                             <a class="dropdown-item" href="#" onclick="location.href='DistriCuero/listOrdenesActivas.php'">Nota de pedido</a>
                         </div>
                     </li>
