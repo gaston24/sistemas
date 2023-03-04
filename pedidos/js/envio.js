@@ -59,6 +59,8 @@ function enviar() {
                     icon: "warning",
                     button: "Aceptar",
                 });
+                 $('#btnEnviar').show();
+                 $('#spinnerEnviar').hide();
             } else {
                 $("#aguarde").show();
                 $("#pantalla").fadeOut();
