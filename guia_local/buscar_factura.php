@@ -14,7 +14,7 @@ $numsuc = $_SESSION['numsuc'];
 <head>
 <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
 	<title>Comprobantes de ecommerce</title>	
-<?php include '../../css/header_simple.php'; ?>
+<?php include '../assets/css/header_simple.php'; ?>
 <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css" >
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -78,11 +78,17 @@ if(isset($_GET['comprobante'])){
 	$comp = $_GET['comprobante'];
 
 
-$dsn = "1 - CENTRAL";
-$usuario = "sa";
-$clave="Axoft1988";
+// $dsn = "1 - CENTRAL";
+// $usuario = "sa";
+// $clave="Axoft1988";
+//  include __DIR__.'\class\conexion.php'; 
+// $cid=odbc_connect($dsn, $usuario, $clave);
+include_once __DIR__.'/../class/conexion.php';
 
-$cid=odbc_connect($dsn, $usuario, $clave);
+$conn = new Conexion;
+
+$cid = $conn->conectar('central');
+
 
 $sql=
 	"
@@ -130,7 +136,7 @@ $sql=
 	";
 
 ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 
@@ -161,13 +167,13 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 	</thead>
 	<tbody id="table">
 		<?php
-		while($v=odbc_fetch_array($result)){
+		while($v=sqlsrv_fetch_array($result)){
 		?>
 
 
 		<tr>
 
-		<td class="col-1" style="font-size: 11px;"><?= $v['FECHA'] ;?></td>
+		<td class="col-1" style="font-size: 11px;"><?= $v['FECHA']->format('d/m/Y'); ;?></td>
 		<td class="col-3" style="font-size: 11px;"><?= $v['NOMBRE'] ;?></td>
 		<td class="col-" style="font-size: 11px;"><?= $v['N_COMP'] ;?></td>
 		<td class="col-" style="font-size: 11px;"><?= $v['PEDIDO'] ;?></td>

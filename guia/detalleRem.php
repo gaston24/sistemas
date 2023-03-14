@@ -20,14 +20,16 @@ $permiso = $_SESSION['permisos'];
 <?php
 	 
 	 
-$dsn = "1 - CENTRAL";
-$usuario = "sa";
-$clave="Axoft1988";
+
+
+include_once __DIR__.'/../class/conexion.php';
+$conn = new Conexion;
+
+$cid = $conn->conectar('central');
 
 $suc = $_GET['suc'];
 $rem = $_GET['remito'];
 
-$cid=odbc_connect($dsn, $usuario, $clave);
 
 
 
@@ -45,7 +47,7 @@ AND A.N_COMP = '$rem'
 	";
 
 ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 <a href="/sistemas/guia/index.php?sucursal=<?php echo $suc ?>&desde=<?php echo $_GET['desde'] ;?>&hasta=<?php echo $_GET['hasta'] ;?>&remito="><img src="botonAtras.png"></a>
@@ -76,14 +78,14 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         <?php
 
        
-		while($v=odbc_fetch_array($result)){
+		while($v=sqlsrv_fetch_array($result)){
 
         ?>
 
 		
         <tr >
 
-				<td class="col-"><?php echo $v['FECHA'] ;?></a></td>
+				<td class="col-"><?php echo $v['FECHA']->format('d/m/Y') ;?></a></td>
 		
                 <td class="col-"><?php echo $v['REMITO'] ;?></a></td>
 				

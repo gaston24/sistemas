@@ -7,13 +7,17 @@ if(!isset($_SESSION['username'])){
 $permiso = $_SESSION['permisos'];
 $user = $_SESSION['username'];
 	
-$dsn = '1 - CENTRAL';
-$usuario = "sa";
-$clave="Axoft1988";
+
+include_once __DIR__.'/../class/remito.php';
+
+$this->conn = new Conexion;
+
+$cid = $this->conn->conectar('central');
+
+
 
 $codClient = $_SESSION['codClient'];
 
-$cid=odbc_connect($dsn, $usuario, $clave);
 
 
 for($i=0;$i<count($_GET['codArticu']);$i++){
@@ -32,7 +36,7 @@ for($i=0;$i<count($_GET['codArticu']);$i++){
 	AND ID = $id AND COD_CLIENT = '$user'	
 	";
 	
-	odbc_exec($cid, $sql) or die(exit("Error en odbc_exec"));
+	sqlsrv_query($cid, $sql) or die(exit("Error en odbc_exec"));
 }
 
 }

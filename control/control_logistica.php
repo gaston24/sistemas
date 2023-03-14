@@ -20,14 +20,16 @@ $user = $_SESSION['username'];
 
 <?php
 
+include_once __DIR__.'/../class/remito.php';
 
-$dsn = '1 - CENTRAL';
-$usuario = "sa";
-$clave="Axoft1988";
+
+$this->conn = new Conexion;
+
+$cid = $this->conn->conectar('central');
 
 $codClient = $_SESSION['codClient'];
 
-$cid=odbc_connect($dsn, $usuario, $clave);
+
 
 
 $sql=
@@ -48,7 +50,7 @@ $sql=
 	";
 
 ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 <div style="width:100%; height:80%" >
@@ -83,7 +85,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 			<tbody>
 
 				<?php
-				while($v=odbc_fetch_array($result)){
+				while($v=sqlsrv_fetch_array($result)){
 				?>
 
 				<tr style="font-size:smaller">

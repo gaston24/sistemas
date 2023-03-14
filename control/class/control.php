@@ -1,19 +1,28 @@
 <?php
+require_once __DIR__ .'/../../class/conexion.php' ;
 
 class Remito 
 {
-    private $dsn = '1 - CENTRAL';
-    private $usuario = "sa";
-    private $clave="Axoft1988";
+
+    function __construct(){
+
+        require_once __DIR__.'../../class/conexion.php';
+        $this->conn = new Conexion;
+
+    }
+
+
+    
 
     private function getDatos($sql){
 
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+
+        $cid = $this->conn->conectar('central');
 
         ini_set('max_execution_time', 300);
-        $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+        $result = sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
         $data = [];
-        while($v=odbc_fetch_object($result)){
+        while($v= sqlsrv_fetch_object ($result)){
             $data[] = array($v);
         };
         return $data;
@@ -21,9 +30,12 @@ class Remito
     }
 
     private function insertDatos($sql){
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        
+        $cid = $this->conn->conectar('central');
+
+        // $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
         ini_set('max_execution_time', 300);
-        odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+        sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
     }
     
     
@@ -159,7 +171,9 @@ class Remito
     } 
 
     public function wrongCode($codigo){
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        // $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        $cid = $this->conn->conectar('central');
+
 
         $sqlValida =
             "
@@ -168,9 +182,9 @@ class Remito
             ";
 
         ini_set('max_execution_time', 300);
-        $resultValida = odbc_exec($cid, $sqlValida) or die(exit("Error en odbc_exec"));
+        $resultValida = sqlsrv_query($cid, $sqlValida) or die(exit("Error en odbc_exec"));
 
-        if (odbc_num_rows($resultValida) == 0) {
+        if (sqlsrv_num_rows($resultValida) == 0) {
             return '
             <audio src="Wrong.ogg" autoplay></audio>
             </br></br>
