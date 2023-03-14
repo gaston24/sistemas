@@ -24,7 +24,10 @@ try {
 
 		$status = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'ACEPTADO';
 
-		$remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status);
+		if( in_array(substr(strtoupper($codArticu), 0, 1) , ['X', 'O']) ){
+			$remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status);
+		}
+
 	}
 
 	$remito->ajusteRemitoStatus($rem);

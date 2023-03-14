@@ -591,6 +591,29 @@ class Remito {
         
     } 
 
+    public function ajusteRemitoStatusDirecto($status, $ncomp){
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "	
+        UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = '$status' WHERE NRO_REMITO = '$ncomp'
+        ";
+
+
+        try {
+
+            $stmt = sqlsrv_prepare($cid, $sql);
+            $stmt = sqlsrv_execute($stmt);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+        
+    } 
 }
 
 
