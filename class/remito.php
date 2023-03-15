@@ -614,7 +614,28 @@ class Remito {
         }
         
     } 
+
+    public function borrarRemitoControlado($numRemito){
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "
+        DELETE FROM SJ_CONTROL_AUDITORIA WHERE NRO_REMITO = $numRemito
+        ";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+    }
+
+
 }
-
-
-

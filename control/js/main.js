@@ -177,20 +177,36 @@ let btnProcesar = document.querySelector("#btnProcesar");
 
 btnProcesar.addEventListener("click", ()=>{
 
+    Swal.fire({
+        title: 'Seguro de que quieres procesar el remito ?',
+        showDenyButton: true,
+        confirmButtonText: 'Procesar',
+        denyButtonText: `Cancelar`,
+    }).then((result) => {
 
-    let codigos = document.querySelectorAll(".fila-base");
-    let controlados = [];
+        if (result.isConfirmed) {
+         
+            let codigos = document.querySelectorAll(".fila-base");
+            let controlados = [];
 
-    codigos.forEach(x=>{
-        controlados.push(
-            [
-                x.querySelectorAll("td")[0].innerHTML,
-                x.querySelectorAll("td")[2].innerHTML
-            ]
-        )
+            codigos.forEach(x=>{
+                controlados.push(
+                    [
+                        x.querySelectorAll("td")[0].innerHTML,
+                        x.querySelectorAll("td")[2].innerHTML
+                    ]
+                )
+            })
+            
+            procesarRemito(controlados, remito, codClient);
+
+        } else if (result.isDenied) {
+
+          Swal.fire('Remito no procesado', '', 'info')
+
+        }
+        
     })
-    
-    procesarRemito(controlados, remito, codClient);
 
 })
 

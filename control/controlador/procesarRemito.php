@@ -16,12 +16,16 @@ try {
 	
 	$_post = json_decode(file_get_contents('php://input'),true);
 	$articulosControlados = $_post['data'];
+	$acum = 0;
 
 	foreach($articulosControlados as $art){
+
+
+
 		$codArticu = $art[0];
 		$cantRem = $art[1];
 		$cantControl = $art[2];
-
+		$acum += $cantControl;
 		$status = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'ACEPTADO';
 
 		if( in_array(substr(strtoupper($codArticu), 0, 1) , ['X', 'O']) ){
@@ -30,7 +34,14 @@ try {
 
 	}
 
-	$remito->ajusteRemitoStatus($rem);
+	if ( $acum > 0 ){
+
+		$remito->ajusteRemitoStatus($rem);
+
+	}else {
+		
+		$remito->borrarRemitoControlado($rem);
+	}
 
 } catch (\Throwable $th) {
 	throw $th;
