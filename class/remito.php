@@ -424,10 +424,7 @@ class Remito {
 
     public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status){
         $cid = $this->conn->conectar('central');
-        // $test = getdate($fechaRem);
-        // var_dump($test);
-        // die();
-      
+
         $sql = " SET DATEFORMAT YMD
          INSERT INTO SJ_CONTROL_AUDITORIA
         (
