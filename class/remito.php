@@ -423,10 +423,13 @@ class Remito {
     }
 
     public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status){
-
         $cid = $this->conn->conectar('central');
-
-        $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
+        // $test = getdate($fechaRem);
+        // var_dump($test);
+        // die();
+      
+        $sql = " SET DATEFORMAT YMD
+         INSERT INTO SJ_CONTROL_AUDITORIA
         (
             FECHA_CONTROL, COD_CLIENT, FECHA_REM, NRO_REMITO, SUC_ORIG, 
             SUC_DESTIN, COD_ARTICU, CANT_REM, CANT_CONTROL, USUARIO_LOCAL, 
@@ -440,16 +443,15 @@ class Remito {
         )";
 
         try {
-
-
-
+    
+    
+            
             $stmt = sqlsrv_prepare($cid, $sql);
             $stmt = sqlsrv_execute($stmt);
 
             return true;
 
         } catch (\Throwable $th) {
-
             print_r($th);
 
         }
