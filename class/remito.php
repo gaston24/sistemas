@@ -423,10 +423,10 @@ class Remito {
     }
 
     public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status){
-
         $cid = $this->conn->conectar('central');
 
-        $sql = "INSERT INTO SJ_CONTROL_AUDITORIA
+        $sql = " SET DATEFORMAT YMD
+         INSERT INTO SJ_CONTROL_AUDITORIA
         (
             FECHA_CONTROL, COD_CLIENT, FECHA_REM, NRO_REMITO, SUC_ORIG, 
             SUC_DESTIN, COD_ARTICU, CANT_REM, CANT_CONTROL, USUARIO_LOCAL, 
@@ -440,16 +440,15 @@ class Remito {
         )";
 
         try {
-
-
-
+    
+    
+            
             $stmt = sqlsrv_prepare($cid, $sql);
             $stmt = sqlsrv_execute($stmt);
 
-            return $sql;
+            return true;
 
         } catch (\Throwable $th) {
-
             print_r($th);
 
         }
@@ -535,7 +534,7 @@ class Remito {
     public function ajusteRemitoStatus($ncomp){
 
         $cid = $this->conn->conectar('central');
-        
+
 
         $sql = 
         "
@@ -554,7 +553,6 @@ class Remito {
 
             }
 
-            sqlsrv_close($cid);
 
         } catch (\Throwable $th) {
 

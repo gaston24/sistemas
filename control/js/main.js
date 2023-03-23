@@ -103,7 +103,7 @@ const addArticulo = (articulo) =>{
                 <td class="col-" style="width:6em">${articulo.COD_ARTICU}</td>
                 <td class="col-" style="width:5em">${articulo.DESCRIPCIO}</td>
                 <td class="col-" style="width:3em" align="center">1</td>
-                <td class="col-"><img src="../../invlocales/eliminar.png" width="17rem" height="17rem" align="left" onClick="eliminarArticulo(this)"></img></td>
+                <td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" onClick="eliminarArticulo(this)"></img></td>
             </tr>
             `
         )

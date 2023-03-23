@@ -162,5 +162,9 @@ const procesarRemitoControlado = (datosTotal) => {
         },
         body: JSON.stringify({data: datosTotal}) 
       })
+      .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
 
 }
