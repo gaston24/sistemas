@@ -534,7 +534,7 @@ class Remito {
     public function ajusteRemitoStatus($ncomp){
 
         $cid = $this->conn->conectar('central');
-        
+
 
         $sql = 
         "
@@ -553,7 +553,6 @@ class Remito {
 
             }
 
-            sqlsrv_close($cid);
 
         } catch (\Throwable $th) {
 
