@@ -35,7 +35,7 @@ $todasLasOrdenes = $orden->traerOrdenesInactivas();
                 <label id="textBusqueda">Busqueda rapida:</label>
                 <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
             </div>
-
+            
             <div id="contCountOrdenes">
                  <label id="labelTotal">Ordenes seleccionadas</label> 
 				<input name="total" id="totalOrdenes" value="0" type="text" class="form-control" readonly>
