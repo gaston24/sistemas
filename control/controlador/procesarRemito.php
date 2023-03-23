@@ -12,6 +12,7 @@ try {
 	$sucOrig = $_SESSION['suc_orig'];
 	$sucDestin = $_SESSION['suc_destin'];
 	$fechaRem = $_SESSION['fecha_mov'];
+	$fechaRem = $fechaRem->format('Y-m-d H:i:s');
 	$codVend = $_SESSION['codVen'];
 	
 	$_post = json_decode(file_get_contents('php://input'),true);
@@ -26,8 +27,9 @@ try {
 
 
 	if ( $acum > 0 ){
-
+		
 		foreach($articulosControlados as $art){
+			
 
 			$codArticu = $art[0];
 			$cantRem = $art[1];
@@ -36,7 +38,7 @@ try {
 			$status = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'ACEPTADO';
 
 			if( in_array(substr(strtoupper($codArticu), 0, 1) , ['X', 'O']) ){
-				$remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status);
+				echo $remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status);
 			}
 
 		}

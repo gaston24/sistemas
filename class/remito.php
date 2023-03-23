@@ -446,7 +446,7 @@ class Remito {
             $stmt = sqlsrv_prepare($cid, $sql);
             $stmt = sqlsrv_execute($stmt);
 
-            return $sql;
+            return true;
 
         } catch (\Throwable $th) {
 
