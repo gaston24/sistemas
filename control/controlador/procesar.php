@@ -17,9 +17,12 @@ try {
 	$_post = json_decode(file_get_contents('php://input'),true);
 	$articulosControlados = $_post['data'];
 	
+	$_SESSION['articulosControlados'] = null;
 	$_SESSION['articulosControlados'] = json_encode($articulosControlados);
 
 	// TRAER TODOS LOS ARTICULOS DEL REMITO PARA LUEGO COMPARARLO
+
+	$_SESSION['articulosRemito'] = null;
 	$_SESSION['articulosRemito'] = json_encode($remito->traerTodosLosArticulosRemito($rem));
 
 	//MARCAR REMITO COMO REGISTRADO
