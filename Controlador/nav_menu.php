@@ -99,7 +99,7 @@ include('estado_cuenta.php');
                     </div>
                 </li>
 
-
+                <?php if($_SESSION['conection_dbs'] != false) {?>                   
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Operaciones
@@ -111,6 +111,7 @@ include('estado_cuenta.php');
                         <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                     </div>
                 </li>
+                <?php } ?>
 
                 <?php if ($_SESSION['numsuc'] < 100) { ?>
 
