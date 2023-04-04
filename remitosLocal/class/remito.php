@@ -13,7 +13,7 @@ class Remito{
 
         include __DIR__.'\..\AccesoDatos\conn.php';
         
-        $cid = $this->conn->conectar('central');
+      /*   $cid = $this->$cid_locales->conectar('central'); */
         
         $sql = "
         SET DATEFORMAT YMD
@@ -21,7 +21,7 @@ class Remito{
         FROM CTA09 WHERE FECHA_MOV >= GETDATE()-50 AND NRO_SUCURS = $suc AND N_COMP LIKE 'R%'
         ORDER BY N_COMP DESC
         ";
-        $stmt = sqlsrv_query( $cid, $sql );
+        $stmt = sqlsrv_query( $cid_locales, $sql );
 
         $rows = array();
 
@@ -38,14 +38,14 @@ class Remito{
 
         include __DIR__.'\..\AccesoDatos\conn.php';
 
-        $cid = $this->conn->conectar('central');
+       /*  $cid = $this->conn->conectar('central'); */
 
         $sql = "
         SET DATEFORMAT YMD
 
         EXEC SJ_CONSULTA_REMITO_SUCURSAL $suc, '$ncompInS'
         ";
-        $stmt = sqlsrv_query( $cid, $sql );
+        $stmt = sqlsrv_query( $cid_locales, $sql );
 
         $rows = array();
 

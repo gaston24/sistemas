@@ -96,7 +96,7 @@ class Remito {
         $sql=
             "
             SET DATEFORMAT YMD
-            --XV2SST16Z080139
+
             SELECT A.*, B.DESCRIPCIO FROM
             (
                 SELECT ISNULL(COD_CLIENT, COD_PRO_CL) COD_CLIENT, ISNULL(A.SUC_DESTIN, B.SUC_DESTIN) SUC_DESTIN, FECHA_CONTROL, ISNULL(FECHA_REM, B.FECHA_MOV) FECHA_REM, NOMBRE_VEN, A.NRO_REMITO, ISNULL(A.COD_ARTICU, B.COD_ARTICULO) COD_ARTICU, ISNULL(A.CANT_CONTROL, 0) CANT_CONTROL, 
@@ -111,9 +111,9 @@ class Remito {
                         NOMBRE_VEN, A.NRO_REMITO, 
                         A.COD_ARTICU, 
                         A.CANT_CONTROL, A.CANT_REM, A.CANT_CONTROL - A.CANT_REM DIFERENCIA, ISNULL(E.ULTIMA_PARTIDA, '') PARTIDA
-                                                    
+                                                                
                         FROM SJ_CONTROL_AUDITORIA A
-                        
+                                    
                         INNER JOIN GVA23 D
                         ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
                         LEFT JOIN SOF_PARTIDAS E
@@ -122,11 +122,10 @@ class Remito {
                         AND A.COD_ARTICU LIKE '[XO]%'
                     ) A
                     GROUP BY COD_CLIENT, SUC_DESTIN, FECHA_CONTROL, FECHA_REM, NOMBRE_VEN, NRO_REMITO, COD_ARTICU
-            
                 ) A
                 FULL OUTER JOIN 
                 (
-                    SELECT B.FECHA_MOV, A.N_COMP, A.COD_PRO_CL, A.SUC_DESTIN, B.COD_ARTICU COD_ARTICULO, B.CANTIDAD from STA14 A
+                    SELECT DISTINCT B.FECHA_MOV, A.N_COMP, A.COD_PRO_CL, A.SUC_DESTIN, B.COD_ARTICU COD_ARTICULO, B.CANTIDAD from STA14 A
                     INNER JOIN STA20 B ON A.TCOMP_IN_S = B.TCOMP_IN_S AND A.NCOMP_IN_S = B.NCOMP_IN_S
                     INNER JOIN (SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE PROMO_MENU != 'P') C ON B.COD_ARTICU = C.COD_ARTICU
                     WHERE A.N_COMP = '$numRem'
@@ -393,10 +392,11 @@ class Remito {
         $cid = $this->conn->conectar('local');
         
 
-        $sql = "SELECT B.COD_ARTICU, CAST(B.CANTIDAD AS FLOAT) CANTIDAD FROM STA14 A 
+        $sql = "SELECT B.COD_ARTICU, CAST(SUM(B.CANTIDAD) AS FLOAT) CANTIDAD FROM STA14 A 
                 INNER JOIN STA20 B ON A.NCOMP_IN_S = B.NCOMP_IN_S and A.TCOMP_IN_S = B.TCOMP_IN_S
                 INNER JOIN STA11 C ON B.COD_ARTICU = C.COD_ARTICU
                 WHERE A.NCOMP_ORIG = '$rem' AND C.PROMO_MENU != 'M'
+                GROUP BY B.COD_ARTICU
         ";
 
         try {
@@ -579,13 +579,34 @@ class Remito {
                 $stmt = sqlsrv_prepare($cid, $sql);
                 $stmt = sqlsrv_execute($stmt);
     
-                return true;
-    
             } catch (\Throwable $th) {
     
                 print_r($th);
     
             }
+
+        }
+
+        $sql2 = "	
+        DELETE FROM SJ_CONTROL_AUDITORIA
+        WHERE ID IN
+        (
+            SELECT MAX(ID) ID
+            FROM SJ_CONTROL_AUDITORIA
+            WHERE NRO_REMITO = '$ncomp'
+            GROUP BY NRO_REMITO, SUC_ORIG, SUC_DESTIN, COD_ARTICU 
+            HAVING COUNT(COD_ARTICU) > 1
+        )
+        ";
+
+        try {
+
+            $stmt = sqlsrv_prepare($cid, $sql2);
+            $stmt = sqlsrv_execute($stmt);
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
 
         }
 

@@ -20,8 +20,11 @@ if (substr($v['DESCRIPCIO'], -11) == '-- SALE! --') {
     <td style="width: 1%"><input name="rubro[]" value="<?= $v['RUBRO']; ?>" hidden> </td>
     <td style="width: 3%" id="stock"><?= (int)($v['CANT_STOCK']); ?> </td>
     <td style="width: 1% ; border-left: 1px solid black"><input name="stock[]" value="<?= $v['CANT_STOCK']; ?>" hidden> </td>
+   
     <td style="width: 2%"><?= (int)($v['812_STOCK']); ?> </td>
+    <td style="width: 2%"><?= (int)($v['812_VENDIDO']); ?> </td>
     <td style="width: 4%"><input type="text" name="cantPed_812[]" id="cantPed" value="0" onkeyup="total();precioTotal()" size="1" tabindex="1" class="form-control form-control-sm FRBAUD"> </td>
+   
     <td style="width: 2% ; border-left: 1px solid black"><?= (int)($v['813_STOCK']); ?> </td>
     <td style="width: 2%"><?= (int)($v['813_VENDIDO']); ?> </td>
     <td style="width: 4%"><input type="text" name="cantPed_813[]" id="cantPed" value="0" onkeyup="total();precioTotal()" size="1" tabindex="1" class="form-control form-control-sm FRORCE"> </td>
