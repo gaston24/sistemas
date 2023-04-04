@@ -2,8 +2,8 @@
 if (!isset($_SESSION['username'])) {
 	header("Location:../login.php");
 } else {
-	
-	if($_SESSION['conection_dbs'] == false){
+
+	if($_SESSION['conection_db'] == false){
 		header('Location:../index.php');
 	}
 
