@@ -27,7 +27,7 @@ class Extralarge {
                 $v[] = $row;
 
             }
-            $v[0]['conection_dbs'] = $cid;
+
             return $v[0];
 
         } catch (\Throwable $th) {

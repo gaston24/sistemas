@@ -33,7 +33,7 @@ if( count($loginRes) == 0 ){
 	$_SESSION['tipo'] = $loginRes['TIPO'];
 	$_SESSION['habPedidos'] = $loginRes['EXCLUYE_PEDIDOS'];
 	$_SESSION['esOutlet'] = $loginRes['IS_OUTLET'];
-	$_SESSION['conection_dbs'] = $loginRes['conection_dbs'] != false ? true : false;
+	$_SESSION['connection_db'] = $_SESSION['cid'] != false ? true : false;
 	
 	// datos de credito del cliente
 	// cupoCredi es lo real disponible para pedidos

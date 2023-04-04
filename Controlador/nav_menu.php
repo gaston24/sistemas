@@ -77,16 +77,8 @@ include('estado_cuenta.php');
                         Reportes
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item spinner" href="#" onclick="
-                <?php
-                if (substr($codClient, 0, 2) == 'FR') {
-                    echo "location.href='guiasf/index.php'";
-                } else {
-                    echo "location.href='guia/index.php'";
-                }
-                ?>
-            ">
-                            Guia de Transporte</a>
+                        <a class="dropdown-item spinner" href="#" onclick="<?= (substr($codClient, 0, 2) == 'FR') ?  "location.href='guiasf/index.php'" : "location.href='guia/index.php'"; ?>">Guia de Transporte</a>
+
                         <?php
                         if ($dashboard != 'SIN_URL') {
                         ?>
@@ -99,19 +91,23 @@ include('estado_cuenta.php');
                     </div>
                 </li>
 
-                <?php if($_SESSION['conection_dbs'] != false) {?>                   
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Operaciones
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
+
+                        <?php if($_SESSION['connection_db'] != false) {?>      
+                            <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
+                        <?php } ?>
+
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
                         <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                     </div>
                 </li>
-                <?php } ?>
+
 
                 <?php if ($_SESSION['numsuc'] < 100) { ?>
 
