@@ -68,6 +68,9 @@ $a = traerDetalle($_GET['codClient']);
                         <tbody>
                             <?php
                                 foreach ($a as $value) {
+                                    if ($value['CHEQUEADO'] == 1){
+                                        continue;
+                                    }
                                     echo "<tr>";
                                     echo "<td style='text-align:center' >".$value['FECHA_MOV']->format('Y-m-d H:i:s')."</td>";
                                     echo "<td style='text-align:center' >".$value['N_COMP']."</td>";
@@ -107,6 +110,7 @@ $a = traerDetalle($_GET['codClient']);
         const btnConfirmar = document.querySelector("#btnConfirmar");
 
         $(document).ready(function() {
+            parseNumber();
             $('#myTable').DataTable({
                 responsive: true,
                 buttons: [
@@ -127,6 +131,25 @@ $a = traerDetalle($_GET['codClient']);
 
         });
 
+
+        const parseNumber = ()=>{
+
+            let allMontos = document.querySelectorAll("#monto");
+
+            allMontos.forEach(monto => {
+                let valor = parseFloat(monto.textContent);
+                valor = valor.toLocaleString('de-De', {
+                    style: 'decimal',
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2
+                });
+                monto.setAttribute("attr-realValue", monto.textContent)
+                monto.textContent = "$ "+valor;
+            });
+
+        }
+
+
         const checkMonto = ()=>{
 
             const todosLosCheck = document.querySelectorAll('input[type="checkbox"]');
@@ -134,7 +157,8 @@ $a = traerDetalle($_GET['codClient']);
 
             todosLosCheck.forEach(e => {
                 if(e.checked){
-                    totalMontosCheck = totalMontosCheck + parseInt(e.parentElement.parentElement.childNodes[2].textContent)
+
+                    totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
                 }
             });
 
