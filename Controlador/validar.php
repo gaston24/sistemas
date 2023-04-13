@@ -47,13 +47,14 @@ if( count($loginRes) == 0 ){
 	// total de deuda
 	$_SESSION['totalDeuda'] = $loginRes['TOTAL_DEUDA'];
 
-	$_SESSION['pantallas'] = false;
+	$_SESSION['pantallas'] = true;
 
-	if($_SESSION['pantalla'] == true ){
+	if($_SESSION['pantallas'] == true ){
 		header("Location: ../indexPantalla.php");
+		die();
 	}
 
-	
+
 	if($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;

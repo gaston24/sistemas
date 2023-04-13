@@ -138,6 +138,8 @@ foreach ($a as $remito => $value) {
 </body>
 
 </html>
+<script src="js/jquery.table2excel.js"></script>
+
 <script>
 
         $(document).ready(function() {
@@ -163,4 +165,20 @@ foreach ($a as $remito => $value) {
        
             window.location.href = "remitosPendientesDeCobro.php?codClient="+codClient;
         }
+
+        $("#btnExport").click(function() {
+
+            $('input[type=number]').each(function(){
+                this.setAttribute('value',$(this).val());
+            });
+
+            $("table").table2excel({
+
+                // exclude CSS class
+                exclude: ".noExl",
+                name: "Worksheet Name",
+                filename: "Remitos", //do not include extension
+                fileext: ".xls", // file extension
+            });
+        });
 </script>
