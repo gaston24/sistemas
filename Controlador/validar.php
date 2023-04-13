@@ -47,7 +47,7 @@ if( count($loginRes) == 0 ){
 	// total de deuda
 	$_SESSION['totalDeuda'] = $loginRes['TOTAL_DEUDA'];
 
-	$_SESSION['pantallas'] = true;
+	$_SESSION['pantallas'] = false;
 
 	if($_SESSION['pantallas'] == true ){
 		header("Location: ../indexPantalla.php");
