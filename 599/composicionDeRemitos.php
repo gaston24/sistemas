@@ -2,18 +2,19 @@
 include_once "controller/traerEquis.php";
 if($_POST){
     $campo = $_POST['inputBuscar'] == "" ? '%' : $_POST['inputBuscar'];
+
     $a=traerTodos($_POST['inputBuscar']);
 }else{
     
     $a = traerTodos();
 }
 
-$totalCobrado = 0;
-$totalDeuda = 0;
 $newArray = [];
 $remitoActual = "";
 foreach ($a as $remito => $value) {
-    // var_dump($a[$remito]['COD_PRO_CL']);
+    $totalDeuda = 0;
+    $totalCobrado = 0;
+    
     if($remitoActual != $value['COD_PRO_CL']){
 
         foreach ($a as $val ) {
@@ -27,8 +28,8 @@ foreach ($a as $remito => $value) {
                 }
                 
             }
-    
         }
+        
         $remitoActual = $value['COD_PRO_CL'];
         $newArray[$remito]['totalCobrado']=$totalCobrado;
         $newArray[$remito]['totalDeuda']=$totalDeuda;
@@ -37,6 +38,7 @@ foreach ($a as $remito => $value) {
     }
 
 }
+
 
 ?>
 
@@ -108,8 +110,8 @@ foreach ($a as $remito => $value) {
                                     foreach($newArray as $b){
                                         echo "<tr>";
                                         echo "<td style='text-align:center' attr-codClient='".$b['codCliente']."'>".$b['nombreCliente']."</td>";
-                                        echo "<td style='text-align:center' id='colDeuda'>".$b['totalDeuda']."</td>";
-                                        echo "<td style='text-align:center'>".$b['totalCobrado']."</td>";
+                                        echo "<td style='text-align:center;' id='colDeuda'>".$b['totalDeuda']."</td>";
+                                        echo "<td style='text-align:center' id='colCobrado'>".$b['totalCobrado']."</td>";
                                         echo "<td style='text-align:center'><button class ='btn-success' onclick='verDetalle(this)'><i class='bi bi-pencil-square'></i></button></td>";
                                         echo "</tr>";
                                     }
@@ -142,7 +144,13 @@ foreach ($a as $remito => $value) {
 
 <script>
 
+
+    
+
+
         $(document).ready(function() {
+            parseNumber();
+
             $('#myTable').DataTable({
                 responsive: true,
                 buttons: [
@@ -157,6 +165,36 @@ foreach ($a as $remito => $value) {
 
         document.querySelector("#sumValorDeuda").value = valorTotalDeudas;
         });
+
+
+        const parseNumber = ()=>{
+
+        let allDeuda = document.querySelectorAll("#colDeuda");
+        let allCobrado = document.querySelectorAll("#colCobrado");
+
+        allDeuda.forEach(deuda => {
+            let valor = parseFloat(deuda.textContent);
+            valor = valor.toLocaleString('de-De', {
+                style: 'decimal',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2
+                });
+                deuda.textContent = "$ "+valor;
+        });
+
+        allCobrado.forEach(cobrado => {
+            let valor = parseFloat(cobrado.textContent);
+            valor = valor.toLocaleString('de-De', {
+                style: 'decimal',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2
+                });
+                cobrado.textContent = "$ "+valor;
+        });
+
+
+
+        }
 
         const verDetalle = (rem) =>{
             
