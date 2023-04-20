@@ -5,12 +5,9 @@ $codClient = $_POST['codClient'];
 
 $remitoEquis = new RemitoEquis();
 
-$result = $remitoEquis->traerCheque($codClient);
+$result = $remitoEquis->traerChequeNumInterno($codClient);
 
 echo json_encode($result);
-
-
- 
 
 
 ?>

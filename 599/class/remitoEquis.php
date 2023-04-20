@@ -74,10 +74,10 @@ class RemitoEquis {
     public function cambiarEstado ($remito) {
    
         $cid = $this->conn->conectar('central');
-        $date = date('Y-m-d H\:i\:s.v');
+
         
-        $sql = "UPDATE SJ_EQUIS_TABLE SET CHEQUEADO = '1' ,FECHA_CHEQUEADO ='$date' WHERE N_COMP = '$remito'";
-        
+        $sql = "UPDATE SJ_EQUIS_TABLE SET CHEQUEADO = '1' ,FECHA_CHEQUEADO =getdate() WHERE N_COMP = '$remito'";
+
         try {
             $stmt = sqlsrv_query($cid, $sql);
     
@@ -103,7 +103,7 @@ class RemitoEquis {
         $codClient = $data['codClient'];
 
         
-        $sql = "INSERT INTO sj_administracion_cheques (cod_client,num_interno, num_cheque, banco, monto, fecha_cheque) VALUES ('$codClient','$numeroDeInterno', '$numeroDeCheque', '$banco', '$chequeMonto', '$fechaCobro') ";
+        $sql = "INSERT INTO sj_administracion_cheques (cod_client, num_cheque, banco, monto, fecha_cheque) VALUES ('$codClient', '$numeroDeCheque', '$banco', '$chequeMonto', '$fechaCobro') ";
         
         try {
             $stmt = sqlsrv_query($cid, $sql);
@@ -127,6 +127,219 @@ class RemitoEquis {
 
             $stmt = sqlsrv_query($cid, $sql);
 
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+    
+                $v[] = $row;
+    
+            }
+            
+            return $v;
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function traerChequeNumInterno (){
+
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "SELECT MAX(ID) FROM sj_administracion_cheques";
+        
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+           $row = sqlsrv_fetch_array($stmt);
+    
+   
+            return $row[0];
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function guardarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total,$nombreCliente) {
+        
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "INSERT INTO sj_administracion_cobros (cod_client, importe_efectivo, importe_cheque, importe_total,rendido,nombre_cliente) VALUES ('$cod_client', '$importe_efectivo', '$importe_cheque', '$importe_total','0','$nombreCliente')SELECT SCOPE_IDENTITY()";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $next_result = sqlsrv_next_result($stmt);
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return ( $v[0][""]);
+    
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function guardarCobroRemito ($idCobro, $remito ) {
+
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "INSERT INTO sj_administracion_cobros_por_remito (id_cobro, num_rem,rendido,fecha_rendido) VALUES ('$idCobro', '$remito','0',getdate())";
+   
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            return true;
+    
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function traerRemito ($numRemito){
+
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "SELECT * FROM SJ_EQUIS_TABLE WHERE N_COMP in ($numRemito) ORDER BY FECHA_MOV ASC";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+    
+                $v[] = $row;
+    
+            }
+            
+            return $v;
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function traerTodosLosCheques (){
+
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "SELECT * FROM sj_administracion_cobros WHERE rendido = 0 ";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+    
+                $v[] = $row;
+    
+            }
+            
+            return $v;
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function rendirCobro ($id){
+
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "UPDATE sj_administracion_cobros SET rendido = 1,fecha_cobro = getdate() where id = '$id'";
+   
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+            
+            return true;
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+    public function asignarCobroPorCheque ($idCobro,$idCheque){
+
+        $cid = $this->conn->conectar('central');
+        
+        $sql = "INSERT INTO sj_administracion_cobros_por_cheque (id_cobro, id_cheque) VALUES ('$idCobro', '$idCheque')";
+        
+   
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+            
+            return true;
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+    }
+
+
+    public function traerReporteTodosLosCheques ($inputBuscar, $selectEstado, $desde, $hasta){
+
+        $cid = $this->conn->conectar('central');
+
+        $sql ="SET dateformat YMD SELECT * from sj_administracion_cobros A
+        INNER JOIN sj_administracion_cheques B ON B.cod_client = A.cod_client COLLATE Latin1_General_BIN
+        INNER JOIN sj_administracion_cobros_por_cheque E ON E.id_cobro = A.id AND E.id_cheque = B.id 
+        WHERE A.rendido LIKE '%$selectEstado%' AND (A.nombre_cliente LIKE '%$inputBuscar%' OR B.id LIKE '%$inputBuscar%' OR B.banco LIKE '%$inputBuscar%' OR B.monto LIKE '%$inputBuscar%' OR B.num_cheque LIKE '%$inputBuscar%') AND A.fecha_cobro BETWEEN '$desde' AND '$hasta' ";
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+   
+            $v = [];
+
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
     
                 $v[] = $row;
@@ -144,5 +357,38 @@ class RemitoEquis {
 
     }
     
+    public function traerEfectivoCheque () {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = " SELECT distinct a.* from sj_administracion_cobros a
+        INNER JOIN sj_administracion_cobros_por_remito B ON B.id_cobro = a.id 
+        where a.rendido = 0
+        and b.num_rem in 
+        (
+        select distinct N_COMP collate Latin1_General_BIN from SJ_EQUIS_TABLE where CHEQUEADO = 1
+        )";
+
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+            
+            return $v;
+
+        }
+            catch (\Throwable $th) {
+
+                die("Error en sqlsrv_exec");
+
+        }
+    }
 
 }

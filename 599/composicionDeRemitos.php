@@ -1,27 +1,41 @@
 <?php
 include_once "controller/traerEquis.php";
+
 if($_POST){
     $campo = $_POST['inputBuscar'] == "" ? '%' : $_POST['inputBuscar'];
 
-    $a=traerTodos($_POST['inputBuscar']);
+    $todosLosRemitos=traerTodos($_POST['inputBuscar']);
 }else{
     
-    $a = traerTodos();
+    $todosLosRemitos = traerTodos();
 }
 
 $newArray = [];
 $remitoActual = "";
-foreach ($a as $remito => $value) {
+$valores = traerEfectivoCheque();
+
+$totalEfectivo = 0;
+$totalCheque = 0;
+
+foreach ($valores as  $value) {
+    $totalEfectivo = $totalEfectivo + $value['importe_efectivo'];
+    $totalCheque = $totalCheque + $value['importe_cheque'];
+} 
+
+foreach ($todosLosRemitos as $remito => $value) {
     $totalDeuda = 0;
     $totalCobrado = 0;
+
+ 
     
     if($remitoActual != $value['COD_PRO_CL']){
 
-        foreach ($a as $val ) {
+        foreach ($todosLosRemitos as $val ) {
 
             if($value['COD_PRO_CL'] == $val['COD_PRO_CL'] ){
 
                 if ($val['CHEQUEADO'] == 1 ){
+                    
                     $totalCobrado = $totalCobrado + $val['IMPORTE_TO'];
                 }else{
                     $totalDeuda = $totalDeuda + $val['IMPORTE_TO'];
@@ -61,10 +75,7 @@ foreach ($a as $remito => $value) {
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" type="text/css" href="select2/select2.min.css">
 
-    <script src="select2/select2.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
     </link>
 
 </head>
@@ -88,7 +99,7 @@ foreach ($a as $remito => $value) {
                     </div>
                     <div class="row" style="margin-left:50px;margin-top">
                         <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px; height:45px" id='sumValorDeuda'></h4></div>
-                        <div class="col-3">    <h4>Cobranza:<input type="text" style="width:150px; height:45px" placeholder="Efectivo" id="efectivo"> <input type="text" style="width:150px; height:45px" placeholder="Cheques" id="cheques"></h4></div>
+                        <div class="col-3">    <h4>Cobranza:<input type="text" style="width:150px; height:45px" placeholder="Efectivo" id="efectivo" value="<?= $totalEfectivo?>"> <input type="text" style="width:150px; height:45px" placeholder="Cheques" id="cheques" value="<?= $totalCheque?>"></h4></div>
                         <form action="#" method="post">
                             <div class="col">    <h4>Busqueda : <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"><button class="btn btn-primary"  style=" height:45px;margin-bottom:10px;margin-left:4px"  ><i class="bi bi-search"></i></button></h4></div>
 
@@ -110,9 +121,15 @@ foreach ($a as $remito => $value) {
                                     foreach($newArray as $b){
                                         echo "<tr>";
                                         echo "<td style='text-align:center' attr-codClient='".$b['codCliente']."'>".$b['nombreCliente']."</td>";
-                                        echo "<td style='text-align:center;' id='colDeuda'>".$b['totalDeuda']."</td>";
+                                        echo "<td style='text-align:center;' id='colDeuda' attr-realValue=".$b['totalDeuda'].">".$b['totalDeuda']."</td>";
                                         echo "<td style='text-align:center' id='colCobrado'>".$b['totalCobrado']."</td>";
-                                        echo "<td style='text-align:center'><button class ='btn-success' onclick='verDetalle(this)'><i class='bi bi-pencil-square'></i></button></td>";
+                                        if($b['totalDeuda'] > 0){
+
+                                            echo "<td style='text-align:center'><button class ='btn-success' onclick='verDetalle(this)'><i class='bi bi-pencil-square'></i></button></td>";
+                                        }else{
+                                            echo "<td style='text-align:center'></td>";
+
+                                        }
                                         echo "</tr>";
                                     }
                                 ?> 
@@ -126,7 +143,7 @@ foreach ($a as $remito => $value) {
 
         </table>
 
-    <script src="js/functions.js"></script>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -141,12 +158,9 @@ foreach ($a as $remito => $value) {
 
 </html>
 <script src="js/jquery.table2excel.js"></script>
+<script src="js/composicionDeRemitos.js"></script>
 
 <script>
-
-
-    
-
 
         $(document).ready(function() {
             parseNumber();
@@ -160,63 +174,10 @@ foreach ($a as $remito => $value) {
         const totalDeudas = document.querySelectorAll("#colDeuda");
         let valorTotalDeudas = 0
         totalDeudas.forEach(e => {
-            valorTotalDeudas = valorTotalDeudas + parseInt(e.textContent);
+            valorTotalDeudas = valorTotalDeudas + parseInt(e.getAttribute("attr-realValue"));
         });
 
         document.querySelector("#sumValorDeuda").value = valorTotalDeudas;
         });
 
-
-        const parseNumber = ()=>{
-
-        let allDeuda = document.querySelectorAll("#colDeuda");
-        let allCobrado = document.querySelectorAll("#colCobrado");
-
-        allDeuda.forEach(deuda => {
-            let valor = parseFloat(deuda.textContent);
-            valor = valor.toLocaleString('de-De', {
-                style: 'decimal',
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2
-                });
-                deuda.textContent = "$ "+valor;
-        });
-
-        allCobrado.forEach(cobrado => {
-            let valor = parseFloat(cobrado.textContent);
-            valor = valor.toLocaleString('de-De', {
-                style: 'decimal',
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2
-                });
-                cobrado.textContent = "$ "+valor;
-        });
-
-
-
-        }
-
-        const verDetalle = (rem) =>{
-            
-
-            codClient = rem.parentElement.parentElement.childNodes[0].getAttribute("attr-codClient") ;
-       
-            window.location.href = "remitosPendientesDeCobro.php?codClient="+codClient;
-        }
-
-        $("#btnExport").click(function() {
-
-            $('input[type=number]').each(function(){
-                this.setAttribute('value',$(this).val());
-            });
-
-            $("table").table2excel({
-
-                // exclude CSS class
-                exclude: ".noExl",
-                name: "Worksheet Name",
-                filename: "Remitos", //do not include extension
-                fileext: ".xls", // file extension
-            });
-        });
 </script>

@@ -1,3 +1,8 @@
+<?php 
+include_once "controller/traerEquis.php";
+$cheques = traerCheques();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,10 +22,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" type="text/css" href="select2/select2.min.css">
 
-    <script src="select2/select2.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
     </link>
 
 </head>
@@ -39,24 +41,34 @@
                     </div>
 
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3">    <h4>Total efectivo : <input type="text" style="width:150px; height:45px"></h4></div>
+                        <div class="col-3">    <h4>Total efectivo : <input type="text" style="width:150px; height:45px" id="totalEfectivo" value="0,00"></h4></div>
 
-                        <div class="col">    <h4>Total Cheques : <input type="text" style="width:150px; height:45px" id="efectivo"></h4></div>
+                        <div class="col">    <h4>Total Cheques : <input type="text" style="width:150px; height:45px" id="totalCheque" value="0,00"></h4></div>
                       
-                        <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Rendir<i class="bi bi-file-earmark-excel"></i></button></h4></div>
+                        <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px;width:150px;" onclick="rendir()"><i class="fa fa-file-excel-o"></i> Rendir<i class="bi bi-file-earmark-excel"></i></button></h4></div>
                     </div>
 
                     <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
                         <thead class="thead-dark">
-                            <tr>
-                                <th style="position: sticky; top: 0; z-index: 10; width: 200px;" class="col-1">CLIENTE</th>
-                                <th style="position: sticky; top: 0; z-index: 10;">EFECTIVO</th>
-                                <th style="position: sticky; top: 0; z-index: 10;">CHEQUES</th>
-                                <th style="position: sticky; top: 0; z-index: 10;"></th>
+                            <tr style="text-align:center">
+                                <th style=" width: 600px;text-align:center" class="col-1">CLIENTE</th>
+                                <th style="text-align:center">EFECTIVO</th>
+                                <th style="text-align:center">CHEQUES</th>
+                                <th style="width: 100px;text-align:center"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            <?php foreach ($cheques as $key => $value) {
+                            ?>
+                                <tr style="text-align:center">
+                                    <td><?php echo $value['nombre_cliente'] ?></td>
+                                    <td id="importeEfectivo"><?php echo $value['importe_efectivo'] ?></td>
+                                    <td id="importeCheque"><?php echo $value['importe_cheque'] ?></td>
+                                    <td id="idCobro" hidden><?php echo $value['id'] ?></td>  
+                                    <td><input type="checkbox" name="a" id="checkCalcularTotales" style="width:30px;height:30px;" onchange="calcularTotales(this)"></td>
+                                </tr>
+
+                            <?php } ?>
                       
                         </tbody>
                 
@@ -66,30 +78,12 @@
 
 
         </table>
-
-    <script src="js/functions.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="js/valoresArendir.js"></script>
+    
 
 </body>
 
 </html>
-<script>
-
-        $(document).ready(function() {
-            $('#myTable').DataTable({
-                responsive: true,
-                buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-            });
-            
-        });
-</script>

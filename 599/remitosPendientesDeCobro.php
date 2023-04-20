@@ -1,6 +1,6 @@
 <?php
 include_once "controller/traerEquis.php";
-$a = traerDetalle($_GET['codClient']);
+$detalleDeRemito = traerDetalle($_GET['codClient']);
 
 ?>
 
@@ -23,10 +23,6 @@ $a = traerDetalle($_GET['codClient']);
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" type="text/css" href="select2/select2.min.css">
-
-    <script src="select2/select2.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
     </link>
 
 </head>
@@ -48,11 +44,12 @@ $a = traerDetalle($_GET['codClient']);
                         <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px;  height:60px" id="totalDeuda"></h4></div>
 
                         <div class="col">    <h4>Importe a abonar : <input type="text" style="width:150px; height:60px" id="importeAbonar" ></h4></div>
-                        <div class="col">    <h4>% Descuento : <input type="text" style="height:60px"> <button class="btn btn-primary"  style="height:60px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
+                        <div class="col">    <h4>% Descuento : <input type="text" style="height:60px" id="descuento"> <button class="btn btn-primary"  style="height:60px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
                         <!-- <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div> -->
                     </div>
+                    <div hidden id="codClient"><?=$_GET['codClient'] ?></div>
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3"><strong>Cliente : <?= $a[0]['RAZON_SOCI'] ?></strong></div>
+                        <div class="col-3"><strong>Cliente : <?= $detalleDeRemito[0]['RAZON_SOCI'] ?></strong></div>
                     </div>
                     
 
@@ -67,7 +64,7 @@ $a = traerDetalle($_GET['codClient']);
                         </thead>
                         <tbody>
                             <?php
-                                foreach ($a as $value) {
+                                foreach ($detalleDeRemito as $value) {
                                     if ($value['CHEQUEADO'] == 1){
                                         continue;
                                     }
@@ -99,17 +96,18 @@ $a = traerDetalle($_GET['codClient']);
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="js/remitosPendientesDeCobro.js"></script>
 
 </body>
 
 </html>
+
 <script>
-
     
-        const todosLosMontos = document.querySelectorAll('#monto');
-        const btnConfirmar = document.querySelector("#btnConfirmar");
-
-        $(document).ready(function() {
+    const todosLosMontos = document.querySelectorAll('#monto');
+    
+    
+    $(document).ready(function() {
             parseNumber();
             $('#myTable').DataTable({
                 responsive: true,
@@ -124,92 +122,12 @@ $a = traerDetalle($_GET['codClient']);
 
             todosLosMontos.forEach(e => {
 
-                total = total + parseInt(e.textContent)
-
+                total = total + parseInt(e.getAttribute("attr-realValue"))
+                
             }); 
             document.querySelector("#totalDeuda").value = total
-
+            
         });
-
-
-        const parseNumber = ()=>{
-
-            let allMontos = document.querySelectorAll("#monto");
-
-            allMontos.forEach(monto => {
-                let valor = parseFloat(monto.textContent);
-                valor = valor.toLocaleString('de-De', {
-                    style: 'decimal',
-                    maximumFractionDigits: 2,
-                    minimumFractionDigits: 2
-                });
-                monto.setAttribute("attr-realValue", monto.textContent)
-                monto.textContent = "$ "+valor;
-            });
-
-        }
-
-
-        const checkMonto = ()=>{
-
-            const todosLosCheck = document.querySelectorAll('input[type="checkbox"]');
-            let totalMontosCheck = 0;
-
-            todosLosCheck.forEach(e => {
-                if(e.checked){
-
-                    totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
-                }
-            });
-
-            document.querySelector("#importeAbonar").value = totalMontosCheck
-
-        }
-
-        btnConfirmar.addEventListener("click",function (){
-
-            const todosLosCheck = document.querySelectorAll('input[type="checkbox"]');
-            let totalMontosCheck = ""
-            
-            todosLosCheck.forEach(e => {
-                
-                if(e.checked){
-                    if(totalMontosCheck == ""){
-                        totalMontosCheck = e.parentElement.parentElement.childNodes[1].textContent
-                    }else{
-                        
-                        totalMontosCheck =  totalMontosCheck + "-" +e.parentElement.parentElement.childNodes[1].textContent
-                    }
-                }
-               
-            });
-    
-            sessionStorage.setItem("Remitos", totalMontosCheck);
-            
-            Swal.fire({
-                icon: 'warning',
-                title: 'No se cargó % de descuento, desea continuar?',
-                showDenyButton: true,
-                confirmButtonText: 'Aceptar',
-                denyButtonText: 'Cancelar',
-            }).then((result) => {
-
-            if (result.isConfirmed) {
-
-                Swal.fire('Saved!', '', 'success').then((result)=>{
-                    let montoTotalDeuda = document.querySelector("#totalDeuda").value
-                    let importeAbonar = document.querySelector("#importeAbonar").value
-                    let codCliente = "<?= $_GET['codClient'] ?>"
-                    
-                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+codCliente;
-
-                })
-
-
-            } else if (result.isDenied) {
-                Swal.fire('El proceso fue cancelado', '', 'info')
-            }
-            })
-
-        })
+        
+        
 </script>

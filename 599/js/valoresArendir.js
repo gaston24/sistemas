@@ -1,0 +1,112 @@
+
+document.addEventListener("DOMContentLoaded", () => {
+          
+
+    let importeEfectivo = document.querySelectorAll("#importeEfectivo");
+    let importeCheque = document.querySelectorAll("#importeCheque");
+    let totalChequeInput = document.querySelector("#totalCheque");
+
+
+
+    importeEfectivo.forEach(element => {
+        element.setAttribute("attr-realValue", parseFloat(element.textContent))
+        element.textContent = parseNumber(element.textContent);
+
+    });
+
+    importeCheque.forEach(element => {
+        element.setAttribute("attr-realValue", parseFloat(element.textContent))
+        element.textContent = parseNumber(element.textContent);
+
+    });
+
+    totalEfectivo.value = parseNumber(totalEfectivo.value);
+
+
+});
+
+const calcularTotales = (row) =>{
+    let todosLosCheck = document.querySelectorAll("#checkCalcularTotales");
+    let totalEfectivoInput = document.querySelector("#totalEfectivo");
+    let totalChequeInput = document.querySelector("#totalCheque");
+    let totalEfectivo = "00,00"
+    let totalCheque = "00,00"
+
+    todosLosCheck.forEach(element => {
+
+        if(element.checked){
+
+            totalEfectivo = parseFloat(totalEfectivo) +  parseFloat(element.parentElement.parentElement.childNodes[3].getAttribute("attr-realValue"))
+            totalCheque = parseFloat(totalCheque)    + parseFloat(element.parentElement.parentElement.childNodes[5].getAttribute("attr-realValue"))
+        }
+    });
+
+    totalEfectivoInput.value = parseFloat(totalEfectivo).toFixed(2);
+    totalChequeInput.value = parseFloat(totalCheque).toFixed(2);
+
+};
+
+
+const rendir = () => {
+
+    Swal.fire({
+        icon: 'warning',
+        title: '¿Desea registrar la rendición?',
+        showDenyButton: true,
+        confirmButtonText: 'Aceptar',
+        denyButtonText: 'Cancelar',
+    }).then((result) => {
+        / Read more about isConfirmed, isDenied below /
+        if (result.isConfirmed) {
+            let todosLosCheck = document.querySelectorAll("#checkCalcularTotales");
+    
+            let idCobroEnCadena = ""
+            todosLosCheck.forEach(element => {
+
+                if(element.checked){
+
+                    if(idCobroEnCadena == ""){
+
+                        idCobroEnCadena = element.parentElement.parentElement.childNodes[7].textContent 
+
+                    }else{
+
+                        idCobroEnCadena =  idCobroEnCadena + "-" + element.parentElement.parentElement.childNodes[7].textContent 
+                    }
+
+                }
+            });
+
+            let arrayDeCobros = idCobroEnCadena.split("-");
+
+            $.ajax({
+                url: "controller/rendirValores.php",
+                type: "POST",
+                data: {cobros: arrayDeCobros},
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+
+            Swal.fire('Guardada!', '', 'success').then((result) => {
+                location.reload()
+            })
+
+        } else if (result.isDenied) {
+        Swal.fire('La rendición fue cancelada!', '', 'info')
+        }
+    })
+
+}
+
+const parseNumber = (number) => {
+
+    number = parseFloat(number);
+
+    newNumber = number.toLocaleString('de-De', {
+        style: 'decimal',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2
+    }); 
+    return newNumber;
+}

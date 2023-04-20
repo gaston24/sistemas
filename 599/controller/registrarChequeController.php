@@ -8,8 +8,4 @@ $remitoEquis = new RemitoEquis();
 $remitoEquis->cargarCheque($dataDelCheque);
 
 
-
- 
-
-
 ?>

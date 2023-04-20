@@ -42,7 +42,7 @@ function myFunction() {
         for(var k=0;k<elems.length;k++){
             if(elems[k].textContent.length > 0){ cont++; }
         }
-        console.log(cont);
+
         document.getElementById('total').value = cont;
     }
   
@@ -103,7 +103,7 @@ function myFunction() {
            }
           }
           return cont;
-          //console.log(cont);
+
          }
 
          //Revisa que se haya seleccionado alguna orden y actualiza el campo ACTIVA//
