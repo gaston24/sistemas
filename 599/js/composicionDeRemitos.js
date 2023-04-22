@@ -8,8 +8,8 @@ const parseNumber = ()=>{
         let valor = parseFloat(deuda.textContent);
         valor = valor.toLocaleString('de-De', {
             style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
         });
         deuda.textContent = "$ "+valor;
     });
@@ -18,8 +18,8 @@ const parseNumber = ()=>{
         let valor = parseFloat(cobrado.textContent);
         valor = valor.toLocaleString('de-De', {
             style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
         });
         cobrado.textContent = "$ "+valor;
     });

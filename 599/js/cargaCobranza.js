@@ -52,7 +52,7 @@ const  confirmarCobro = (codClient) => {
                     //     }
                     // });
 
-                    Swal.fire('Saved!', '', 'success')
+                    Swal.fire('Guardado!', '', 'success')
                 } else if (result.isDenied) {
                     Swal.fire('El proceso fue cancelado', '', 'info')
             }
@@ -296,8 +296,8 @@ const parseNumber = (number) => {
 
     newNumber = number.toLocaleString('de-De', {
         style: 'decimal',
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0
     }); 
     
     return newNumber;

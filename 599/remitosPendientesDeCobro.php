@@ -41,15 +41,15 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                     </div>
 
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px;  height:60px" id="totalDeuda"></h4></div>
+                        <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px;  height:45px" id="totalDeuda"></h4></div>
 
-                        <div class="col">    <h4>Importe a abonar : <input type="text" style="width:150px; height:60px" id="importeAbonar" ></h4></div>
-                        <div class="col">    <h4>% Descuento : <input type="text" style="height:60px" id="descuento"> <button class="btn btn-primary"  style="height:60px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
+                        <div class="col">    <h4>Importe a abonar : <input type="text" style="width:150px; height:45px" id="importeAbonar" ></h4></div>
+                        <div class="col">    <h4>% Descuento : <input type="text" style="width:150px; height:45px" id="descuento"> <button class="btn btn-primary"  style="height:45px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
                         <!-- <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div> -->
                     </div>
                     <div hidden id="codClient"><?=$_GET['codClient'] ?></div>
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3"><strong>Cliente : <?= $detalleDeRemito[0]['RAZON_SOCI'] ?></strong></div>
+                        <div style="width: 500px"><h5 ><strong>Cliente : <p style="color: red;"><?= $detalleDeRemito[0]['RAZON_SOCI'] ?></p></strong></h5></div>
                     </div>
                     
 
@@ -69,7 +69,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                                         continue;
                                     }
                                     echo "<tr>";
-                                    echo "<td style='text-align:center' >".$value['FECHA_MOV']->format('Y-m-d H:i:s')."</td>";
+                                    echo "<td style='text-align:center' >".$value['FECHA_MOV']->format('Y-m-d')."</td>";
                                     echo "<td style='text-align:center' >".$value['N_COMP']."</td>";
                                     echo "<td style='text-align:center' id='monto'>".$value['IMPORTE_TO']."</td>";
                                     echo "<td style='text-align:center;width:20px' ><input type='checkbox' style='width:20px' onchange='checkMonto()' ></td>";
@@ -125,7 +125,11 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                 total = total + parseInt(e.getAttribute("attr-realValue"))
                 
             }); 
-            document.querySelector("#totalDeuda").value = total
+            document.querySelector("#totalDeuda").value = "$ "+total.toLocaleString('de-De', {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
+        });
             
         });
         
