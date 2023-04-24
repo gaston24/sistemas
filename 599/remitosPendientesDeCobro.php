@@ -58,7 +58,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                     </div>
                     <div hidden id="codClient"><?=$_GET['codClient'] ?></div>
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3"><strong>Cliente : <?= $detalleDeRemito[0]['RAZON_SOCI'] ?></strong></div>
+                        <div style="width: 500px"><h5 ><strong>Cliente : <p style="color: red;"><?= $detalleDeRemito[0]['RAZON_SOCI'] ?></p></strong></h5></div>
                     </div>
                     
 
@@ -78,7 +78,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                                         continue;
                                     }
                                     echo "<tr>";
-                                    echo "<td style='text-align:center' >".$value['FECHA_MOV']->format('Y-m-d H:i:s')."</td>";
+                                    echo "<td style='text-align:center' >".$value['FECHA_MOV']->format('Y-m-d')."</td>";
                                     echo "<td style='text-align:center' >".$value['N_COMP']."</td>";
                                     echo "<td style='text-align:center' id='monto'>".$value['IMPORTE_TO']."</td>";
                                     echo "<td style='text-align:center;width:20px' ><input type='checkbox' style='width:20px' onchange='checkMonto()' ></td>";
@@ -135,7 +135,11 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                 total = total + parseInt(e.getAttribute("attr-realValue"))
                 
             }); 
-            document.querySelector("#totalDeuda").value = total
+            document.querySelector("#totalDeuda").value = "$ "+total.toLocaleString('de-De', {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
+        });
             
         });
         

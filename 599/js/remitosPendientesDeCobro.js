@@ -8,8 +8,8 @@ const parseNumber = ()=>{
         let valor = parseFloat(monto.textContent);
         valor = valor.toLocaleString('de-De', {
             style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
         });
         monto.setAttribute("attr-realValue", monto.textContent)
         monto.textContent = "$ "+valor;
@@ -83,12 +83,12 @@ btnConfirmar.addEventListener("click",function (){
 
             if (result.isConfirmed) {
 
-                Swal.fire('Saved!', '', 'success').then((result)=>{
+                Swal.fire('Guardado!', '', 'success').then((result)=>{
                     let montoTotalDeuda = document.querySelector("#totalDeuda").value
                     let importeAbonar = document.querySelector("#importeAbonar").value
                     let codCliente = document.querySelector("#codClient").textContent
 
-                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+codCliente;
+                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+codCliente;
 
                 })
 
@@ -100,10 +100,10 @@ btnConfirmar.addEventListener("click",function (){
 
     }else{
 
-        Swal.fire('Saved!', '', 'success').then((result)=>{
+        Swal.fire('Guardado!', '', 'success').then((result)=>{
             
             let montoTotalDeuda = document.querySelector("#totalDeuda").value;
-            let importe = document.querySelector("#importeAbonar").value;
+            let importe = document.querySelector("#importeAbonar").value.replace(/[$.]/g, "");
             let descuento = document.querySelector("#descuento").value;
             descuento = descuento.replace("%","");
 

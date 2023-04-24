@@ -99,7 +99,7 @@ foreach ($todosLosRemitos as $remito => $value) {
                     </div>
                     <div class="row" style="margin-left:50px;margin-top">
                         <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px; height:45px" id='sumValorDeuda'></h4></div>
-                        <div class="col-3">    <h4>Cobranza:<input type="text" style="width:150px; height:45px" placeholder="Efectivo" id="efectivo" value="<?= $totalEfectivo?>" readonly> <input type="text" style="width:150px; height:45px" placeholder="Cheques" id="cheques" value="<?= $totalCheque?>" readonly></h4></div>
+                        <div class="col-4">    <h4>Cobranza:<input type="text" style="width:150px; height:45px" placeholder="Efectivo" id="efectivo" value="<?= '$'.number_format($totalEfectivo, 0, ',', '.')?>"> <input type="text" style="width:150px; height:45px" placeholder="Cheques" id="cheques" value="<?= '$'.number_format($totalCheque, 0, ',', '.')?>"></h4></div>
                         <form action="#" method="post">
                             <div class="col">    <h4>Busqueda : <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"><button class="btn btn-primary"  style=" height:45px;margin-bottom:10px;margin-left:4px"  ><i class="bi bi-search"></i></button></h4></div>
 
@@ -177,7 +177,11 @@ foreach ($todosLosRemitos as $remito => $value) {
             valorTotalDeudas = valorTotalDeudas + parseInt(e.getAttribute("attr-realValue"));
         });
 
-        document.querySelector("#sumValorDeuda").value = valorTotalDeudas;
+        document.querySelector("#sumValorDeuda").value = "$ "+valorTotalDeudas.toLocaleString('de-De', {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
+        });;
         });
 
 </script>
