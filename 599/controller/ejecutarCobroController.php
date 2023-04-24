@@ -11,15 +11,15 @@ $postCheques = $_POST['idCheque'];
 $nombreCliente = $_POST['nombreCliente'];
 
 $idCheques = explode(",", $postCheques);
-// GASTON
 
+$importeTotal = $cobroEfectivo + $cobroCheque; 
 $montoTotal = $montoACobrar - $saldoCobrar;
 $remitoEquis = new RemitoEquis();
 
 $remitosParceados = "";
 
 
-$idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $saldoCobrar,$nombreCliente);
+$idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente);
 
 foreach ($idCheques as $value) {
 
