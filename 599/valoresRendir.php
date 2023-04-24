@@ -41,9 +41,9 @@ $cheques = traerCheques();
                     </div>
 
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3">    <h4>Total efectivo : <input type="text" style="width:150px; height:45px" id="totalEfectivo" value="0,00"></h4></div>
+                        <div class="col-3">    <h4>Total efectivo : <input type="text" style="width:150px; height:45px" id="totalEfectivo" value="0,00" readonly></h4></div>
 
-                        <div class="col">    <h4>Total Cheques : <input type="text" style="width:150px; height:45px" id="totalCheque" value="0,00"></h4></div>
+                        <div class="col">    <h4>Total Cheques : <input type="text" style="width:150px; height:45px" id="totalCheque" value="0,00" readonly></h4></div>
                       
                         <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px;width:150px;" onclick="rendir()"><i class="fa fa-file-excel-o"></i> Rendir<i class="bi bi-file-earmark-excel"></i></button></h4></div>
                     </div>

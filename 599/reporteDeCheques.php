@@ -59,15 +59,19 @@
                         </div>
                         <form action="#" method="get">
                             <div class="row" style="margin-top:10px">
-                                <div class="col-3" style="margin-left:50px">Desde : <input type="date" style="width:150px; height:45px" id='desde' name="desde">  Hasta <input type="date" name="hasta" style="width:150px; height:45px"></div>
+
+                                <div class="col-3" style="margin-left:50px">Desde : <input type="date" style="width:150px; height:45px" id='desde' name="desde" value="<?php echo $desde; ?>">  Hasta <input type="date" name="hasta" style="width:150px; height:45px" value="<?= $hasta ?>"></div>
                                 <div class="col-3">Estado :  
                                     <select name="selectEstado" id="selectEstado" style="width:150px; height:45px">
+                                        <option value="%">Todos</option>
                                         <option value="0">A Rendir</option>
                                         <option value="1">Rendido</option>
+
                                     </select>
                                     <button class="btn btn-primary btn-submit" value="" style="height:50px;margin-left:2px">filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                 </div>
                                 <div class="col">  Busqueda Rapida: <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"></div>
+                                <div class="col" style="text-align:right;margin-right:80px">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div>
 
                             </div>
                         </form>
@@ -93,7 +97,7 @@
                                         <td><?php echo $value['id'] ?></td>
                                         <td id="importeEfectivo"><?php echo $value['nombre_cliente'] ?></td>
                                         <td id="importeCheque"><?php echo $value['banco'] ?></td>
-                                        <td id="numeroDeRemito" ><?php echo $value['monto'] ?></td>  
+                                        <td id="numeroDeRemito" >$ <?php echo number_format($value['monto'], 0, ',', '.') ?></td>  
                                         <td id="numeroDeRemito" ><?php echo $value['num_cheque'] ?></td>  
                                         <td id="numeroDeRemito" ><?php echo $value['fecha_cobro']->format('Y-m-d H:i:s') ?></td>  
                                         <?php if($value['rendido'] ==  1){ ?>
@@ -137,6 +141,20 @@
         ]
             });
 
+        });
+         $("#btnExport").click(function() {
+
+            $('input[type=number]').each(function(){
+                this.setAttribute('value',$(this).val());
+            });
+
+            $("table").table2excel({
+                // exclude CSS class
+                exclude: ".noExl",
+                name: "Worksheet Name",
+                filename: "Remitos", //do not include extension
+                fileext: ".xls", // file extension
+            });
         });
 
 

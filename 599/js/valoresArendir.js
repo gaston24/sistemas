@@ -40,9 +40,10 @@ const calcularTotales = (row) =>{
             totalCheque = parseFloat(totalCheque)    + parseFloat(element.parentElement.parentElement.childNodes[5].getAttribute("attr-realValue"))
         }
     });
-
-    totalEfectivoInput.value = parseFloat(totalEfectivo).toFixed(2);
-    totalChequeInput.value = parseFloat(totalCheque).toFixed(2);
+    totalEfectivoParseado = parseNumber(totalEfectivo);
+    totalChequeParseado = parseNumber(totalCheque);
+    totalEfectivoInput.value = "$ " + totalEfectivoParseado
+    totalChequeInput.value = "$ " + totalChequeParseado
 
 };
 
@@ -105,8 +106,8 @@ const parseNumber = (number) => {
 
     newNumber = number.toLocaleString('de-De', {
         style: 'decimal',
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0
     }); 
     return newNumber;
 }

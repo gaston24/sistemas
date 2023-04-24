@@ -28,8 +28,26 @@ const checkMonto = ()=>{
             totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
         }
     });
+    let descuento = document.querySelector("#descuento").value;
+    descuento = descuento.replace("%","");
 
-    document.querySelector("#importeAbonar").value = totalMontosCheck
+    if(descuento != "" && descuento != 0){
+     
+        
+        let porcentaje = 0;
+        
+        porcentaje = ( parseFloat(totalMontosCheck)  *  parseFloat(descuento)  ) / 100;
+
+        totalMontosCheck = parseFloat(totalMontosCheck) - parseFloat(porcentaje);
+        
+        document.querySelector("#importeConDescuento").value = totalMontosCheck;
+        
+    }else{
+        document.querySelector("#importeAbonar").value = totalMontosCheck;
+    }
+
+
+    // document.querySelector("#importeAbonar").value = totalMontosCheck
 
 }
 
@@ -87,6 +105,7 @@ btnConfirmar.addEventListener("click",function (){
             let montoTotalDeuda = document.querySelector("#totalDeuda").value;
             let importe = document.querySelector("#importeAbonar").value;
             let descuento = document.querySelector("#descuento").value;
+            descuento = descuento.replace("%","");
 
             let porcentaje = 0;
 
@@ -105,3 +124,39 @@ btnConfirmar.addEventListener("click",function (){
 
     }
 })
+const calcularDescuento = ()=>{
+
+    let montoTotalDeuda = document.querySelector("#totalDeuda").value;
+    let descuento = document.querySelector("#descuento").value;
+    descuento = descuento.replace("%","");
+    let importe = document.querySelector("#importeAbonar").value;
+
+    let porcentaje = 0;
+
+    if(descuento != "" && descuento != 0){
+        document.querySelector("#divImporteAabonar").hidden = true;
+        document.querySelector("#divImporteConDescuento").hidden = false;
+
+        porcentaje = ( parseFloat(importe)  *  parseFloat(descuento)  ) / 100;
+    }else{
+
+        const todosLosCheck = document.querySelectorAll('input[type="checkbox"]');
+        let totalMontosCheck = 0;
+    
+        todosLosCheck.forEach(e => {
+            if(e.checked){
+    
+                totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
+            }
+        });
+        document.querySelector("#importeAbonar").value = totalMontosCheck;
+        document.querySelector("#divImporteAabonar").hidden = false;
+        document.querySelector("#divImporteConDescuento").hidden = true;
+    }
+
+    let importeAbonar = parseFloat(importe) - parseFloat(porcentaje);
+
+    document.querySelector("#importeConDescuento").value = importeAbonar;
+
+
+}

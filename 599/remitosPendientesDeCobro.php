@@ -41,11 +41,20 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                     </div>
 
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px;  height:60px" id="totalDeuda"></h4></div>
+                        <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px;  height:60px" id="totalDeuda" readonly></h4></div>
 
-                        <div class="col">    <h4>Importe a abonar : <input type="text" style="width:150px; height:60px" id="importeAbonar" ></h4></div>
-                        <div class="col">    <h4>% Descuento : <input type="text" style="height:60px" id="descuento"> <button class="btn btn-primary"  style="height:60px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
+                        <div class="col" id="divImporteAabonar">    <h4>Importe a abonar : <input type="text" style="width:150px; height:60px" id="importeAbonar" readonly></h4></div>
+                        <div class="col" id="divImporteConDescuento" hidden> <h4>importe con Descuento : <input type="text" style="height:60px" id="importeConDescuento" readonly></h4></div>
+
+                        <!-- <div class="col">    <h4>% Descuento : <input type="text" style="height:60px" id="descuento"> </h4></div> -->
+                        <div class="col">    <h4>% Descuento : <input type="text" style="height:60px" id="descuento" onchange="calcularDescuento()" placeholder="Ej. 10%"> <button class="btn btn-primary"  style="height:60px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
                         <!-- <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div> -->
+                    </div>
+                    <div class="row" >
+                        <div class="col-3"></div>
+                        <div class="col"></div>
+                        <div class="col-3" style="text-align:right;margin-right:80px">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div>
+                        
                     </div>
                     <div hidden id="codClient"><?=$_GET['codClient'] ?></div>
                     <div class="row" style="margin-left:50px;margin-top">
@@ -97,6 +106,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="js/remitosPendientesDeCobro.js"></script>
+    <script src="js/jquery.table2excel.js"></script>
 
 </body>
 
@@ -129,5 +139,18 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
             
         });
         
-        
+        $("#btnExport").click(function() {
+
+            $('input[type=number]').each(function(){
+                this.setAttribute('value',$(this).val());
+            });
+
+            $("table").table2excel({
+                // exclude CSS class
+                exclude: ".noExl",
+                name: "Worksheet Name",
+                filename: "Remitos", //do not include extension
+                fileext: ".xls", // file extension
+            });
+        });
 </script>
