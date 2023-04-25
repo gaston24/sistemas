@@ -418,5 +418,49 @@ class RemitoEquis {
 
         }
     }
+    
+    public function listarDetalleRemitos ($desde, $hasta, $selectEstado, $inputBuscar ) {
+        
+        $cid = $this->conn->conectar('central');
+
+        $sql = "SET DATEFORMAT YMD SELECT * FROM (
+        SELECT A.*,estado =
+        CASE
+            WHEN D.ESTADO_MOV = 'A' THEN 'ANULADO'
+            when A.CHEQUEADO =  1 AND C.rendido = 0 THEN 'COBRADO'
+            when A.CHEQUEADO = 1 AND C.rendido = 1 THEN 'RENDIDO'
+            WHEN A.CHEQUEADO = 0 THEN 'DEBE'
+        END
+        FROM SJ_EQUIS_TABLE A 
+        left  join sj_administracion_cobros_por_remito B on a.N_COMP = B.num_rem collate Latin1_General_BIN
+        left  join sj_administracion_cobros C on C.id = B.id_cobro
+        left  join	STA14 D on D.N_COMP = A.N_COMP  
+        )A
+        WHERE (A.FECHA_MOV BETWEEN '$desde' AND '$hasta') AND (A.N_COMP LIKE '%$inputBuscar%' OR A.RAZON_SOCI LIKE '%$inputBuscar%' OR A.IMPORTE_TO LIKE '%$inputBuscar%' OR A.CANT_ART LIKE '%$inputBuscar%' OR A.GC_GDT_NUM_GUIA LIKE '%$inputBuscar%')
+        AND A.estado LIKE '%$selectEstado%' AND A.N_COMP LIKE '%X%'";
+
+try {
+    
+    $stmt = sqlsrv_query($cid, $sql);
+
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+            
+            return $v;
+
+        }
+            catch (\Throwable $th) {
+
+                die("Error en sqlsrv_exec");
+
+        }
+
+    }
 
 }

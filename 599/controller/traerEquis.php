@@ -43,6 +43,11 @@ function traerEfectivoCheque (){
 
 }
 
-
+function listarRemitos ( $desde, $hasta, $selectEstado, $inputBuscar ){
+    
+    $remitoEquis = new RemitoEquis();
+    $result = $remitoEquis->listarDetalleRemitos( $desde, $hasta, $selectEstado, $inputBuscar );
+    return $result;
+}
 
 ?>

@@ -137,7 +137,11 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
         
             monto.value ="$" +newMonto
         });
-
+        const setearSelect2 = ()=>{
+            $(document).ready(function() {
+                $('.banco').select2();
+            });
+        };
      
  
 </script>

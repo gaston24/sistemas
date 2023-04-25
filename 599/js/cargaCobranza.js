@@ -128,11 +128,13 @@ const calcularSaldo = ()=>{
 
 
     
-    if(efectivo.getAttribute("valorreal") == ""){
+    if(efectivo.getAttribute("attr-valorreal") == "" || efectivo.getAttribute("attr-valorreal") == null){
+        efectivo.setAttribute("attr-valorreal",0); 
         efectivo.value = 0;
     }
     
-    if(cheque.getAttribute("valorreal") == ""){
+    if(cheque.getAttribute("attr-valorreal") == ""){
+        cheque.setAttribute("attr-valorreal",0); 
         cheque.value = 0;
     }
 
@@ -176,13 +178,13 @@ const traerCheques = (codClient) =>{
                     let nuevaFila = 
                     `<tr id="tdCheques">
                         <td style="width:40px;text-align:center" id="numInterno">${(parseInt(result)+1)}</td> 
-                        <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:120px" onchange="comprobarSumFila(this)>`
+                        <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:120px" onchange="comprobarSumFila(this)"> `
 
                     bancos.forEach(element => {
                         nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
                     });
 
-                    nuevaFila = nuevaFila + `</td>
+                    nuevaFila = nuevaFila + `</select></td>
              
                         <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
                         <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
@@ -195,6 +197,7 @@ const traerCheques = (codClient) =>{
                     ;
                 
                     $("#tableCheques").html(tableBody+nuevaFila);
+                    setearSelect2();
                     
                 }
             });
@@ -212,19 +215,35 @@ const agregarFila = ( nroInterno, fila) => {
     let getMonth = date.toLocaleString("default", { month: "2-digit" });
     let getDay = date.toLocaleString("default", { day: "2-digit" });
     let dateFormat = getYear + "-" + getMonth + "-" + getDay;
+    $.ajax({
 
-    let nuevaFila = 
-    `<tr id="tdCheques">
-        <td style="width:40px;text-align:center" id="numInterno">${(nroInterno+1)}</td>
-        <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
-        <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
-        <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
-        <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
-        <td style="text-align:center"><button value="+" onclick="agregarFila(${(nroInterno+1)},this)" hidden>+</button></td> 
-    </tr>
-    `;
+        url: "controller/traerBancosController.php",
+        type: "GET",
+        success: function(result) {
+           
+        let bancos = JSON.parse(result);
+        let nuevaFila = 
+        `<tr id="tdCheques">
+            <td style="width:40px;text-align:center" id="numInterno">${(nroInterno+1)}</td>
+            <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:120px" onchange="comprobarSumFila(this)">`
 
-    $("#tableCheques").append(nuevaFila);
+                bancos.forEach(element => {
+                    nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
+                });
+
+            nuevaFila = nuevaFila + `</select></td>
+            <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
+            <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
+            <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
+            <td style="text-align:center"><button value="+" onclick="agregarFila(${(nroInterno+1)},this)" hidden>+</button></td> 
+        </tr>
+        `;
+    
+        $("#tableCheques").append(nuevaFila);
+        setearSelect2();
+    
+    
+    }})
  
 }
 
@@ -299,7 +318,6 @@ const registrarCheque =  (codClient) =>{
 }
 
 const comprobarSumFila = (fila) => {
-
     let banco = fila.parentElement.parentElement.childNodes[3].childNodes[0].value
     let monto = fila.parentElement.parentElement.childNodes[5].childNodes[0].value
     let nroCheque = fila.parentElement.parentElement.childNodes[7].childNodes[0].value
