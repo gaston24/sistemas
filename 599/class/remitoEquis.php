@@ -391,4 +391,32 @@ class RemitoEquis {
         }
     }
 
+    public function traerBancos () {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "SELECT * FROM RO_T_BANCOS ";
+        
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+            
+            return $v;
+
+        }
+            catch (\Throwable $th) {
+
+                die("Error en sqlsrv_exec");
+
+        }
+    }
+
 }

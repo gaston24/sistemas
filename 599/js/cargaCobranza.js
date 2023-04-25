@@ -146,40 +146,60 @@ const calcularSaldo = ()=>{
 
 const traerCheques = (codClient) =>{
 
+
     $.ajax({
 
-        url: "controller/traerChequeController.php",
-        type: "POST",
-        data: {
-        codClient:codClient
-        },
+        url: "controller/traerBancosController.php",
+        type: "GET",
         success: function(result) {
+           
+   
+     
 
-            let tableBody = $("#tableCheques").html();
-            let date = new Date()
-            let getYear = date.toLocaleString("default", { year: "numeric" });
-            let getMonth = date.toLocaleString("default", { month: "2-digit" });
-            let getDay = date.toLocaleString("default", { day: "2-digit" });
-            let dateFormat = getYear + "-" + getMonth + "-" + getDay;
-       
-            let nuevaFila = 
-            `<tr id="tdCheques">
-                <td style="width:40px;text-align:center" id="numInterno">${(parseInt(result)+1)}</td>
-                <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
-                <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
-                <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
-                <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
-                <td style="text-align:center"><button value="+" onclick="agregarFila(${(parseInt(result)+1)},this)" hidden id="btnAgregarFila">+</button></td>
+        let bancos = JSON.parse(result);
+            $.ajax({
+
+                url: "controller/traerChequeController.php",
+                type: "POST",
+                data: {
+                codClient:codClient
+                },
+                success: function(result) {
+
+                    let tableBody = $("#tableCheques").html();
+                    let date = new Date()
+                    let getYear = date.toLocaleString("default", { year: "numeric" });
+                    let getMonth = date.toLocaleString("default", { month: "2-digit" });
+                    let getDay = date.toLocaleString("default", { day: "2-digit" });
+                    let dateFormat = getYear + "-" + getMonth + "-" + getDay;
+            
+                    let nuevaFila = 
+                    `<tr id="tdCheques">
+                        <td style="width:40px;text-align:center" id="numInterno">${(parseInt(result)+1)}</td> 
+                        <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:120px" onchange="comprobarSumFila(this)>`
+
+                    bancos.forEach(element => {
+                        nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
+                    });
+
+                    nuevaFila = nuevaFila + `</td>
+             
+                        <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
+                        <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
+                        <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
+                        <td style="text-align:center"><button value="+" onclick="agregarFila(${(parseInt(result)+1)},this)" hidden id="btnAgregarFila">+</button></td>
 
 
-            </tr>
-            `
-            ;
-        
-            $("#tableCheques").html(tableBody+nuevaFila);
-
-        }
-    });
+                    </tr>
+                    `
+                    ;
+                
+                    $("#tableCheques").html(tableBody+nuevaFila);
+                    
+                }
+            });
+    }
+    })
 }
 
 const agregarFila = ( nroInterno, fila) => {

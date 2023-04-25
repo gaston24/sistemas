@@ -70,8 +70,8 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
 
 
         </table>
-    <div class="modal fade  bd-example-modal-lg " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade  bd-example-modal-xl " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Carga de Cheques</h5>
@@ -84,12 +84,12 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
                         <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center" class="col-1">NRO.INTERNO</th>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">BANCO EMISOR</th>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">MONTO</th>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">NRO.CHEQUE</th>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">FECHA COBRO</th>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center" ></th>
+                                    <th style="text-align:center;" class="col-md-1">NRO.INTERNO</th>
+                                    <th  class="col-md-1">BANCO EMISOR</th>
+                                    <th  class="col-md-1">MONTO</th>
+                                    <th  class="col-md-1">NRO.CHEQUE</th>
+                                    <th  class="col-md-1">FECHA COBRO</th>
+                                    <th  class="col-md-1" ></th>
                                 </tr>
                             </thead>
                             <tbody id="tableCheques">
@@ -112,10 +112,12 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="js/cargaCobranza.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 
 </html>
@@ -135,5 +137,7 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
         
             monto.value ="$" +newMonto
         });
+
+     
  
 </script>
