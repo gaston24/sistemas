@@ -28,23 +28,18 @@ const checkMonto = ()=>{
             totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
         }
     });
-    let descuento = document.querySelector("#descuento").value;
-    descuento = descuento.replace("%","");
 
-    if(descuento != "" && descuento != 0){
-     
-        
-        let porcentaje = 0;
-        
-        porcentaje = ( parseFloat(totalMontosCheck)  *  parseFloat(descuento)  ) / 100;
 
-        totalMontosCheck = parseFloat(totalMontosCheck) - parseFloat(porcentaje);
+
         
-        document.querySelector("#importeConDescuento").value = totalMontosCheck;
-        
-    }else{
-        document.querySelector("#importeAbonar").value = totalMontosCheck;
-    }
+ 
+        document.querySelector("#importeAbonar").setAttribute("attr-realValue", totalMontosCheck);
+        document.querySelector("#importeAbonar").value = "$" +totalMontosCheck.toLocaleString('de-De', {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
+        });
+        calcularDescuento();
 
 
     // document.querySelector("#importeAbonar").value = totalMontosCheck
@@ -70,7 +65,7 @@ btnConfirmar.addEventListener("click",function (){
     });
 
     sessionStorage.setItem("Remitos", totalMontosCheck);
-
+    // let descuento = document.querySelector("#descuento").getAttribute("attr-realValue");
     if( document.querySelector("#descuento").value == "" || document.querySelector("#descuento").value < 0 ){
 
         Swal.fire({
@@ -129,34 +124,29 @@ const calcularDescuento = ()=>{
     let montoTotalDeuda = document.querySelector("#totalDeuda").value;
     let descuento = document.querySelector("#descuento").value;
     descuento = descuento.replace("%","");
-    let importe = document.querySelector("#importeAbonar").value;
+    let importe = document.querySelector("#importeAbonar").value.replace(/[$.]/g, "");
 
     let porcentaje = 0;
 
     if(descuento != "" && descuento != 0){
-        document.querySelector("#divImporteAabonar").hidden = true;
-        document.querySelector("#divImporteConDescuento").hidden = false;
 
         porcentaje = ( parseFloat(importe)  *  parseFloat(descuento)  ) / 100;
-    }else{
 
-        const todosLosCheck = document.querySelectorAll('input[type="checkbox"]');
-        let totalMontosCheck = 0;
-    
-        todosLosCheck.forEach(e => {
-            if(e.checked){
-    
-                totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
-            }
+
+        let importeAbonar = parseFloat(importe) - parseFloat(porcentaje);
+        document.querySelector("#importeConDescuento").setAttribute("attr-realValue", importeAbonar);
+        document.querySelector("#importeConDescuento").value = "$" +  importeAbonar.toLocaleString('de-De', {
+            style: 'decimal',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
         });
-        document.querySelector("#importeAbonar").value = totalMontosCheck;
-        document.querySelector("#divImporteAabonar").hidden = false;
-        document.querySelector("#divImporteConDescuento").hidden = true;
+
+
+
+    }else{
+        document.querySelector("#importeConDescuento").setAttribute("attr-realValue", 0);
+        document.querySelector("#importeConDescuento").value = "$ 0" 
+
     }
-
-    let importeAbonar = parseFloat(importe) - parseFloat(porcentaje);
-
-    document.querySelector("#importeConDescuento").value = importeAbonar;
-
 
 }

@@ -50,7 +50,7 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
                         <div class="col-3" id="cliente" attr-cliente="<?= $cliente?>"><strong>Cliente : </strong ><?= $cliente?></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top">
-                        <div class="col-3"><strong>Monto a Cobrar : <input type="text" style="width:150px; height:50px;text-align:center"  value ="$<?= $_GET['importeAbonar'] ?>" readonly id="montoACobrar" attr-valorReal="<?= $_GET['importeAbonar'] ?>"></strong></div>
+                        <div class="col-3"><strong>Monto a Cobrar : <input type="text" style="width:150px; height:50px;text-align:center"  value ="$<?= number_format($_GET['importeAbonar'], 0, ',', '.') ?>" readonly id="montoACobrar" attr-valorReal="<?= $_GET['importeAbonar'] ?>"></strong></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">
                         <div class="col-3"><strong>Cobro Efectivo : <input type="text" style="width:150px; height:50px;text-align:center" id="cobroEfectivo" onchange="setearValores()"></strong></div>
@@ -131,8 +131,8 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
             
             newMonto = newMonto.toLocaleString('de-De', {
                 style: 'decimal',
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2
+                maximumFractionDigits: 0,
+                minimumFractionDigits: 0
             }); 
         
             monto.value ="$" +newMonto

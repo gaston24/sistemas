@@ -1,14 +1,10 @@
 <?php
 include_once "controller/traerEquis.php";
 
-if($_POST){
-    $campo = $_POST['inputBuscar'] == "" ? '%' : $_POST['inputBuscar'];
 
-    $todosLosRemitos=traerTodos($_POST['inputBuscar']);
-}else{
     
-    $todosLosRemitos = traerTodos();
-}
+$todosLosRemitos = traerTodos();
+
 
 $newArray = [];
 $remitoActual = "";
@@ -101,7 +97,7 @@ foreach ($todosLosRemitos as $remito => $value) {
                         <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px; height:45px" id='sumValorDeuda' readonly></h4></div>
                         <div class="col-4">    <h4>Cobranza:<input type="text" style="width:150px; height:45px" placeholder="Efectivo" id="efectivo" value="<?= '$'.number_format($totalEfectivo, 0, ',', '.')?>" readonly> <input type="text" style="width:150px; height:45px" placeholder="Cheques" id="cheques" value="<?= '$'.number_format($totalCheque, 0, ',', '.')?>" readonly></h4></div>
                         <form action="#" method="post">
-                            <div class="col">    <h4>Busqueda : <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"><button class="btn btn-primary"  style=" height:45px;margin-bottom:10px;margin-left:4px"  ><i class="bi bi-search"></i></button></h4></div>
+                            <!-- <div class="col">    <h4>Busqueda : <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"><button class="btn btn-primary"  style=" height:45px;margin-bottom:10px;margin-left:4px"  ><i class="bi bi-search"></i></button></h4></div> -->
 
                         </form>
                         <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div>
@@ -169,7 +165,7 @@ foreach ($todosLosRemitos as $remito => $value) {
                 responsive: true,
                 buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+        ],
             });
         const totalDeudas = document.querySelectorAll("#colDeuda");
         let valorTotalDeudas = 0

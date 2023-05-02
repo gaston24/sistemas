@@ -14,11 +14,17 @@ class RemitoEquis {
         $cid = $this->conn->conectar('central');
 
         if($campo){
-            $sql = "SET DATEFORMAT YMD SELECT * FROM SJ_EQUIS_TABLE WHERE (FECHA_MOV BETWEEN '2022-02-10 00:00:00.000' AND '2022-02-15 00:00:00.000') AND RAZON_SOCI LIKE '%$campo%' ORDER BY  COD_PRO_CL, N_COMP";
+            $sql = "SET DATEFORMAT YMD SELECT A.*,C.rendido FROM SJ_EQUIS_TABLE A
+            LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
+            LEFt JOIN sj_administracion_cobros C ON C.id = B.id_cobro WHERE (FECHA_MOV BETWEEN '2022-02-10 00:00:00.000' AND '2022-02-15 00:00:00.000') AND RAZON_SOCI LIKE '%$campo%'  AND C.rendido != 1 ORDER BY  COD_PRO_CL, N_COMP";
 
         }else{
 
-            $sql = "SET DATEFORMAT YMD SELECT * FROM SJ_EQUIS_TABLE WHERE (FECHA_MOV BETWEEN '2022-02-10 00:00:00.000' AND '2022-02-15 00:00:00.000') ORDER BY  COD_PRO_CL, N_COMP";
+            $sql = "SET DATEFORMAT YMD SELECT A.*,C.rendido FROM SJ_EQUIS_TABLE A
+            LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
+            LEFt JOIN sj_administracion_cobros C ON C.id = B.id_cobro 
+            WHERE (FECHA_MOV BETWEEN '2022-02-10 00:00:00.000' AND '2022-02-15 00:00:00.000') AND C.rendido != 1
+            ORDER BY  COD_PRO_CL, N_COMP";
         }
 
         $stmt = sqlsrv_query($cid, $sql);
@@ -419,7 +425,7 @@ class RemitoEquis {
         }
     }
     
-    public function listarDetalleRemitos ($desde, $hasta, $selectEstado, $inputBuscar ) {
+    public function listarDetalleRemitos ($desde, $hasta, $selectEstado, $inputBuscar, $selectTalonario ) {
         
         $cid = $this->conn->conectar('central');
 
@@ -437,7 +443,7 @@ class RemitoEquis {
         left  join	STA14 D on D.N_COMP = A.N_COMP  
         )A
         WHERE (A.FECHA_MOV BETWEEN '$desde' AND '$hasta') AND (A.N_COMP LIKE '%$inputBuscar%' OR A.RAZON_SOCI LIKE '%$inputBuscar%' OR A.IMPORTE_TO LIKE '%$inputBuscar%' OR A.CANT_ART LIKE '%$inputBuscar%' OR A.GC_GDT_NUM_GUIA LIKE '%$inputBuscar%')
-        AND A.estado LIKE '%$selectEstado%' AND A.N_COMP LIKE '%X%'";
+        AND A.estado LIKE '%$selectEstado%' AND A.N_COMP LIKE '%$selectTalonario%'";
 
 try {
     

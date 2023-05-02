@@ -6,7 +6,9 @@ const completarModal = (codClient)=>{
     let cobroEfectivo = document.querySelector("#cobroEfectivo").getAttribute("attr-valorreal");
 
     console.log(cobroEfectivo,parseFloat(cobroEfectivo))
-    saldo.value = montoACobrar -  cobroEfectivo;
+    let total =  montoACobrar -  cobroEfectivo;
+
+    saldo.value ="$" +parseNumber(total); 
     
 }
 
@@ -139,8 +141,8 @@ const calcularSaldo = ()=>{
     }
 
     let total = parseInt(montoACobrar) - (parseFloat(efectivo.getAttribute("attr-valorreal")) + parseFloat(cheque.getAttribute("attr-valorreal")));
-    console.log(total,"totalFinal")
-    saldoCobrar.value =`$ ${total} `
+
+    saldoCobrar.value =`$ ${parseNumber(total)} `
     saldoCobrar.setAttribute("attr-valorReal", total);
 
 }
@@ -178,7 +180,7 @@ const traerCheques = (codClient) =>{
                     let nuevaFila = 
                     `<tr id="tdCheques">
                         <td style="width:40px;text-align:center" id="numInterno">${(parseInt(result)+1)}</td> 
-                        <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:120px" onchange="comprobarSumFila(this)"> `
+                        <td style="text-align:center" ><select class="banco" name="selectBanco" id="selectBanco" style="width:220px" onchange="comprobarSumFila(this)"> `
 
                     bancos.forEach(element => {
                         nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
@@ -348,6 +350,7 @@ const setearValores =()=>{
 
 
     if(efectivo.value == ""){
+        
         efectivo.value = 0;
     }
     if(cheque.value == "" ){
@@ -357,14 +360,14 @@ const setearValores =()=>{
 
 
 
-    efectivo.setAttribute("attr-valorreal", efectivo.value);
-    cheque.setAttribute("attr-valorreal", cheque.value);
+    efectivo.setAttribute("attr-valorreal", efectivo.value.replace(/[$.]/g, ""));
+    cheque.setAttribute("attr-valorreal", cheque.value.replace(/[$.]/g, ""));
 
-    nuevoValor = parseNumber(efectivo.value);
-    efectivo.value = nuevoValor;
+    nuevoValor = parseNumber(efectivo.value.replace(/[$.]/g, ""));
+    efectivo.value ="$" + nuevoValor;
 
-    nuevoValorCheque = parseNumber(cheque.value);
-    cheque.value = nuevoValorCheque;
+    nuevoValorCheque = parseNumber(cheque.value.replace(/[$.]/g, ""));
+    cheque.value ="$" +  nuevoValorCheque;
 
     calcularSaldo();
 }

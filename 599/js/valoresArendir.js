@@ -10,13 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     importeEfectivo.forEach(element => {
         element.setAttribute("attr-realValue", parseFloat(element.textContent))
-        element.textContent = parseNumber(element.textContent);
+        element.textContent ="$" +  parseNumber(element.textContent);
 
     });
 
     importeCheque.forEach(element => {
         element.setAttribute("attr-realValue", parseFloat(element.textContent))
-        element.textContent = parseNumber(element.textContent);
+        element.textContent ="$" + parseNumber(element.textContent);
 
     });
 

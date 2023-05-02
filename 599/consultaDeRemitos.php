@@ -4,7 +4,7 @@
 
     $inputBuscar = isset($_GET['inputBuscar']) ? $_GET['inputBuscar'] : '%' ;
     $selectEstado = isset($_GET['selectEstado']) ?  $_GET['selectEstado'] : '%';
-
+    $selectTalonario = isset($_GET['selectTalonario']) ?  $_GET['selectTalonario'] : 'X';
 
     if(isset($_GET['desde']) &&$_GET['desde'] != "" ){
         $desde = $_GET['desde'];
@@ -18,7 +18,7 @@
     }
 
 
-   $remitos = listarRemitos($desde, $hasta, $selectEstado, $inputBuscar);
+   $remitos = listarRemitos($desde, $hasta, $selectEstado, $inputBuscar,$selectTalonario);
 
 ?>
 
@@ -73,16 +73,17 @@
                                 </div>
                                 <div class="col--3">Talonario :  
                                      <select name="selectTalonario" id="selectTalonario" style="width:150px; height:45px">
-                                        <option value="599">599</option>                                     
-                                        <option value="600">600</option>                                     
-                                        <option value="601">601</option>                                     
-                                        <option value="602">602</option>                                     
-                                        <option value="603">603</option>                                     
-                                        <option value="604">604</option>                                     
+                                        <option value="X">Todos</option>                                     
+                                        <option value="X00599">599</option>                                     
+                                        <option value="X00600">600</option>                                     
+                                        <option value="X00601">601</option>                                     
+                                        <option value="X00602">602</option>                                     
+                                        <option value="X00603">603</option>                                     
+                                        <option value="X00604">604</option>                                     
                                     </select>  
                                     <button class="btn btn-primary btn-submit" value="" style="height:50px;margin-left:2px">filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                 </div>
-                                <div class="col-3">  Busqueda Rapida: <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"></div>
+                                <!-- <div class="col-3">  Busqueda Rapida: <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"></div> -->
                                 <div class="col" style="text-align:right;margin-right:80px">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div>
 
                             </div>
@@ -118,17 +119,17 @@
                                 
                                     <?php switch($remito['estado']){
                                         case "ANULADO":
-                                            echo "<td ><h3><i class='bi bi-x-square-fill' style='color:purple'></i></h3></td>";
+                                            echo "<td ><h3><i class='bi bi-x-square-fill' style='color:purple'  data-toggle='tooltip' title='Anulado'></i></h3></td>";
                                             break;
                                         case "COBRADO":
-                                            echo "<td><h3><i class='bi bi-plus-square-fill' style='color:yellow'></i></h3></td>";
+                                            echo "<td><h3><i class='bi bi-plus-square-fill' style='color:yellow'  data-toggle='tooltip' title='Cobrado'></i></h3></td>";
                                             break;
                                         case "RENDIDO":
-                                            echo "<td ><h3><i class='bi bi-check-square-fill' style='color:green'></i></h3></td>";
+                                            echo "<td ><h3><i class='bi bi-check-square-fill' style='color:green'  data-toggle='tooltip' title='Rendido'></i></h3></td>";
                                             break;
                                             
                                         case "DEBE":
-                                            echo "<td  ><h3><i class='bi bi-dash-square-fill' style='color:red'></i></h3></td>";
+                                            echo "<td  ><h3><i class='bi bi-dash-square-fill' style='color:red'  data-toggle='tooltip' title='Debe'></i></h3></td>";
                                             break;
                                     }
                                     ?>
@@ -143,6 +144,7 @@
                         </table>
                     </div>
                 </div>
+
             </div>
         </div>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -171,6 +173,9 @@
             });
 
         });
+        $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+            });
          $("#btnExport").click(function() {
 
             $('input[type=number]').each(function(){
