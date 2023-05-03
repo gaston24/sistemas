@@ -5,7 +5,7 @@ const completarModal = (codClient)=>{
     let montoACobrar = document.querySelector("#montoACobrar").getAttribute("attr-valorReal"); 
     let cobroEfectivo = document.querySelector("#cobroEfectivo").getAttribute("attr-valorreal");
 
-    console.log(cobroEfectivo,parseFloat(cobroEfectivo))
+  
     let total =  montoACobrar -  cobroEfectivo;
 
     saldo.value ="$" +parseNumber(total); 
@@ -176,10 +176,16 @@ const traerCheques = (codClient) =>{
                     let getMonth = date.toLocaleString("default", { month: "2-digit" });
                     let getDay = date.toLocaleString("default", { day: "2-digit" });
                     let dateFormat = getYear + "-" + getMonth + "-" + getDay;
-            
+                    let numCheque = 0;
+             
+                    if((result) && result != "" && result > 0){
+                        numCheque = parseInt(result) + 1;
+                    }
+
+                    
                     let nuevaFila = 
                     `<tr id="tdCheques">
-                        <td style="width:40px;text-align:center" id="numInterno">${(parseInt(result)+1)}</td> 
+                        <td style="width:40px;text-align:center" id="numInterno">${numCheque}</td> 
                         <td style="text-align:center" ><select class="banco" name="selectBanco" id="selectBanco" style="width:220px" onchange="comprobarSumFila(this)"> `
 
                     bancos.forEach(element => {
@@ -254,7 +260,7 @@ const calcularMontoCheques = () => {
     let total = 0
     document.querySelectorAll("#tdCheques").forEach(element => {
 
-        let chequeMonto = element.childNodes[5].childNodes[0].value;
+        let chequeMonto = element.childNodes[5].childNodes[0].value.replace(/[$.]/g, "");
         total += parseFloat(chequeMonto);
 
     })
@@ -293,7 +299,7 @@ const registrarCheque =  (codClient) =>{
         let banco = element.childNodes[3].childNodes[0].value;
         let numeroDeCheque = element.childNodes[7].childNodes[0].value;
         let numeroDeInterno = element.childNodes[1].textContent;
-        let chequeMonto = element.childNodes[5].childNodes[0].value;
+        let chequeMonto = element.childNodes[5].childNodes[0].value.replace(/[$.]/g, "");
         let cod = codClient;
         
         document.querySelector("#idCheque").value = numeroDeInterno;
@@ -322,6 +328,7 @@ const registrarCheque =  (codClient) =>{
 const comprobarSumFila = (fila) => {
     let banco = fila.parentElement.parentElement.childNodes[3].childNodes[0].value
     let monto = fila.parentElement.parentElement.childNodes[5].childNodes[0].value
+    fila.parentElement.parentElement.childNodes[5].childNodes[0].value = "$"+ parseNumber(monto.replace(/[$.]/g, ""))
     let nroCheque = fila.parentElement.parentElement.childNodes[7].childNodes[0].value
     let fecha = fila.parentElement.parentElement.childNodes[9].childNodes[0].value
     
