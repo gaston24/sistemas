@@ -20,6 +20,7 @@ const  confirmarCobro = (codClient) => {
     let saldoCobrar = document.querySelector("#saldoCobrar").getAttribute("attr-valorReal");
     let nombreCliente = document.querySelector("#cliente").getAttribute("attr-cliente")
     let idCheques = localStorage.getItem("idCheques");
+    let valorDescontado = parseInt(document.querySelector("#valorDescontado").textContent);
 
     if(parseInt(montoACobrar) != parseInt(saldoCobrar)){
         Swal.fire({
@@ -96,7 +97,8 @@ const  confirmarCobro = (codClient) => {
                         montoACobrar: montoACobrar,
                         codClient:codClient,
                         idCheque:idCheques,
-                        nombreCliente:nombreCliente
+                        nombreCliente:nombreCliente,
+                        valorDescontado:valorDescontado
                                                 
                     },
                     success: function(data) {
@@ -140,7 +142,7 @@ const calcularSaldo = ()=>{
         cheque.value = 0;
     }
 
-    let total = parseInt(montoACobrar) - (parseFloat(efectivo.getAttribute("attr-valorreal")) + parseFloat(cheque.getAttribute("attr-valorreal")));
+    let total = parseInt(montoACobrar) - (parseInt(efectivo.getAttribute("attr-valorreal")) + parseInt(cheque.getAttribute("attr-valorreal")));
 
     saldoCobrar.value =`$ ${parseNumber(total)} `
     saldoCobrar.setAttribute("attr-valorReal", total);
@@ -180,6 +182,8 @@ const traerCheques = (codClient) =>{
              
                     if((result) && result != "" && result > 0){
                         numCheque = parseInt(result) + 1;
+                    }else{
+                        numCheque = 1;
                     }
 
                     
@@ -261,13 +265,13 @@ const calcularMontoCheques = () => {
     document.querySelectorAll("#tdCheques").forEach(element => {
 
         let chequeMonto = element.childNodes[5].childNodes[0].value.replace(/[$.]/g, "");
-        total += parseFloat(chequeMonto);
+        total += parseInt(chequeMonto);
 
     })
 
     let cobroCheque = document.querySelector("#cobroCheque");
-    cobroCheque.setAttribute("attr-valorreal",parseFloat( total));
-    cobroCheque.value = parseFloat(total);
+    cobroCheque.setAttribute("attr-valorreal",parseInt( total));
+    cobroCheque.value = parseInt(total);
     calcularSaldo();
 
 }
@@ -317,6 +321,7 @@ const registrarCheque =  (codClient) =>{
                 codClient: cod
             },
             success: function(data) {
+                document.querySelector("#botonCheques").hidden = true
                 calcularMontoCheques();
             }
         });
@@ -339,7 +344,7 @@ const comprobarSumFila = (fila) => {
 }
 
 const parseNumber = (number) => {
-    number = parseFloat(number);
+    number = parseInt(number);
 
     newNumber = number.toLocaleString('de-De', {
         style: 'decimal',

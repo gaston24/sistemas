@@ -5,7 +5,7 @@ const parseNumber = ()=>{
     let allCobrado = document.querySelectorAll("#colCobrado");
 
     allDeuda.forEach(deuda => {
-        let valor = parseFloat(deuda.textContent);
+        let valor = parseInt(deuda.textContent);
         valor = valor.toLocaleString('de-De', {
             style: 'decimal',
             maximumFractionDigits: 0,
@@ -15,7 +15,7 @@ const parseNumber = ()=>{
     });
 
     allCobrado.forEach(cobrado => {
-        let valor = parseFloat(cobrado.textContent);
+        let valor = parseInt(cobrado.textContent);
         valor = valor.toLocaleString('de-De', {
             style: 'decimal',
             maximumFractionDigits: 0,

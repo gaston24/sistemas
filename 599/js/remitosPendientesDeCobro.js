@@ -5,7 +5,7 @@ const parseNumber = ()=>{
     let allMontos = document.querySelectorAll("#monto");
 
     allMontos.forEach(monto => {
-        let valor = parseFloat(monto.textContent);
+        let valor = parseInt(monto.textContent);
         valor = valor.toLocaleString('de-De', {
             style: 'decimal',
             maximumFractionDigits: 0,
@@ -25,7 +25,7 @@ const checkMonto = ()=>{
     todosLosCheck.forEach(e => {
         if(e.checked){
 
-            totalMontosCheck = totalMontosCheck + parseFloat(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
+            totalMontosCheck = totalMontosCheck + parseInt(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
         }
     });
 
@@ -105,14 +105,14 @@ btnConfirmar.addEventListener("click",function (){
             let porcentaje = 0;
 
             if(descuento != "" && descuento != 0){
-                porcentaje = ( parseFloat(importe)  *  parseFloat(descuento)  ) / 100;
+                porcentaje = ( parseInt(importe)  *  parseInt(descuento)  ) / 100;
             }
 
-            let importeAbonar = parseFloat(importe) - parseFloat(porcentaje);
+            let importeAbonar = parseInt(importe) - parseInt(porcentaje);
 
             let codCliente = document.querySelector("#codClient").textContent
 
-            window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+codCliente;
+            window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+codCliente+"&valorDescontado="+porcentaje;
 
         })
 
@@ -130,10 +130,10 @@ const calcularDescuento = ()=>{
 
     if(descuento != "" && descuento != 0){
 
-        porcentaje = ( parseFloat(importe)  *  parseFloat(descuento)  ) / 100;
+        porcentaje = ( parseInt(importe)  *  parseInt(descuento)  ) / 100;
 
 
-        let importeAbonar = parseFloat(importe) - parseFloat(porcentaje);
+        let importeAbonar = parseInt(importe) - parseInt(porcentaje);
         document.querySelector("#importeConDescuento").setAttribute("attr-realValue", importeAbonar);
         document.querySelector("#importeConDescuento").value = "$" +  importeAbonar.toLocaleString('de-De', {
             style: 'decimal',

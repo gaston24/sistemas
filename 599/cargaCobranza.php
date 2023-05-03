@@ -51,12 +51,13 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
                     </div>
                     <div class="row" style="margin-left:60px;margin-top">
                         <div class="col-3"><strong>Monto a Cobrar : <input type="text" style="width:150px; height:50px;text-align:center"  value ="$<?= number_format($_GET['importeAbonar'], 0, ',', '.') ?>" readonly id="montoACobrar" attr-valorReal="<?= $_GET['importeAbonar'] ?>"></strong></div>
+                        <div hidden id="valorDescontado"><?= $_GET['valorDescontado']?></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">
                         <div class="col-3"><strong>Cobro Efectivo : <input type="text" style="width:150px; height:50px;text-align:center" id="cobroEfectivo" onchange="setearValores()"></strong></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">
-                        <div class="col-3"><strong>Cobro Cheque : <input type="text" style="width:150px; height:50px;text-align:center" id="cobroCheque" readonly></strong><button class="btn btn-success" value="" style="margin-left:20px" data-toggle="modal" data-target="#exampleModal" onclick="completarModal('<?= $_GET['codCliente'] ?>')"><i class="bi bi-plus-square"></i></button></div>
+                        <div class="col-3"><strong>Cobro Cheque : <input type="text" style="width:150px; height:50px;text-align:center" id="cobroCheque" readonly></strong><button class="btn btn-success" value="" style="margin-left:20px" data-toggle="modal" data-target="#exampleModal" onclick="completarModal('<?= $_GET['codCliente'] ?>')" id="botonCheques"><i class="bi bi-plus-square"></i></button></div>
                         <div hidden id="idCheque"></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">

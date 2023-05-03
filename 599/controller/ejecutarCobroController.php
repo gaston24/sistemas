@@ -9,6 +9,7 @@ $montoACobrar = $_POST['montoACobrar'];
 $codClient = $_POST['codClient'];
 $postCheques = $_POST['idCheque'];
 $nombreCliente = $_POST['nombreCliente'];
+$valorDescontado = $_POST['valorDescontado'];
 
 $idCheques = explode(",", $postCheques);
 
@@ -43,7 +44,7 @@ $remitosDetalle = $remitoEquis->traerRemito($remitosParceados);
 
 foreach ($remitosDetalle as $detalle) {
     
-    if($montoTotal >= $detalle['IMPORTE_TO'] ){
+    if( ($montoTotal + $valorDescontado) >= (int)$detalle['IMPORTE_TO'] ){
        
 
             $remitoEquis->cambiarEstado($detalle['N_COMP']);
