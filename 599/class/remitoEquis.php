@@ -20,16 +20,23 @@ class RemitoEquis {
 
         }else{
 
-            $sql = "SET DATEFORMAT YMD SELECT A.*,C.rendido FROM SJ_EQUIS_TABLE A
+            $sql = "SET DATEFORMAT YMD 
+
+            SELECT A.*, c.rendido 
+            FROM SJ_EQUIS_TABLE A
             LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
             LEFt JOIN sj_administracion_cobros C ON C.id = B.id_cobro 
-            WHERE (FECHA_MOV BETWEEN '2022-02-10 00:00:00.000' AND '2022-02-15 00:00:00.000') AND C.rendido != 1
+            WHERE (FECHA_MOV >= GETDATE()-700) 
+            AND (C.rendido != 1 or C.rendido is null)
+            
             ORDER BY  COD_PRO_CL, N_COMP";
+
         }
 
         $stmt = sqlsrv_query($cid, $sql);
 
         $v = [];
+        
         try {
             
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
@@ -53,10 +60,10 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
 
-        $sql = "SET DATEFORMAT YMD SELECT * FROM SJ_EQUIS_TABLE WHERE (FECHA_MOV BETWEEN '2022-02-10 00:00:00.000' AND '2022-02-15 00:00:00.000')  AND COD_PRO_CL = '$codClient'  ORDER BY  COD_PRO_CL, N_COMP";
-        
-        $stmt = sqlsrv_query($cid, $sql);
+        $sql = "SET DATEFORMAT YMD SELECT * FROM SJ_EQUIS_TABLE WHERE COD_PRO_CL = '$codClient'  ORDER BY  COD_PRO_CL, N_COMP";
 
+        $stmt = sqlsrv_query($cid, $sql);
+        $v=[];
      
         try {
             
