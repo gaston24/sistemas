@@ -29,7 +29,7 @@ class RemitoEquis {
 
         $stmt = sqlsrv_query($cid, $sql);
 
-     
+        $v = [];
         try {
             
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {

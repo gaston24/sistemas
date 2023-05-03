@@ -479,7 +479,7 @@ class Remito {
 		GROUP BY FECHA_CONTROL, COD_CLIENT, SUC_ORIG, SUC_DESTIN, FECHA_REM, NOMBRE_VEN, NRO_REMITO, OBSERVAC_LOGISTICA, NRO_AJUSTE, ULTIMO_CHAT
 		ORDER BY FECHA_CONTROL, HORA  
         ";
-
+        
         try {
 
             $v = array();

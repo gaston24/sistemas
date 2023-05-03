@@ -141,20 +141,20 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
             minimumFractionDigits: 0
         });
             
-        });
+    });
         
-        $("#btnExport").click(function() {
+    $("#btnExport").click(function() {
 
-            $('input[type=number]').each(function(){
-                this.setAttribute('value',$(this).val());
-            });
-
-            $("table").table2excel({
-                // exclude CSS class
-                exclude: ".noExl",
-                name: "Worksheet Name",
-                filename: "Remitos", //do not include extension
-                fileext: ".xls", // file extension
-            });
+        $('input[type=number]').each(function(){
+            this.setAttribute('value',$(this).val());
         });
+
+        $("table").table2excel({
+            // exclude CSS class
+            exclude: ".noExl",
+            name: "Worksheet Name",
+            filename: "Remitos", //do not include extension
+            fileext: ".xls", // file extension
+        });
+    });
 </script>
