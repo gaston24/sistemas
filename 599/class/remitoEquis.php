@@ -163,7 +163,7 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
         
-        $sql = "SELECT MAX(ID) FROM sj_administracion_cheques";
+        $sql = "SELECT ISNULL(MAX(ID),0) FROM sj_administracion_cheques";
         
         try {
 
@@ -345,7 +345,8 @@ class RemitoEquis {
 
         $sql ="SET dateformat YMD SELECT * from sj_administracion_cobros A
         INNER JOIN sj_administracion_cheques B ON B.cod_client = A.cod_client COLLATE Latin1_General_BIN
-        INNER JOIN sj_administracion_cobros_por_cheque E ON E.id_cobro = A.id AND E.id_cheque = B.id 
+        INNER JOIN sj_administracion_cobros_por_cheque E ON E.id_cobro = A.id AND E.id_cheque = B.id
+        LEFT JOIN (SELECT ID, BANCO NOMBRE_BANCO FROM RO_T_BANCOS) C ON b.banco = C.ID 
         WHERE A.rendido LIKE '%$selectEstado%' AND (A.nombre_cliente LIKE '%$inputBuscar%' OR B.id LIKE '%$inputBuscar%' OR B.banco LIKE '%$inputBuscar%' OR B.monto LIKE '%$inputBuscar%' OR B.num_cheque LIKE '%$inputBuscar%') AND A.fecha_cobro BETWEEN '$desde' AND '$hasta' ";
         try {
 
@@ -437,7 +438,7 @@ class RemitoEquis {
         $cid = $this->conn->conectar('central');
 
         $sql = "SET DATEFORMAT YMD SELECT * FROM (
-        SELECT A.*,estado =
+        SELECT A.*, F.NOMBRE_VEN, estado =
         CASE
             WHEN D.ESTADO_MOV = 'A' THEN 'ANULADO'
             when A.CHEQUEADO =  1 AND C.rendido = 0 THEN 'COBRADO'
@@ -445,9 +446,11 @@ class RemitoEquis {
             WHEN A.CHEQUEADO = 0 THEN 'DEBE'
         END
         FROM SJ_EQUIS_TABLE A 
-        left  join sj_administracion_cobros_por_remito B on a.N_COMP = B.num_rem collate Latin1_General_BIN
-        left  join sj_administracion_cobros C on C.id = B.id_cobro
-        left  join	STA14 D on D.N_COMP = A.N_COMP  
+        LEFT JOIN sj_administracion_cobros_por_remito B on a.N_COMP = B.num_rem collate Latin1_General_BIN
+        LEFT JOIN sj_administracion_cobros C on C.id = B.id_cobro
+        LEFT JOIN STA14 D on D.N_COMP = A.N_COMP
+		LEFT JOIN GVA14 E ON D.COD_PRO_CL = E.COD_CLIENT
+		LEFT JOIN GVA23 F ON E.COD_VENDED = F.COD_VENDED 
         )A
         WHERE (A.FECHA_MOV BETWEEN '$desde' AND '$hasta') AND (A.N_COMP LIKE '%$inputBuscar%' OR A.RAZON_SOCI LIKE '%$inputBuscar%' OR A.IMPORTE_TO LIKE '%$inputBuscar%' OR A.CANT_ART LIKE '%$inputBuscar%' OR A.GC_GDT_NUM_GUIA LIKE '%$inputBuscar%')
         AND A.estado LIKE '%$selectEstado%' AND A.N_COMP LIKE '%$selectTalonario%'";

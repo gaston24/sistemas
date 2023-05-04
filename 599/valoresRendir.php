@@ -21,7 +21,7 @@ $cheques = traerCheques();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="css/style.css">
 
     </link>
 
@@ -29,23 +29,19 @@ $cheques = traerCheques();
 
 <body>
 
-    <div class="alert alert-secondary">
+    <div class="alert">
         <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h5>Valores A Rendir</h5></div>
+            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Valores A Rendir</h6></div>
                 <div class="card card-1">
                     
                     <div class="row" style="margin-left:50px">
-
-                        <h2><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Valores A Rendir</h2>
-
+                        <h3><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Valores A Rendir</h3>
                     </div>
 
-                    <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3">    <h4>Total efectivo : <input type="text" style="width:150px; height:45px" id="totalEfectivo" value="0,00" readonly></h4></div>
-
-                        <div class="col">    <h4>Total Cheques : <input type="text" style="width:150px; height:45px" id="totalCheque" value="0,00" readonly></h4></div>
-                      
-                        <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px;width:150px;" onclick="rendir()"><i class="fa fa-file-excel-o"></i> Rendir<i class="bi bi-file-earmark-excel"></i></button></h4></div>
+                    <div class="row ml-4">
+                        <div><h5>Total efectivo: <input class="form-control" type="text" id="totalEfectivo" value="0,00" readonly></h5></div>
+                        <div class="ml-4"><h5>Total Cheques: <input class="form-control" type="text" id="totalCheque" value="0,00" readonly></h5></div>
+                        <div style="margin-top: 1.5rem; margin-left: 60%;"><button class="btn btn-success btn_exportar" id="btnExport" onclick="rendir()"><i class="fa fa-file-excel-o"></i> Rendir <i class="bi bi-check2-circle"></i></button></div>
                     </div>
 
                     <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
@@ -65,7 +61,7 @@ $cheques = traerCheques();
                                     <td id="importeEfectivo"><?php echo $value['importe_efectivo'] ?></td>
                                     <td id="importeCheque"><?php echo $value['importe_cheque'] ?></td>
                                     <td id="idCobro" hidden><?php echo $value['id'] ?></td>  
-                                    <td><input type="checkbox" name="a" id="checkCalcularTotales" style="width:30px;height:30px;" onchange="calcularTotales(this)"></td>
+                                    <td><input type="checkbox" name="a" id="checkCalcularTotales" style="width:20px;height:20px;" onchange="calcularTotales(this)"></td>
                                 </tr>
 
                             <?php } ?>
@@ -74,6 +70,7 @@ $cheques = traerCheques();
                 
             </div>
         </div>
+    </div>
 
 
 

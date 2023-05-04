@@ -115,21 +115,21 @@
                                     <td>$ <?php echo number_format($remito['IMPORTE_TO'], 0, ',', '.') ?></td>
                                     <td><?= (int)$remito['CANT_ART'] ?></td>
                                     <td><?= $remito['GC_GDT_NUM_GUIA'] ?></td>
-                                    <td>VENDEDOR</td>
+                                    <td><?= $remito['NOMBRE_VEN'] ?></td>
                                 
                                     <?php switch($remito['estado']){
                                         case "ANULADO":
-                                            echo "<td ><h3><i class='bi bi-x-square-fill' style='color:purple'  data-toggle='tooltip' title='Anulado'></i></h3></td>";
+                                            echo "<td ><h3><i class='bi bi-x-square-fill' style='color:#6f42c1'  data-toggle='tooltip' title='Anulado'></i></h3></td>";
                                             break;
                                         case "COBRADO":
-                                            echo "<td><h3><i class='bi bi-plus-square-fill' style='color:yellow'  data-toggle='tooltip' title='Cobrado'></i></h3></td>";
+                                            echo "<td><h3><i class='bi bi-plus-square-fill' style='color:#ffc107'  data-toggle='tooltip' title='Cobrado'></i></h3></td>";
                                             break;
                                         case "RENDIDO":
-                                            echo "<td ><h3><i class='bi bi-check-square-fill' style='color:green'  data-toggle='tooltip' title='Rendido'></i></h3></td>";
+                                            echo "<td ><h3><i class='bi bi-check-square-fill' style='color:#28a745'  data-toggle='tooltip' title='Rendido'></i></h3></td>";
                                             break;
                                             
                                         case "DEBE":
-                                            echo "<td  ><h3><i class='bi bi-dash-square-fill' style='color:red'  data-toggle='tooltip' title='Debe'></i></h3></td>";
+                                            echo "<td  ><h3><i class='bi bi-dash-square-fill' style='color:#dc3545'  data-toggle='tooltip' title='Debe'></i></h3></td>";
                                             break;
                                     }
                                     ?>

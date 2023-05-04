@@ -30,7 +30,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Composicion De Remitos</title>
+        <title>Reporte de cheques</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -50,17 +50,17 @@
 
         <div class="alert alert-secondary">
             <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-                <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h5>Reporte de Cheques</h5></div>
+                <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Reporte de Cheques</h6></div>
                     <div class="card card-1">
                         
                         <div class="row" style="margin-left:50px">
-                            <h2><strong><i class="bi bi-bank" style="margin-right:20px;font-size:50px"></i>Reporte de Cheques recibidos</strong></h2>
+                            <h3><strong><i class="bi bi-bank" style="margin-right:20px;font-size:50px"></i>Reporte de Cheques recibidos</strong></h3>
 
                         </div>
                         <form action="#" method="get">
                             <div class="row" style="margin-top:10px">
 
-                                <div class="col-3" style="margin-left:50px">Desde : <input type="date" style="width:150px; height:45px" id='desde' name="desde" value="<?php echo $desde; ?>">  Hasta <input type="date" name="hasta" style="width:150px; height:45px" value="<?= $hasta ?>"></div>
+                                <div class="col-3" style="margin-left:50px">Desde: <input type="date" style="width:150px; height:45px" id='desde' name="desde" value="<?php echo $desde; ?>">Hasta: <input type="date" name="hasta" style="width:150px; height:45px" value="<?= $hasta ?>"></div>
                                 <div class="col-3">Estado :  
                                     <select name="selectEstado" id="selectEstado" style="width:150px; height:45px">
                                         <option value="%">Todos</option>
@@ -79,7 +79,7 @@
                         <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th style="position: sticky; top: 0; z-index: 10; width: 600px;text-align:center" class="col-4">NRO. INTERNO</th>
+                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">NRO. INTERNO</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">CLIENTE</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">BANCO EMISOR</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">IMPORTE</th>
@@ -96,7 +96,7 @@
                                     <tr style="text-align:center">
                                         <td><?php echo $value['id'] ?></td>
                                         <td id="importeEfectivo"><?php echo $value['nombre_cliente'] ?></td>
-                                        <td id="importeCheque"><?php echo $value['banco'] ?></td>
+                                        <td id="importeCheque"><?php echo $value['NOMBRE_BANCO'] ?></td>
                                         <td id="numeroDeRemito" >$ <?php echo number_format($value['monto'], 0, ',', '.') ?></td>  
                                         <td id="numeroDeRemito" ><?php echo $value['num_cheque'] ?></td>  
                                         <td id="numeroDeRemito" ><?php echo $value['fecha_cobro']->format('Y-m-d H:i:s') ?></td>  

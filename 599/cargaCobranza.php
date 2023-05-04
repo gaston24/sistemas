@@ -33,38 +33,33 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
 
     <div class="alert alert-secondary">
         <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h5>Carga de Cobranza</h5></div>
+            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Carga de Cobranza</h6></div>
                 <div class="card card-1">
                     
                     <div class="row" style="margin-left:50px">
-
-                        <h2><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Carga de Cobranza</h2>
-
+                        <h3><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Carga de Cobranza</h3>
                     </div>
-
-                    <div class="row" style="margin-left:50px;margin-top">
-                       <div class="col-2"></div>
-                        <div class="col">    <h4><button class="btn btn-primary" id="btnExport" style=" height:45px" onclick="confirmarCobro('<?= $_GET['codCliente'] ?>')"><i class="fa fa-file-excel-o"></i> Confirmar Cobro<i class="bi bi-check-square"></i></i></button></h4></div>
-                    </div>
-                    <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3" id="cliente" attr-cliente="<?= $cliente?>"><strong>Cliente : </strong ><?= $cliente?></div>
+                    <div class="row" style="margin-left:50px; margin-top: 1rem; margin-bottom: 1rem;">
+                        <div class="col-4" id="cliente" attr-cliente="<?= $cliente?>"><strong>Cliente : </strong ><?= $cliente?></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top">
-                        <div class="col-3"><strong>Monto a Cobrar : <input type="text" style="width:150px; height:50px;text-align:center"  value ="$<?= number_format($_GET['importeAbonar'], 0, ',', '.') ?>" readonly id="montoACobrar" attr-valorReal="<?= $_GET['importeAbonar'] ?>"></strong></div>
+                        <div><strong>Monto a Cobrar: <input class="form-control" type="text"  value ="$<?= number_format($_GET['importeAbonar'], 0, ',', '.') ?>" readonly id="montoACobrar" attr-valorReal="<?= $_GET['importeAbonar'] ?>"></strong></div>
                         <div hidden id="valorDescontado"><?= $_GET['valorDescontado']?></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">
-                        <div class="col-3"><strong>Cobro Efectivo : <input type="text" style="width:150px; height:50px;text-align:center" id="cobroEfectivo" onchange="setearValores()"></strong></div>
+                        <div><strong>Cobro Efectivo: <input class="form-control" type="text" id="cobroEfectivo" onchange="setearValores()"></strong></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">
-                        <div class="col-3"><strong>Cobro Cheque : <input type="text" style="width:150px; height:50px;text-align:center" id="cobroCheque" readonly></strong><button class="btn btn-success" value="" style="margin-left:20px" data-toggle="modal" data-target="#exampleModal" onclick="completarModal('<?= $_GET['codCliente'] ?>')" id="botonCheques"><i class="bi bi-plus-square"></i></button></div>
+                        <div><strong>Cobro Cheque: <input class="form-control" type="text" id="cobroCheque" readonly></strong></div>
+                        <div style="margin-top: 1.5rem; margin-left: 0.5rem"><button class="btn btn-success" value="" data-toggle="modal" data-target="#exampleModal" onclick="completarModal('<?= $_GET['codCliente'] ?>')" id="botonCheques"><i class="bi bi-plus-square"></i></button></div>
                         <div hidden id="idCheque"></div>
                     </div>
-                    <div class="row" style="margin-left:60px;margin-top:20px">
-                        <div class="col-3"><strong>Saldo a Cobrar : <input type="text" style="width:150px; height:50px;text-align:center"  readonly id="saldoCobrar"></strong></div>
+                    <div class="row" style="margin-left:60px;margin-top:20px; margin-bottom: 0.5rem;">
+                        <div><strong>Saldo a Cobrar: <input class="form-control" type="text"  readonly id="saldoCobrar"></strong></div>
                     </div>
-         
-
+                    <div class="row">
+                        <div style="margin-left: 20rem; margin-bottom: 2rem;"><button class="btn btn-primary" id="btnExport" onclick="confirmarCobro('<?= $_GET['codCliente'] ?>')"><i class="fa fa-file-excel-o"></i>Confirmar Cobro <i class="bi bi-check-square"></i></i></button></div>
+                    </div>
             </div>
         </div>
 
@@ -78,7 +73,7 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
                     <h5 class="modal-title" id="exampleModalLabel">Carga de Cheques</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row" style="margin-left:10px">Saldo a cobrar : <input type="text" style="width:100px;height:30px;margin-left:10px" readonly id="modalSaldo"></div>
+                    <div class="row" style="margin-left:10px">Saldo a cobrar : <input class="form-control" type="text" style="width:100px;height:30px;margin-left:10px" readonly id="modalSaldo"></div>
 
                     <div style="margin-top:10px">
                             

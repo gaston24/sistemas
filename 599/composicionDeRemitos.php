@@ -70,7 +70,6 @@ foreach ($todosLosRemitos as $remito => $value) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
 
     </link>
 
@@ -78,31 +77,25 @@ foreach ($todosLosRemitos as $remito => $value) {
 
 <body>
 
-    <div class="alert alert-secondary">
+    <div class="alert">
         <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h5>Composición de Remitos</h5></div>
-                <div class="card card-1">
+                <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Composición de Remitos</h6></div>
+                <div class="card card-1 mb-2">
+                    <div style="margin-left: 2rem"><h3><i class="bi bi-cash"></i> Composición de saldo a cobrar</h3></div>
+                            <div class="row" style="margin-left: 20rem">
+                                    <div><h5>Total deuda : <input class="form-control" type="text" id='sumValorDeuda' readonly></h5></div>
+                                <div style="margin-left: 2rem; margin-top: 2rem;"><h5>Cobranza:
+                                    <div style="margin-left: 7rem;">
+                                        <div style="margin-top: -3.8rem;"><label>Efectivo</label><input class="form-control" style="width: 10rem"type="text" placeholder="Efectivo" id="efectivo" value="<?= '$'.number_format($totalEfectivo, 0, ',', '.')?>" readonly></div>
+                                        <div style="margin-top: -4.4rem; margin-left: 10.5rem;"><label>Cheque</label><input class="form-control" style="width: 10rem" type="text" placeholder="Cheques" id="cheques" value="<?= '$'.number_format($totalCheque, 0, ',', '.')?>" readonly></h5></div>
+                                        <div style="margin-top: 1.7rem; margin-left: 1rem;"><button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></div>
+                                    </div>
+                                </div>
+                            </div>
                     
-                    <div class="row" style="margin-left:50px">
-
-                        <h2><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Composición de saldo a cobrar</h2>
-
                     </div>
-                    <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3"></div>
-                        <div class="col" style="margin-left:140px"><h4>Efectivo <span style="margin-left:50px">Cheques</span></h4></div>
-                        <div class="col"></div>
-                    </div>
-                    <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-3">    <h4>Total deuda : <input type="text" style="width:150px; height:45px" id='sumValorDeuda' readonly></h4></div>
-                        <div class="col-4">    <h4>Cobranza:<input type="text" style="width:150px; height:45px" placeholder="Efectivo" id="efectivo" value="<?= '$'.number_format($totalEfectivo, 0, ',', '.')?>" readonly> <input type="text" style="width:150px; height:45px" placeholder="Cheques" id="cheques" value="<?= '$'.number_format($totalCheque, 0, ',', '.')?>" readonly></h4></div>
-                        <form action="#" method="post">
-                            <!-- <div class="col">    <h4>Busqueda : <input type="text" style="height:45px" placeholder="Sobre Cualquier Campo..." name="inputBuscar"><button class="btn btn-primary"  style=" height:45px;margin-bottom:10px;margin-left:4px"  ><i class="bi bi-search"></i></button></h4></div> -->
-
-                        </form>
-                        <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div>
-                    </div>
-
+                
+            
                     <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
                         <thead class="thead-dark">
                             <tr>
@@ -131,13 +124,10 @@ foreach ($todosLosRemitos as $remito => $value) {
                                 ?> 
                       
                         </tbody>
-                
-            </div>
+                </div>
         </div>
-
-
-
-        </table>
+    </div>
+    </table>
 
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

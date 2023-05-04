@@ -22,6 +22,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     
     </link>
 
@@ -29,35 +30,25 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
 
 <body>
 
-    <div class="alert alert-secondary">
+    <div class="alert">
         <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h5>Remitos pendientes de cobro</h5></div>
+            <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Remitos pendientes de cobro</h6></div>
                 <div class="card card-1">
                     
-                    <div class="row" style="margin-left:50px">
-
-                        <h2><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Remitos pendientes de cobro</h2>
-
+                    <div class="row" style="margin-left:1rem">
+                        <h3><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Remitos pendientes de cobro</h3>
                     </div>
-
                     <div class="row" style="margin-left:50px;margin-top">
-                        <div class="col-2">    <h4>Total deuda : <input type="text" style="width:150px;  height:60px" id="totalDeuda" readonly></h4></div>
-
-                        <div class="col-2" id="divImporteAabonar">    <h4>Importe a abonar : <input type="text" style="width:150px; height:60px" id="importeAbonar" readonly></h4></div>
-                        <div class="col-3" id="divImporteConDescuento" > <h4>importe con Descuento : <input type="text" style="height:60px" id="importeConDescuento" readonly></h4></div>
-
-                        <!-- <div class="col">    <h4>% Descuento : <input type="text" style="height:60px" id="descuento"> </h4></div> -->
-                        <div class="col-3" >    <h4>% Descuento : <input type="text" style="height:60px" id="descuento" onchange="calcularDescuento()" placeholder="Ej. 10%"> <button class="btn btn-primary"  style="height:60px;margin-left:20px"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></h4></div>
-                        <!-- <div class="col">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div> -->
+                        <div><label>Total deuda: </label><input class="form-control" type="text" id="totalDeuda" readonly></div>
+                        <div id="divImporteAabonar" style="margin-left: 1rem"><label>Importe a abonar:</label><input class="form-control" type="text" id="importeAbonar" readonly></div>
+                        <div id="divImporteConDescuento" style="margin-left: 1rem"> <label>Importe con Descuento:</label><input class="form-control" type="text" id="importeConDescuento" readonly></div>
+                        <div style="margin-left: 1rem"><label>% Descuento:</label><input class="form-control" type="text" id="descuento" onchange="calcularDescuento()" placeholder="Colocar números enteros"></div>
+                        <div style="margin-top: 2rem; margin-left: 0.5rem"><button class="btn btn-primary"  value="" id="btnConfirmar">Confirmar <i class="bi bi-check-square"></i></button></div>
+                        <div style="margin-top: 2rem; margin-left: 1rem"><button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i>Exportar<i class="bi bi-file-earmark-excel"></i></button></div>
                     </div>
-                    <div class="row" >
-                        <div class="col-3"></div>
-                        <div class="col"></div>
-                        <div class="col-3" style="text-align:right;margin-right:310px">    <h4><button class="btn btn-success btn_exportar" id="btnExport" style=" height:45px"><i class="fa fa-file-excel-o"></i> Exportar<i class="bi bi-file-earmark-excel"></i></button></h4></div>
-                        
-                    </div>
-                    <div hidden id="codClient"><?=$_GET['codClient'] ?></div>
-                    <div class="row" style="margin-left:50px;margin-top">
+                    
+                    <div class="row" style="margin-left: 1rem;margin-top:1rem">
+                        <div hidden id="codClient"><?=$_GET['codClient'] ?></div>
                         <div style="width: 500px"><h5 ><strong>Cliente : <p style="color: red;"><?= $detalleDeRemito[0]['RAZON_SOCI'] ?></p></strong></h5></div>
                     </div>
                     
