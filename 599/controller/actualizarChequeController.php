@@ -5,9 +5,9 @@ $dataDelCheque = $_POST;
 
 $remitoEquis = new RemitoEquis();
 
-$remitoEquis->cargarCheque($dataDelCheque);
-$idCheque = $remitoEquis->traerChequeNumInterno();
-echo $idCheque;    
+$remitoEquis->actualizarCheque($dataDelCheque);
+
+echo true;    
 
 
 ?>

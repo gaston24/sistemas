@@ -120,6 +120,7 @@ class RemitoEquis {
         
         try {
             $stmt = sqlsrv_query($cid, $sql);
+
     
         }
         catch (\Throwable $th) {
@@ -455,10 +456,39 @@ class RemitoEquis {
         WHERE (A.FECHA_MOV BETWEEN '$desde' AND '$hasta') AND (A.N_COMP LIKE '%$inputBuscar%' OR A.RAZON_SOCI LIKE '%$inputBuscar%' OR A.IMPORTE_TO LIKE '%$inputBuscar%' OR A.CANT_ART LIKE '%$inputBuscar%' OR A.GC_GDT_NUM_GUIA LIKE '%$inputBuscar%')
         AND A.estado LIKE '%$selectEstado%' AND A.N_COMP LIKE '%$selectTalonario%'";
 
-try {
-    
-    $stmt = sqlsrv_query($cid, $sql);
+        try {
+            
+            $stmt = sqlsrv_query($cid, $sql);
 
+
+                    $v = [];
+
+                    while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                        $v[] = $row;
+
+                    }
+                    
+                    return $v;
+
+                }
+                    catch (\Throwable $th) {
+
+                        die("Error en sqlsrv_exec");
+
+                }
+
+    }
+    public function traerChequeDetalle ($idCheque) {
+
+        $sql = "SELECT * FROM sj_administracion_cheques WHERE id = '$idCheque'";
+
+        $cid = $this->conn->conectar('central');
+
+        
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
 
             $v = [];
 
@@ -478,5 +508,28 @@ try {
         }
 
     }
+    public function actualizarCheque ($data){
+        $cid = $this->conn->conectar('central');
 
+        
+        $id = $data['id'];
+        $nroCheque = $data['nroCheque'];
+        $banco = $data['banco'];
+        $monto = $data['monto'];
+        $fechaCheque = $data['fechaCheque'];
+
+        $sql = "UPDATE sj_administracion_cheques SET num_cheque = $nroCheque, banco = $banco , monto = $monto, fecha_cheque = '$fechaCheque' WHERE id = $id";
+        var_dump($sql);
+        try {
+            $stmt = sqlsrv_query($cid, $sql);
+    
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+
+
+    }
 }
