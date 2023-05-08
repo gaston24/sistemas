@@ -51,7 +51,7 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px">
                         <div><strong>Cobro Cheque: <input class="form-control" type="text" id="cobroCheque" readonly></strong></div>
-                        <div style="margin-top: 1.5rem; margin-left: 0.5rem"><button class="btn btn-success" value="" data-toggle="modal" data-target="#exampleModal" onclick="completarModal('<?= $_GET['codCliente'] ?>')" id="botonCheques"><i class="bi bi-plus-square"></i></button></div>
+                        <div style="margin-top: 1.5rem; margin-left: 0.5rem"><button class="btn btn-success" value="" data-toggle="modal" data-target="#exampleModal" onclick="completarModal('<?= $_GET['codCliente'] ?>')" id="botonCheques"><i class="bi bi-plus-square"></i></button><button class="btn btn-primary" value="" data-toggle="modal" data-target="#editarChequeModal" onclick="updateChequesModal()" id="botonEditarCheques" hidden><i class="bi bi-pencil-square"></i></button></div>
                         <div hidden id="idCheque"></div>
                     </div>
                     <div class="row" style="margin-left:60px;margin-top:20px; margin-bottom: 0.5rem;">
@@ -102,6 +102,41 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
         </div>
     </div>
 
+    <div class="modal fade  bd-example-modal-xl " id="editarChequeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Carga de Cheques</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-left:10px">Saldo a cobrar : <input class="form-control" type="text" style="width:100px;height:30px;margin-left:10px" readonly id="modalUpdateChequesSaldo"></div>
+
+                    <div style="margin-top:10px">
+                            
+                        <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="text-align:center;" class="col-md-1">NRO.INTERNO</th>
+                                    <th  class="col-md-1">BANCO EMISOR</th>
+                                    <th  class="col-md-1">MONTO</th>
+                                    <th  class="col-md-1">NRO.CHEQUE</th>
+                                    <th  class="col-md-1">FECHA COBRO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="editarChequeTable">
+                    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar<i class="bi bi-x"></i></button>
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" data-toggle="modal" onclick="updateCheque()">Cargar <i class="bi bi-check-square"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -138,6 +173,8 @@ $cliente = $detalleRemito[0]['RAZON_SOCI'];
                 $('.banco').select2();
             });
         };
+
+        
      
  
 </script>

@@ -1,18 +1,18 @@
-const completarModal = (codClient)=>{
+const completarModal = (codClient) => {
 
     traerCheques(codClient);
     let saldo = document.querySelector("#modalSaldo");
-    let montoACobrar = document.querySelector("#montoACobrar").getAttribute("attr-valorReal"); 
+    let montoACobrar = document.querySelector("#montoACobrar").getAttribute("attr-valorReal");
     let cobroEfectivo = document.querySelector("#cobroEfectivo").getAttribute("attr-valorreal");
 
-  
-    let total =  montoACobrar -  cobroEfectivo;
 
-    saldo.value ="$" +parseNumber(total); 
-    
+    let total = montoACobrar - cobroEfectivo;
+
+    saldo.value = "$" + parseNumber(total);
+
 }
 
-const  confirmarCobro = (codClient) => {
+const confirmarCobro = (codClient) => {
 
     let cobroEfectivo = document.querySelector("#cobroEfectivo").getAttribute("attr-valorReal");
     let cobroCheque = document.querySelector("#cobroCheque").getAttribute("attr-valorReal");
@@ -22,55 +22,32 @@ const  confirmarCobro = (codClient) => {
     let idCheques = localStorage.getItem("idCheques");
     let valorDescontado = parseInt(document.querySelector("#valorDescontado").textContent);
 
-    if(parseInt(montoACobrar) != parseInt(saldoCobrar)){
+    if (parseInt(montoACobrar) != parseInt(saldoCobrar)) {
         Swal.fire({
             icon: 'warning',
             title: 'El importe cobrado no coincide con el importe a cobrar ¿Desea continuar?',
             showDenyButton: true,
             confirmButtonText: 'Aceptar',
             denyButtonText: 'Cancelar',
-            }).then((result) => {
-                / Read more about isConfirmed, isDenied below /
-                if (result.isConfirmed) {
-                    // let remitosEnCadena = sessionStorage.getItem("Remitos");
-                    // var arrayDeRemitos = remitosEnCadena.split("-");
-                    // // espacio
-    
-                    // $.ajax({
-                    //     url: "controller/ejecutarCobroController.php",
-                    //     type: "POST",
-                    //     data: {
-                    //         remitos: arrayDeRemitos,
-                    //         cobroEfectivo:cobroEfectivo,
-                    //         cobroCheque:cobroCheque,
-                    //         saldoCobrar: saldoCobrar,
-                    //         montoACobrar: montoACobrar,
-                    //         codClient:codClient
-                                                    
-                    //     },
-                    //     success: function(data) {
-                    //         console.log(data)
-                    //         Swal.fire('Saved!', '', 'success')
-                            
-                    //     }
-                    // });
-
-                    Swal.fire('Guardado!', '', 'success')
-                } else if (result.isDenied) {
-                    Swal.fire('El proceso fue cancelado', '', 'info')
+        }).then((result) => {
+            / Read more about isConfirmed, isDenied below /
+            if (result.isConfirmed) {
+                Swal.fire('Guardado!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('El proceso fue cancelado', '', 'info')
             }
         })
     }
-    
-    if(cobroEfectivo < 1 && cobroCheque < 1 ){
+
+    if (cobroEfectivo < 1 && cobroCheque < 1) {
         Swal.fire({
             icon: 'error',
             title: 'Error de carga',
             text: 'Debe cargar el importe a cobrar!'
         })
-    }   
+    }
 
-    if(saldoCobrar == 0){
+    if (saldoCobrar == 0) {
 
         Swal.fire({
             icon: 'warning',
@@ -91,17 +68,17 @@ const  confirmarCobro = (codClient) => {
                     type: "POST",
                     data: {
                         remitos: arrayDeRemitos,
-                        cobroEfectivo:cobroEfectivo,
-                        cobroCheque:cobroCheque,
+                        cobroEfectivo: cobroEfectivo,
+                        cobroCheque: cobroCheque,
                         saldoCobrar: saldoCobrar,
                         montoACobrar: montoACobrar,
-                        codClient:codClient,
-                        idCheque:idCheques,
-                        nombreCliente:nombreCliente,
-                        valorDescontado:valorDescontado
-                                                
+                        codClient: codClient,
+                        idCheque: idCheques,
+                        nombreCliente: nombreCliente,
+                        valorDescontado: valorDescontado
+
                     },
-                    success: function(data) {
+                    success: function (data) {
 
                         window.location.href = "composicionDeRemitos.php";
                         Swal.fire('Saved!', '', 'success');
@@ -117,8 +94,8 @@ const  confirmarCobro = (codClient) => {
 
 }
 
-const calcularSaldo = ()=>{
-    
+const calcularSaldo = () => {
+
     let montoACobrar = document.querySelector("#montoACobrar").getAttribute("attr-valorReal");
     let saldoCobrar = document.querySelector("#saldoCobrar");
 
@@ -131,46 +108,46 @@ const calcularSaldo = ()=>{
 
 
 
-    
-    if(efectivo.getAttribute("attr-valorreal") == "" || efectivo.getAttribute("attr-valorreal") == null){
-        efectivo.setAttribute("attr-valorreal",0); 
+
+    if (efectivo.getAttribute("attr-valorreal") == "" || efectivo.getAttribute("attr-valorreal") == null) {
+        efectivo.setAttribute("attr-valorreal", 0);
         efectivo.value = 0;
     }
-    
-    if(cheque.getAttribute("attr-valorreal") == ""){
-        cheque.setAttribute("attr-valorreal",0); 
+
+    if (cheque.getAttribute("attr-valorreal") == "") {
+        cheque.setAttribute("attr-valorreal", 0);
         cheque.value = 0;
     }
 
     let total = parseInt(montoACobrar) - (parseInt(efectivo.getAttribute("attr-valorreal")) + parseInt(cheque.getAttribute("attr-valorreal")));
 
-    saldoCobrar.value =`$ ${parseNumber(total)} `
+    saldoCobrar.value = `$ ${parseNumber(total)} `
     saldoCobrar.setAttribute("attr-valorReal", total);
 
 }
 
 
-const traerCheques = (codClient) =>{
+const traerCheques = (codClient) => {
 
 
     $.ajax({
 
         url: "controller/traerBancosController.php",
         type: "GET",
-        success: function(result) {
-           
-   
-     
+        success: function (result) {
 
-        let bancos = JSON.parse(result);
+
+
+
+            let bancos = JSON.parse(result);
             $.ajax({
 
                 url: "controller/traerChequeController.php",
                 type: "POST",
                 data: {
-                codClient:codClient
+                    codClient: codClient
                 },
-                success: function(result) {
+                success: function (result) {
 
                     let tableBody = $("#tableCheques").html();
                     let date = new Date()
@@ -179,16 +156,16 @@ const traerCheques = (codClient) =>{
                     let getDay = date.toLocaleString("default", { day: "2-digit" });
                     let dateFormat = getYear + "-" + getMonth + "-" + getDay;
                     let numCheque = 0;
-             
-                    if((result) && result != "" && result > 0){
+
+                    if ((result) && result != "" && result > 0) {
                         numCheque = parseInt(result) + 1;
-                    }else{
+                    } else {
                         numCheque = 1;
                     }
 
-                    
-                    let nuevaFila = 
-                    `<tr id="tdCheques">
+
+                    let nuevaFila =
+                        `<tr id="tdCheques">
                         <td style="width:40px;text-align:center" id="numInterno">${numCheque}</td> 
                         <td style="text-align:center" ><select class="banco" name="selectBanco" id="selectBanco" style="width:220px" onchange="comprobarSumFila(this)"> `
 
@@ -201,23 +178,23 @@ const traerCheques = (codClient) =>{
                         <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
                         <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
                         <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
-                        <td style="text-align:center"><button value="+" onclick="agregarFila(${(parseInt(result)+1)},this)" hidden id="btnAgregarFila">+</button></td>
+                        <td style="text-align:center"><button value="+" onclick="agregarFila(${(parseInt(result) + 1)},this)" hidden id="btnAgregarFila">+</button></td>
 
 
                     </tr>
                     `
-                    ;
-                
-                    $("#tableCheques").html(tableBody+nuevaFila);
+                        ;
+                    tableBody = "";
+                    $("#tableCheques").html(tableBody + nuevaFila);
                     setearSelect2();
-                    
+
                 }
             });
-    }
+        }
     })
 }
 
-const agregarFila = ( nroInterno, fila) => {
+const agregarFila = (nroInterno, fila) => {
 
     fila.setAttribute("hidden", "true")
     let tableBody = $("#tableCheques").html();
@@ -231,38 +208,45 @@ const agregarFila = ( nroInterno, fila) => {
 
         url: "controller/traerBancosController.php",
         type: "GET",
-        success: function(result) {
-           
-        let bancos = JSON.parse(result);
-        let nuevaFila = 
-        `<tr id="tdCheques">
-            <td style="width:40px;text-align:center" id="numInterno">${(nroInterno+1)}</td>
-            <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:120px" onchange="comprobarSumFila(this)">`
+        success: function (result) {
 
-                bancos.forEach(element => {
-                    nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
-                });
+            let bancos = JSON.parse(result);
+            let nuevaFila =
+                `<tr id="tdCheques">
+            <td style="width:40px;text-align:center" id="numInterno">${(nroInterno + 1)}</td>
+            <td style="text-align:center"><select class="banco" name="selectBanco" id="selectBanco" style="width:220px" onchange="comprobarSumFila(this)">`
+
+            bancos.forEach(element => {
+                nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
+            });
 
             nuevaFila = nuevaFila + `</select></td>
             <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
             <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
             <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
-            <td style="text-align:center"><button value="+" onclick="agregarFila(${(nroInterno+1)},this)" hidden>+</button></td> 
+            <td style="text-align:center"><button value="+" onclick="agregarFila(${(nroInterno + 1)},this)" hidden>+</button></td> 
         </tr>
         `;
-    
-        $("#tableCheques").append(nuevaFila);
-        setearSelect2();
-    
-    
-    }})
- 
+
+            $("#tableCheques").append(nuevaFila);
+            setearSelect2();
+
+
+        }
+    })
+
 }
 
-const calcularMontoCheques = () => {
+const calcularMontoCheques = (isModal = null) => {
 
-    let total = 0
-    document.querySelectorAll("#tdCheques").forEach(element => {
+    let total = 0;
+    let cheques = ""
+    if (isModal){
+        cheques = document.querySelectorAll("#UpdateChequeTd")
+    }else{
+        cheques = document.querySelectorAll("#tdCheques")
+    }
+    cheques.forEach(element => {
 
         let chequeMonto = element.childNodes[5].childNodes[0].value.replace(/[$.]/g, "");
         total += parseInt(chequeMonto);
@@ -270,14 +254,14 @@ const calcularMontoCheques = () => {
     })
 
     let cobroCheque = document.querySelector("#cobroCheque");
-    cobroCheque.setAttribute("attr-valorreal",parseInt( total));
-    cobroCheque.value = parseInt(total);
+    cobroCheque.setAttribute("attr-valorreal", parseInt(total));
+    cobroCheque.value ="$" +  parseNumber(total);
     calcularSaldo();
 
 }
 
 
-const registrarCheque =  (codClient) =>{
+const registrarCheque = (codClient) => {
     let idCheques = document.querySelectorAll("#numInterno");
     document.querySelectorAll("#numInterno")[0].textContent;
 
@@ -285,11 +269,11 @@ const registrarCheque =  (codClient) =>{
 
     idCheques.forEach(element => {
 
-        if(todosLosIdCheques != ""){
+        if (todosLosIdCheques != "") {
 
-            todosLosIdCheques = todosLosIdCheques + "," + element.textContent 
-        }else{
-            todosLosIdCheques = element.textContent 
+            todosLosIdCheques = todosLosIdCheques + "," + element.textContent
+        } else {
+            todosLosIdCheques = element.textContent
         }
 
     });
@@ -297,8 +281,7 @@ const registrarCheque =  (codClient) =>{
     localStorage.setItem("idCheques", todosLosIdCheques);
 
 
-    document.querySelectorAll("#tdCheques").forEach(element =>{
-
+    document.querySelectorAll("#tdCheques").forEach((element, x ) => {
         let fechaCobro = element.childNodes[9].childNodes[0].value;
         let banco = element.childNodes[3].childNodes[0].value;
         let numeroDeCheque = element.childNodes[7].childNodes[0].value;
@@ -308,6 +291,7 @@ const registrarCheque =  (codClient) =>{
         
         document.querySelector("#idCheque").value = numeroDeInterno;
 
+        
         $.ajax({
 
             url: "controller/registrarChequeController.php",
@@ -320,25 +304,28 @@ const registrarCheque =  (codClient) =>{
                 chequeMonto: chequeMonto,
                 codClient: cod
             },
-            success: function(data) {
-                document.querySelector("#botonCheques").hidden = true
-                calcularMontoCheques();
+            success: function (data) {
+               
             }
         });
- 
+
     })
-        
+
+    document.querySelector("#botonCheques").hidden = true
+    document.querySelector("#botonEditarCheques").hidden = false
+    calcularMontoCheques();
+
 }
 
 const comprobarSumFila = (fila) => {
     let banco = fila.parentElement.parentElement.childNodes[3].childNodes[0].value
     let monto = fila.parentElement.parentElement.childNodes[5].childNodes[0].value
-    fila.parentElement.parentElement.childNodes[5].childNodes[0].value = "$"+ parseNumber(monto.replace(/[$.]/g, ""))
+    fila.parentElement.parentElement.childNodes[5].childNodes[0].value = "$" + parseNumber(monto.replace(/[$.]/g, ""))
     let nroCheque = fila.parentElement.parentElement.childNodes[7].childNodes[0].value
     let fecha = fila.parentElement.parentElement.childNodes[9].childNodes[0].value
-    
 
-    if(banco != "" && monto != "" && nroCheque != "" && fecha != ""){
+
+    if (banco != "" && monto != "" && nroCheque != "" && fecha != "") {
         fila.parentElement.parentElement.childNodes[11].childNodes[0].removeAttribute("hidden");
     }
 }
@@ -350,22 +337,22 @@ const parseNumber = (number) => {
         style: 'decimal',
         maximumFractionDigits: 0,
         minimumFractionDigits: 0
-    }); 
-    
+    });
+
     return newNumber;
 }
 
-const setearValores =()=>{
+const setearValores = () => {
 
     let efectivo = document.querySelector("#cobroEfectivo");
     let cheque = document.querySelector("#cobroCheque");
 
 
-    if(efectivo.value == ""){
-        
+    if (efectivo.value == "") {
+
         efectivo.value = 0;
     }
-    if(cheque.value == "" ){
+    if (cheque.value == "") {
 
         cheque.value = 0;
     }
@@ -376,10 +363,112 @@ const setearValores =()=>{
     cheque.setAttribute("attr-valorreal", cheque.value.replace(/[$.]/g, ""));
 
     nuevoValor = parseNumber(efectivo.value.replace(/[$.]/g, ""));
-    efectivo.value ="$" + nuevoValor;
+    efectivo.value = "$" + nuevoValor;
 
     nuevoValorCheque = parseNumber(cheque.value.replace(/[$.]/g, ""));
-    cheque.value ="$" +  nuevoValorCheque;
+    cheque.value = "$" + nuevoValorCheque;
 
     calcularSaldo();
+}
+const updateChequesModal = () =>{
+
+    let saldo = document.querySelector("#modalUpdateChequesSaldo");
+    let montoACobrar = document.querySelector("#montoACobrar").getAttribute("attr-valorReal");
+    let cobroEfectivo = document.querySelector("#cobroEfectivo").getAttribute("attr-valorreal");
+    let total = montoACobrar - cobroEfectivo;
+    saldo.value = "$" + parseNumber(total);
+
+
+    let idCheques = localStorage.getItem("idCheques")
+    arrayIdCheques = idCheques.split(",");
+    let tableBody = $("#editarChequeTable").html();
+    tableBody = "";
+
+    arrayIdCheques.forEach((element , x)  => {
+        $.ajax({
+
+            url: "controller/traerChequeDetalleController.php",
+            type: "POST",
+            data: {
+                idCheque: element
+            },
+            success: function (result) {
+                let cheque = JSON.parse(result);
+                $.ajax({
+
+                    url: "controller/traerBancosController.php",
+                    type: "GET",
+                    success: function (result) {
+            
+                        let bancos = JSON.parse(result);
+          
+                let date = new Date();
+                let getYear = date.toLocaleString("default", { year: "numeric" });
+                let getMonth = date.toLocaleString("default", { month: "2-digit" });
+                let getDay = date.toLocaleString("default", { day: "2-digit" });
+                let dateFormat = getYear + "-" + getMonth + "-" + getDay;
+                let numCheque = cheque[0]['id'];
+                let nuevaFila =
+                    `<tr id="UpdateChequeTd">
+                    <td style="width:40px;text-align:center" id="UpdateChequenumInterno">${numCheque}</td> 
+
+                    <td style="text-align:center"><select class="banco" name="selectBanco" id="UpdateChequenumInterno" style="width:220px">`
+
+                    bancos.forEach(element => {
+                        if(element.ID == cheque[0]['banco']){
+                        nuevaFila = nuevaFila + `<option value ="${element.ID}" selected>${element.BANCO}</option>`
+
+                        }else{
+
+                        nuevaFila = nuevaFila + `<option value ="${element.ID}">${element.BANCO}</option>`
+                        }
+                    });
+        
+                    nuevaFila = nuevaFila + `</select></td>
+                    <td style="text-align:center"><input type="text" style="width:120px" value = "$${parseInt(cheque[0]['monto'])}" onchange="convertirValor(this)"></td>
+                    <td style="text-align:center"><input type="text" style="width:120px" value ="${cheque[0]['num_cheque']}"></td>
+                     <td style="text-align:center"><input type="date" style="width:120px" value="${dateFormat}"></td>
+                    </tr>`;
+
+               
+                $("#editarChequeTable").html(tableBody + nuevaFila);
+                tableBody = $("#editarChequeTable").html();
+                }
+                    })
+            }
+        });
+            
+    });
+
+}
+
+const updateCheque = () => {
+    let todosLosCheques=  document.querySelectorAll("#UpdateChequeTd") 
+
+    todosLosCheques.forEach(element => {
+    let id = element.childNodes[1].textContent;
+    let banco = element.childNodes[3].childNodes[0].value;
+    let monto = parseInt(element.childNodes[5].childNodes[0].value.replace(/[$.]/g, ""));
+    let nroCheque = element.childNodes[7].childNodes[0].value;
+    let fechaCheque = element.childNodes[9].childNodes[0].value;
+
+    $.ajax({
+
+        url: "controller/actualizarChequeController.php",
+        type: "POST",
+        data: {
+            id:id,
+            banco:banco,
+            monto:monto,
+            nroCheque:nroCheque,
+            fechaCheque:fechaCheque
+        },
+        success: function (result) {
+        }})
+    })
+    calcularMontoCheques(true);
+}
+
+const convertirValor = (td) =>{
+    td.value =   "$" + parseNumber(td.value); 
 }
