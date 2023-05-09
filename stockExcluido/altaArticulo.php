@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,9 +12,8 @@
 
 
 </head>
-<body>
-
-<div class="modal fade" id="altaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<body> -->
+<div class="modal fade" id="altaModal" tabindex="null" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -25,8 +24,10 @@
       
         <!-- <form class="col" id="formularioAlta" method="GET" action="Class/altaArticulo.php"> -->
                 <div class="form-group">
+                  <div>
                     <label>Articulo</label>
-                    <select class="form-control" id="codArticulo" name="articulo" onChange="traerDescripcion()" required>
+                  </div>
+                    <select class="" id="codArticulo" name="articulo" required style="width:467px;">
                       <option selected disabled></option>
                           <?php
                           foreach ($todosLosArticulos as $valor => $value) {
@@ -39,10 +40,10 @@
                     <!-- <input type="text" class="form-control" id="codArticulo" name="articulo" tabindex="1" onChange="traerDescripcion()" required> -->
                     <!-- <small id="errorArticulo"></small> -->
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Descripcion</label>
                     <input type="text" class="form-control" id="inputDescrip" name="descrip" readonly>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label>Cantidad</label>
                     <input type="text" class="form-control" id="inputCant" name="cantidad">
@@ -60,8 +61,8 @@
     </div>
   </div>
 </div>
-
-
-
-</body>
-</html>
+<script>
+     $(document).ready(function() {
+                $('#codArticulo').select2();
+            });
+</script>

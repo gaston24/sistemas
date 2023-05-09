@@ -155,7 +155,7 @@ function guardar() {
         });
       }
     };
-    conexion.open("POST", "./Controller/insertArticulo.php", false);
+    conexion.open("POST", "./Controller/articuloController.php?action=insert", false);
     conexion.setRequestHeader(
       "Content-Type",
       "application/x-www-form-urlencoded"
