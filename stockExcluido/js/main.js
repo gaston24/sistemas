@@ -2,6 +2,26 @@
 //Búsqueda rápida table//
 document.getElementById('btn_delete').addEventListener('click',matrizOrdenes);
 /* document.getElementById('save').addEventListener('click',guardar); */
+$('#altaModal').modal('toggle')
+    
+$('#altaModalImport').modal('toggle')
+
+$("#btn_export").click(function() {
+
+    $('input[type=number]').each(function(){
+        this.setAttribute('value',$(this).val());
+    });
+        
+    $("table").table2excel({
+
+        // exclude CSS class
+        exclude: ".noExl",
+        name: "Worksheet Name",
+        filename: "ArticulosExcluidos", //do not include extension
+        fileext: ".xls", // file extension
+
+    });
+});
 
 function myFunction() {
     var input, filter, table, tr, td, td2, i, txtValue;
@@ -136,14 +156,22 @@ function myFunction() {
     function insertarArticulo() {
     //agregar condición
         let articulo = document.getElementById("codArticulo").value;
-        let descripcion = document.getElementById("inputDescrip").value;
-        let precio = document.getElementById("inputCant").value;
-        let temporada = document.getElementById("inputObs").value;
+        let cantidad = document.getElementById("inputCant").value;
+        let observaciones = document.getElementById("inputObs").value;
+       
+        $.ajax({
+          url: "Controller/articuloController.php?action=update",
+          method: "POST",
+          data: {
 
-        conexion = new XMLHttpRequest();
-        conexion.onreadystatechange = procesarEvento;
-        conexion.open("GET","Controller/insertArticulo.php?articulo="+articulo+"&descrip="+descripcion+"&cantidad="+cantidad+"&observaciones="+observaciones, true);
-        conexion.send();
+              articulo: articulo,
+              cantidad: cantidad,
+              observaciones: observaciones
+          },
+          success: function (data) {
+            procesarEvento();
+          }
+        });
         
       }
 
@@ -153,4 +181,19 @@ function myFunction() {
         console.log(columns);
       }
 
+      
+      function procesarEvento()
+      {
     
+          Swal.fire({
+            icon: 'success',
+            title: 'Guardado exitosamente',
+            showConfirmButton: false,
+            timer: 2000
+          });
+          redireccionar();
+  
+      }
+      function redireccionar() {
+        location.href='index.php';
+      }

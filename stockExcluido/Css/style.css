@@ -59,11 +59,19 @@ thead tr th {
     color: white;
 }
 
+#btn_export
+{
+    position: relative;
+    margin-top: 27%;
+    margin-left: 510%;
+    color: white;
+}
+
 #btn_delete
 {
     position: relative;
     margin-top: 28%;
-    margin-left: 540%;
+    margin-left: 550%;
     color: white;
 }
 
