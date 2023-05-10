@@ -20,26 +20,23 @@ function guardarCheck(datoMasivo = 0, e) {
 }
 
 function checkMasivo(source) {
-  var checkboxes = document.querySelectorAll(".check");
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i] != source) checkboxes[i].checked = true;
 
-    guardarCheck(checkboxes[i]); 
-    
-  }
+  var checkboxes = document.querySelectorAll(".check");
+  
+  for (var i = 0; i < checkboxes.length; i++) {
+    if(source.checked == true){
+      if (checkboxes[i] != source) checkboxes[i].checked = true;
+    }else{
+      if (checkboxes[i] != source) checkboxes[i].checked = false;
+    }
+      guardarCheck(checkboxes[i]); 
+      
+    }
+
+
 }
 
-function UnCheckMasivo(source) {
-  var checkboxes = document.querySelectorAll(".check");
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i] != source) checkboxes[i].checked = false;
 
-    guardarCheck(checkboxes[i]); 
-    
-  }
-}
-
-// 
 
 document.getElementById("save").addEventListener("click", guardar);
 let articulos = [];
