@@ -93,7 +93,7 @@ $articulo = new Articulo();
     
 <?php
 
-    include('./altaArticulo.php?');
+    include('./altaArticulo.php');
     include('./importar.php');
 
 ?>
