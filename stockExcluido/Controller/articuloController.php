@@ -28,7 +28,7 @@ function insertarArticulo(){
     $Object = new DateTime();
     $hora = $Object->format("G:i");
     $cid = new Conexion();
-    $cid_central = $cid->conectar();
+    $cid_central = $cid->conectar('central');
 
   } catch (Exception $e) {
     echo 'Ocurrió un error'+$e->getMessage();
