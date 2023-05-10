@@ -1,3 +1,46 @@
+
+// Check masivo //
+const checkAll = document.querySelectorAll(".check");
+
+checkAll.forEach((select) => {
+  select.addEventListener("change", (e) => {
+    guardarCheck(0, e);
+  });
+});
+
+
+function guardarCheck(datoMasivo = 0, e) {
+  let check;
+  let dato = datoMasivo != 0 ? datoMasivo : e.target;
+  if (dato.checked == true) {
+    check = 1;
+  } else {
+    check = 0;
+  }
+}
+
+function checkMasivo(source) {
+  var checkboxes = document.querySelectorAll(".check");
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i] != source) checkboxes[i].checked = true;
+
+    guardarCheck(checkboxes[i]); 
+    
+  }
+}
+
+function UnCheckMasivo(source) {
+  var checkboxes = document.querySelectorAll(".check");
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i] != source) checkboxes[i].checked = false;
+
+    guardarCheck(checkboxes[i]); 
+    
+  }
+}
+
+// 
+
 document.getElementById("save").addEventListener("click", guardar);
 let articulos = [];
 //Importar excel//
@@ -172,3 +215,5 @@ function guardar() {
     articulos.push(table.children[i].children[3].innerHTML);
   }
 })();
+
+

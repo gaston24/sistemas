@@ -25,24 +25,28 @@ $articulo = new Articulo();
 
         ?>
         <div class="row">
-                <h3><i class="fa fa-calendar-times-o" aria-hidden="true"></i> Articulos excluidos</h3>
-                    <div>       
-                        <a type="button" class="btn btn-warning" id="btn_edit" data-toggle="modal" data-target="#altaModal"><i class="fa fa-edit"></i>  Editar</a>
-                    </div>
-                    <div>       
-                        <a type="button" class="btn btn-success" id="btn_import" data-toggle="modal" data-target="#altaModalImport"><i class="fa fa-file-excel-o"></i>  Importar</a>
-                    </div>
-                    <div>       
-                            <button type="button" class="btn btn-info" id="btn_export">Exportar <i class="bi-file-earmark-excel"></i></button>
-                    </div>
-                    <div>       
-                        <button type="button" class="btn btn-danger" id="btn_delete" onclick="deleteArticulo()"><i class="fa fa-trash-o" ></i>  Eliminar</button>
-                    </div>
-
+                <h3><i class="fa fa-calendar-times-o"></i> Articulos excluidos</h3>
+                
                 <div id="busqRapida">
                     <label id="textBusqueda">Busqueda rapida:</label>
                     <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
                 </div>
+                   <div class="selectAll">
+                        <label for="texto">Seleccionar todo  </label><input class="checkAll" onclick="checkMasivo(this);" type="checkbox"/>
+                    </div>
+                    <div>       
+                        <button class="btn btn-warning" id="btn_edit" data-toggle="modal" data-target="#altaModal"><i class="fa fa-edit"></i>  Editar</button>
+                    </div>
+                    <div>       
+                        <button class="btn btn-success" id="btn_import" data-toggle="modal" data-target="#altaModalImport"><i class="fa fa-file-excel-o"></i>  Importar</button>
+                    </div>
+                    <div>       
+                        <button class="btn btn-info" id="btn_export"><i class="bi-file-earmark-excel"></i> Exportar</button>
+                    </div>
+                    <div>       
+                        <button class="btn btn-danger" id="btn_delete" onclick="deleteArticulo()"><i class="fa fa-trash-o" ></i>  Eliminar</button>
+                    </div>
+                
         </div>
 
         <div class="table-responsive" id="tableIndex">
@@ -72,7 +76,7 @@ $articulo = new Articulo();
                                 <td><?= $value->DESCRIPCION ?></td>
                                 <td><?= $value->CANT ?></td>
                                 <td><?= $value->OBSERVACIONES ?></td>
-                                <td><input id="check" type="checkbox" onclick="contar(this);"></td>
+                                <td><input class="check" id="check" type="checkbox" onclick="contar(this);"></td>
                             </tr>
                     <?php
                         }
