@@ -30,7 +30,7 @@ function checkMasivo(source) {
       guardarCheck(checkboxes[i]); 
       
   }
-
+  contar();
 }
 
 

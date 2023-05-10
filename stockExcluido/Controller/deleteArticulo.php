@@ -4,10 +4,10 @@
 $matriz = $_POST['matriz'];
 
 foreach($matriz as $id){
-  require_once '../Class/Conexion.php';
+  require_once '../../class/conexion.php';
 
     $cid = new Conexion();
-    $cid_central = $cid->conectar();        
+    $cid_central = $cid->conectar('central');        
 
     $sql = "DELETE FROM SJ_EXCLUIDOS WHERE ID = '$id'";
 

@@ -175,7 +175,7 @@ const traerCheques = (codClient) => {
 
                     nuevaFila = nuevaFila + `</select></td>
              
-                        <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
+                        <td style="text-align:center"><input type="text" style="width:120px" onchange="calcularMontoCheque(this)" id="divMontoCheque"></td>
                         <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
                         <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
                         <td style="text-align:center"><button value="+" onclick="agregarFila(${(parseInt(result) + 1)},this)" hidden id="btnAgregarFila">+</button></td>
@@ -221,7 +221,7 @@ const agregarFila = (nroInterno, fila) => {
             });
 
             nuevaFila = nuevaFila + `</select></td>
-            <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
+            <td style="text-align:center"><input type="text" style="width:120px" onchange="calcularMontoCheque(this)" id="divMontoCheque"></td>
             <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
             <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
             <td style="text-align:center"><button value="+" onclick="agregarFila(${(nroInterno + 1)},this)" hidden>+</button></td> 
@@ -425,7 +425,7 @@ const updateChequesModal = () =>{
                     });
         
                     nuevaFila = nuevaFila + `</select></td>
-                    <td style="text-align:center"><input type="text" style="width:120px" value = "$${parseInt(cheque[0]['monto'])}" onchange="convertirValor(this)"></td>
+                    <td style="text-align:center"><input type="text" style="width:120px" value = "$${parseInt(cheque[0]['monto'])}" onchange="calcularUpdateMontoCheque(this)" id="updateMontoCheque"></td>
                     <td style="text-align:center"><input type="text" style="width:120px" value ="${cheque[0]['num_cheque']}"></td>
                      <td style="text-align:center"><input type="date" style="width:120px" value="${dateFormat}"></td>
                     </tr>`;
@@ -469,6 +469,52 @@ const updateCheque = () => {
     calcularMontoCheques(true);
 }
 
+const calcularUpdateMontoCheque = (td)=>{
+    convertirValor(td);
+    descontarSaldo(true);
+}
 const convertirValor = (td) =>{
     td.value =   "$" + parseNumber(td.value); 
 }
+
+const descontarSaldo = (flag) =>{
+
+    let allMontos = ""; 
+    let montoACobrar = document.querySelector("#montoACobrar").getAttribute("attr-valorReal");
+    let cobroEfectivo = document.querySelector("#cobroEfectivo").getAttribute("attr-valorreal");
+
+    if(cobroEfectivo == "" || cobroEfectivo == null || cobroEfectivo <0 ){
+        cobroEfectivo = 0;
+    }
+
+    let total = parseInt(montoACobrar) - parseInt(cobroEfectivo);
+
+    let saldo = "";
+
+    if (flag == true) {
+
+        allMontos = document.querySelectorAll("#updateMontoCheque");
+        saldo = document.querySelector("#modalUpdateChequesSaldo");
+        
+    }else {
+
+        allMontos = document.querySelectorAll("#divMontoCheque");
+        saldo = document.querySelector("#modalSaldo");
+        
+    }
+    
+    let nuevoSaldo = parseInt(total);
+
+    allMontos.forEach(element => {
+
+        nuevoSaldo = nuevoSaldo - parseInt(element.value.replace(/[$.]/g, ""));
+
+    });
+
+    saldo.value = "$" + parseNumber(nuevoSaldo);
+}
+const calcularMontoCheque = (td)=>{
+    comprobarSumFila(td);
+    descontarSaldo(false);
+}
+

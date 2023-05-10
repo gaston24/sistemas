@@ -52,16 +52,19 @@ function myFunction() {
   //Matriz de artículos a eliminar//
 
   function matrizOrdenes()
-    {
-      let checked=document.querySelectorAll("input[type=checkbox]:checked");
-      let matriz=[];
+  {
+    let checked=document.querySelectorAll("#check");
+    let matriz=[];
+
     for(let i=0;i<checked.length;i++)
     {
-      matriz[i]=checked[i].parentElement.parentElement.childNodes[1].textContent;
+      if (checked[i].parentElement.parentElement.style.display == "" && checked[i].checked == true ){ //si el tr está visible
+        matriz[i]=checked[i].parentElement.parentElement.childNodes[1].textContent;
+      }
     }
-    //console.log(matriz);
-    return matriz;
-    }
+  //console.log(matriz);
+  return matriz;
+  }
 
     //Count checkbox artículos a eliminar//
 
