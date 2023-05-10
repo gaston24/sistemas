@@ -24,15 +24,9 @@ function checkMasivo(source) {
   var checkboxes = document.querySelectorAll(".check");
   
   for (var i = 0; i < checkboxes.length; i++) {
-    if(source.checked == true) {
 
-      if (checkboxes[i] != source) checkboxes[i].checked = true;
+      if (checkboxes[i] != source) checkboxes[i].checked = source.checked;
 
-    }else{
-
-      if (checkboxes[i] != source) checkboxes[i].checked = false;
-
-    }
       guardarCheck(checkboxes[i]); 
       
   }
