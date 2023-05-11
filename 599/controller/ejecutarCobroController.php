@@ -20,7 +20,7 @@ $remitoEquis = new RemitoEquis();
 $remitosParceados = "";
 
 
-$idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente);
+$idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente, $valorDescontado);
 
 foreach ($idCheques as $value) {
 

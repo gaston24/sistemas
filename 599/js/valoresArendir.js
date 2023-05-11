@@ -36,8 +36,8 @@ const calcularTotales = (row) =>{
 
         if(element.checked){
 
-            totalEfectivo = parseFloat(totalEfectivo) +  parseFloat(element.parentElement.parentElement.childNodes[3].getAttribute("attr-realValue"))
-            totalCheque = parseFloat(totalCheque)    + parseFloat(element.parentElement.parentElement.childNodes[5].getAttribute("attr-realValue"))
+            totalEfectivo = parseFloat(totalEfectivo) +  parseFloat(element.parentElement.parentElement.childNodes[7].getAttribute("attr-realValue"))
+            totalCheque = parseFloat(totalCheque)    + parseFloat(element.parentElement.parentElement.childNodes[9].getAttribute("attr-realValue"))
         }
     });
     totalEfectivoParseado = parseNumber(totalEfectivo);
@@ -68,22 +68,22 @@ const rendir = () => {
 
                     if(idCobroEnCadena == ""){
 
-                        idCobroEnCadena = element.parentElement.parentElement.childNodes[7].textContent 
+                        idCobroEnCadena = element.parentElement.parentElement.childNodes[11].textContent 
 
                     }else{
 
-                        idCobroEnCadena =  idCobroEnCadena + "-" + element.parentElement.parentElement.childNodes[7].textContent 
+                        idCobroEnCadena =  idCobroEnCadena + "-" + element.parentElement.parentElement.childNodes[11].textContent 
                     }
-
                 }
             });
 
             let arrayDeCobros = idCobroEnCadena.split("-");
+            let userName = document.querySelector("#userName").textContent;
 
             $.ajax({
                 url: "controller/rendirValores.php",
                 type: "POST",
-                data: {cobros: arrayDeCobros},
+                data: { cobros: arrayDeCobros, userName:userName },
                 success: function (response) {
                     console.log(response);
                 }

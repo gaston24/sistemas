@@ -22,7 +22,7 @@ class RemitoEquis {
 
             $sql = "SET DATEFORMAT YMD 
 
-            SELECT A.*, c.rendido 
+            SELECT A.*, c.rendido ,c.importe_total 
             FROM SJ_EQUIS_TABLE A
             LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
             LEFt JOIN sj_administracion_cobros C ON C.id = B.id_cobro 
@@ -184,11 +184,11 @@ class RemitoEquis {
 
     }
 
-    public function guardarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total,$nombreCliente) {
+    public function guardarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total, $nombreCliente, $valorDescontado ) {
         
         $cid = $this->conn->conectar('central');
         
-        $sql = "INSERT INTO sj_administracion_cobros (cod_client, importe_efectivo, importe_cheque, importe_total,rendido,nombre_cliente) VALUES ('$cod_client', '$importe_efectivo', '$importe_cheque', '$importe_total','0','$nombreCliente')SELECT SCOPE_IDENTITY()";
+        $sql = "INSERT INTO sj_administracion_cobros (cod_client, importe_efectivo, importe_cheque, importe_total,rendido, nombre_cliente, descuento) VALUES ('$cod_client', '$importe_efectivo', '$importe_cheque', '$importe_total','0','$nombreCliente', '$valorDescontado ')SELECT SCOPE_IDENTITY()";
 
         try {
 
@@ -271,7 +271,10 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
         
-        $sql = "SELECT * FROM sj_administracion_cobros WHERE rendido = 0 ";
+        $sql = "SELECT A.*,C.IMPORTE_TO FROM sj_administracion_cobros A 
+        INNER JOIN sj_administracion_cobros_por_remito B ON A.ID = B.id_cobro
+        INNER JOIN SJ_EQUIS_TABLE C ON B.num_rem = C.N_COMP collate Latin1_General_BIN
+        WHERE A.rendido = 0";
 
         try {
 
@@ -296,7 +299,7 @@ class RemitoEquis {
 
     }
 
-    public function rendirCobro ($id){
+    public function rendirCobro ($id, $userName = null){
 
         $cid = $this->conn->conectar('central');
         

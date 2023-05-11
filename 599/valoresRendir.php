@@ -48,6 +48,8 @@ $cheques = traerCheques();
                         <thead class="thead-dark">
                             <tr style="text-align:center">
                                 <th style=" width: 600px;text-align:center" class="col-1">CLIENTE</th>
+                                <th style="text-align:center">MONTO A COBRAR</th>
+                                <th style="text-align:center">MONTO COBRADO</th>
                                 <th style="text-align:center">EFECTIVO</th>
                                 <th style="text-align:center">CHEQUES</th>
                                 <th style="width: 100px;text-align:center"></th>
@@ -55,12 +57,19 @@ $cheques = traerCheques();
                         </thead>
                         <tbody>
                             <?php foreach ($cheques as $key => $value) {
+                                $descuento = isset($descuento) ? $descuento : 0;
+    
+                                $importe = $value['IMPORTE_TO'] - $descuento;
+             
                             ?>
                                 <tr style="text-align:center">
                                     <td><?php echo $value['nombre_cliente'] ?></td>
+                                    <td ><?php echo  number_format($value['IMPORTE_TO'], 0, ',', '.') ?></td>
+                                    <td ><?php echo  number_format($value['importe_total'], 0, ',', '.') ?></td>
                                     <td id="importeEfectivo"><?php echo $value['importe_efectivo'] ?></td>
                                     <td id="importeCheque"><?php echo $value['importe_cheque'] ?></td>
                                     <td id="idCobro" hidden><?php echo $value['id'] ?></td>  
+                                    <td id="userName" hidden><?= isset($_GET['userName']) ? $_GET['userName'] : "" ?></td>  
                                     <td><input type="checkbox" name="a" id="checkCalcularTotales" style="width:20px;height:20px;" onchange="calcularTotales(this)"></td>
                                 </tr>
 

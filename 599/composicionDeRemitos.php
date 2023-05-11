@@ -31,8 +31,11 @@ foreach ($todosLosRemitos as $remito => $value) {
             if($value['COD_PRO_CL'] == $val['COD_PRO_CL'] ){
 
                 if ($val['CHEQUEADO'] == 1 ){
-                    
-                    $totalCobrado = $totalCobrado + $val['IMPORTE_TO'];
+                    if($val['importe_total'] != null){
+                        $totalCobrado = $totalCobrado + $val['importe_total'];
+                    }else{
+                        $totalCobrado = $totalCobrado + $val['IMPORTE_TO'];
+                    }
                 }else{
                     $totalDeuda = $totalDeuda + $val['IMPORTE_TO'];
                 }

@@ -30,8 +30,8 @@ const parseNumber = ()=>{
 const verDetalle = (rem) =>{
         
     codClient = rem.parentElement.parentElement.childNodes[0].getAttribute("attr-codClient") ;
-   
-    window.location.href = "remitosPendientesDeCobro.php?codClient="+codClient;
+
+    window.location.href = "remitosPendientesDeCobro.php?codClient="+ encodeURIComponent(codClient)
 }
 
 $("#btnExport").click(function() {

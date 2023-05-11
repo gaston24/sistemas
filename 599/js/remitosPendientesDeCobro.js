@@ -83,7 +83,7 @@ btnConfirmar.addEventListener("click",function (){
                     let importeAbonar = document.querySelector("#importeAbonar").value
                     let codCliente = document.querySelector("#codClient").textContent
 
-                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+codCliente;
+                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+encodeURIComponent(codCliente);
 
                 })
 
@@ -112,7 +112,7 @@ btnConfirmar.addEventListener("click",function (){
 
             let codCliente = document.querySelector("#codClient").textContent
 
-            window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+codCliente+"&valorDescontado="+porcentaje;
+            window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+encodeURIComponent(codCliente)+"&valorDescontado="+porcentaje;
 
         })
 

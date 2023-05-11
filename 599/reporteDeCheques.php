@@ -99,7 +99,7 @@
                                         <td id="importeCheque"><?php echo $value['NOMBRE_BANCO'] ?></td>
                                         <td id="numeroDeRemito" >$ <?php echo number_format($value['monto'], 0, ',', '.') ?></td>  
                                         <td id="numeroDeRemito" ><?php echo $value['num_cheque'] ?></td>  
-                                        <td id="numeroDeRemito" ><?php echo $value['fecha_cobro']->format('Y-m-d H:i:s') ?></td>  
+                                        <td id="numeroDeRemito" ><?php echo $value['fecha_cobro']->format('Y-m-d') ?></td>  
                                         <?php if($value['rendido'] ==  1){ ?>
                                         <td id="numeroDeRemito" style="width:30px;height:30px"><i class="bi bi-check-circle-fill" style="color:green;"></i></td>  
                                         <?php }else{?>

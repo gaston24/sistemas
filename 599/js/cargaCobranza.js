@@ -425,7 +425,7 @@ const updateChequesModal = () =>{
                     });
         
                     nuevaFila = nuevaFila + `</select></td>
-                    <td style="text-align:center"><input type="text" style="width:120px" value = "$${parseInt(cheque[0]['monto'])}" onchange="calcularUpdateMontoCheque(this)" id="updateMontoCheque"></td>
+                    <td style="text-align:center"><input type="text" style="width:120px" value = "$${parseNumber(cheque[0]['monto'])}" onchange="calcularUpdateMontoCheque(this)" id="updateMontoCheque"></td>
                     <td style="text-align:center"><input type="text" style="width:120px" value ="${cheque[0]['num_cheque']}"></td>
                      <td style="text-align:center"><input type="date" style="width:120px" value="${dateFormat}"></td>
                     </tr>`;
