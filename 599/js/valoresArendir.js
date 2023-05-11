@@ -79,13 +79,13 @@ const rendir = () => {
 
             let arrayDeCobros = idCobroEnCadena.split("-");
             let userName = document.querySelector("#userName").textContent;
-
+          
             $.ajax({
                 url: "controller/rendirValores.php",
                 type: "POST",
                 data: { cobros: arrayDeCobros, userName:userName },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
                 }
             });
 

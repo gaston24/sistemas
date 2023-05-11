@@ -303,8 +303,8 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
         
-        $sql = "UPDATE sj_administracion_cobros SET rendido = 1,fecha_cobro = getdate() where id = '$id'";
-   
+        $sql = "UPDATE sj_administracion_cobros SET rendido = 1,user_rinde = '$userName' ,fecha_cobro = getdate() where id = '$id'";
+        
         try {
 
             $stmt = sqlsrv_query($cid, $sql);
@@ -522,7 +522,7 @@ class RemitoEquis {
         $fechaCheque = $data['fechaCheque'];
 
         $sql = "UPDATE sj_administracion_cheques SET num_cheque = $nroCheque, banco = $banco , monto = $monto, fecha_cheque = '$fechaCheque' WHERE id = $id";
-        var_dump($sql);
+
         try {
             $stmt = sqlsrv_query($cid, $sql);
     
