@@ -21,15 +21,13 @@ class RemitoEquis {
         }else{
 
             $sql = "SET DATEFORMAT YMD 
-
-            SELECT A.*, c.rendido ,c.importe_total 
-            FROM SJ_EQUIS_TABLE A
-            LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
-            LEFt JOIN sj_administracion_cobros C ON C.id = B.id_cobro 
-            WHERE (FECHA_MOV >= GETDATE()-700) 
-            AND (C.rendido != 1 or C.rendido is null)
-            
-            ORDER BY  COD_PRO_CL, N_COMP";
+                    SELECT A.COD_PRO_CL, A.RAZON_SOCI, SUM(A.IMPORTE_TO) IMPORTE_TO, SUM(A.CANT_ART) CANT_ART, c.importe_total, A.CHEQUEADO
+                    FROM SJ_EQUIS_TABLE A
+                    LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
+                    LEFT JOIN sj_administracion_cobros C ON C.id = B.id_cobro 
+                    WHERE (FECHA_MOV >= GETDATE()-700) AND (C.rendido != 1 OR C.rendido IS NULL)
+                    GROUP BY A.COD_PRO_CL, A.RAZON_SOCI, c.importe_total, A.CHEQUEADO  
+                    ORDER BY  COD_PRO_CL";
 
         }
 
