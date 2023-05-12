@@ -175,7 +175,7 @@ const traerCheques = (codClient) => {
 
                     nuevaFila = nuevaFila + `</select></td>
              
-                        <td style="text-align:center"><input type="text" style="width:120px" onchange="calcularMontoCheque(this)" id="divMontoCheque"></td>
+                        <td style="text-align:center"><input type="text" style="width:120px" onchange="calcularMontoCheque(this)" id="divMontoCheque" value="$0"></td>
                         <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
                         <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
                         <td style="text-align:center"><button value="+" onclick="agregarFila(${(parseInt(result) + 1)},this)" hidden id="btnAgregarFila">+</button></td>
@@ -221,7 +221,7 @@ const agregarFila = (nroInterno, fila) => {
             });
 
             nuevaFila = nuevaFila + `</select></td>
-            <td style="text-align:center"><input type="text" style="width:120px" onchange="calcularMontoCheque(this)" id="divMontoCheque"></td>
+            <td style="text-align:center"><input type="text" style="width:120px" onchange="calcularMontoCheque(this)" id="divMontoCheque" value="$0"></td>
             <td style="text-align:center"><input type="text" style="width:120px" onchange="comprobarSumFila(this)"></td>
             <td style="text-align:center"><input type="date" style="width:120px" onchange="comprobarSumFila(this)" value="${dateFormat}"></td>
             <td style="text-align:center"><button value="+" onclick="agregarFila(${(nroInterno + 1)},this)" hidden>+</button></td> 
@@ -320,6 +320,7 @@ const registrarCheque = (codClient) => {
 const comprobarSumFila = (fila) => {
     let banco = fila.parentElement.parentElement.childNodes[3].childNodes[0].value
     let monto = fila.parentElement.parentElement.childNodes[5].childNodes[0].value
+
     fila.parentElement.parentElement.childNodes[5].childNodes[0].value = "$" + parseNumber(monto.replace(/[$.]/g, ""))
     let nroCheque = fila.parentElement.parentElement.childNodes[7].childNodes[0].value
     let fecha = fila.parentElement.parentElement.childNodes[9].childNodes[0].value
