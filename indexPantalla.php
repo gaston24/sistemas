@@ -84,18 +84,9 @@
 
 const btnEquis = document.querySelector("#btnEquis");
 btnEquis.addEventListener("click", () => {
+    window.location.href = "599/composicionDeRemitos.php";
 
-    $.ajax({
-        url: "599/controller/ejecutarSpController.php",
-        type: "get",
-        success: function (data) {
-            if(data == true){
-                window.location.href = "599/composicionDeRemitos.php";
 
-            }
-
-        }
-    });
 }); 
 
 </script>

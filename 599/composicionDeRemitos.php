@@ -1,8 +1,9 @@
 <?php
 include_once "controller/traerEquis.php";
+include_once "controller/ejecutarSpController.php";
 
-
-    
+cargarEquisTable();
+  
 $todosLosRemitos = traerTodos();
 
 
