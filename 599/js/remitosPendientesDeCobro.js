@@ -83,7 +83,7 @@ btnConfirmar.addEventListener("click",function (){
                     let importeAbonar = document.querySelector("#importeAbonar").value
                     let codCliente = document.querySelector("#codClient").textContent
 
-                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+encodeURIComponent(codCliente);
+                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+encodeURIComponent(codCliente)+"&valorDescontado=0";;
 
                 })
 
