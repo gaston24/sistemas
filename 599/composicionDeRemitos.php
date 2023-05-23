@@ -104,7 +104,7 @@ foreach ($todosLosRemitos as $remito => $value) {
                         <thead class="thead-dark">
                             <tr>
                                 <th style="position: sticky; top: 0; z-index: 10; width: 600px;text-align:center" class="col-4">CLIENTE</th>
-                                <th style="position: sticky; top: 0; z-index: 10;text-align:center">DEUDA</th>
+                                <th style="position: sticky; top: 0; z-index: 10;text-align:center">A COBRAR</th>
                                 <th style="position: sticky; top: 0; z-index: 10;text-align:center">COBRADO</th>
                                 <th style="position: sticky; top: 0; z-index: 10;text-align:center"></th>
                             </tr>

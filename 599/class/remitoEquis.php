@@ -24,8 +24,9 @@ class RemitoEquis {
                     SELECT A.COD_PRO_CL, A.RAZON_SOCI, SUM(A.IMPORTE_TO) IMPORTE_TO, SUM(A.CANT_ART) CANT_ART, c.importe_total, A.CHEQUEADO
                     FROM SJ_EQUIS_TABLE A
                     LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
-                    LEFT JOIN sj_administracion_cobros C ON C.id = B.id_cobro 
-                    WHERE (FECHA_MOV >= GETDATE()-700) AND (C.rendido != 1 OR C.rendido IS NULL)
+                    LEFT JOIN sj_administracion_cobros C ON C.id = B.id_cobro
+                    LEFT JOIN STA14 D ON A.N_COMP = D.N_COMP
+                    WHERE (A.FECHA_MOV >= GETDATE()-700) AND (C.rendido != 1 OR C.rendido IS NULL) AND D.ESTADO_MOV != 'A'
                     GROUP BY A.COD_PRO_CL, A.RAZON_SOCI, c.importe_total, A.CHEQUEADO  
                     ORDER BY  COD_PRO_CL";
 
@@ -58,7 +59,11 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
 
-        $sql = "SET DATEFORMAT YMD SELECT * FROM SJ_EQUIS_TABLE WHERE COD_PRO_CL = '$codClient'  ORDER BY  COD_PRO_CL, N_COMP";
+        $sql = "SET DATEFORMAT YMD 
+                SELECT * FROM SJ_EQUIS_TABLE A
+                LEFT JOIN STA14 B ON A.N_COMP = B.N_COMP
+                WHERE A.COD_PRO_CL = '$codClient' AND B.ESTADO_MOV != 'A'
+                ORDER BY  A.COD_PRO_CL, A.N_COMP";
 
         $stmt = sqlsrv_query($cid, $sql);
         $v=[];

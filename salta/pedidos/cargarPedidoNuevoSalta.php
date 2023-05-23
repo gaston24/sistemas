@@ -180,7 +180,7 @@ if($x!=0){
 
 	//echo $codClient.' '.$fecha.' '.$numPed.'</br>';
 
-	$sqlCargaPedidoEncabezado = "
+	/* $sqlCargaPedidoEncabezado = "
 	SET DATEFORMAT YMD
 	INSERT INTO GVA21
 	(
@@ -216,7 +216,7 @@ if($x!=0){
 	0, 0, 0, 
 	(SELECT LEFT((CAST((CONVERT(TIME, GETDATE()  )) AS VARCHAR(8))), 2)+SUBSTRING((CAST((CONVERT(TIME, GETDATE()  )) AS VARCHAR(8))), 4, 2)+RIGHT((CAST((CONVERT(TIME, GETDATE()  )) AS VARCHAR(8))), 2))
 	)	
-	";
+	"; */
 
 	odbc_exec($cid,$sqlCargaPedidoEncabezado)or die(exit("Error en odbc_exec"));
 
