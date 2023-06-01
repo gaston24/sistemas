@@ -57,6 +57,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                         <thead class="thead-dark">
                             <tr>
                                 <th style="position: sticky; top: 0; z-index: 10; width: 200px;text-align:center" class="col-1">FECHA</th>
+                                <th style="position: sticky; top: 0; z-index: 10;text-align:center">CLIENTE</th>
                                 <th style="position: sticky; top: 0; z-index: 10;text-align:center">REMITO</th>
                                 <th style="position: sticky; top: 0; z-index: 10;text-align:center">MONTO</th>
                                 <th style="position: sticky; top: 0; z-index: 10;text-align:center"></th>
@@ -70,6 +71,7 @@ $detalleDeRemito = traerDetalle($_GET['codClient']);
                                     }
                                     echo "<tr>";
                                     echo "<td style='text-align:center' >".$value['FECHA_MOV']->format('Y-m-d')."</td>";
+                                    echo "<td style='text-align:center' >".$value['RAZON_SOCI']."</td>";
                                     echo "<td style='text-align:center' >".$value['N_COMP']."</td>";
                                     echo "<td style='text-align:center' id='monto'>".$value['IMPORTE_TO']."</td>";
                                     echo "<td style='text-align:center;width:20px' ><input type='checkbox' style='width:20px' onchange='checkMonto()' ></td>";

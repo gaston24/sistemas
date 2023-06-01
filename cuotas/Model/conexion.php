@@ -7,32 +7,24 @@ class Conexion
     protected $DB;
     protected $port;
     protected $User = 'sa';
-    protected $Password = 'Axoft1988';
+    protected $Password ;
 
-    private function conectarLocal($local, $DB,$port)
+    function conectarLocal($local, $DB,$port)
     {
         $this->local = $local;
         $this->DB = $DB;
         $this->port=$port;
+        $this->Password='Axoft1988';
         try {
             $conn = new PDO("sqlsrv:Server=" . $this->local . "," . $this->port . ";Database=" .$this->DB, $this->User, $this->Password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-            $sth = $conn->query("SELECT * FROM RO_VIEW_INSERT_ML_SOF_AUDITORIA");
+            echo 'estoy en '.$this->local.' \n';
+            $sth = $conn->query("select * from TARJETA_COEFICIENTE_CUOTA");
             /* $sth->execute(); */
-            echo 'sdf' . $sth->rowCount();
-            if ($sth->rowCount() > 0) {
-                $sth = $conn->prepare("SET NOCOUNT ON; EXEC RO_SP_INSERT_ML_SOF_AUDITORIA");
-                /* $sth->bindParam(1, $name);
-			$sth->bindParam(2, $lastname);
-			$sth->bindParam(3, $age); */
-                $sth->execute();
-                $sth->nextRowset();
-
-                $conn = null;
-            } else {
-                echo 'no tiene nada';
+          
+            foreach($sth as $row){
+                print_r($row);
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -40,29 +32,32 @@ class Conexion
     }
 
 
-   function infoSucursales()
+   function conexionLocales()
     { 
         $this->local = 'LAKERBIS';
         $this->DB = 'LOCALES_LAKERS';
         $this->port='1433';
         $this->User = 'sa';
         $this->Password = 'Axoft';
-
+       
         //traer los datos de conexión de los locales para luego recorrer cada una con la función conectarLocal()
         try {
             $conn = new PDO("sqlsrv:Server=" . $this->local . "," . $this->port. ";Database=" . $this->DB, $this->User, $this->Password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-            $sth = $conn->query("SELECT NRO_SUCURSAL,DESC_SUCURSAL,CONEXION_DNS,BASE_NOMBRE  FROM SUCURSALES_LAKERS WHERE NRO_SUCURSAL < 100");
+            $sth = $conn->query("SELECT NRO_SUCURSAL,DESC_SUCURSAL,CONEXION_DNS,BASE_NOMBRE  FROM SUCURSALES_LAKERS WHERE NRO_SUCURSAL < 100 AND HABILITADO=1");
           
-            var_dump($sth);
             foreach($sth as $row)
             {
-                print $row['NRO_SUCURSAL'];
+                $Conexion=explode(',',$row['CONEXION_DNS']);
+                $Direccion=$Conexion[0];
+                $Puerto=$Conexion[1];
+                $this->conectarLocal($Direccion,$row['BASE_NOMBRE'],$Puerto);
+              /*   print $row['NRO_SUCURSAL'];
                 print $row['DESC_SUCURSAL'];
                 print $row['CONEXION_DNS'];
-                print $row['BASE_NOMBRE'];
+                print $row['BASE_NOMBRE']; */
             }
         } catch (PDOException $e) {
             echo $e->getMessage();

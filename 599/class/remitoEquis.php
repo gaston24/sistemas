@@ -21,14 +21,15 @@ class RemitoEquis {
         }else{
 
             $sql = "SET DATEFORMAT YMD 
-                    SELECT A.COD_PRO_CL, A.RAZON_SOCI, SUM(A.IMPORTE_TO) IMPORTE_TO, SUM(A.CANT_ART) CANT_ART, c.importe_total, A.CHEQUEADO
+                    SELECT ISNULL(E.GRUPO_EMPR, A.COD_PRO_CL) COD_PRO_CL, ISNULL(E.NOMBRE_GRU, A.RAZON_SOCI) RAZON_SOCI, SUM(A.IMPORTE_TO) IMPORTE_TO, SUM(A.CANT_ART) CANT_ART, c.importe_total, A.CHEQUEADO
                     FROM SJ_EQUIS_TABLE A
                     LEFT JOIN sj_administracion_cobros_por_remito B ON B.num_rem = A.N_COMP COLLATE Latin1_General_BIN
                     LEFT JOIN sj_administracion_cobros C ON C.id = B.id_cobro
                     LEFT JOIN STA14 D ON A.N_COMP = D.N_COMP
+                    LEFT JOIN (SELECT A.COD_CLIENT, A.GRUPO_EMPR, B.NOMBRE_GRU FROM GVA14 A INNER JOIN GVA62 B ON A.GRUPO_EMPR = B.GRUPO_EMPR) E ON A.COD_PRO_CL = E.COD_CLIENT
                     WHERE (A.FECHA_MOV >= GETDATE()-700) AND (C.rendido != 1 OR C.rendido IS NULL) AND D.ESTADO_MOV != 'A'
-                    GROUP BY A.COD_PRO_CL, A.RAZON_SOCI, c.importe_total, A.CHEQUEADO  
-                    ORDER BY  COD_PRO_CL";
+                    GROUP BY ISNULL(E.GRUPO_EMPR, A.COD_PRO_CL), ISNULL(E.NOMBRE_GRU, A.RAZON_SOCI), c.importe_total, A.CHEQUEADO, E.NOMBRE_GRU 
+                    ORDER BY COD_PRO_CL";
 
         }
 
@@ -59,10 +60,15 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
 
-        $sql = "SET DATEFORMAT YMD 
-                SELECT * FROM SJ_EQUIS_TABLE A
+        $sql = "SET DATEFORMAT YMD
+                SELECT * FROM
+                (
+                SELECT A.FECHA_MOV, ISNULL(C.GRUPO_EMPR, A.COD_PRO_CL) COD_PRO_CL, A.RAZON_SOCI, A.N_COMP, A.IMPORTE_TO, A.CANT_ART, A.GC_GDT_NUM_GUIA, A.CHEQUEADO, A.FECHA_CHEQUEADO FROM SJ_EQUIS_TABLE A
                 LEFT JOIN STA14 B ON A.N_COMP = B.N_COMP
-                WHERE A.COD_PRO_CL = '$codClient' AND B.ESTADO_MOV != 'A'
+                LEFT JOIN (SELECT A.COD_CLIENT, A.GRUPO_EMPR, B.NOMBRE_GRU FROM GVA14 A INNER JOIN GVA62 B ON A.GRUPO_EMPR = B.GRUPO_EMPR) C ON A.COD_PRO_CL = C.COD_CLIENT
+                WHERE B.ESTADO_MOV != 'A'
+                ) A
+                WHERE COD_PRO_CL = '$codClient'
                 ORDER BY  A.COD_PRO_CL, A.N_COMP";
 
         $stmt = sqlsrv_query($cid, $sql);
@@ -274,10 +280,15 @@ class RemitoEquis {
 
         $cid = $this->conn->conectar('central');
         
-        $sql = "SELECT A.*,C.IMPORTE_TO FROM sj_administracion_cobros A 
-        INNER JOIN sj_administracion_cobros_por_remito B ON A.ID = B.id_cobro
-        INNER JOIN SJ_EQUIS_TABLE C ON B.num_rem = C.N_COMP collate Latin1_General_BIN
-        WHERE A.rendido = 0";
+        $sql = "SELECT ID, cod_client, MAX(importe_efectivo) importe_efectivo, MAX(importe_cheque) importe_cheque, importe_total, fecha_cobro, rendido, 
+                nombre_cliente, descuento, user_rinde, SUM(IMPORTE_TO) IMPORTE_TO FROM
+                (
+                SELECT A.*,C.IMPORTE_TO FROM sj_administracion_cobros A 
+                INNER JOIN sj_administracion_cobros_por_remito B ON A.ID = B.id_cobro
+                INNER JOIN SJ_EQUIS_TABLE C ON B.num_rem = C.N_COMP collate Latin1_General_BIN
+                WHERE A.rendido = 0
+                ) A
+                GROUP BY ID, cod_client, importe_total, fecha_cobro, rendido, nombre_cliente, descuento, user_rinde";
 
         try {
 

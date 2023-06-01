@@ -79,12 +79,13 @@
                         <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">FECHA COBRO</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">NRO. INTERNO</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">CLIENTE</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">BANCO EMISOR</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">IMPORTE</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">NRO. CHEQUE</th>
-                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">FECHA COBRO</th>
+                                    <th style="position: sticky; top: 0; z-index: 10;text-align:center">FECHA VENCIMIENTO</th>
                                     <th style="position: sticky; top: 0; z-index: 10;text-align:center">RENDIDO</th>
 
                                 </tr>
@@ -94,12 +95,13 @@
                     
                                 ?>
                                     <tr style="text-align:center">
+                                        <td id="numeroDeRemito" ><?php echo $value['fecha_cobro']->format('Y-m-d') ?></td>  
                                         <td><?php echo $value['id'] ?></td>
                                         <td id="importeEfectivo"><?php echo $value['nombre_cliente'] ?></td>
                                         <td id="importeCheque"><?php echo $value['NOMBRE_BANCO'] ?></td>
                                         <td id="numeroDeRemito" >$ <?php echo number_format($value['monto'], 0, ',', '.') ?></td>  
                                         <td id="numeroDeRemito" ><?php echo $value['num_cheque'] ?></td>  
-                                        <td id="numeroDeRemito" ><?php echo $value['fecha_cobro']->format('Y-m-d') ?></td>  
+                                        <td id="numeroDeRemito" ><?php echo $value['fecha_cheque']->format('Y-m-d') ?></td>  
                                         <?php if($value['rendido'] ==  1){ ?>
                                         <td id="numeroDeRemito" style="width:30px;height:30px"><i class="bi bi-check-circle-fill" style="color:green;"></i></td>  
                                         <?php }else{?>
