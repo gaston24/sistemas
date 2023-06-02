@@ -25,7 +25,7 @@ const checkMonto = ()=>{
     todosLosCheck.forEach(e => {
         if(e.checked){
 
-            totalMontosCheck = totalMontosCheck + parseInt(e.parentElement.parentElement.childNodes[2].getAttribute("attr-realValue"))
+            totalMontosCheck = totalMontosCheck + parseInt(e.parentElement.parentElement.childNodes[3].getAttribute("attr-realValue"))
         }
     });
 
@@ -55,10 +55,10 @@ btnConfirmar.addEventListener("click",function (){
 
         if(e.checked){
         if(totalMontosCheck == ""){
-        totalMontosCheck = e.parentElement.parentElement.childNodes[1].textContent
+        totalMontosCheck = e.parentElement.parentElement.childNodes[2].textContent
         }else{
 
-        totalMontosCheck =  totalMontosCheck + "-" +e.parentElement.parentElement.childNodes[1].textContent
+        totalMontosCheck =  totalMontosCheck + "-" +e.parentElement.parentElement.childNodes[2].textContent
         }
         }
 
