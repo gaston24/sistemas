@@ -64,8 +64,8 @@ $cheques = traerCheques();
                             ?>
                                 <tr style="text-align:center">
                                     <td><?php echo $value['nombre_cliente'] ?></td>
-                                    <td ><?php echo  number_format($value['IMPORTE_TO'], 0, ',', '.') ?></td>
-                                    <td ><?php echo  number_format($value['importe_total'], 0, ',', '.') ?></td>
+                                    <td ><?php echo  '$'.number_format($value['IMPORTE_TO'], 0, ',', '.') ?></td>
+                                    <td ><?php echo  '$'.number_format($value['importe_total'], 0, ',', '.') ?></td>
                                     <td id="importeEfectivo"><?php echo $value['importe_efectivo'] ?></td>
                                     <td id="importeCheque"><?php echo $value['importe_cheque'] ?></td>
                                     <td id="idCobro" hidden><?php echo $value['id'] ?></td>  

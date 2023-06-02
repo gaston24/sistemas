@@ -3,7 +3,7 @@
 
 
     $inputBuscar = isset($_GET['inputBuscar']) ? $_GET['inputBuscar'] : '%' ;
-    $selectEstado = isset($_GET['selectEstado']) ?  $_GET['selectEstado'] : '%';
+    $selectEstado = isset($_GET['selectEstado']) ? $_GET['selectEstado'] : '%' ;
     $selectTalonario = isset($_GET['selectTalonario']) ?  $_GET['selectTalonario'] : 'X';
 
     if(isset($_GET['desde']) &&$_GET['desde'] != "" ){
@@ -56,18 +56,18 @@
                             <h2><strong><i class="bi bi-card-text" style="margin-right:20px;font-size:50px"></i>Consulta Detalle de Remitos</strong></h2>
 
                         </div>
-                        <form action="#" method="get">
+                        <form action="#" method="GET">
                             <div class="row" style="margin-top:10px">
 
                                 <div class="col-3" style="margin-left:50px">Desde : <input type="date" style="width:150px; height:45px" id='desde' name="desde" value="<?php echo $desde; ?>">  Hasta <input type="date" name="hasta" style="width:150px; height:45px" value="<?= $hasta ?>"></div>
                                 <div class="col-2">Estado :  
                                     <select name="selectEstado" id="selectEstado" style="width:150px; height:45px">
-                                        <option value="%">Todos</option>
+                                        <option value="%" disabled selected><?= isset($_GET['selectEstado']) ?  $_GET['selectEstado'] : 'Todos'?></option>
                                         <option value="DEBE">Debe</option>
                                         <option value="COBRADO">Cobrado</option>
                                         <option value="RENDIDO">Rendido</option>
                                         <option value="ANULADO">Anulado</option>
-
+                                        <option value="%">Todos</option>
                                     </select>  
                                     <!-- <button class="btn btn-primary btn-submit" value="" style="height:50px;margin-left:2px">filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button> -->
                                 </div>
