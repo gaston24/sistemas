@@ -33,9 +33,11 @@ foreach ($remitos as $num => $remito) {
 
     if($num == 0){
         $remitosParceados = $remitosParceados."'$remito'";
-    } 
+    } else{
+
+        $remitosParceados = $remitosParceados.",'$remito'";
+    }
     
-    $remitosParceados = $remitosParceados.",'$remito'";
 }
 
 
@@ -43,15 +45,15 @@ foreach ($remitos as $num => $remito) {
 $remitosDetalle = $remitoEquis->traerRemito($remitosParceados);
 
 foreach ($remitosDetalle as $detalle) {
-    
-    if( ($montoTotal + $valorDescontado) >= (int)$detalle['IMPORTE_TO'] ){
-       
+
+    if( (intval($montoTotal) + intval($valorDescontado)) >= intval($detalle['IMPORTE_TO'])){
+
 
             $remitoEquis->cambiarEstado($detalle['N_COMP']);
 
             $remitoEquis->guardarCobroRemito($idCobro, $detalle['N_COMP']);
 
-            $montoTotal = $montoTotal - $detalle['IMPORTE_TO'];
+            $montoTotal = intval($montoTotal) - intval($detalle['IMPORTE_TO']);
             
         }
         
