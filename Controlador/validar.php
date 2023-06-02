@@ -49,10 +49,10 @@ if( count($loginRes) == 0 ){
 
 	$_SESSION['pantallas'] = true;
 
-	// if($_SESSION['pantallas'] == true ){
-	// 	header("Location: ../indexPantalla.php");
-	// 	die();
-	// }
+	if($_SESSION['pantallas'] == true ){
+		header("Location: ../indexPantalla.php");
+		die();
+	}
 
 
 	if($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){

@@ -68,7 +68,7 @@ $cheques = traerCheques();
                                     <td ><?php echo  '$'.number_format($value['importe_total'], 0, ',', '.') ?></td>
                                     <td id="importeEfectivo"><?php echo $value['importe_efectivo'] ?></td>
                                     <td id="importeCheque"><?php echo $value['importe_cheque'] ?></td>
-                                    <td id="idCobro" hidden><?php echo $value['id'] ?></td>  
+                                    <td id="idCobro" hidden><?php echo $value['ID'] ?></td>
                                     <td id="userName" hidden><?= isset($_GET['userName']) ? $_GET['userName'] : "" ?></td>  
                                     <td><input type="checkbox" name="a" id="checkCalcularTotales" style="width:20px;height:20px;" onchange="calcularTotales(this)"></td>
                                 </tr>
