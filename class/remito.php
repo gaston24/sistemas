@@ -393,9 +393,9 @@ class Remito {
         
 
         $sql = "SELECT B.COD_ARTICU, CAST(SUM(B.CANTIDAD) AS FLOAT) CANTIDAD FROM STA14 A 
-                INNER JOIN STA20 B ON A.NCOMP_IN_S = B.NCOMP_IN_S and A.TCOMP_IN_S = B.TCOMP_IN_S
+                INNER JOIN STA20 B ON A.ID_STA14 = B.ID_STA14
                 INNER JOIN STA11 C ON B.COD_ARTICU = C.COD_ARTICU
-                WHERE A.NCOMP_ORIG = '$rem' AND C.PROMO_MENU != 'M'
+                WHERE A.NCOMP_ORIG = '$rem' AND C.PROMO_MENU != 'P'
                 GROUP BY B.COD_ARTICU
         ";
 
