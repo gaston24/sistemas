@@ -172,7 +172,7 @@ class Remito {
         };
 
     } 
-
+    
     public function buscarSinonimo($codigo){
 
         $sql=

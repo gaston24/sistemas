@@ -41,7 +41,7 @@ $cheques = traerCheques();
                     <div class="row ml-4">
                         <div><h5>Total efectivo: <input class="form-control" type="text" id="totalEfectivo" value="0,00" readonly></h5></div>
                         <div class="ml-4"><h5>Total Cheques: <input class="form-control" type="text" id="totalCheque" value="0,00" readonly></h5></div>
-                        <div style="margin-top: 1.5rem; margin-left: 60%;"><button class="btn btn-success btn_exportar" id="btnExport" onclick="rendir()"><i class="fa fa-file-excel-o"></i> Rendir <i class="bi bi-check2-circle"></i></button></div>
+                        <div style="margin-top: 1.5rem; margin-left: 50%;"><button class="btn btn-success btn_exportar" id="btnExport" onclick="rendir()"><i class="fa fa-file-excel-o"></i> Rendir <i class="bi bi-check2-circle"></i></button></div>
                     </div>
 
                     <table class="table table-striped table-bordered" id="myTable" style="width: 99%;" cellspacing="0" data-page-length="100">
