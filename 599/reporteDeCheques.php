@@ -1,8 +1,8 @@
 <?php
-session_start(); 
-if(!isset($_SESSION['username'])){
-	header("Location:../login.php");
-}else{
+// session_start(); 
+// if(!isset($_GET['userName'])){
+// 	header("Location:http://192.168.0.13:8000/");
+// }else{
     include_once "controller/traerEquis.php";
 
 
@@ -166,6 +166,6 @@ if(!isset($_SESSION['username'])){
 
 
 </script>
-<?php
-}
-?>
+<!-- <?php
+// }
+?> -->

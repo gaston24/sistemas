@@ -91,7 +91,7 @@ if(isset($_GET['fechaDesde'])){
 				<th >NRO<br>REMITO</th>
 				<th >FECHA<br>CONTROL</th>
 				<th >USUARIO</th>
-				<th >DIF</th>
+				<!-- <th >DIF</th> -->
 				<th >ESTADO</th>
 				<th >NRO AJUSTE</th>
 				<th >CHAT</th>
@@ -122,7 +122,7 @@ if(isset($_GET['fechaDesde'])){
 				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data['NRO_REMITO'] ;?>">  <?= $data['NRO_REMITO'] ;?> </a></td>
 				<td ><?= $dateControl ;?></td>
 				<td ><?= $data['NOMBRE_VEN'] ;?></td>
-				<td ><?= $diferencia ;?> </td>
+				<!-- <td ><?= $diferencia ;?> </td> -->
 				<td ><?= $data['OBSERVAC_LOGISTICA'] ;?> </td>
 				<td ><?= $data['NRO_AJUSTE'] ;?> </td>
 				<td >

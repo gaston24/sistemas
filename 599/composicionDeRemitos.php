@@ -1,8 +1,8 @@
 <?php
-session_start(); 
-if(!isset($_SESSION['username'])){
-	header("Location:../login.php");
-}else{
+// session_start(); 
+// if(!isset($_GET['userName'])){
+// 	header("Location:http://192.168.0.13:8000/");
+// }else{
 
     include_once "controller/traerEquis.php";
     include_once "controller/ejecutarSpController.php";
@@ -90,6 +90,7 @@ if(!isset($_SESSION['username'])){
             <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
                     <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Composición de Remitos</h6></div>
                     <div class="card card-1 mb-2">
+                        
                         <div style="margin-left: 2rem"><h3><i class="bi bi-cash"></i> Composición de saldo a cobrar</h3></div>
                                 <div class="row" style="margin-left: 20rem">
                                         <div><h5>Total deuda : <input class="form-control" type="text" id='sumValorDeuda' readonly></h5></div>
@@ -180,6 +181,6 @@ if(!isset($_SESSION['username'])){
             });
 
     </script>
-<?php
-}
-?>
+<!-- <?php
+// }
+?> -->

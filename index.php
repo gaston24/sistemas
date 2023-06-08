@@ -34,7 +34,7 @@ require 'class/fechaEntrega.php';
 <head>
 <title>XL Extralarge - Inicio</title>	
 <meta charset="UTF-8"></meta>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
 <?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
 <link rel="stylesheet" href="ajustes/css/msj-seincomp.css">

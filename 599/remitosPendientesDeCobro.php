@@ -1,8 +1,8 @@
 <?php
-session_start(); 
-if(!isset($_SESSION['username'])){
-	header("Location:../login.php");
-}else{
+// session_start(); 
+// if(!isset($_GET['userName'])){
+// 	header("Location:http://192.168.0.13:8000/");
+// }else{
     include_once "controller/traerEquis.php";
     $detalleDeRemito = traerDetalle($_GET['codClient']);
 
@@ -44,7 +44,7 @@ if(!isset($_SESSION['username'])){
                     <h6>Remitos pendientes de cobro</h6>
                 </div>
                 <div class="card card-1">
-
+                    
                     <div class="row" style="margin-left:1rem">
                         <h3><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Remitos pendientes de cobro</h3>
                     </div>
@@ -163,6 +163,6 @@ if(!isset($_SESSION['username'])){
             });
         });
     </script>
-<?php
-}
-?>
+<!-- <?php
+// }
+?> -->

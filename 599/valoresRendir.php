@@ -1,11 +1,11 @@
 <?php 
 session_start(); 
-if(!isset($_SESSION['username'])){
-	header("Location:../login.php");
+if(!isset($_GET['userName'])){
+	header("Location:http://192.168.0.13:8000/");
 }else{
     include_once "controller/traerEquis.php";
     $cheques = traerCheques();
-
+    
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -61,6 +61,7 @@ if(!isset($_SESSION['username'])){
                             </thead>
                             <tbody>
                                 <?php foreach ($cheques as $key => $value) {
+        
                                     $descuento = isset($descuento) ? $descuento : 0;
         
                                     $importe = $value['IMPORTE_TO'] - $descuento;
