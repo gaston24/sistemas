@@ -21,6 +21,8 @@ const confirmarCobro = (codClient) => {
     let nombreCliente = document.querySelector("#cliente").getAttribute("attr-cliente")
     let idCheques = localStorage.getItem("idCheques");
     let valorDescontado = parseInt(document.querySelector("#valorDescontado").textContent);
+    let username = document.querySelector("#username").textContent;
+
 
     if (parseInt(montoACobrar) != parseInt(saldoCobrar)) {
         Swal.fire({
@@ -75,7 +77,8 @@ const confirmarCobro = (codClient) => {
                         codClient: codClient,
                         idCheque: idCheques,
                         nombreCliente: nombreCliente,
-                        valorDescontado: valorDescontado
+                        valorDescontado: valorDescontado,
+                        username:username
 
                     },
                     success: function (data) {

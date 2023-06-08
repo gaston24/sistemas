@@ -36,7 +36,9 @@ if (!isset($_SESSION['username'])) {
 
 		<div style="margin: 5px">
 			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mb-1">Cancelar</button>
-			<h6 align="center">Remito: <a class="text-secondary"><?= $rem ?></a> 
+			<button class="btn btn-secondary mt-2" id="btnBorrador" hidden>Guardar Borrador</button>
+			<button class="btn btn-dark mt-2" id="btnTraerBorrador" hidden>Traer Borrador</button>
+			<h6 align="center">Remito: <a class="text-secondary" id="numRem"><?= $rem ?></a> 
 				<a>Ultimo escaneado:</a>
 				<a class="text-secondary">
 					<a id="lastCodigoControlado"></a>

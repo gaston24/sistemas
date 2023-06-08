@@ -3,9 +3,12 @@ let user = '<?=$user?>'
 // CONTROL REMITOS
 
 let form = document.querySelector("#formControlRemito");
+let btnBorrador = document.querySelector("#btnBorrador");
+let btnTraerBorrador = document.querySelector("#btnTraerBorrador");
 
 document.addEventListener("DOMContentLoaded", ()=>{
     localStorage.removeItem('ultimosChequeados')
+    existeBorrador()    
 })
 
 form.addEventListener("submit", (e)=>{
@@ -65,7 +68,7 @@ const verificarCodigo = (codigo) =>{
     maestroArt = JSON.parse(maestroArt);
 
     let flag = false;
-
+    
     maestroArt.forEach((x)=>{
         if(x.COD_ARTICU == codigo || x.SINONIMO == codigo){
 
@@ -94,7 +97,7 @@ const checkVisibility = ()=>{
 
 const addArticulo = (articulo) =>{
     let table = document.querySelector("#table");
-
+    let cantidad = (articulo.CANTIDAD) ? articulo.CANTIDAD : 1 ;
     if(buscarExistente(articulo.COD_ARTICU)){
 
         table.insertAdjacentHTML('beforeend',
@@ -102,14 +105,14 @@ const addArticulo = (articulo) =>{
             <tr class="fila-base">
                 <td class="col-" style="width:6em">${articulo.COD_ARTICU}</td>
                 <td class="col-" style="width:5em">${articulo.DESCRIPCIO}</td>
-                <td class="col-" style="width:3em" align="center">1</td>
+                <td class="col-" style="width:3em" align="center">${cantidad}</td>
                 <td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" onClick="eliminarArticulo(this)"></img></td>
             </tr>
             `
         )
 
     }
-
+    sumFilas();
 
 }
 
@@ -147,6 +150,7 @@ const updateUltimoCodigo = (codigo) => {
 const eliminarArticulo = (e) => {
     e.parentElement.parentElement.remove();
     sumarTotal();
+    sumFilas();
 }
 
 const ultimosChequeados = (codigo) => {
@@ -235,5 +239,128 @@ const procesarRemito = (articulosControlados, remito, codClient) => {
         });
 
 }
+btnBorrador.addEventListener("click", ()=>{
 
+
+    let table = document.querySelector("#table");
+    let tr = table.querySelectorAll("tr");
+    let numRem = document.querySelector("#numRem").innerHTML;
+    
+    let newArray= [];
+    newArray[0] = []
+    
+    tr.forEach((element,x) => {
+
+            let allTd = element.querySelectorAll("td")
+            let codigo  = allTd[0].innerHTML;
+            let descripcion = allTd[1].innerHTML;
+            let cantidad = allTd[2].innerHTML;
+            newArray[0][x] = [codigo,descripcion,cantidad];
+    
+    })
+    newArray.unshift(numRem);
+
+
+    let borrador = (sessionStorage.getItem("borrador")) ? sessionStorage.getItem("borrador") : null;
+
+    if(borrador != null && borrador){
+
+        borrador = JSON.parse(borrador);
+        
+        if(existeEnSession(borrador, numRem)){
+
+            let borrador2 = [];
+
+            borrador2 = borrador.filter( element => {
+
+                return element[0] != numRem;
+            });
+
+            borrador = borrador2;
+        }
+
+        borrador.push(newArray);
+
+    }else{   
+        borrador = [];
+        borrador [0]  = newArray;
+    }
+
+    let  borradorString = JSON.stringify(borrador);
+
+    sessionStorage.setItem("borrador",borradorString);
+    
+    
+})
+
+btnTraerBorrador.addEventListener("click", ()=>{
+
+    let borrador = sessionStorage.getItem("borrador");
+    let numRem = document.querySelector("#numRem").innerHTML;
+    let table = document.querySelector("#table");
+    borrador = JSON.parse(borrador);
+
+    table.innerHTML = '';
+    
+    borrador.forEach(x => {
+        if(numRem == x[0]){
+            
+            checkVisibility();
+
+            x[1].forEach(element => {
+
+                let articulo = {
+                    COD_ARTICU: element[0],
+                    DESCRIPCIO: element[1],
+                    CANTIDAD: element[2],
+                }
+                
+                addArticulo(articulo);
+            });
+
+    
+
+        }
+        
+    });
+
+})
+
+
+const sumFilas = () => {
+    let count = document.querySelector("#table").childElementCount;
+    if(count > 0){
+        btnBorrador.hidden = false;
+    }else{
+        btnBorrador.hidden = true;
+    }
+
+
+}
+
+const existeBorrador = () => {
+    let numRem = document.querySelector("#numRem").innerHTML;
+    let borrador = sessionStorage.getItem("borrador");
+    if(borrador){
+        borrador = JSON.parse(borrador);
+        borrador.forEach(x => {
+            if(numRem == x[0]){
+                btnTraerBorrador.hidden = false;
+            }
+        })
+    }else{
+        btnTraerBorrador.hidden = true;
+    }
+}
+
+
+const existeEnSession = (borrador,numRem) => {
+    existe = false;
+    borrador.forEach(element => {
+        if(element[0] == numRem){
+           existe = true;
+        }  
+    });
+    return existe;
+}
 

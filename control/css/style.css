@@ -92,3 +92,16 @@ th, td
     }
 
   }
+
+  #btnBorrador
+  {
+    position: relative;
+    bottom: 6px;
+    margin-right:3px;
+  }
+  #btnTraerBorrador
+  {
+    position: relative;
+    bottom: 6px;
+    margin-right:3px;
+  }

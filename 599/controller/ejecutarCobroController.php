@@ -10,6 +10,7 @@ $codClient = $_POST['codClient'];
 $postCheques = $_POST['idCheque'];
 $nombreCliente = $_POST['nombreCliente'];
 $valorDescontado = $_POST['valorDescontado'];
+$username = $_POST['username'];
 
 $idCheques = explode(",", $postCheques);
 
@@ -20,7 +21,7 @@ $remitoEquis = new RemitoEquis();
 $remitosParceados = "";
 
 
-$idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente, $valorDescontado);
+$idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente, $valorDescontado, $username);
 
 foreach ($idCheques as $value) {
 

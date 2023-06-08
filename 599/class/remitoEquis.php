@@ -193,11 +193,11 @@ class RemitoEquis {
 
     }
 
-    public function guardarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total, $nombreCliente, $valorDescontado ) {
+    public function guardarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total, $nombreCliente, $valorDescontado, $username ) {
         
         $cid = $this->conn->conectar('central');
         
-        $sql = "INSERT INTO sj_administracion_cobros (cod_client, importe_efectivo, importe_cheque, importe_total,rendido, nombre_cliente, descuento) VALUES ('$cod_client', '$importe_efectivo', '$importe_cheque', '$importe_total','0','$nombreCliente', '$valorDescontado ')SELECT SCOPE_IDENTITY()";
+        $sql = "INSERT INTO sj_administracion_cobros (cod_client, importe_efectivo, importe_cheque, importe_total,rendido, nombre_cliente, descuento, user_rinde) VALUES ('$cod_client', '$importe_efectivo', '$importe_cheque', '$importe_total','0','$nombreCliente', '$valorDescontado ', '$username')SELECT SCOPE_IDENTITY()";
 
         try {
 
