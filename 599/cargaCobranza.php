@@ -39,7 +39,7 @@
             <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
                 <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Carga de Cobranza</h6></div>
                     <div class="card card-1">
-                        <div id="username" hidden><?= isset($_GET['userName']) ? $_GET['userName'] : "" ?></div>
+                        <div id="user" hidden><?= isset($_GET['userName']) ? $_GET['userName'] : "" ?></div>
                         <div class="row" style="margin-left:50px">
                             <h3><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Carga de Cobranza</h3>
                         </div>

@@ -48,6 +48,7 @@
                     <div class="row" style="margin-left:1rem">
                         <h3><i class="bi bi-cash" style="margin-right:20px;font-size:50px"></i>Remitos pendientes de cobro</h3>
                     </div>
+                    <div id="user" hidden><?= $_GET['userName'] ?></div>
                     <div class="row" style="margin-left:50px;margin-top">
                         <div><label>Total deuda: </label><input class="form-control" type="text" id="totalDeuda" readonly></div>
                         <div id="divImporteAabonar" style="margin-left: 1rem"><label>Importe a abonar:</label><input class="form-control" type="text" id="importeAbonar" readonly></div>

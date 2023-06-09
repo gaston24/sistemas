@@ -49,6 +49,7 @@ const checkMonto = ()=>{
 btnConfirmar.addEventListener("click",function (){
 
     const todosLosCheck = document.querySelectorAll('input[type="checkbox"]');
+    let userName = document.querySelector("#user").textContent;
     let totalMontosCheck = ""
 
     todosLosCheck.forEach(e => {
@@ -83,7 +84,7 @@ btnConfirmar.addEventListener("click",function (){
                     let importeAbonar = document.querySelector("#importeAbonar").value
                     let codCliente = document.querySelector("#codClient").textContent
 
-                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+encodeURIComponent(codCliente)+"&valorDescontado=0";;
+                    window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar.replace(/[$.]/g, "")+"&codCliente="+encodeURIComponent(codCliente)+"&valorDescontado=0&userName="+userName;
 
                 })
 
@@ -112,7 +113,7 @@ btnConfirmar.addEventListener("click",function (){
 
             let codCliente = document.querySelector("#codClient").textContent
 
-            window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+encodeURIComponent(codCliente)+"&valorDescontado="+porcentaje;
+            window.location.href = "cargaCobranza.php?montoTotal="+montoTotalDeuda+"&importeAbonar="+importeAbonar+"&codCliente="+encodeURIComponent(codCliente)+"&valorDescontado="+porcentaje+"&userName="+userName;
 
         })
 

@@ -21,7 +21,7 @@ const confirmarCobro = (codClient) => {
     let nombreCliente = document.querySelector("#cliente").getAttribute("attr-cliente")
     let idCheques = localStorage.getItem("idCheques");
     let valorDescontado = parseInt(document.querySelector("#valorDescontado").textContent);
-    let username = document.querySelector("#username").textContent;
+    let username = document.querySelector("#user").textContent;
 
 
     if (parseInt(montoACobrar) != parseInt(saldoCobrar)) {
