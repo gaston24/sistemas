@@ -32,7 +32,7 @@ const confirmarCobro = (codClient) => {
             confirmButtonText: 'Aceptar',
             denyButtonText: 'Cancelar',
         }).then((result) => {
-            / Read more about isConfirmed, isDenied below /
+            // Read more about isConfirmed, isDenied below 
             if (result.isConfirmed) {
                 Swal.fire('Guardado!', '', 'success')
             } else if (result.isDenied) {
@@ -58,7 +58,7 @@ const confirmarCobro = (codClient) => {
             confirmButtonText: 'Aceptar',
             denyButtonText: 'Cancelar',
         }).then((result) => {
-            / Read more about isConfirmed, isDenied below /
+            // Read more about isConfirmed, isDenied below 
             if (result.isConfirmed) {
                 let remitosEnCadena = sessionStorage.getItem("Remitos");
                 var arrayDeRemitos = remitosEnCadena.split("-");

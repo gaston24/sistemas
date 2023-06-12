@@ -55,12 +55,11 @@ btnConfirmar.addEventListener("click",function (){
     todosLosCheck.forEach(e => {
 
         if(e.checked){
-        if(totalMontosCheck == ""){
-        totalMontosCheck = e.parentElement.parentElement.childNodes[2].textContent
-        }else{
-
-        totalMontosCheck =  totalMontosCheck + "-" +e.parentElement.parentElement.childNodes[2].textContent
-        }
+            if(totalMontosCheck == ""){
+                totalMontosCheck = e.parentElement.parentElement.childNodes[2].textContent
+            }else{
+                totalMontosCheck =  totalMontosCheck + "-" +e.parentElement.parentElement.childNodes[2].textContent
+            }
         }
 
     });
@@ -120,6 +119,7 @@ btnConfirmar.addEventListener("click",function (){
 
     }
 })
+
 const calcularDescuento = ()=>{
 
     let montoTotalDeuda = document.querySelector("#totalDeuda").value;

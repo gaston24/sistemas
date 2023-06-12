@@ -92,7 +92,7 @@
                     <div class="card card-1 mb-2">
                         
                         <div style="margin-left: 2rem"><h3><i class="bi bi-cash"></i> Composición de saldo a cobrar</h3></div>
-                                <div  id="user" hidden><?php echo  $userName; ?></div>
+                                <div  id="user" hidden><?=$userName; ?></div>
                                 <div class="row" style="margin-left: 20rem">
                                         <div><h5>Total deuda : <input class="form-control" type="text" id='sumValorDeuda' readonly></h5></div>
                                     <div style="margin-left: 2rem; margin-top: 2rem;"><h5>Cobranza:
