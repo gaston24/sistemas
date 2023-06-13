@@ -52,8 +52,24 @@ buttonHistorial.addEventListener("click", ()=>{
         ultimos += x+'\n';
     })
 
-    alert(ultimos)
+    // alert(ultimos);
+    Swal.fire({
+        position: 'top-end',
+        showConfirmButton: true,
+        html: `<h5>Detalle escaneo</h5>
+        <table class="table table-striped mt-2 ml-2">
+			<thead class="thead-dark mt-1">
+				<tr>
+					<td class="col-" style="width:3.5em">CODIGO</td>
+				</tr>
+			</thead>
+			<tbody id="table">
+                    <td class="col-" style="width:3.5em"></td>
+			</tbody>
 
+		</table>
+               <br> `,
+      })
 
 })
 

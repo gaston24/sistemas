@@ -6,7 +6,7 @@ body
 }
 
 .btn-danger{
-    margin-left: 27%;
+    margin-left: 5%;
 }
 
 .thead-dark{ 
@@ -21,7 +21,8 @@ body
 }
 
 #bodyControl{
-    width: 70rem;
+    padding-left: 0;
+    /* width: 30rem; */
 }
 
 .container { 
@@ -48,10 +49,26 @@ th, td
     margin-left: 3rem;
 }
 
+#btnBorrador
+{
+margin-bottom: 0.8rem;
+  /* position: relative; */
+  /* bottom: 30PX; */
+  margin-left:3px;
+}
+
+#btnTraerBorrador
+{
+  margin-bottom: 0.8rem;
+  margin-left:3px;
+}
+
 @media only screen and (max-width: 1281px) {
 
     body {
-      width: 22rem;
+      margin: 0 auto;
+      padding: 0 auto;  
+      /* width: 22rem; */
       height: 50rem;
     }
   
@@ -61,7 +78,12 @@ th, td
         text-align: center;
     }
 
-    .container 
+    #bodyControl{
+        padding: auto 0 auto 0;
+        /* width: 30rem; */
+    }
+
+    /* .container 
     { 
         margin: 0 auto;
         height:70vh;
@@ -69,7 +91,7 @@ th, td
         padding: 0;
         margin-bottom: 0;
         overflow-x: hidden;
-    }
+    } */
 
     .tableDetalle
     {
@@ -93,15 +115,3 @@ th, td
 
   }
 
-  #btnBorrador
-  {
-    position: relative;
-    bottom: 6px;
-    margin-right:3px;
-  }
-  #btnTraerBorrador
-  {
-    position: relative;
-    bottom: 6px;
-    margin-right:3px;
-  }

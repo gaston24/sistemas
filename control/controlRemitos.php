@@ -55,12 +55,12 @@ if (!isset($_SESSION['username'])) {
 
 		<audio src="Wrong.ogg"></audio>
 
-	<div class="container table-responsive" id="bodyControl" style="display: none;">
-		<table class="table table-striped mt-2" id="tablaControl">
-			<thead class="thead-dark">
+	<div class="container table-responsive" id="bodyControl">
+		<table class="table table-striped mt-2 ml-2">
+			<thead class="thead-dark mt-1">
 				<tr>
 					<td class="col-" style="width:3.5em">CODIGO</td>
-					<td class="col-" style="width:15em; padding-left:0; padding-right:0;">DESCRIPCION</td>
+					<td class="col-" style="width:15em">DESCRIPCION</td>
 					<td class="col-" style="width:2em">CANTIDAD</td>	
 					<td class="col-" style="width:5em"></td>
 				</tr>
@@ -68,7 +68,7 @@ if (!isset($_SESSION['username'])) {
 			<tbody id="table">
 
 			</tbody>
-
+		
 		</table>
 	</div>
 		<div class="col- text-center bg-white">
@@ -78,7 +78,7 @@ if (!isset($_SESSION['username'])) {
 		</div>
 
 	
-
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="js/main.js"></script>
 	<script>
 		let remito = '<?= $rem ?>';
