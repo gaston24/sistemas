@@ -49,9 +49,12 @@ buttonHistorial.addEventListener("click", ()=>{
     let ultimos = '';
 
     ultimosChequeados.forEach(x=>{
-        ultimos += x+'\n';
+
+        ultimos += `<tr><td class="col-" style="width:3.5em">${x}</td></tr>`;
+
     })
 
+ 
     // alert(ultimos);
     Swal.fire({
         position: 'top-center',
@@ -64,7 +67,7 @@ buttonHistorial.addEventListener("click", ()=>{
 				</tr>
 			</thead>
 			<tbody id="table">
-                    <td class="col-" style="width:3.5em"></td>
+                ${ultimos}
 			</tbody>
 
 		</table>
