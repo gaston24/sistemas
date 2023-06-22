@@ -34,15 +34,17 @@ if (!isset($_SESSION['username'])) {
 	<body>
 
 
-		<div style="margin: 5px">
-			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mb-1">Cancelar</button>
+		<div style="margin-top: 10px">
+		<div id="contBtn">
+			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mt-2">Cancelar</button>
 			<button class="btn btn-secondary mt-2" id="btnBorrador" hidden>Guardar Borrador</button>
 			<button class="btn btn-dark mt-2" id="btnTraerBorrador" hidden>Traer Borrador</button>
+		</div>
 			<h6 align="center">Remito: <a class="text-secondary" id="numRem"><?= $rem ?></a> 
-				<a>Ultimo escaneado:</a>
+				<!-- <a>Ultimo escaneado:</a>
 				<a class="text-secondary">
 					<a id="lastCodigoControlado"></a>
-				</a>
+				</a> -->
 			</h6>
 		</div>
 
@@ -71,10 +73,10 @@ if (!isset($_SESSION['username'])) {
 		
 		</table>
 	</div>
-		<div class="col- text-center bg-white">
-			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
-			<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Articulos:</strong></a> <a id="totalArt"></a>
-			<button class="btn btn-success mt-2" id="btnProcesar">Procesar</button>
+		<div class="col- text-center bg-white mt-1">
+			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ult.:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
+			<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Art.:</strong></a> <a id="totalArt"></a>
+			<button class="btn btn-success btn-sm" id="btnProcesar">Procesar</button>
 		</div>
 
 	

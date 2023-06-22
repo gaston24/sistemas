@@ -9,6 +9,16 @@ body
     margin-left: 5%;
 }
 
+.btn-danger{
+    height: 38px;
+}
+
+#contBtn{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .thead-dark{ 
     position: sticky;
     top: 0;
@@ -26,13 +36,13 @@ body
 }
 
 .container { 
-    height:28rem;
+    height:40rem;
     /* width: 15rem; */
 }
 
 #tablaControl{
     margin: auto;
-    width: 60%;
+    /* width: 60%; */
 }
 
 th, td
@@ -66,10 +76,11 @@ margin-bottom: 0.8rem;
 @media only screen and (max-width: 1281px) {
 
     body {
-      margin: 0 auto;
-      padding: 0 auto;  
+      margin: 0;
+      padding: 0;  
       /* width: 22rem; */
-      height: 50rem;
+      height: 35rem;
+      overflow-y: hidden;
     }
   
     th, td
@@ -83,21 +94,21 @@ margin-bottom: 0.8rem;
         /* width: 30rem; */
     }
 
-    /* .container 
+    .container 
     { 
         margin: 0 auto;
-        height:70vh;
+        height:63vh;
         width: 95vw;
         padding: 0;
         margin-bottom: 0;
         overflow-x: hidden;
-    } */
-
-    .tableDetalle
-    {
-        height: 70vh;
-       /*  background: red; */
     }
+
+    /* .tableDetalle
+    {
+        height: 63vh;
+        background: red;
+    } */
 
     #titleDif
     {
