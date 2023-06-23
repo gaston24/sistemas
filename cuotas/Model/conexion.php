@@ -49,6 +49,8 @@ class Conexion
 
         }
         array_push($this->info_locales,array($datos_Local,$cuotas_local));
+        $sth=null;
+        $conn=null;
     }
 
 
@@ -81,5 +83,7 @@ class Conexion
         } catch (PDOException $e) {
             echo $e->getMessage() . 'Error de conexión.' ;
         }
+        $sth=null;
+        $conn=null;
     }
 }
