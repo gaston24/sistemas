@@ -6,26 +6,29 @@ if(!isset($_SESSION['username'])){
 	header("Location:../index.php");
 }else{
 //include 'conex.php';
-include 'consultas.php';
+require_once '../class/conexion.php';
+require_once '../class/extralarge.php';
+require_once 'class/Ajuste.php';
+$xl = new Extralarge();
+
+$cid = new Conexion();
 
 if(isset($_POST['localSeleccionado'])){
-	$_SESSION['dsn'] = $_POST['localSeleccionado'];
+	$stringdsn = explode(" ", $_POST['localSeleccionado']);
+	$datosDeConexion = $xl->traerDatosDeConexionPorLocal($stringdsn[0]);
+	$_SESSION['conexion_dns'] = $datosDeConexion[0]['CONEXION_DNS'];
+	$_SESSION['base_nombre'] = $datosDeConexion[0]['BASE_NOMBRE'];
 }
 
 $dsn = $_SESSION['dsn'];
-$user = 'sa';
-$pass = 'Axoft1988';
+$ajuste = new Ajuste();
+$result = $ajuste->traerAjustes();
 
-$cid = odbc_connect($dsn, $user, $pass);
-
-odbc_exec($cid, $sqlNuevos);
-
-$result = odbc_exec($cid, $sql) or die (exit("Error en conexion"));
-
-require_once 'Class/articulo.php';
+require_once 'Class/Articulo.php';
 
 $maestroArticulos = new Articulo();
 $todosLosArticulos = $maestroArticulos->traerArticulos();
+
 
 
 ?> 
@@ -75,7 +78,7 @@ td{
 
 </div>
 <br>
-<form method="POST" action="confirmAjus.php">
+
 <div class="table-responsive">
 	<table class="table table-striped" id="tableAjuste">
 
@@ -90,6 +93,7 @@ td{
 				<th class="col-">CANT</th>
 				<th class="col-">CODIGO NUEVO</th>
 				<th class="col-">SELECT</th>
+				<th class="col-" style="text-align:center;color:#343a40" id="status">STATUS</th>
 			</tr>
 		</thead>
 
@@ -99,20 +103,20 @@ td{
 
 		$contador = 1;
 
-		while($v=odbc_fetch_array($result)){
+		foreach ($result as $key => $v) {
 
         ?>
 		
-        	<tr>
+        	<tr id="trBody">
 				<td><?= $v['ID_STA20'] ;?></td>
-                <td><?= $v['FECHA_MOV'] ;?></td>
-				<td><input class="form-control input" name="tcomp[]" type="text" value="<?= $v['NCOMP_ORIG'] ;?>" readonly></td>
-                <td><input class="form-control input" name="ncomp[]" type="text" value="<?= $v['N_COMP'] ;?>" readonly></a></td>
-				<td><input class="form-control input" name="codigo[]" type="text" value="<?= $v['COD_ARTICU'] ;?>"  readonly></td>
+                <td><?= $v['FECHA_MOV']->format("Y-m-d") ;?></td>
+				<td><input class="form-control input" id="tcomp" type="text" value="<?= $v['NCOMP_ORIG'] ;?>" readonly></td>
+                <td><input class="form-control input" id="ncomp" type="text" value="<?= $v['N_COMP'] ;?>" readonly></a></td>
+				<td><input class="form-control input" id="codigo" type="text" value="<?= $v['COD_ARTICU'] ;?>"  readonly></td>
 				<td><?= $v['DESCRIPCIO'] ;?></td>
-				<td><input class="form-control input" name="cant[]" type="text" value="<?= $v['CANT'] ;?>"  readonly></td>
+				<td><input class="form-control input" id="cant" type="text" value="<?= $v['CANT'] ;?>"  readonly></td>
 				<td>
-                    <select id="controlBuscador<?=$contador?>" class="ctr-busc" name="articulo[]" onchange="contara();">
+                    <select id="controlBuscador<?=$contador?>" class="ctr-busc" name="articulo" onchange="contara();">
                         <option selected></option>
                         <?php
                     foreach($todosLosArticulos as $articulo => $key){
@@ -124,18 +128,19 @@ td{
                     </select>
 				</td>
 				<td><input type="checkbox" id='checkbox1' class="btnCheck" value="<?= $v['ID_STA20'] ;?>"></td>
+				<td id="mensaje" style="text-align:center"><i class="bi bi-check-circle-fill"></i></td>
 			</tr>
         <?php
-		$contador++;
-        	}
+			$contador++;
+		}
         ?>
         </tbody>	
 	</table>
 </div>
 
-<button type="submit" class="btn btn-success" id="btn_ajustar" onclick="ocultarBoton(); procesar();">Ajustar</button>
+<button type="button" class="btn btn-success" id="btn_ajustar" onclick="ocultarBoton(); procesar(); confirmarAjuste();">Ajustar</button>
 
-</form>
+
 
 </div>
 

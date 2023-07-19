@@ -177,10 +177,73 @@ function myFunction() {
           }
         });
 
-                
+const confirmarAjuste = () =>{
 
-
-
+  let tr = document.querySelectorAll('#trBody')
   
+  let articulo = document.querySelectorAll('[name="articulo"]')
+  let codigo = document.querySelectorAll('#codigo')
+  let cant = document.querySelectorAll('#cant')
+  let ncomp = document.querySelectorAll('#ncomp')
+  let tcomp = document.querySelectorAll('#tcomp')
+  let mensajes = document.querySelectorAll("#mensaje")
+
+  let arrayData = [];
+
+
+  tr.forEach((x, y)=> {
+
+    arrayData.push({
+      articulo: articulo[y].value,
+      codigo: codigo[y].value,
+      cant: cant[y].value,
+      ncomp: ncomp[y].value,
+      tcomp: tcomp[y].value
+    })
+      
+  });
+
+  $.ajax({
+    url: 'confirmAjus.php',
+    method: 'POST',
+    data: {
+      data:JSON.stringify(arrayData)} ,
+    success: function (data) {
+      
+      document.querySelector("#status").style.color = "white";
+
+      
+      let arrayResponse = JSON.parse(data);
+      arrayResponse = [arrayResponse]
+
+      tr.forEach((x, y)=> {
+        arrayResponse.forEach(element => {
+          if(element[articulo[y].value] > 0){
+
+            mensajes[y].textContent = "Ajuste realizado correctamente"
+            mensajes[y].style.color = "green";
+          }else{
+            mensajes[y].textContent = "No Existe el Articulo"
+            mensajes[y].style.color = "red";
+          }
+        });
+      })
+      
+      // if(data == 1){
+
+      //   document.querySelector("#mensaje").textContent = "Ajuste realizado correctamente";
+      //   document.querySelector("#mensaje").style.color = "green";
+
+      // }else if(data == 0){
+
+      //   document.querySelector("#mensaje").textContent += "No Existe el Articulo"
+      //   document.querySelector("#mensaje").style.color = "red";
+
+      // }
+    }
+  })
+}
+
+
   
     

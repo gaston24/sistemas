@@ -39,6 +39,34 @@ class Extralarge {
 
 
     }
+    public function traerDatosDeConexionPorLocal($local){
+
+        $cid = $this->conn->conectar('central');
+        
+
+        $sql = "SELECT CONEXION_DNS,BASE_NOMBRE FROM [LAKERBIS].locales_lakers.dbo.SUCURSALES_LAKERS WHERE NRO_SUC_MADRE is NULL AND NRO_SUCURSAL = '$local'";
+
+        $stmt = sqlsrv_query($cid, $sql);
+
+        try {
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+
+
+    }
 
     public function deletePedidos($numSuc){
 
