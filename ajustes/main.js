@@ -145,8 +145,8 @@ function myFunction() {
                         text:  console.log(data),
                         showConfirmButton: true,
                       })
-                        .then(function () {
-                            window.location = "ajusteLocal.php";
+                      .then(function () {
+                            location.reload();
                         });
                     }
 
@@ -229,17 +229,6 @@ const confirmarAjuste = () =>{
         });
       })
       
-      // if(data == 1){
-
-      //   document.querySelector("#mensaje").textContent = "Ajuste realizado correctamente";
-      //   document.querySelector("#mensaje").style.color = "green";
-
-      // }else if(data == 0){
-
-      //   document.querySelector("#mensaje").textContent += "No Existe el Articulo"
-      //   document.querySelector("#mensaje").style.color = "red";
-
-      // }
     }
   })
 }

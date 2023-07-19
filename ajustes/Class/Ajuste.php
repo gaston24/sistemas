@@ -324,5 +324,21 @@ class Ajuste
 
     }
 
+    public function rechazarAjuste($id) 
+    {
+        $sql = "UPDATE SOF_CONFIRMA SET RECHAZADO = 1 WHERE ID_STA20 = $id";
+        try {
+            
+            sqlsrv_query($this->cid, $sql);
+            return true;
+
+        } catch (Exception $e) {
+
+            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+
+        }
+
+    }
+
 
 }
