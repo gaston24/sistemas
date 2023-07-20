@@ -78,6 +78,9 @@ if($_SESSION['conteo'] == 1){
 }elseif($_SESSION['conteo'] == 3){
 	echo '</br></br><div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">	El remito no fue ingresado en TANGO, debe realizar el ingreso antes de realizar el control</div>';
 	$_SESSION['conteo'] = 0;
+}elseif($_SESSION['conteo'] == 4){
+	echo '</br></br><div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">	El local no tiene conexión con la base de datos, por favor, comunicarse con el Area de Sistemas</div>';
+	$_SESSION['conteo'] = 0;
 }
 
 
