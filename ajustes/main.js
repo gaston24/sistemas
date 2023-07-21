@@ -192,15 +192,19 @@ const confirmarAjuste = () =>{
 
 
   tr.forEach((x, y)=> {
+    if(articulo[y].value.length > 0){
 
-    arrayData.push({
-      articulo: articulo[y].value,
-      codigo: codigo[y].value,
-      cant: cant[y].value,
-      ncomp: ncomp[y].value,
-      tcomp: tcomp[y].value
-    })
-      
+      arrayData.push({
+        articulo: articulo[y].value,
+        codigo: codigo[y].value,
+        cant: cant[y].value,
+        ncomp: ncomp[y].value,
+        tcomp: tcomp[y].value
+      })
+
+  }
+
+
   });
 
   $.ajax({
@@ -217,16 +221,24 @@ const confirmarAjuste = () =>{
       arrayResponse = [arrayResponse]
 
       tr.forEach((x, y)=> {
-        arrayResponse.forEach(element => {
-          if(element[articulo[y].value] > 0){
 
-            mensajes[y].textContent = "Ajuste realizado correctamente"
-            mensajes[y].style.color = "green";
-          }else{
-            mensajes[y].textContent = "No Existe el Articulo"
-            mensajes[y].style.color = "red";
-          }
-        });
+        if(articulo[y].value.length > 0){
+
+          arrayResponse.forEach(element => {
+
+            if(element[articulo[y].value] > 0){
+
+              mensajes[y].textContent = "Ajuste realizado correctamente"
+              mensajes[y].style.color = "green";
+            }else{
+              mensajes[y].textContent = "No Existe el Articulo"
+              mensajes[y].style.color = "red";
+            }
+            
+          });
+
+        }
+
       })
       
     }
