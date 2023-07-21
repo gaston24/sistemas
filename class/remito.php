@@ -266,6 +266,8 @@ class Remito {
     public function buscarRemitoPorLocal($rem){
         $cid = $this->conn->conectar('local');
 
+        if(!$cid) return false;
+
         $sql = "SELECT * FROM CTA115 WHERE N_COMP = '$rem'";
 
         try {

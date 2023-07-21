@@ -19,6 +19,13 @@ $rem = $_SESSION['rem'];
 $remito = new Remito();
 $result = $remito->buscarRemitoPorLocal($rem);
 
+// SE VALIDA CONEXION CON EL LOCAL
+// SI NO CONECTA, TE ENVIA AL INDEX CON CARTEL DE AVISO
+if(!$result) {
+	$_SESSION['conteo'] = 4;
+	header("Location:index.php");
+}
+
 if( count($result) > 0 ){
 
 	//BUSCA QUE NO ESTE CONTROLADO EL REMITO

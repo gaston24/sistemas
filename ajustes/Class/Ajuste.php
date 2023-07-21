@@ -112,9 +112,11 @@ class Ajuste
 
     public function setearProximoRemito() 
     {
-        $sqlProx = "SELECT ' 0'+CAST(
-            (SELECT SUCURSAL FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)+RIGHT(('00000'+ CAST((SELECT PROXIMO FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)),8
-        ) PROXIMO";
+        $sqlProx = " SELECT ' ' +
+        RIGHT('00000' + CAST((SELECT SUCURSAL FROM STA17 WHERE TALONARIO = 850)AS VARCHAR), 5) + 
+        RIGHT(('00000000'+ CAST((SELECT PROXIMO FROM STA17 WHERE TALONARIO = 850)AS VARCHAR)),8) 
+        PROXIMO
+        ";
     
         try {
             $resultProx = sqlsrv_query($this->cid, $sqlProx);
@@ -191,7 +193,7 @@ class Ajuste
         )
         VALUES
         (
-        'GTCENT', 4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'AJU', 850, 'AJ', 'AJUSTES', 
+        '', 4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'AJU', 850, 'AJ', 'AJUSTES', 
         '$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0
         )
         ;";
@@ -319,6 +321,22 @@ class Ajuste
         } catch (\Throwable $th) {
 
             print_r($th);
+
+        }
+
+    }
+
+    public function rechazarAjuste($id) 
+    {
+        $sql = "UPDATE SOF_CONFIRMA SET RECHAZADO = 1 WHERE ID_STA20 = $id";
+        try {
+            
+            sqlsrv_query($this->cid, $sql);
+            return true;
+
+        } catch (Exception $e) {
+
+            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 
         }
 
