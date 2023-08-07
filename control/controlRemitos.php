@@ -75,7 +75,7 @@ if (!isset($_SESSION['username'])) {
 		</table>
 	</div>
 		<div class="col- text-center bg-white mt-1">
-			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ult.:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver <i class="bi bi-search"></i></button></a>
+			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ult.:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" ><i class="bi bi-search"></i></button></a>
 			<a style="margin-right:0.3em; font-size: 0.8em"> <strong>Art.:</strong></a> <a id="totalArt"></a>
 			<button class="btn btn-success btn-sm" id="btnProcesar">Procesar <i class="bi bi-check2-circle"></i></button>
 		</div>
