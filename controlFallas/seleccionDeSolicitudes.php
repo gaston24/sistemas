@@ -110,23 +110,23 @@
                                     switch ($encabezado['ESTADO']) {
                                             
                                         case '1':
-                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px; border-style:none;' ><i class='bi bi-box-arrow-in-up'></i></button>";
+                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px; border-style:none; padding: .3rem .6rem;' ><i class='bi bi-box-arrow-in-up'></i></button>";
                                             $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
                                             break;
 
                                         case '2':
-                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none;' ><i class='bi bi-check2-square'></i></button>";
+                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .3rem .6rem;'><i class='bi bi-check2-square'></i></button>";
                                             $accion = "<a href='enviarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
 
                                         case '3':
-                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none;' ><i class='fa fa-paper-plane'></i></button>";
+                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
                                             $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
                                             break;
 
                                         case '4':
                                             $valorIdBorrador =$encabezado['ID'] - 1;
-                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none;' ><i class='fa-solid fa-eraser'></i></button>";
+                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
                                             $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador' class='href'><button class='btn btn-danger'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
                                         

@@ -205,15 +205,15 @@
                                             <td style="text-align:center;">
 
 
-                                            <button class="btn btn-primary" type="button" style="margin-left: 5px" onclick="elegirImagen(this)">
+                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
                                                 <i class="bi bi-upload"></i> 
                                             </button>
 
-                                            <button class="btn btn-warning" style="margin-left:5px"  onclick="mostrarImagen(this)">
+                                            <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
                                                 <i class="bi bi-eye" style="color:white"></i>
                                             </button>
 
-                                            <button class="btn btn-danger" style="margin-left:5px" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button></td>
+                                            <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button></td>
                                           
                                         </tr>
                               <?php 
