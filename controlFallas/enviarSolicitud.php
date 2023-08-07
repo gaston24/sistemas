@@ -10,13 +10,13 @@
     $recodificacion = new Recodificacion();
     
     
-    $borradorEnc = $recodificacion->buscarBorradorEnc($_GET['numSolicitud'],2);
-    if(count($borradorEnc) > 0){
-        $borradorDet = $recodificacion->buscarBorradorDet($_GET['numSolicitud']);
+    $encabezadoSolicitud = $recodificacion->traerEncabezado($_GET['numSolicitud']);
+    if(count($encabezadoSolicitud) > 0){
+        $detalleSolicitud = $recodificacion->traerDetalle($_GET['numSolicitud']);
         
     }
     
-    var_dump($borradorEnc);
+    var_dump($encabezadoSolicitud);
    
 ?>
 
@@ -64,14 +64,14 @@
 
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $borradorEnc[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  $borradorEnc[0]['USUARIO_EMISOR'] ?>" disabled></div>
+                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $encabezadoSolicitud[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
+                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  $encabezadoSolicitud[0]['USUARIO_EMISOR'] ?>" disabled></div>
                                     
                                 </div>
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="desde" name="desde" value="<?=  $borradorEnc[0]['ID'] ?>" disabled></div>
-                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px" id="hasta"  name="hasta" value="<?=  $borradorEnc[0]['ESTADO'] ?>" disabled></div>
+                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="desde" name="desde" value="<?=  $encabezadoSolicitud[0]['ID'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px" id="hasta"  name="hasta" value="<?=  $encabezadoSolicitud[0]['ESTADO'] ?>" disabled></div>
                                     <div style="margin-left:30px"><button style="width:140px; height:40px; margin-left:900px" class ="btn btn-primary" >Enviar <i class='fa fa-paper-plane'></i></button></div>
                                     
                                 </div>
@@ -95,15 +95,15 @@
                             </thead>
                             <tbody>
                                 <?php
-                                        foreach ($borradorDet as $key => $detalle) {
+                                        foreach ($detalleSolicitud as $key => $detalle) {
                                             echo '<tr>';
                                             echo '<td style="text-align:center">' . $detalle['COD_ARTICU'] . '</td>';
                                             echo '<td style="text-align:center">' . $detalle['DESCRIPCION'] . '</td>';
                                             echo '<td style="text-align:center">' . $detalle['PRECIO'] . '</td>';
                                             echo '<td style="text-align:center">' . $detalle['DESC_FALLA'] . '  <button class="btn btn-warning"><i class="bi bi-eye"></i></button></td>';
-                                            echo '<td style="text-align:center"> </td>';
-                                            echo '<td style="text-align:center"></td>';
-                                            echo '<td style="text-align:center"></td>';
+                                            echo '<td style="text-align:center">' . $detalle['NUEVO_CODIGO'].'</td>';
+                                            echo '<td style="text-align:center">' . $detalle['DESTINO'].'</td>';
+                                            echo '<td style="text-align:center">' . $detalle['OBSERVACIONES'].'</td>';
                                             echo '<td style="text-align:center">asdasdasdsdaadssdasda</td>';
                                             echo '</tr>';
                                             
