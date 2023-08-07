@@ -357,6 +357,36 @@ class Recodificacion
 
     }
 
+    public function traerRemitos($nroSucursal) 
+    {   
+        $sql = "SET DATEFORMAT YMD 
+		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM [LAKERBIS].locales_lakers.dbo.CTA09 
+        WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE 'GT%'
+        AND FECHA_MOV >= GETDATE()-60 AND NRO_SUCURS = '$nroSucursal'";
+ 
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+        
+
+    }
+
     public function autorizar ($numSolicitud)
     {
         $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '2' WHERE ID = $numSolicitud";
@@ -373,6 +403,7 @@ class Recodificacion
 
         }
     }
+
 
     public function actualizarDetalle ($precio, $nuevoCodigo, $destino, $observaciones, $id)
     {
@@ -392,5 +423,43 @@ class Recodificacion
 
         }
     }
+
+    public function enviar ($numSolicitud)
+    {
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '3' WHERE ID = $numSolicitud";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
+    public function cargarRemito ($id, $numRemito)
+    {
+      
+        $sql = "UPDATE sj_reco_locales_det SET N_COMP = '$numRemito' WHERE ID = $id";
+        
+        try {
+
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
+    
    
 }

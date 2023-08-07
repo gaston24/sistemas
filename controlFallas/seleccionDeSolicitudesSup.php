@@ -78,7 +78,7 @@
                                             <option value="1">Solicitada</option>
                                             <option value="2">Autorizada</option>
                                             <option value="3">Enviada</option>
-                                                        
+
                                         </select>
                                     </div>
                                     <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" >Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
@@ -110,7 +110,7 @@
                                             
                                         case '1':
                                             $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px' ><i class='bi bi-box-arrow-in-up'></i></button>";
-                                            $accion = "<a href='enviarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary'><i class='bi bi-pencil-square'></i></button></a>";
+                                            $accion = "<a href='autorizarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
 
                                         case '2':

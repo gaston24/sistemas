@@ -65,7 +65,7 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Carga solicitud de recodificacion </strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Solicitud de recodificacion </strong></h3>
                         </div>
 
                         <div style="margin-bottom:20px">

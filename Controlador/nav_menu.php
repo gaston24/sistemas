@@ -105,6 +105,7 @@ include('estado_cuenta.php');
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
                         <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
+                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas</a> <?php } ?>
                     </div>
                 </li>
 

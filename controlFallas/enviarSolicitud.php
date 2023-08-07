@@ -2,21 +2,16 @@
 
     session_start();
     require_once 'class/Recodificacion.php';
- 
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
-    $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
-
     $recodificacion = new Recodificacion();
-    
-    
+
     $encabezadoSolicitud = $recodificacion->traerEncabezado($_GET['numSolicitud']);
     if(count($encabezadoSolicitud) > 0){
         $detalleSolicitud = $recodificacion->traerDetalle($_GET['numSolicitud']);
         
     }
+    $locales = $recodificacion->traerLocales();
+    $remitos = $recodificacion->traerRemitos($_SESSION['numsuc']);
     
-    var_dump($encabezadoSolicitud);
    
 ?>
 
@@ -70,9 +65,9 @@
                                 </div>
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="desde" name="desde" value="<?=  $encabezadoSolicitud[0]['ID'] ?>" disabled></div>
-                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px" id="hasta"  name="hasta" value="<?=  $encabezadoSolicitud[0]['ESTADO'] ?>" disabled></div>
-                                    <div style="margin-left:30px"><button style="width:140px; height:40px; margin-left:900px" class ="btn btn-primary" >Enviar <i class='fa fa-paper-plane'></i></button></div>
+                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $encabezadoSolicitud[0]['ID'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px"  value="Autorizada" disabled></div>
+                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:900px" class ="btn btn-primary" onclick="enviar()" >Enviar <i class='fa fa-paper-plane'></i></button></div>
                                     
                                 </div>
 
@@ -83,33 +78,59 @@
                         <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" style="">
                                 <tr>
-                                    <th style="text-align:center;width:10%" >ARTICULO</th>
+                                    <th style="text-align:center;width:5%" >ARTICULO</th>
                                     <th style="text-align:center;width:10%" >DESCRIPCION</th>
-                                    <th style="text-align:center;width:20%" >PRECIO</th>
-                                    <th style="text-align:center;width:10%" >DESCRIPCION FALLA</th>
-                                    <th style="text-align:center;width:20%" >NUEVO CODIGO</th>
-                                    <th style="text-align:center;width:20%" >DESTINO</th>
-                                    <th style="text-align:center;width:10%" >OBSERVACIONES</th>
-                                    <th style="text-align:center;width:10%" >REMITO</th>
+                                    <th style="text-align:center;width:10%" >PRECIO</th>
+                                    <th style="text-align:center;width:20%" >DESCRIPCION FALLA</th>
+                                    <th style="text-align:center;width:10%" >NUEVO CODIGO</th>
+                                    <th style="text-align:center;width:10%" >DESTINO</th>
+                                    <th style="text-align:center;width:20%" >OBSERVACIONES</th>
+                                    <th style="text-align:center;width:15%" >REMITO</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                        foreach ($detalleSolicitud as $key => $detalle) {
-                                            echo '<tr>';
-                                            echo '<td style="text-align:center">' . $detalle['COD_ARTICU'] . '</td>';
-                                            echo '<td style="text-align:center">' . $detalle['DESCRIPCION'] . '</td>';
-                                            echo '<td style="text-align:center">' . $detalle['PRECIO'] . '</td>';
-                                            echo '<td style="text-align:center">' . $detalle['DESC_FALLA'] . '  <button class="btn btn-warning"><i class="bi bi-eye"></i></button></td>';
-                                            echo '<td style="text-align:center">' . $detalle['NUEVO_CODIGO'].'</td>';
-                                            echo '<td style="text-align:center">' . $detalle['DESTINO'].'</td>';
-                                            echo '<td style="text-align:center">' . $detalle['OBSERVACIONES'].'</td>';
-                                            echo '<td style="text-align:center">asdasdasdsdaadssdasda</td>';
-                                            echo '</tr>';
-                                            
-                                        }
+                                    foreach ($detalleSolicitud as $key => $detalle) {
+                                ?>
+                                       <tr>
 
-                                    ?>
+                                        <td style="text-align:center"><?= $detalle['COD_ARTICU'] ?></td>
+                                        <td style="text-align:center"><?= $detalle['DESCRIPCION'] ?></td>
+                                        <td style="text-align:center">$ <?=  number_format($detalle['PRECIO'], 0, ".",".") ?></td>
+                                        <td style="text-align:center"><?= $detalle['DESC_FALLA'] ?>  <button class="btn btn-warning"><i class="bi bi-eye"></i></button></td>
+                                        <td style="text-align:center"><?= $detalle['NUEVO_CODIGO'] ?> </td>
+                                        <td style="text-align:center">
+
+                                            <?php 
+                                                foreach ($locales as $key => $local) {
+                                                    
+                                                    if($local['NRO_SUCURSAL'] == $detalle['DESTINO']){
+                                                        echo $local['DESC_SUCURSAL'];
+                                                    }
+                                                }
+                                            ?>
+                                        </td>
+                                        <td style="text-align:center"><?= $detalle['OBSERVACIONES'] ?> </td>
+                                        <td style="text-align:center">
+                                            <select class="selectRemito" id="selectRemito">
+                                                    <?php 
+                                                        foreach ($remitos as $key => $remito) {
+                                                    ?>
+                                                            <option value="<?= $remito['N_COMP']?>"><?= $remito['N_COMP']?></option>
+
+                                                    <?php
+                                                        } 
+                                                    ?>
+                                            </select>
+                                        </td>
+                                        <td hidden><?= $detalle['ID'] ?></td>
+
+                                       </tr>
+                                        
+                                <?php
+                                    }
+
+                                ?>
                                 
                               
                             </tbody>
@@ -129,12 +150,12 @@
         <script src="assets/select2/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <!-- <script src="js/controlFallas.js"></script> -->
+        <script src="js/enviarSolicitud.js"></script>
     </body>
 
 </html>
 <script>
-  
+    $(".selectRemito").select2();
 
 </script>
 <!-- <script src="js/gastosTesoreria.js"></script> -->

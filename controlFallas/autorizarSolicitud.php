@@ -18,6 +18,14 @@
     }
     $locales = $recodificacion->traerLocales();
 
+    $localSolicitud = "";
+
+    foreach ($locales as $key => $local) {
+        
+        if($local['NRO_SUCURSAL'] == $solicitudEncabezado[0]['NUM_SUC']){
+            $localSolicitud = $local['DESC_SUCURSAL'];
+        }
+    }
 
 ?>
 
@@ -66,13 +74,14 @@
                                 <div class="row" style="margin-top:10px">
 
                                     <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  $solicitudEncabezado[0]['USUARIO_EMISOR'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:40px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
+                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:40px" id="hasta"  name="hasta" value="<?=  $solicitudEncabezado[0]['USUARIO_EMISOR'] ?>" disabled></div>
                                     
                                 </div>
                                 <div class="row" style="margin-top:10px">
 
                                     <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $solicitudEncabezado[0]['ID'] ?>" disabled></div>
-                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px" id="estado"  name="estado" value="Solicitada" disabled></div>
+                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:30px" id="estado"  name="estado" value="Solicitada" disabled></div>
                                     <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:900px" class ="btn btn-success" onclick="autorizar()" >Autorizar <i class='bi bi-check2-square'></i></button></div>
                                     
                                 </div>

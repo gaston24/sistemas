@@ -1,6 +1,6 @@
 const activarRecodificacion  = (div) => {
 
-    let allCheck = div.parentElement.parentElement.querySelectorAll("input")
+    let allCheck = div.parentElement.parentElement.querySelectorAll("input[type='checkbox']")
     if(div.checked){
         allCheck.forEach((e,y)=> {
             if(y != 0){
@@ -13,6 +13,7 @@ const activarRecodificacion  = (div) => {
                 e.disabled = true;
                 e.checked = false;
                 e.parentElement.parentElement.querySelectorAll("td")[2].textContent = e.parentElement.parentElement.querySelectorAll("td")[2].getAttribute("attr-realvalue");
+                e.parentElement.parentElement.querySelectorAll("td")[10].textContent = "";
             }
         });
     }
@@ -21,7 +22,7 @@ const activarRecodificacion  = (div) => {
 
 const comprobarCheckbox = (div) => {
 
-    let allCheck = div.parentElement.parentElement.querySelectorAll("input");
+    let allCheck = div.parentElement.parentElement.querySelectorAll("input[type='checkbox']");
 
     allCheck.forEach((element,y) => {
     

@@ -35,6 +35,11 @@ switch ($accion) {
 
         break;
 
+    case 'enviar':
+        enviar();
+
+        break;
+
     case 'traerCodigoRecodificacion':
         traerCodigoRecodificacion();
 
@@ -216,6 +221,26 @@ function autorizar () {
     }
     
    
+    return true;
+}
+
+function enviar () {
+    $data = $_POST['data'];
+    $numSolicitud = $_POST['numSolicitud'];
+
+    $Recodificacion = new Recodificacion();
+
+    $result = $Recodificacion->enviar($numSolicitud);
+
+    if ($result == true) {
+
+        foreach ($data as $key => $value) {
+
+            $Recodificacion->cargarRemito($value['id'], $value['remito']);
+
+        }
+
+    }
     return true;
 }
 ?>
