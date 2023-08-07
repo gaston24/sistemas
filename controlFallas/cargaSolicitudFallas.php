@@ -82,7 +82,7 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Carga solicitud de recodificacion </strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Carga solicitud de recodificacion </strong></h3>
                         </div>
 
                         <div style="margin-bottom:20px">
@@ -91,7 +91,7 @@
 
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-d-m") : date("Y-d-m"); ?> id="fecha"  disabled ></div>
                                 <div style="margin-left:90px">Usuario Emisor: 
-                                    <select name="usuario" id="usuario" style="width:145px; height:35px" class="usuario"> 
+                                    <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
                                     <?php
                                         foreach($usuarios as $usuario => $key){
 
@@ -109,8 +109,8 @@
 
                                 <div>   
                                     <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
-                                    <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar<i class="bi bi-pencil-square" style=""></i></button>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:100px" onclick= "solicitar()" >Solicitar <i class="bi bi-funnel-fill" style="color:white"></i></button>
+                                    <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
+                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar()">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
                                 </div>
 
                             </div>
@@ -127,12 +127,12 @@
                         <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" style="">
                                 <tr>
-                                    <th style="text-align:center;width: 400pxx;" >Articulo</th>
-                                    <th style="text-align:center;width: 600px;" >Descripcion</th>
-                                    <th style="text-align:center;width: 200px;" >Precio</th>
-                                    <th style="text-align:center;width: 200px;">Cantidad</th>
-                                    <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
-                                    <th style="text-align:center;width: 200px;" ></th>
+                                    <th style="text-align:center;width: 15%;" >Articulo</th>
+                                    <th style="text-align:center;width: 25%;" >Descripcion</th>
+                                    <th style="text-align:center;width: 7%;" >Precio</th>
+                                    <th style="text-align:center;width: 7%;">Cantidad</th>
+                                    <th style="text-align:center;width: 30%;" >Descripcion Falla</th>
+                                    <th style="text-align:center;width: 10%;" ></th>
                                 </tr>
                             </thead>
                             <tbody>
