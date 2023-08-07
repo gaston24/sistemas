@@ -1,0 +1,92 @@
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+/* .contenedor
+{
+    display: flex;
+    align-items: center;
+} */
+
+.sucursales,.tarjetasAndCuotas,.contenedor{
+    display: flex;
+    justify-content: center;
+    /* margin: 15px; */
+}
+.tarjetas,.regionSucursales{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:5px;
+}
+
+.region,.tarjeta,.cuotas,.btnAplicar{
+    display: flex;
+    align-items: center;
+    margin: 5px;
+  /*  border: 1px solid #adadad; */
+}
+.btnAplicar{
+    margin-left: 10px;
+}
+.cuota{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contenedor-bton{
+    display: flex;
+    align-items: center;
+}
+
+#update{
+    /*bton aplicar*/
+    width: 8rem;
+    height: 4rem;
+}
+
+p{
+    display: inline-block;
+    text-align: center;
+    width: 5rem;
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+#div{
+/***div donde se concatenan los tables */
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+table{
+    margin-bottom: 1rem;
+}
+
+h3{
+    margin:0;
+    padding: 0;
+}
+
+#styleP_Cuotas{
+    position: absolute;
+    left: 47%;
+    top:1rem;
+}
+
+.regionSucursales,.tarjetas
+{
+   /*  border-right: 0.5px solid rgb(155, 153, 153); */
+}
+
+th
+{
+    font-weight: 500;
+}
+
+td
+{
+    text-align: center;
+}

@@ -18,7 +18,7 @@ if(!isset($_GET['fechaDesde'])){
 	$fechaHasta = $_GET['fechaHasta'];
 }
 
-include_once 'class/control.php';
+include_once __DIR__.'/../class/remito.php';
 $remitos = new Remito();
 $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta, $estado);
 
@@ -36,6 +36,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css"></link>
@@ -112,10 +113,10 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
         <?php
 
 		foreach($remitosHistoricos as $data){
-		$dateControl = date_create($data[0]->FECHA_CONTROL);
-		$dateControl = date_format($dateControl, 'Y-m-d H:i');
+
+		$dateControl = $data['FECHA_CONTROL']->format('Y-m-d').' '.$data['HORA'];
 		$colorChat = 'primary';
-		switch ($data[0]->ULTIMO_CHAT) {
+		switch ($data['ULTIMO_CHAT']) {
 			case 0:
 				$colorChat = 'success';
 				break;
@@ -127,27 +128,27 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 		
 		?>
 		
-        <tr  style="font-size:1em" >
+        <tr style="font-size:1em" >
 
-				<td ><?= $data[0]->COD_CLIENT.' ('.$data[0]->SUC_DESTIN.')' ;?></td>
-				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data[0]->NRO_REMITO ;?>">  <?= $data[0]->NRO_REMITO ;?> </a></td>
+				<td ><?= $data['COD_CLIENT'].' ('.$data['SUC_DESTIN'].')' ;?></td>
+				<td ><a href="controlHistoricosDetalle.php?numRem=<?= $data['NRO_REMITO'] ;?>">  <?= $data['NRO_REMITO'] ;?> </a></td>
 				<td ><?= $dateControl ;?></td>
-				<td ><?= $data[0]->CANT_REM ;?></td>
-				<td ><?= $data[0]->CANT_CONTROL ;?></td>
-				<td ><?= $data[0]->DIFERENCIA ;?> </td>
+				<td ><?= $data['CANT_REM'] ;?></td>
+				<td ><?= $data['CANT_CONTROL'] ;?></td>
+				<td ><?= $data['DIFERENCIA'] ;?> </td>
 								
 				<td >
-					<select class="form-control form-control-sm" id="select-<?= $data[0]->NRO_REMITO ;?>" onChange="changeStatus('<?= $data[0]->NRO_REMITO ;?>')" id="estadoRemito">
-						<option value="PENDIENTE" <?php if($data[0]->OBSERVAC_LOGISTICA == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
-						<option value="ACEPTADO" <?php if($data[0]->OBSERVAC_LOGISTICA == 'ACEPTADO'){echo 'selected'; }?>>Aceptado</option>
-						<option value="RECHAZADO" <?php if($data[0]->OBSERVAC_LOGISTICA == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
+					<select class="form-control form-control-sm" <?php if($data['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'style="background: #f2ff00;"' ; }?> id="select-<?= $data['NRO_REMITO'] ;?>" onChange="changeStatus(this)" id="estadoRemito">
+						<option value="PENDIENTE"  <?php if($data['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){echo 'selected'; }?>>Pendiente</option>
+						<option value="ACEPTADO" <?php if($data['OBSERVAC_LOGISTICA'] == 'ACEPTADO'){echo 'selected'; }?>>Aceptado</option>
+						<option value="RECHAZADO" <?php if($data['OBSERVAC_LOGISTICA'] == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
 					</select>
 				</td>
 
-				<td ><input type="text" size="8" class="form-control form-control-sm" ajuste="ajuste<?= $data[0]->NRO_REMITO ;?>" id="nroAjuste" value="<?= $data[0]->NRO_AJUSTE ;?>" onChange="changeNroAjuste('<?= $data[0]->NRO_REMITO ;?>', this), validaAjuste()"> </td>
+				<td ><input type="text" size="8" class="form-control form-control-sm" ajuste="ajuste<?= $data['NRO_REMITO'] ;?>" id="nroAjuste" value="<?= $data['NRO_AJUSTE'] ;?>" onChange="changeNroAjuste('<?= $data['NRO_REMITO'] ;?>', this)"> </td>
 
 				<td >
-					<button data-toggle="modal" data-target="#chatModal" class="btn btn-<?=$colorChat?> btn-sm" type="button" onClick="getChat('<?= $data[0]->NRO_REMITO ;?>'), actuaNumRemito('<?= $data[0]->NRO_REMITO ;?>')">
+					<button data-toggle="modal" data-target="#chatModal" class="btn btn-<?=$colorChat?> btn-sm" type="button" onClick="getChat('<?= $data['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $data['NRO_REMITO'] ;?>')">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
 							<path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
 							<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
@@ -175,7 +176,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Chat auditoria</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=borrarChatNew()>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -185,8 +186,8 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
       </div>
       <div class="modal-footer">
 		<input type="text" class="form-control mb-2" id="chatNew">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>'), actuaNumRemito('<?= $data[0]->FECHA_REM ;?>')">Enviar mensaje</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=borrarChatNew()>Cerrar</button>
+        <button type="button" class="btn btn-primary" onClick="sendChat('<?=$user;?>')">Enviar mensaje</button>
       </div>
     </div>
   </div>

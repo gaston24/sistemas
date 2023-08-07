@@ -9,7 +9,7 @@ if(!isset($_SESSION['username'])){
 <head>
 
 	<title>Historial</title>	
-	<?php include '../../css/header.php'; ?>
+	<?php include __DIR__.'../../assets/css/header.php'; ?>
 </head>
 	<body>	
 

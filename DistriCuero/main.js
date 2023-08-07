@@ -1,3 +1,14 @@
+const selectPedido = document.querySelectorAll(".bi-trash-fill");
+const selectPedidoActivar = document.querySelectorAll(".bi-check-circle-fill");
+
+selectPedido.forEach((select) =>
+    select.addEventListener("click", eliminarPedido)
+  );
+
+  selectPedidoActivar.forEach((select) =>
+   select.addEventListener("click", activarPedido)
+ );
+
 //Búsqueda rápida table//
 
 function myFunction() {
@@ -325,19 +336,19 @@ function postearOrdenes3(matriz) {
 }
 
 function validarCredito(){  
-  var importeNP = document.getElementById('totalPrecio').value;      
+ var importeNP = document.getElementById('totalPrecio').value;      
   if((parseInt(creditoDisp.replace(/[$.]/g, "")) < parseInt(importeNP.replace(/[$.]/g, ""))) && (parseInt(importeNP.replace(/[$.]/g, "")) > 0)){
     Swal.fire({
       icon: 'info',
       title: 'Atención',
-      text: 'El crédito disponible es insuficiente!',
+      text: 'El crédito disponible es insuficiente! $',
     })
   }else{
-      //alert(creditoDisp.replace(/[$.]/g, ""))
+      alert(creditoDisp.replace(/[$.]/g, ""))
         enviaPedido();
-      }
+  
   }
-
+}
 
 //Suma el total de artículos del pedido//
 
@@ -586,4 +597,87 @@ total_notaPedidos();
     console.log(cantidad);
   }
 
+
+  //Eliminar pedido//
+
+function eliminarPedido(e){
+  let Dato = e.target;
+  let notaPedido = Dato.parentElement.parentElement.children[5].textContent;
+  console.log(notaPedido)
+  Swal.fire({
+    title: "Desea eliminar la nota de pedido?",
+    text: "Ya no se podra recuperar la informacion!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Aceptar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let env = 1;
+      let url = env == 1 ? "eliminarPedido.php" : "test.php";
+      $.ajax({
+        url: "controller/" + url,
+        method: "POST",
+        data: {
+          notaPedido: notaPedido.replace(/\s+/g, ""),
+        },
+        success: function (data) {
+          Swal.fire({
+            icon: "success",
+            title: "Nota de pedido eliminada correctamente!",
+            text: "Nota de pedido: " + data,
+            showConfirmButton: true,
+          }).then(function () {
+            window.history.back();
+          });
+        },
+      });
+    }
+  });
+}
+
+  //Revertir rechazo de orden (activar pedido)//
+
+  function activarPedido(e){
+    let Dato = e.target;
+    let codClient = Dato.parentElement.parentElement.children[1].textContent;//
+    let NroOrden= document.getElementById('nroOrden').value ;
+    console.log(codClient)
+    console.log(NroOrden)
+    Swal.fire({
+      title: "Desea revertir el rechazo de la orden?",
+      text: "La orden quedará nuevamente activa para el cliente!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Aceptar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let env = 1;
+        let url = env == 1 ? "anulaRechazoOrden.php" : "test.php";
+        $.ajax({
+          url: "controller/" + url,
+          method: "POST",
+          data: {
+            codClient: codClient.replace(/\s+/g, ""),
+            NroOrden:NroOrden
+          },
+          success: function (data) {
+            Swal.fire({
+              icon: "success",
+              title: "La orden fue habilitada correctamente!",
+              text: "Orden: " + data,
+              showConfirmButton: true,
+            }).then(function () {
+              window.history.back();
+            });
+          },
+        });
+      }
+    });
+  }
    

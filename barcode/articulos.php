@@ -14,7 +14,7 @@ class Codigos
                  echo $e->getMessage();
          }
         $sql ="
-        SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE '[XO]%' AND COD_ARTICU LIKE '$codigo'
+        SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE (COD_ARTICU LIKE '[XO]%' AND COD_ARTICU LIKE '$codigo') AND USA_ESC!='B'
         ";
         $stmt = sqlsrv_query( $cid_central, $sql);
 

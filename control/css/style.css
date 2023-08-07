@@ -3,7 +3,20 @@ body
 {  
     overflow-x: none;
     margin:0;
+}
 
+.btn-danger{
+    margin-left: 5%;
+}
+
+.btn-danger{
+    height: 38px;
+}
+
+#contBtn{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .thead-dark{ 
@@ -17,9 +30,19 @@ body
     background-color: #343a40;
 }
 
+#bodyControl{
+    padding-left: 0;
+    /* width: 30rem; */
+}
+
 .container { 
-    height:36rem;
-    width: 35rem;
+    height:29rem;
+    /* width: 15rem; */
+}
+
+#tablaControl{
+    margin: auto;
+    /* width: 60%; */
 }
 
 th, td
@@ -36,10 +59,29 @@ th, td
     margin-left: 3rem;
 }
 
+#btnBorrador
+{
+margin-bottom: 0.8rem;
+  /* position: relative; */
+  /* bottom: 30PX; */
+  margin-left:3px;
+}
+
+#btnTraerBorrador
+{
+  margin-bottom: 0.8rem;
+  margin-left:3px;
+}
+
 @media only screen and (max-width: 1281px) {
 
     body {
-      width: 22rem;
+      margin: 0;
+      padding: 0; 
+      margin-top: 0.6rem; 
+      /* width: 22rem; */
+      height: 35rem;
+      overflow-y: hidden;
     }
   
     th, td
@@ -48,21 +90,26 @@ th, td
         text-align: center;
     }
 
+    #bodyControl{
+        padding: auto 0 auto 0;
+        /* width: 30rem; */
+    }
+
     .container 
     { 
         margin: 0 auto;
-        height:19rem;
+        height:63vh;
         width: 95vw;
         padding: 0;
         margin-bottom: 0;
         overflow-x: hidden;
     }
 
-    .tableDetalle
+    /* .tableDetalle
     {
-        height: 70vh;
-       /*  background: red; */
-    }
+        height: 63vh;
+        background: red;
+    } */
 
     #titleDif
     {
@@ -77,4 +124,6 @@ th, td
         top: 0;
         z-index: 10;
     }
+
   }
+

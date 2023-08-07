@@ -34,9 +34,12 @@ require 'class/fechaEntrega.php';
 <head>
 <title>XL Extralarge - Inicio</title>	
 <meta charset="UTF-8"></meta>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
 <?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
+<link rel="stylesheet" href="ajustes/css/msj-seincomp.css">
+<link rel="stylesheet" href="css/style.css"> 
+<?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
 </head>
 
 <body>	
@@ -117,39 +120,41 @@ require 'class/fechaEntrega.php';
 			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
 		}
 		?>
+		<?php if($_SESSION['numsuc']>800)
+		{
+			include('Seincomp/msjSeincomp.php');
+		}
+?>
+
 	</div>
 	</div>
 
 		<?php include_once __DIR__ . '\assets\css\fontawesome\js.php'; ?>
 		<script>
-			/* onclick="location.href='pedidos/pedidos.php?tipo=1'" */
-			window.addEventListener('DOMContentLoaded', traerCantidadPedidos);
+			
+			let codClient = '<?= $codClient; ?>'
+			let estado = [];
 
+			let consultado = null;
+			
+			traerCantidadPedidos(codClient);
 
-			document.getElementById('buttonPedidoGeneral').addEventListener('click', () => {
-				if (estado[0] != null && estado[0].CANT_PEDIDOS == 5) {
+			const nuevoPedido = (tipo, idTipo) => {
+
+				consultado = buscarTipo(estado, tipo);
+
+				if (consultado.CANT_PEDIDOS >= 5) {
 					alerta();
 				} else {
-					location.href = 'pedidos/pedidos.php?tipo=1';
+					location.href = 'pedidos/pedidos.php?tipo='+idTipo;
 				}
-			})
+			}
 
-			document.getElementById('buttonPedidoAccesorios').addEventListener('click', () => {
-				if (estado[1] != null && estado[1].CANT_PEDIDOS == 5) {
-					alerta();
-				} else {
-					location.href = 'pedidos/pedidos.php?tipo=2';
-				}
-			})
-
-			document.getElementById('buttonPedidoOutlet').addEventListener('click', () => {
-				if (estado[2] != null && estado[2].CANT_PEDIDOS == 5) {
-					alerta();
-				} else {
-					location.href = 'pedidos/pedidos.php?tipo=3';
-				}
-			})
-
+			const buscarTipo = (x, tipo) => {
+				return estado.filter(x=>{ 
+					return x.TIPO == tipo
+				})
+			}
 
 			function alerta() {
 				Swal.fire({
@@ -159,24 +164,16 @@ require 'class/fechaEntrega.php';
 				});
 			}
 
-			var codClient = '<?= $codClient; ?>'
-
-
-			let conexion1;
 
 			/*********************************************************** */
-			let estado;
 
-			function traerCantidadPedidos() {
+			function traerCantidadPedidos(codClient) {
 
-				conexion1 = new XMLHttpRequest();
-				conexion1.onreadystatechange = () => {
-					if (conexion1.readyState == 4 && conexion1.status == 200) {
-						estado = JSON.parse(conexion1.responseText);
-					}
-				};
-				conexion1.open("GET", "pedidos/Controlador/limitePedidos.php?traerInfo=1&cliente=" + codClient, true);
-				conexion1.send();
+				let server = (window.location.href.includes("sistemas")) ? window.location.href.split('/sistemas')[0]+'/sistemas' : window.location.origin;
+				
+				fetch(server+"/Controlador/extralargeController.php?action=limitePedidos&codClient=" + codClient)
+					.then((response) => response.json())
+  					.then((data) => { estado = data; } );
 			}
 
 			/******************************************* */

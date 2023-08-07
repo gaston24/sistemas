@@ -21,9 +21,9 @@ include('estado_cuenta.php');
                     ?>
 
                         <!-- GENERALES -->
-                        <a class="dropdown-item" href="#" id="buttonPedidoGeneral">Generales</a>
+                        <a class="dropdown-item spinner" href="#" onClick="nuevoPedido('PEDIDO GENERAL', 1)" id="buttonPedidoGeneral">Generales</a>
                         <!-- ACCESORIOS -->
-                        <a class="dropdown-item" href="#" id="buttonPedidoAccesorios">Accesorios</a>
+                        <a class="dropdown-item spinner" href="#" onClick="nuevoPedido('PEDIDO ACCESORIOS', 2)" id="buttonPedidoAccesorios">Accesorios</a>
 
 
                     <?php
@@ -33,13 +33,10 @@ include('estado_cuenta.php');
                     if ($_SESSION['esOutlet'] == 1) {
                     ?>
                         <!-- OUTLET -->
-                        <a class="dropdown-item" href="#" id="buttonPedidoOutlet">Outlet</a>
+                        <a class="dropdown-item spinner" href="#" onClick="nuevoPedido('PEDIDO OUTLET', 3)" id="buttonPedidoOutlet">Outlet</a>
                     <?php
-                    } else {
-                    ?>
-                        <a class="dropdown-item" href="#" id="buttonPedidoOutlet" disabled hidden>Outlet</a>
-                    <?php
-                    }
+                    } 
+
                     if ($deposi != '00') {
                     ?>
                         <!-- DESABASTECIMIENTO -->
@@ -48,7 +45,7 @@ include('estado_cuenta.php');
                     }
                     ?>
                     <!-- HISTORIAL  -->
-                    <a class="dropdown-item" href="#" onclick="location.href='pedidos/historial.php'">Historial</a>
+                    <a class="dropdown-item spinner" href="#" onclick="location.href='pedidos/historial.php'">Historial</a>
 
                 </div>
             </li>
@@ -62,9 +59,9 @@ include('estado_cuenta.php');
                         Ecommerce
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#" onclick="location.href='guia_local'">Registrar Pedidos</a>
-                        <a class="dropdown-item" href="#" onclick="location.href='guia_local/buscar_factura.php'">Buscar Factura</a>
-                        <a class="dropdown-item" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='guia_local'">Registrar Pedidos</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='guia_local/buscar_factura.php'">Buscar Factura</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='../logistica/ecommerce/index.php'">Control pedidos</a>
                     </div>
                 </li>
             <?php
@@ -80,25 +77,17 @@ include('estado_cuenta.php');
                         Reportes
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#" onclick="
-                <?php
-                if (substr($codClient, 0, 2) == 'FR') {
-                    echo "location.href='guiasf/index.php'";
-                } else {
-                    echo "location.href='guia/index.php'";
-                }
-                ?>
-            ">
-                            Guia de Transporte</a>
+                        <a class="dropdown-item spinner" href="#" onclick="<?= (substr($codClient, 0, 2) == 'FR') ?  "location.href='guiasf/index.php'" : "location.href='guia/index.php'"; ?>">Guia de Transporte</a>
+
                         <?php
                         if ($dashboard != 'SIN_URL') {
                         ?>
-                            <a class="dropdown-item" href="#" onclick="window.open('<?php echo $dashboard; ?>');">Dashboard</a>
+                            <a class="dropdown-item spinner" href="#" onclick="window.open('<?php echo $dashboard; ?>');">Dashboard</a>
                         <?php
                         }
                         ?>
                         <?php if ($_SESSION['numsuc'] > 100) { ?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php } ?>
-                        <a class="dropdown-item" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
                     </div>
                 </li>
 
@@ -108,12 +97,17 @@ include('estado_cuenta.php');
                         Operaciones
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
+
+                        <?php if($_SESSION['connection_db'] != false) {?>      
+                            <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
+                        <?php } ?>
+
                         <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
+                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
                         <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                     </div>
                 </li>
+
 
                 <?php if ($_SESSION['numsuc'] < 100) { ?>
 
@@ -136,7 +130,7 @@ include('estado_cuenta.php');
                             Distribucion Inicial
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedido Inicial</a>
+                            <!-- <a class="dropdown-item" href="#" onclick="location.href='inicial/cargaNuevo.php'">Pedido Inicial</a> -->
                             <a class="dropdown-item" href="#" onclick="location.href='DistriCuero/listOrdenesActivas.php'">Nota de pedido</a>
                         </div>
                     </li>
@@ -160,9 +154,20 @@ include('estado_cuenta.php');
                 }
             }
             ?>
-
+            <!-- spinner -->
+		    <div id="boxLoading"></div>
 
 
         </ul>
     </div>
 </nav>
+
+<script>
+
+    //Spinner listOrdenesActivas.php//
+    var btn = document.querySelectorAll('.spinner');
+    btn.forEach(el => {
+     el.addEventListener("click", ()=>{$("#boxLoading").addClass("loading")});
+   })
+
+</script>

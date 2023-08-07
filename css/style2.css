@@ -34,3 +34,22 @@ body {
 .login-button{margin-top:10px;}
 .login-options{margin-bottom:0px;}
 .login-forgot{float: right;}
+
+
+.seincomp-msj
+{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+}
+
+.loading {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('../images/spinnervlll.gif') 50% 50% no-repeat rgb(240, 240, 240);
+  opacity: .8;
+}

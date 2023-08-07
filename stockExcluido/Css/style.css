@@ -9,12 +9,6 @@ body
     margin-top: 2%;
 }
 
-#busqRapida
-{
-    position: absolute;
-    margin-left: 30%;
-}
-
 .table {
     width: 98%;
     margin-left: 2%;
@@ -51,26 +45,29 @@ thead tr th {
     background-color: #343a40;
 }
 
+#busqRapida
+{
+    margin-left: 1rem;
+}
+
 #btn_edit
 {
     position: relative;
-    margin-top: 33%;
-    margin-left: 595%;
+    margin-left: 3rem;
     color: white;
 }
 
-#btn_delete
-{
-    position: relative;
-    margin-top: 28%;
-    margin-left: 540%;
-    color: white;
+.selectAll{
+    margin-left: 1rem;
 }
 
-#btn_import
-{
-    position: relative;
-    margin-top: 26.5%;
-    margin-left: 500%;
-    color: white;
+.checkAll{
+    margin-top: 2.5rem;
+    margin-left: 0.5rem;
+    font-size: larger;
+}
+
+button{
+    margin-left: 0.5rem;
+    margin-top: 1.8rem;
 }

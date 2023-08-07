@@ -17,7 +17,7 @@ if(!isset($_GET['fechaDesde'])){
 	$fechaHasta = $_GET['fechaHasta'];
 }
 
-include_once 'class/control.php';
+include_once __DIR__.'/../class/remito.php';
 $remitos = new Remito();
 $remitosHistoricosDetalle = $remitos->traerHistoricosDetalle($numRem);
 
@@ -77,31 +77,34 @@ if(isset($_GET['numRem'])){
         <?php
 
 	foreach($remitosHistoricosDetalle as $data){
-		$dateControl = date_create($data[0]->FECHA_CONTROL);
-		$dateControl = date_format($dateControl, 'Y-m-d H:i');
+		$dateControl = ($data['AUDITADO']) ? $data['FECHA_CONTROL']->format('d/m/Y') : ''; 
+		$partida = ($data['AUDITADO']) ? $data['PARTIDA'] : 'ARTICULO NO AUDITADO';
 		
-		$style= ($data[0]->CANT_REM <> $data[0]->CANT_CONTROL) ? "font-size:smaller;font-weight:bold;color:#FE2E2E" : '';
+		$style= ($data['CANT_REM'] <> $data['CANT_CONTROL']) ? "font-size:smaller;font-weight:bold;color:#FE2E2E" : '';
 		?>
         <tr class="fila-base" style="font-size:smaller; <?=$style?>"  >
 
-				<td ><?= $data[0]->FECHA_REM ;?></td>
+				<td ><?= $data['FECHA_REM']->format('d/m/Y');?></td>
 				<td ><?= $dateControl ;?></td>
 
-				<td ><?= $data[0]->COD_ARTICU ;?></td>
-				<td ><?= $data[0]->DESCRIPCIO ;?></td>
-				<td ><?= $data[0]->CANT_REM ;?></td>
-				<td ><?= $data[0]->CANT_CONTROL ;?></td>
-				<td ><?= $data[0]->DIFERENCIA ;?>
-				<td ><?= $data[0]->PARTIDA ;?>
+				<td ><?= $data['COD_ARTICU'] ;?></td>
+				<td ><?= $data['DESCRIPCIO'] ;?></td>
+				<td ><?= $data['CANT_REM'] ;?></td>
+				<td ><?= $data['CANT_CONTROL'] ;?></td>
+				<td ><?= $data['DIFERENCIA'] ;?>
+				<td ><?= $partida ;?>
 				</td>
 				
         </tr>
 		
         <?php
+		
+			if($data['AUDITADO'] == 1){
+				$nombreVen = $data['NOMBRE_VEN'];
+				$numSuc = $data['SUC_DESTIN'];
+				$codSuc = $data['COD_CLIENT'];
+			}
 
-		$nombreVen = $data[0]->NOMBRE_VEN;
-		$numSuc = $data[0]->SUC_DESTIN;
-		$codSuc = $data[0]->COD_CLIENT;
         }
 
         ?>

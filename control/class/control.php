@@ -1,19 +1,28 @@
 <?php
+require_once __DIR__ .'/../../class/conexion.php' ;
 
 class Remito 
 {
-    private $dsn = '1 - CENTRAL';
-    private $usuario = "sa";
-    private $clave="Axoft1988";
+
+    function __construct(){
+
+        require_once __DIR__.'../../class/conexion.php';
+        $this->conn = new Conexion;
+
+    }
+
+
+    
 
     private function getDatos($sql){
 
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+
+        $cid = $this->conn->conectar('central');
 
         ini_set('max_execution_time', 300);
-        $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+        $result = sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
         $data = [];
-        while($v=odbc_fetch_object($result)){
+        while($v= sqlsrv_fetch_object ($result)){
             $data[] = array($v);
         };
         return $data;
@@ -21,9 +30,12 @@ class Remito
     }
 
     private function insertDatos($sql){
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        
+        $cid = $this->conn->conectar('central');
+
+        // $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
         ini_set('max_execution_time', 300);
-        odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+        sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
     }
     
     
@@ -100,28 +112,18 @@ class Remito
             "
             SET DATEFORMAT YMD
 
-            SELECT 
-                    
-            FECHA_CONTROL, A.COD_CLIENT, A.SUC_ORIG, A.SUC_DESTIN,  CAST(A.FECHA_REM AS DATE) FECHA_REM, 
-            NOMBRE_VEN, A.NRO_REMITO, SUM(A.CANT_CONTROL) CANT_CONTROL, SUM(A.CANT_REM) CANT_REM, 
-            SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, 
-            ISNULL((CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2) ULTIMO_CHAT
-                                        
-            FROM SJ_CONTROL_AUDITORIA A
-                                
-            INNER JOIN GVA23 D
-            ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
-            
-            LEFT JOIN SJ_CONTROL_AUDIRTORIA_CHAT_ULTIMO_MSG E
-            ON A.NRO_REMITO = E.NRO_REMITO COLLATE Latin1_General_BIN
-                    
-            WHERE A.FECHA_REM >= GETDATE()-180
-            AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta')
-            AND A.OBSERVAC_LOGISTICA LIKE '$estado'
-                            
-            GROUP BY A.NRO_REMITO, A.FECHA_REM, A.FECHA_CONTROL, NOMBRE_VEN, A.COD_CLIENT, 
-            A.SUC_ORIG, A.SUC_DESTIN, A.OBSERVAC_LOGISTICA, NRO_AJUSTE, (CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END)
-            ORDER BY A.FECHA_CONTROL            
+            SELECT FECHA_CONTROL, COD_CLIENT, SUC_ORIG, SUC_DESTIN, FECHA_REM, NOMBRE_VEN, A.NRO_REMITO, SUM(CANT_CONTROL) CANT_CONTROL, SUM(CANT_REM) CANT_REM, SUM(A.CANT_CONTROL)-SUM(A.CANT_REM) DIFERENCIA, OBSERVAC_LOGISTICA, NRO_AJUSTE,
+			ISNULL((CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2) ULTIMO_CHAT FROM 
+			(
+			SELECT CAST(FECHA_CONTROL AS SMALLDATETIME) FECHA_CONTROL, COD_CLIENT, CAST(FECHA_REM AS SMALLDATETIME) FECHA_REM, NRO_REMITO, SUC_ORIG, SUC_DESTIN, SUM(CANT_CONTROL) CANT_CONTROL, SUM(CANT_REM) CANT_REM, USUARIO_LOCAL, OBSERVAC_LOGISTICA, NRO_AJUSTE FROM SJ_CONTROL_AUDITORIA
+			GROUP BY FECHA_CONTROL, COD_CLIENT, FECHA_REM, NRO_REMITO, SUC_ORIG, SUC_DESTIN, OBSERVAC_LOGISTICA, USUARIO_LOCAL, NRO_AJUSTE
+			) A
+			INNER JOIN GVA23 D ON A.USUARIO_LOCAL COLLATE Latin1_General_BIN = D.COD_VENDED
+			LEFT JOIN SJ_CONTROL_AUDIRTORIA_CHAT_ULTIMO_MSG E ON A.NRO_REMITO = E.NRO_REMITO COLLATE Latin1_General_BIN
+			WHERE A.FECHA_REM >= GETDATE()-180 AND (CAST( A.FECHA_CONTROL AS DATE) BETWEEN '$desde' AND '$hasta') AND A.OBSERVAC_LOGISTICA LIKE '$estado'
+			GROUP BY FECHA_CONTROL, COD_CLIENT, FECHA_REM, A.NRO_REMITO, SUC_ORIG, SUC_DESTIN, OBSERVAC_LOGISTICA, NOMBRE_VEN, NRO_AJUSTE,
+			ISNULL((CASE WHEN E.USER_CHAT IN ('ramiro','eduardo','Agustinal') THEN 0 WHEN E.USER_CHAT NOT IN ('ramiro','eduardo','Agustinal') THEN 1 END), 2)
+			ORDER BY A.FECHA_CONTROL            
             ";
 
         $array = $this->getDatos($sql);    
@@ -147,7 +149,7 @@ class Remito
         $sql=
         "
         SET DATEFORMAT YMD
-	    SELECT COD_ARTICU FROM STA11 WHERE (COD_ARTICU = '$codigo' OR SINONIMO = '$codigo') AND USA_ESC = 'S'
+	    SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU = '$codigo' OR SINONIMO = '$codigo'
         ";
 
         $array = $this->getDatos($sql);    
@@ -169,25 +171,25 @@ class Remito
     } 
 
     public function wrongCode($codigo){
-        $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        // $cid = odbc_connect($this->dsn, $this->usuario, $this->clave);
+        $cid = $this->conn->conectar('central');
+
 
         $sqlValida =
             "
             SET DATEFORMAT YMD
-            SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU LIKE '$codigo' AND USA_ESC = 'S'
-            UNION ALL
-            SELECT COD_ARTICU FROM STA11 WHERE SINONIMO LIKE '$codigo' AND USA_ESC = 'S'
+            SELECT COD_ARTICU FROM STA11 WHERE COD_ARTICU = '$codigo'
             ";
 
         ini_set('max_execution_time', 300);
-        $resultValida = odbc_exec($cid, $sqlValida) or die(exit("Error en odbc_exec"));
+        $resultValida = sqlsrv_query($cid, $sqlValida) or die(exit("Error en odbc_exec"));
 
-        if (odbc_num_rows($resultValida) == 0) {
+        if (sqlsrv_num_rows($resultValida) == 0) {
             return '
             <audio src="Wrong.ogg" autoplay></audio>
             </br></br>
             <div class="alert alert-danger" role="alert" style="margin-left:15%; margin-right:15%">
-            ATENCION!! El codigo <strong>' . strtoupper($codigo) . '</strong> no es valido
+            ATENCION!! El codigo <strong>' . strtoupper($codigo) . '</strong> no existe
             </div>';
         }else{
             return '';
@@ -207,13 +209,8 @@ class Remito
 					WHERE COD_CLIENT = '$user'
 					GROUP BY COD_ARTICU
 				)A
-				INNER JOIN
-                (
-                    SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE COD_ARTICU LIKE '[XO]%' AND USA_ESC = 'S' AND PERFIL != 'N'
-                       UNION ALL
-                    SELECT SINONIMO COLLATE Latin1_General_BIN, DESCRIPCIO FROM STA11 WHERE SINONIMO != '' AND USA_ESC = 'S' AND SINONIMO LIKE '[XO]%'
-                ) B
-                ON A.COD_ARTICU COLLATE Latin1_General_BIN = B.COD_ARTICU COLLATE Latin1_General_BIN
+				INNER JOIN STA11 B
+				ON A.COD_ARTICU COLLATE Latin1_General_BIN= B.COD_ARTICU COLLATE Latin1_General_BIN
             ";
         $array = $this->getDatos($sql);    
 

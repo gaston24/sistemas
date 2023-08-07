@@ -25,7 +25,7 @@ class Cronograma
         return $rows;
     }
 
-
+    
     public function traerCronograma($tipo)
     {
 

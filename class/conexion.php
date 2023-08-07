@@ -44,6 +44,9 @@ class Conexion{
 
             $cid = sqlsrv_connect($serverDB[0], $params);
 
+            if(!$cid) return false;
+
+            $_SESSION['cid'] = $cid;
             return $cid;
             
         } catch (PDOException $e) {

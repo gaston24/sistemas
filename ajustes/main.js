@@ -42,7 +42,7 @@ function myFunction() {
         for(var k=0;k<elems.length;k++){
             if(elems[k].textContent.length > 0){ cont++; }
         }
-        console.log(cont);
+
         document.getElementById('total').value = cont;
     }
   
@@ -103,7 +103,7 @@ function myFunction() {
            }
           }
           return cont;
-          //console.log(cont);
+
          }
 
          //Revisa que se haya seleccionado alguna orden y actualiza el campo ACTIVA//
@@ -145,8 +145,8 @@ function myFunction() {
                         text:  console.log(data),
                         showConfirmButton: true,
                       })
-                        .then(function () {
-                            window.location = "ajusteLocal.php";
+                      .then(function () {
+                            location.reload();
                         });
                     }
 
@@ -177,10 +177,74 @@ function myFunction() {
           }
         });
 
-                
+const confirmarAjuste = () =>{
 
-
-
+  let tr = document.querySelectorAll('#trBody')
   
+  let articulo = document.querySelectorAll('[name="articulo"]')
+  let codigo = document.querySelectorAll('#codigo')
+  let cant = document.querySelectorAll('#cant')
+  let ncomp = document.querySelectorAll('#ncomp')
+  let tcomp = document.querySelectorAll('#tcomp')
+  let mensajes = document.querySelectorAll("#mensaje")
+
+  let arrayData = [];
+
+
+  tr.forEach((x, y)=> {
+    if(articulo[y].value.length > 0){
+
+      arrayData.push({
+        articulo: articulo[y].value,
+        codigo: codigo[y].value,
+        cant: cant[y].value,
+        ncomp: ncomp[y].value,
+        tcomp: tcomp[y].value
+      })
+
+  }
+
+
+  });
+
+  $.ajax({
+    url: 'confirmAjus.php',
+    method: 'POST',
+    data: {
+      data:JSON.stringify(arrayData)} ,
+    success: function (data) {
+      
+      document.querySelector("#status").style.color = "white";
+
+      
+      let arrayResponse = JSON.parse(data);
+      arrayResponse = [arrayResponse]
+
+      tr.forEach((x, y)=> {
+
+        if(articulo[y].value.length > 0){
+
+          arrayResponse.forEach(element => {
+
+            if(element[articulo[y].value] > 0){
+
+              mensajes[y].textContent = "Ajuste realizado correctamente"
+              mensajes[y].style.color = "green";
+            }else{
+              mensajes[y].textContent = "No Existe el Articulo"
+              mensajes[y].style.color = "red";
+            }
+            
+          });
+
+        }
+
+      })
+      
+    }
+  })
+}
+
+
   
     

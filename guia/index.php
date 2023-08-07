@@ -13,7 +13,7 @@ $suc = $_SESSION['codClient'];
 <head>
 	
 	<title>GUIAS POR LOCAL</title>	
-<?php include '../../css/header_simple.php'; ?>
+<?php include '../assets/css/header_simple.php'; ?>
 <body>	
 
 
@@ -71,16 +71,22 @@ if(!isset($_GET['desde'])){
 
 if(isset($desde) ){
 
-$dsn = "1 - CENTRAL";
+// $dsn = "1 - CENTRAL";
 $desde = $_GET['desde'];
 $hasta = $_GET['hasta'];
 $remito = $_GET['remito'];
 $estado = $_GET['estado'];
 
-$usuario = "sa";
-$clave="Axoft1988";
+include_once __DIR__.'/../class/conexion.php';
+$conn = new Conexion;
 
-$cid=odbc_connect($dsn, $usuario, $clave);
+$cid = $conn->conectar('central');
+
+
+// $usuario = "sa";
+// $clave="Axoft1988";
+
+// $cid=odbc_connect($dsn, $usuario, $clave);
 
 
 
@@ -126,7 +132,7 @@ $sql=
 	";
 
 ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 
 
 
@@ -158,7 +164,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         <?php
 
        
-		while($v=odbc_fetch_array($result)){
+		while($v=sqlsrv_fetch_array($result)){
 
         ?>
 
@@ -167,7 +173,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 				<td class="col-"><?php echo $v['COD_CLIENT'] ;?></td>
 		
-                <td class="col-"><?php echo $v['FECHA_COMP'] ;?></td>
+                <td class="col-"><?php echo $v['FECHA_COMP']->format('d/m/Y') ;?></td>
 				
 				<td class="col-"><a href="detalleRem.php?remito=<?php echo $v['N_COMP'] ;?>&suc=<?php echo $v['COD_CLIENT'] ;?>&desde=<?php echo $desde ;?>&hasta=<?php echo $hasta ;?>"><?php echo $v['N_COMP'] ;?></a></td>
 				
@@ -175,7 +181,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				
 				<td class="col-"><?php echo $v['NRO_GUIA'] ;?></td>
 				
-				<td class="col-"><?php echo $v['FECHA_GUIA'] ;?></td>
+				<td class="col-"><?php echo $v['FECHA_GUIA']->format('d/m/Y')  ;?></td>
 				
 				<td class="col-"><?php echo $v['OBSERVACIONES'] ;?></td>
 

@@ -30,6 +30,7 @@ if (!isset($_SESSION['username'])) {
 		</meta>
 		<link rel="shortcut icon" href="../../css/icono.jpg" />
 		<?php include_once __DIR__.'/../ajustes/css/headers/include_pedidos.php' ;?>
+		<?php include_once __DIR__.'/../assets/css/fontawesome/css.php';?>
 		<link rel="stylesheet" href="style/style.css">
 
 	</head>
@@ -47,8 +48,21 @@ if (!isset($_SESSION['username'])) {
 		<div style="width:98%; height:50%; padding-bottom:1%; padding-top:1%; margin-left:10px" id="pantalla">
 			<div id="menu" class="row mt-3 mb-2" >
 				<div class="col-4">
-					<a> <strong>Búsqueda rápida</strong> </a>
-						<input type="text" onkeyup="busquedaRapida()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
+					<div class="row">
+						<div class="col-1">
+							<a onCLick="window.location='../index.php'"><i class="fad fa-home" title="INICIO"></i></a>
+						</div>
+						<div class="col-11">
+							<div class="row">
+								<div class="col-4">
+									<a> <strong>Búsqueda rápida</strong> </a>
+								</div>
+								<div class="col-8">
+									<input type="text" onkeyup="busquedaRapida()" id="textBox" name="factura" placeholder="Buscar..." autofocus>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="col-2" id="cont">
 					<a> <strong>Total de art.</strong> </a> 
@@ -85,8 +99,8 @@ if (!isset($_SESSION['username'])) {
 					</div>
 				</div>
 			</div>				
-		
 		</div>
+
 			<table class="table table-striped table-condensed table-fh table-12c" id="id_tabla">
 
 				<thead class="bg-secondary text-white">
@@ -124,7 +138,7 @@ if (!isset($_SESSION['username'])) {
 						<?php
 						if (substr($v['DESCRIPCIO'], -11) == '-- SALE! --') {
 						?>
-							<tr style="font-weight:bold;color:#FE2E2E">
+							<tr id="trPedido" style="font-weight:bold;color:#FE2E2E">
 							<?php
 						} else {
 							?>
@@ -136,6 +150,8 @@ if (!isset($_SESSION['username'])) {
 							<td>
 								<a target="_blank" data-toggle="modal" data-target="#exampleModal<?= $imageName; ?>" href="<?= $imageUrl; ?>"><img src="<?= $imageUrl; ?>" alt="Sin imagen" height="50" width="50"></a>
 							</td>
+
+							<!-- Image Modal -->
 
 							<div class="modal fade" id="exampleModal<?= $imageName; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
@@ -149,6 +165,8 @@ if (!isset($_SESSION['username'])) {
 									</div>
 								</div>
 							</div>
+
+							<!--  -->
 
 							<td id="codArticu"><?= $v['COD_ARTICU']; ?></td>
 
@@ -229,6 +247,7 @@ if (!isset($_SESSION['username'])) {
 	<script src="js/main.js"></script>
 	<script src="js/envio.js"></script>
 	<script src="js/jquery.table2excel.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	</body>
 	</html>

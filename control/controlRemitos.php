@@ -8,12 +8,10 @@ if (!isset($_SESSION['username'])) {
 	$user = $_SESSION['codClient'];
 	$rem = $_SESSION['rem'];
 
-	require_once 'class/control.php';
+	require_once __DIR__.'/../class/remito.php';
 
-	$control = new Remito();
-
-	$verificacion = $control->verificacion($user);
-
+	$remito = new Remito();
+	$verificacion = $remito->verificacion($user);
 
 ?>
 	<!DOCTYPE HTML>
@@ -26,114 +24,76 @@ if (!isset($_SESSION['username'])) {
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Font Awesome -->
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 		<link rel="stylesheet" href="css/style.css">
-		<?php include '../../css/header_simple.php'; ?>
+		<?php require_once __DIR__.'/../assets/css/header.php';?>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 	</head>
 
 	<body>
 
 
-		<div style="margin: 5px">
-			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mb-1">Cancelar</button>
-			<h6 align="center">Remito: <a class="text-secondary"><?= $rem ?></a> 
-				<a>Ultimo escaneado:</a>
+		<div>
+		<div id="contBtn">
+			<button onClick="window.location.href= 'index.php'" class="btn btn-danger mt-2">Cancelar <i class="bi bi-x-circle"></i></button>
+			<button class="btn btn-secondary mt-2" id="btnBorrador" hidden>Guardar <i class="bi bi-card-list"></i></button>
+			<button class="btn btn-dark mt-2" id="btnTraerBorrador" hidden>Traer <i class="bi bi-card-list"></i></button>
+		</div>
+			<h6 align="center">Remito: <a class="text-secondary" id="numRem"><?= $rem ?></a> 
+				<!-- <a>Ultimo escaneado:</a>
 				<a class="text-secondary">
-					<?php 
-						if (isset($_POST['codigo'])) {
-							echo $_POST['codigo'];
-						} 
-					?>
-				</a>
+					<a id="lastCodigoControlado"></a>
+				</a> -->
 			</h6>
 		</div>
 
-		<form action="" style="margin-top:0.5rem" align="center" method="POST">
+		<form id="formControlRemito">
 			<div class="col- row" style="display: flex; justify-content: center;">
-				<!-- <label>Escaneo</label> -->
-				<input class="form-control form-control-sm ml-2" type="text" name="codigo" placeholder="Ingrese codigo..." style="width:200px;" autofocus></input>
-				<input type="submit" value="Ingresar" class="btn btn-primary ml-2" style="margin-top: -5px;">
+				<input class="form-control form-control-sm ml-2" type="text" name="codigo" id="codigoName" placeholder="Ingrese codigo..." style="width:200px;" autofocus></input>
+				<button type="submit" class="btn btn-primary ml-2" style="margin-top: -5px;">Ingresar <i class="bi bi-plus-circle"></i></button>
 			</div>
 		</form>
 
-		<?php
+		<audio src="Wrong.ogg"></audio>
 
-		if (isset($_POST['codigo']) || $verificacion != 0) {
+	<div class="container table-responsive" id="bodyControl">
+		<table class="table table-striped mt-2 ml-2">
+			<thead class="thead-dark mt-1">
+				<tr>
+					<td class="col-" style="width:3.5em">CODIGO</td>
+					<td class="col-" style="width:15em">DESCRIPCION</td>
+					<td class="col-" style="width:2em">CANTIDAD</td>	
+					<td class="col-" style="width:5em"></td>
+				</tr>
+			</thead>
+			<tbody id="table">
 
-			$user_local = $_SESSION['usuario'];
+			</tbody>
+		
+		</table>
+	</div>
+		<div class="col- text-center bg-white mt-1">
+			<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ult.:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" ><i class="bi bi-search"></i></button></a>
+			<a style="margin-right:0.3em; font-size: 0.8em"> <strong>Art.:</strong></a> <a id="totalArt"></a>
+			<button class="btn btn-success btn-sm" id="btnProcesar">Procesar <i class="bi bi-check2-circle"></i></button>
+		</div>
 
-			if (isset($_POST['codigo'])) {
-
-				$codigo = str_replace("'", "-", $_POST['codigo']);
-				$codigo = str_replace(" ", "", $_POST['codigo']);
-				$codigo = strtoupper($codigo);
-
-
-				$existe = $control->buscarSinonimo($codigo);
-				
-
-				if(count($existe) != 0){
-					$control->insertarControlLocal($user, $rem, $codigo, $user_local);
-				}
-
-				$wrongCode = '';
-				$wrongCode = $control->wrongCode($codigo);
-				echo $wrongCode;
-
-			$codigosControlados = $control->traerControladoTemporal($user);
-
-			?>
-			<div class="container table-responsive">
-				<table class="table table-striped mt-2" id="tablaControl">
-					<thead class="thead-dark">
-						<tr>
-							<td class="col-" style="width:3.5em">CODIGO</td>
-							<td class="col-" style="width:15em; padding-left:0; padding-right:0;">DESCRIPCION</td>
-							<td class="col-" style="width:2em">CANTIDAD</td>	
-							<td class="col-" style="width:5em"></td>
-						</tr>
-					</thead>
-					<tbody id="table">
-					<?php
-					$total = 0;
-					foreach ($codigosControlados as $key => $value) {
-						?>
 	
-							<tr class="fila-base">
-								<td class="col-" style="width:6em"><?=$value[0]->COD_ARTICU; ?></td>
-								<td class="col-" style="width:5em"><?=$value[0]->DESCRIPCIO; ?></td>
-								<td class="col-" style="width:3em" align="center"><?=$value[0]->CANT_CONTROL; ?></td>
-								<td class="col-"><img src="eliminar.png" width="17rem" height="17rem" align="left" style="cursor: pointer;" onClick="window.location.href='eliminar_articulo.php?codigo=<?=$value[0]->COD_ARTICU; ?>'"></img></td>
-							</tr>
-
-						<?php
-							$total += $value[0]->CANT_CONTROL;
-					}
-					?>
-					</tbody>
-
-				</table>
-			</div>
-
-			<div class="col- text-center bg-white">
-					<a style="text-align: left; margin-right:0.5em; font-size: 0.8em"> <strong>Ultimo:</strong> <a id="lastCodigoControlado" style="font-size: 0.8em"></a> <button id="buttonHistorial" type="button" class="btn btn-info btn-sm mr-3" >Ver</button></a>
-					
-					<a style="margin-right:0.5em; font-size: 0.8em"> <strong>Total articulos:</strong> <?= $total; ?></a>
-					<button onClick="window.location.href= 'controlador/procesar.php'" class="btn btn-success mt-2">Procesar</button>
-			</div>
-
-			<?php
-		}
-	}
-}
-	?>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="js/main.js"></script>
 	<script>
-		let user = '<?=$user?>'
+		let remito = '<?= $rem ?>';
+		let codClient = '<?= $user ?>';
 	</script>
+	
+	</body>
+	
+	</html>
 
-	<script src="js/axios.js"></script>
-	<script src="js/historial.js"></script>
+<?php
 
-</body>
+}
 
-</html>
+?>

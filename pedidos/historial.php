@@ -14,10 +14,11 @@ $permiso = $_SESSION['permisos'];
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>DETALLE PEDIDOS</title>	
-	<link rel="shortcut icon" href="XL.png" />
+	<title>Detalle de Pedidos</title>	
+	<link rel="shortcut icon" href="imagenes/logo.jpg" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<?php include_once __DIR__.'/../assets/css/fontawesome/css.php';?>
 <body>	
 
 <?php
@@ -29,7 +30,7 @@ $codClient = $_SESSION['codClient'];
 $pedidos = $pedido->traerHistorial($codClient);
 
 ?>
-<a href="../index.php"><img src="imagenes/botonAtras.png"></a>
+<a onCLick="window.location='../index.php'" class="ml-5 mt-5"><i class="fad fa-home fa-2xl" title="INICIO"></i></a>
 
 <div class="container">
 <table class="table table-striped" style="margin-left:20px; margin-right:50px">

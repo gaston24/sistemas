@@ -6,9 +6,9 @@ class Codigos
     public function traerArticulo($codigo){
         try {
 
-            $servidor_central = 'servidor';
-            $conexion_central = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-            $cid_central = sqlsrv_connect($servidor_central, $conexion_central);
+            require_once '../class/conexion.php';
+            $cid = new Conexion();
+            $cid_central = $cid->conectar('central');
              
          } catch (PDOException $e){
                  echo $e->getMessage();

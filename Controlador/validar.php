@@ -33,6 +33,7 @@ if( count($loginRes) == 0 ){
 	$_SESSION['tipo'] = $loginRes['TIPO'];
 	$_SESSION['habPedidos'] = $loginRes['EXCLUYE_PEDIDOS'];
 	$_SESSION['esOutlet'] = $loginRes['IS_OUTLET'];
+	$_SESSION['connection_db'] = $_SESSION['cid'] != false ? true : false;
 	
 	// datos de credito del cliente
 	// cupoCredi es lo real disponible para pedidos
@@ -46,9 +47,14 @@ if( count($loginRes) == 0 ){
 	// total de deuda
 	$_SESSION['totalDeuda'] = $loginRes['TOTAL_DEUDA'];
 
+	$_SESSION['pantallas'] = true;
+
+	// if($_SESSION['pantallas'] == true ){
+	// 	header("Location: ../indexPantalla.php");
+	// 	die();
+	// }
 
 
-	
 	if($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
@@ -67,7 +73,7 @@ if( count($loginRes) == 0 ){
 		header("Location: ../conteos/index.php");
 	}elseif($_SESSION['permisos']== '5'){
 		header("Location: ../conteos/index.php");			
-	}elseif($_SESSION['username']== 'estadisticas'){
+	}elseif($_SESSION['permisos']== '4' && $_SESSION['tipo']=='SUPERVISION'){
 		header("Location: ../../estadisticas/index.php");	
 	}elseif($_SESSION['username']== 'LOGISTICA'){
 		header("Location: ../control/control_logistica.php");	

@@ -2,9 +2,19 @@
 
 class Remito{
 
-    public function traerRemitos($suc){
-        include __DIR__.'\..\AccesoDatos\conn.php';
+    function __construct(){
 
+        require_once __DIR__.'/../../class/conexion.php';
+        $this->conn = new Conexion;
+        
+    }
+   
+    public function traerRemitos($suc){
+
+        include __DIR__.'\..\AccesoDatos\conn.php';
+        
+      /*   $cid = $this->$cid_locales->conectar('central'); */
+        
         $sql = "
         SET DATEFORMAT YMD
         SELECT N_COMP, NCOMP_IN_S, COD_PRO_CL
@@ -25,7 +35,10 @@ class Remito{
 
 
     public function traerRemito($suc, $ncompInS){
+
         include __DIR__.'\..\AccesoDatos\conn.php';
+
+       /*  $cid = $this->conn->conectar('central'); */
 
         $sql = "
         SET DATEFORMAT YMD
