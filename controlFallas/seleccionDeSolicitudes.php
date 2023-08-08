@@ -44,7 +44,21 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
         </link>
-
+        <style>
+            input[type='search'] {
+                margin-right:45px
+            }
+            .dataTables_length{
+                margin-left:50px
+            }
+            .dataTables_info{
+                margin-left:50px
+            }
+            #tablaArticulos_paginate{
+                margin-right:42px 
+            }
+            
+        </style>
     </head>
 
     <body>
@@ -133,14 +147,15 @@
                                         default:
                                             break;
                                     }
-                                   
+                                    $usuario = str_replace("_"," ",$encabezado['USUARIO_EMISOR']);
+
                                     echo "<tr>";
                                     echo "<td style='text-align:center;'>".$encabezado['FECHA']->format('d/m/Y')."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['ID']."</td>";
-                                    echo "<td style='text-align:center;'>".$encabezado['USUARIO_EMISOR']."</td>";
+                                    echo "<td style='text-align:center;'>".$usuario."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['cantidad_total_articulos']."</td>";
                                     echo "<td style='text-align:center;'>".$estado."</td>";
-                                    echo "<td style='text-align:center;'>".$encabezado['UPDATED_AT']->format('d/m/Y H:i:s.u')."</td>";
+                                    echo "<td style='text-align:center;'>".$encabezado['UPDATED_AT']->format('d/m/Y H:i')."</td>";
                                     echo "<td style='text-align:center;'>$accion</td>";
                                     echo "</tr>";
 
@@ -169,7 +184,37 @@
 
 </html>
 <script>
-  
+  $('#tablaArticulos').DataTable({
+        "bLengthChange": true,
+        "language": {
+                    "lengthMenu": "mostrar _MENU_ registros",
+                    "info":           "Mostrando registros del _START_ al _END_ de un total de  _TOTAL_ registros",
+                    "paginate": {
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+
+        },
+    
+        
+        "bInfo": true,
+        "aaSorting": false,
+        'columnDefs': [
+            {
+                "targets": "_all", 
+                "className": "text-center",
+                "sortable": false,
+         
+            },
+        ],
+        "oLanguage": {
+    
+            "sSearch": "Busqueda rapida:",
+            "sSearchPlaceholder" : "Sobre cualquier campo"
+            
+    
+        },
+    });
 
 </script>
 <!-- <script src="js/gastosTesoreria.js"></script> -->

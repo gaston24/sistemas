@@ -75,7 +75,7 @@
 
                                     <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
                                     <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:40px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:40px" id="hasta"  name="hasta" value="<?=  $solicitudEncabezado[0]['USUARIO_EMISOR'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:40px" id="hasta"  name="hasta" value="<?=   str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>" disabled></div>
                                     
                                 </div>
                                 <div class="row" style="margin-top:10px">

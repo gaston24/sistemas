@@ -95,12 +95,12 @@
                                     <?php
                                         foreach($usuarios as $usuario => $key){
 
-                                        $usuario = $key['APELLIDO'].'_'.$key['NOMBRE'].'++'.$key['BLOQUE'];
+                                        $usuario = $key['APELLIDO'].'_'.$key['NOMBRE'];
                                  
                                         $existeUsuarioEnDb = (isset($borradorEnc[0]['USUARIO_EMISOR'])) ? $borradorEnc[0]['USUARIO_EMISOR'] : "";
                                         
                                     ?>
-                                       <option value="<?= $key['APELLIDO'] ?>_<?= $key['NOMBRE'] ?>++<?=$key['BLOQUE']?>" <?php (isset($borradorEnc) && $usuario == $existeUsuarioEnDb ) ? "selected" : ""  ?> ><?= $key['APELLIDO'] ?> <?= $key['NOMBRE'] ?></option>
+                                       <option value="<?= $key['APELLIDO'] ?>_<?= $key['NOMBRE'] ?>" <?php (isset($borradorEnc) && $usuario == $existeUsuarioEnDb ) ? "selected" : ""  ?> ><?= $key['APELLIDO'] ?> <?= $key['NOMBRE'] ?></option>
                                     <?php
                                         }                            
                                     ?>

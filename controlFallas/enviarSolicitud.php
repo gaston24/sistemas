@@ -60,7 +60,7 @@
                                 <div class="row" style="margin-top:10px">
 
                                     <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $encabezadoSolicitud[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  $encabezadoSolicitud[0]['USUARIO_EMISOR'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  str_replace("_"," ",$encabezadoSolicitud[0]['USUARIO_EMISOR']) ?>" disabled></div>
                                     
                                 </div>
                                 <div class="row" style="margin-top:10px">

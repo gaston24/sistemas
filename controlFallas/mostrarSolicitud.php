@@ -75,7 +75,7 @@
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= $solicitudEncabezado[0]['FECHA']->format("Y-d-m") ?> id="fecha"  disabled ></div>
                                 
                                 <div style="margin-left:90px">Usuario Emisor: 
-                                   <input type="text" syle="width:145px; height:35px" disabled value="<?= $solicitudEncabezado[0]['USUARIO_EMISOR'] ?>">              
+                                   <input type="text" syle="width:145px; height:35px" disabled value="<?= str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>">              
                                 </div>
 
                             </div>

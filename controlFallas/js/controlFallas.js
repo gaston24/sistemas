@@ -184,7 +184,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
 
                 let carouselItem = document.createElement('div');
                 carouselItem.className = index === startIndex ? 'carousel-item active' : 'carousel-item';
-
+                carouselItem.style = "text-align:center"
                 let imgElement = document.createElement('img');
                 imgElement.src = 'assets/uploads/' + imagen;
 
@@ -209,6 +209,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
           prevControl.setAttribute("onclick",'pasarImagen(-1)')
           let prevIcon = document.createElement('span');
           prevIcon.className = 'carousel-control-prev-icon';
+          prevIcon.style = 'background-color: black';
           prevIcon.setAttribute('aria-hidden', 'true');
           prevControl.appendChild(prevIcon);
 
@@ -221,6 +222,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
           nextControl.setAttribute("onclick",'pasarImagen(1)')
           let nextIcon = document.createElement('span');
           nextIcon.className = 'carousel-control-next-icon';
+          nextIcon.style = 'background-color: black';
           nextIcon.setAttribute('aria-hidden', 'true');
           nextControl.appendChild(nextIcon);
 
@@ -494,7 +496,11 @@ const solicitar = () => {
           title: 'Solicitud Cargada Correctamente',
           showConfirmButton: false,
           timer: 1500
-        })
+        }).then ((result) => {
+
+            location.href = "seleccionDeSolicitudes.php";
+
+        });
 
     }
   });
@@ -547,7 +553,11 @@ const borrador = () => {
           title: 'Solicitud Cargada Correctamente',
           showConfirmButton: false,
           timer: 1500
-        })
+        }).then ((result) => {
+
+          location.href = "seleccionDeSolicitudes.php";
+
+        });
 
     }
   });
