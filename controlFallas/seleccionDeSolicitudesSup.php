@@ -8,7 +8,7 @@
 
     $recodificacion = new Recodificacion();
     $nroSucurs = $_SESSION['numsuc'];
-    
+   
     // $desdeFormat = date('Y-m-d', strtotime($desde));
 
     $fecha_objeto = DateTime::createFromFormat('Y-d-m', $desde);
@@ -18,7 +18,8 @@
     $hastaFormat = $fecha_objeto->format('Y-m-d');
 
 
-    $result = $recodificacion->traerSolicitudes($nroSucurs, $desdeFormat, $hastaFormat, $estado);
+    $result = $recodificacion->traerSolicitudes($nroSucurs, $desdeFormat, $hastaFormat, $estado, 1);
+    $locales = $recodificacion->traerLocales();
 
     
    
@@ -77,8 +78,7 @@
                                             <option value="1">Solicitada</option>
                                             <option value="2">Autorizada</option>
                                             <option value="3">Enviada</option>
-                                            <option value="4">Borrador</option>
-                                    
+                                                        
                                         </select>
                                     </div>
                                     <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" >Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
@@ -93,7 +93,7 @@
                                 <tr>
                                     <th style="text-align:center;width:10%" >FECHA</th>
                                     <th style="text-align:center;width:10%" >NUMERO</th>
-                                    <th style="text-align:center;width:20%" >CLIENTE</th>
+                                    <th style="text-align:center;width:10%" >CLIENTE</th>
                                     <th style="text-align:center;width:20%" >EMISOR</th>
                                     <th style="text-align:center;width:10%">UNIDADES</th>
                                     <th style="text-align:center;width:20%" >ESTADO</th>
@@ -115,18 +115,18 @@
 
                                         case '2':
                                             $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px' ><i class='bi bi-check2-square'></i></button>";
-                                            $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '3':
                                             $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px' ><i class='fa fa-paper-plane'></i></button>";
-                                            $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '4':
                                             $valorIdBorrador =$encabezado['ID'] - 1;
                                             $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px' ><i class='fa-solid fa-eraser'></i></button>";
-                                            $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                         
                                         default:
@@ -136,7 +136,12 @@
                                     echo "<tr>";
                                     echo "<td style='text-align:center;'>".$encabezado['FECHA']->format('d/m/Y')."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['ID']."</td>";
-                                    echo "<td style='text-align:center;'></td>";
+
+                                    foreach ($locales as $key => $local) {
+                                        if($local['NRO_SUCURSAL'] == $encabezado['NUM_SUC']){
+                                            echo "<td style='text-align:center;'>".$local['DESC_SUCURSAL']."</td>";
+                                        }
+                                    }
                                     echo "<td style='text-align:center;'>".$encabezado['USUARIO_EMISOR']."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['cantidad_total_articulos']."</td>";
                                     echo "<td style='text-align:center;'>".$estado."</td>";

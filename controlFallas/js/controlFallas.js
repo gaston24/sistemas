@@ -141,7 +141,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
 
     $.ajax({
 
-      url: "Controller/CargaFallaController.php?accion=contarImagenes",
+      url: "Controller/RecodificacionController.php?accion=contarImagenes",
       type: "POST",
       data: {
         codArticulo:codigoArticulo.split("-")[0],
@@ -346,7 +346,7 @@ filaOriginal.after(filaClonada);
 const traerArticulos = () => {
 
   $.ajax({
-    url: "Controller/CargaFallaController.php?accion=traerArticulos",
+    url: "Controller/RecodificacionController.php?accion=traerArticulos",
     type: "GET",
     success: function (response) {
  
@@ -390,7 +390,7 @@ const eliminarArchivo = (div,alerta = true,articulo = null) => {
   let numSolicitud = document.querySelector("#numSolicitud").value;
 
   $.ajax({
-    url: "Controller/CargaFallaController.php?accion=eliminarArchivo",
+    url: "Controller/RecodificacionController.php?accion=eliminarArchivo",
     type: "POST",
     data: {
       codArticulo: codArticulo,
@@ -478,7 +478,7 @@ const solicitar = () => {
 
   $.ajax({
 
-    url: "Controller/CargaFallaController.php?accion=solicitar",
+    url: "Controller/RecodificacionController.php?accion=solicitar",
     type: "POST",
     data: {
       nroSucursal: nroSucursal,
@@ -531,7 +531,7 @@ const borrador = () => {
 
   $.ajax({
 
-    url: "Controller/CargaFallaController.php?accion=borrador",
+    url: "Controller/RecodificacionController.php?accion=borrador",
     type: "POST",
     data: {
       nroSucursal: nroSucursal,

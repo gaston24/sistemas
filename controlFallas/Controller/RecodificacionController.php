@@ -29,6 +29,16 @@ switch ($accion) {
         borrador();
 
         break;
+
+    case 'autorizar':
+        autorizar();
+
+        break;
+
+    case 'traerCodigoRecodificacion':
+        traerCodigoRecodificacion();
+
+        break;
     
     default:
         # code...
@@ -172,5 +182,40 @@ function borrador () {
 
     return true;
 
+}
+
+function traerCodigoRecodificacion () {
+    
+    $valor = $_POST['valor'];
+    $codArticulo = $_POST['codArticulo'];
+    $recodificacion = new Recodificacion();
+    $result = $recodificacion->traerCodigoRecodificacion($valor, $codArticulo);
+    echo json_encode($result);
+
+}
+
+
+function autorizar () {
+
+
+    $data = ($_POST['data']);
+    $numSolicitud = $_POST['numSolicitud'];
+    $Recodificacion = new Recodificacion();
+
+ 
+    $result  = $Recodificacion->autorizar($numSolicitud);
+    
+    if ($result == true) {
+
+        foreach ($data as $key => $value) {
+
+            $Recodificacion->actualizarDetalle($value['PRECIO'], $value['NUEVO_CODIGO'], $value['DESTINO'], $value['OBSERVACIONES'], $value['ID']);
+
+        }
+
+    }
+    
+   
+    return true;
 }
 ?>
