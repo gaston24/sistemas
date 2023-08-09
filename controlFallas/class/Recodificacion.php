@@ -198,7 +198,7 @@ class Recodificacion
     }
 
 
-    public function traerSolicitudes($nroSucursal, $desde, $hasta, $estado) 
+    public function traerSolicitudes($nroSucursal, $desde, $hasta, $estado, $sup = null) 
     {   
 
         $sql = "
@@ -215,7 +215,11 @@ class Recodificacion
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
         WHERE enc.NUM_SUC ='$nroSucursal' 
         AND enc.FECHA BETWEEN '$desde' AND '$hasta'
-        AND enc.ESTADO LIKE '%$estado%'
+        AND enc.ESTADO LIKE '%$estado%'";
+        if($sup == 1){
+            $sql .= "AND enc.ESTADO != '4'";
+        }
+        $sql .= "
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT";
 
         try {
@@ -240,7 +244,153 @@ class Recodificacion
         
 
     }
+    
+    public function traerLocales() 
+    {   
 
-  
+        $sql = "
+            SELECT NRO_SUCURSAL, DESC_SUCURSAL FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1
+            UNION ALL
+            SELECT NRO_SUCURSAL, DESC_SUCURSAL FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16'
+            ORDER BY NRO_SUCURSAL
+        ";
 
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+        
+
+    }
+
+    public function traerEncabezado ($numSolicitud) {
+
+        $sql = "SELECT * FROM sj_reco_locales_enc where ID = $numSolicitud";
+
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+        
+    }
+
+    public function traerDetalle ($numSolicitud) {
+            
+        $sql = "SELECT * FROM sj_reco_locales_det where ID_ENC = $numSolicitud";
+
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+                
+    }
+
+    public function traerCodigoRecodificacion($valor, $codArticulo) 
+    {   
+        $sql = "EXEC RO_SP_RECODIFICAR_OUTLET '$codArticulo', $valor";
+ 
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+        
+
+    }
+
+    public function autorizar ($numSolicitud)
+    {
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '2' WHERE ID = $numSolicitud";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
+    public function actualizarDetalle ($precio, $nuevoCodigo, $destino, $observaciones, $id)
+    {
+      
+        $sql = "UPDATE sj_reco_locales_det SET PRECIO = '$precio', NUEVO_CODIGO = '$nuevoCodigo', UPDATED_AT = GETDATE(), DESTINO = '$destino', OBSERVACIONES = '$observaciones' WHERE ID = $id";
+        
+        try {
+
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+   
 }

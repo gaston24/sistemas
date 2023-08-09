@@ -110,8 +110,10 @@
                                     switch ($encabezado['ESTADO']) {
                                             
                                         case '1':
+
                                             $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px; border-style:none; padding: .3rem .6rem;' ><i class='bi bi-box-arrow-in-up'></i></button>";
-                                            $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+
                                             break;
 
                                         case '2':
@@ -121,7 +123,7 @@
 
                                         case '3':
                                             $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
-                                            $accion = "<button class='btn btn-warning'><i class='bi bi-eye'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '4':
