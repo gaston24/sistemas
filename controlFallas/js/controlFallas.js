@@ -33,6 +33,7 @@ const limitarArchivos = (input,codArticulo) => {
 }
 
 const elegirImagen = (e) => {
+
     let codArticulo = e.parentElement.parentElement.querySelectorAll("td")[0].querySelector("select").value;
     document.querySelector('#archivos').setAttribute("onchange",`limitarArchivos(this,'${codArticulo}')`);
     document.getElementById('archivos').click();
@@ -148,6 +149,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
         numSolicitud:numSolicitud
 
       },
+
       success: function (response) {
 
         response = JSON.parse(response);
@@ -444,15 +446,6 @@ const parseNumber = (number) => {
   return newNumber;
 }
 
-const validarFoto = (tr,numSolicitud) =>{
-  let error = []
-  
-  tr.forEach(element => {
-
-
-  })
-
-}
 const solicitar = (esBorrador = false) => {
 
   let nroSucursal = document.querySelector("#nroSucursal").textContent;
@@ -462,8 +455,7 @@ const solicitar = (esBorrador = false) => {
   let numSolicitud = document.querySelector("#numSolicitud").value;
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
-  // let error = false;
-  let codArticulos = []
+  let codArticulos = [];
   allTr.forEach(e => {
     
     codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]);
@@ -676,6 +668,7 @@ const borrador = () => {
 
 
 const existeBorrador = () =>{
+  
   let bodyArticulos = document.querySelectorAll("#bodyArticulos");
 
   bodyArticulos.forEach(articulo => {
@@ -687,6 +680,6 @@ const existeBorrador = () =>{
    
   });
   comprobarFila(bodyArticulos[bodyArticulos.length-1].querySelectorAll("td")[4].querySelector("input"));
-    // return true;
+  
 }
 
