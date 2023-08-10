@@ -42,16 +42,20 @@ class Recodificacion
 
     }
 
-    public function insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, $estado ) 
+    public function insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, $estado ,$borrador = false) 
     {   
 
-        $sql = "DELETE FROM sj_reco_locales_enc WHERE ID = $numSolicitud AND ESTADO = '4';";
+      
+        if($borrador != "false"){
 
-        $result = sqlsrv_query($this->cid, $sql);
+            $sql = "UPDATE sj_reco_locales_enc SET ESTADO = $estado, UPDATED_AT = GETDATE() WHERE ID = $numSolicitud AND ESTADO = '4';";
 
-        $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($nroSucursal, '$fecha', '$usuario', $estado )";
+        }else{
 
-        
+            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($nroSucursal, '$fecha', '$usuario', $estado )";
+            
+        }
+ 
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 

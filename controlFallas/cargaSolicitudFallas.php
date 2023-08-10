@@ -26,14 +26,10 @@
        $borradorDet = $recodificacion->buscarBorradorDet($numSolicitud[0]['ultimo_id']+1);
        
    }
-
-   
-
-    // $ajuste = new Ajuste();
-    // $result = $ajuste->traerAjustes();
-
-    // var_dump($result);
-    // die();
+   $esBorrador = false;
+   if(count($borradorEnc) > 0){
+       $esBorrador = true;
+    }
 
 
    
@@ -110,7 +106,7 @@
                                 <div>   
                                     <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
                                     <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar<i class="bi bi-pencil-square" style=""></i></button>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:100px" onclick= "solicitar()" >Solicitar <i class="bi bi-funnel-fill" style="color:white"></i></button>
+                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:100px" onclick= "solicitar(<?= $esBorrador ?>)" >Solicitar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                 </div>
 
                             </div>

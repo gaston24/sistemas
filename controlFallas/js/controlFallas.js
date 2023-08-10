@@ -298,7 +298,17 @@ const copiarFila = (div) => {
 
       e.querySelector("input").value = "";
       e.querySelector("input").setAttribute("onchange","comprobarFila(this)");
+      e.querySelector("input").style.border = "1px solid";
 
+    }
+    if(x == 5){
+
+      if( e.querySelector("div") != null){
+
+        e.querySelector("div").remove();
+
+      }
+     
     }
       
   });
@@ -434,7 +444,16 @@ const parseNumber = (number) => {
   return newNumber;
 }
 
-const solicitar = () => {
+const validarFoto = (tr,numSolicitud) =>{
+  let error = []
+  
+  tr.forEach(element => {
+
+
+  })
+
+}
+const solicitar = (esBorrador = false) => {
 
   let nroSucursal = document.querySelector("#nroSucursal").textContent;
   let fecha = document.querySelector("#fecha").value;
@@ -443,67 +462,157 @@ const solicitar = () => {
   let numSolicitud = document.querySelector("#numSolicitud").value;
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
-  let error = false;
-
-
+  // let error = false;
+  let codArticulos = []
   allTr.forEach(e => {
-
-    if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
-
-      dataArticulos.push({
-        codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
-        descripcion: e.querySelectorAll("td")[1].textContent,
-        precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
-        cantidad: e.querySelectorAll("td")[3].textContent,
-        descFalla: e.querySelectorAll("td")[4].querySelector("input").value
-      });
-
-    }else{
-
-      if(e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value == ""){
-
-        e.querySelectorAll("td")[4].querySelector("input").style.border = "1px solid red";
-      
-        error = true;
-      }
-
-    }
-
-  });
-
-  if(error == true){
-
-    alert("Debe completar los Campos Obligatorios");
-      return;
-  }
-
+    
+    codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]);
+  })
 
   $.ajax({
-
-    url: "Controller/RecodificacionController.php?accion=solicitar",
+  
+    url: "Controller/RecodificacionController.php?accion=contarImagenes",
     type: "POST",
     data: {
-      nroSucursal: nroSucursal,
-      fecha: fecha,
-      usuario: usuario,
-      estado: estado,
-      numSolicitud: numSolicitud,
-      dataArticulos: dataArticulos
+      codArticulos: codArticulos,
+      numSolicitud:numSolicitud
+
     },
     success: function (response) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Solicitud Cargada Correctamente',
-          showConfirmButton: false,
-          timer: 1500
-        }).then ((result) => {
+        let error = false
 
-            location.href = "seleccionDeSolicitudes.php";
+        response = JSON.parse(response);
 
-        });
+        if(response['cantidad'] > 0) {
 
+          codArticulos.forEach(element => {   
+
+            if(response['nombre'].includes(element) == false){
+              allTr.forEach(e => {
+
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+
+                  if( e.querySelectorAll("td")[5].querySelector("div") != null){
+
+                    e.querySelectorAll("td")[5].querySelector("div").remove();
+
+                  }
+                 if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
+                  e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+                 }
+                  error = true;
+                }
+              })
+            }else{
+              
+              allTr.forEach(e => {
+
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+
+                  if( e.querySelectorAll("td")[5].querySelector("div") != null){
+
+                    e.querySelectorAll("td")[5].querySelector("div").remove();
+
+                  }
+                 
+                }
+              })
+
+            }
+
+          });
+ 
+        }else{
+
+          allTr.forEach(e => {
+
+            if( e.querySelectorAll("td")[5].querySelector("div") != null){
+
+              e.querySelectorAll("td")[5].querySelector("div").remove();
+
+            }
+            if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
+              e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+             }
+
+            error =  true;
+          })
+
+        }
+
+        if(error == false){
+
+          allTr.forEach(e => {
+
+    
+  
+
+            if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
+        
+              dataArticulos.push({
+                codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
+                descripcion: e.querySelectorAll("td")[1].textContent,
+                precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
+                cantidad: e.querySelectorAll("td")[3].textContent,
+                descFalla: e.querySelectorAll("td")[4].querySelector("input").value
+              });
+        
+            }else{
+        
+              if(e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value == ""){
+        
+                e.querySelectorAll("td")[4].querySelector("input").style.border = "1px solid red";
+              
+                error = true;
+              }
+        
+            }
+        
+          });
+        
+          if(error == true){
+        
+            alert("Debe completar los Campos Obligatorios");
+              return;
+          }
+        
+        
+          $.ajax({
+        
+            url: "Controller/RecodificacionController.php?accion=solicitar",
+            type: "POST",
+            data: {
+              nroSucursal: nroSucursal,
+              fecha: fecha,
+              usuario: usuario,
+              estado: estado,
+              numSolicitud: numSolicitud,
+              dataArticulos: dataArticulos,
+              esBorrador: esBorrador
+            },
+            success: function (response) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Solicitud Cargada Correctamente',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then ((result) => {
+        
+                    location.href = "seleccionDeSolicitudes.php";
+        
+                });
+        
+            }
+
+          });
+
+
+        }
     }
   });
+
+  return 1
+  
 
 
 }
@@ -580,3 +689,4 @@ const existeBorrador = () =>{
   comprobarFila(bodyArticulos[bodyArticulos.length-1].querySelectorAll("td")[4].querySelector("input"));
     // return true;
 }
+
