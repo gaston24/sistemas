@@ -75,18 +75,18 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-list-task" style="margin-right:20px;font-size:50px"></i>Lista de Solicitudes </strong></h3>
+                            <h3><strong><i class="bi bi-list-task" style="margin-right:20px;font-size:40px"></i>Lista de Solicitudes </strong></h3>
                         </div>
-                        <form action="#">
+                        <form class="form-inline" action="#">
 
                             <div style="margin-bottom:20px">
 
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">Desde : <input type="date" style="width:145px; height:40px" id="desde" name="desde" value="<?=  $desde ?>"></div>
-                                    <div style="margin-left:30px">Hasta: <input type="date" style="width:145px; height:40px" id="hasta"  name="hasta" value="<?=  $hasta ?>"></div>
+                                    <div style="margin-left:90px">Desde : <input type="date" class="form-control form-control-sm" id="desde" name="desde" value="<?=  $desde ?>"></div>
+                                    <div style="margin-left:30px">Hasta: <input type="date" class="form-control form-control-sm" id="hasta"  name="hasta" value="<?=  $hasta ?>"></div>
                                     <div style="margin-left:30px">Estado: 
-                                        <select name="estado" id="estado" style="width:145px; height:40px">
+                                        <select name="estado" id="estado" class="form-control form-control-sm">
 
                                             <option value="%">Todos</option>
                                             <option value="1">Solicitada</option>
@@ -95,7 +95,7 @@
 
                                         </select>
                                     </div>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" >Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
+                                    <button class="btn btn-primary btn-submit ml-2" style="margin-top: -0.15em;">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                 </div>
 
                             </div>
@@ -110,8 +110,8 @@
                                     <th style="text-align:center;width:10%" >CLIENTE</th>
                                     <th style="text-align:center;width:20%" >EMISOR</th>
                                     <th style="text-align:center;width:10%">UNIDADES</th>
-                                    <th style="text-align:center;width:20%" >ESTADO</th>
-                                    <th style="text-align:center;width:20%" >ULT.ESTADO</th>
+                                    <th style="text-align:center;width:15%" >ESTADO</th>
+                                    <th style="text-align:center;width:10%" >ULT.ESTADO</th>
                                     <th style="text-align:center;width:10%" >ACCION</th>
                                 </tr>
                             </thead>
@@ -123,24 +123,24 @@
                                     switch ($encabezado['ESTADO']) {
                                             
                                         case '1':
-                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px' ><i class='bi bi-box-arrow-in-up'></i></button>";
-                                            $accion = "<a href='autorizarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary'><i class='bi bi-pencil-square'></i></button></a>";
+                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-box-arrow-in-up'></i></button>";
+                                            $accion = "<a href='autorizarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
 
                                         case '2':
-                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px' ><i class='bi bi-check2-square'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-check2-square'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '3':
-                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px' ><i class='fa fa-paper-plane'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;'' ><i class='fa fa-paper-plane'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '4':
                                             $valorIdBorrador =$encabezado['ID'] - 1;
-                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px' ><i class='fa-solid fa-eraser'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;'' ><i class='fa-solid fa-eraser'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                         
                                         default:

@@ -65,7 +65,7 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Autorización de Solicitud</strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Autorización de Solicitud</strong></h3>
                         </div>
                         <form action="#">
 
@@ -73,16 +73,16 @@
 
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:40px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:40px" id="hasta"  name="hasta" value="<?=   str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>" disabled></div>
+                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:35px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
+                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:35px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
+                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:35px" id="hasta"  name="hasta" value="<?=   str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>" disabled></div>
                                     
                                 </div>
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $solicitudEncabezado[0]['ID'] ?>" disabled></div>
-                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:30px" id="estado"  name="estado" value="Solicitada" disabled></div>
-                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:900px" class ="btn btn-success" onclick="autorizar()" >Autorizar <i class='bi bi-check2-square'></i></button></div>
+                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:35px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $solicitudEncabezado[0]['ID'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:35px; margin-left:30px" id="estado"  name="estado" value="Solicitada" disabled></div>
+                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:35px; margin-left:900px" class ="btn btn-success" onclick="autorizar()" >Autorizar <i class='bi bi-check2-square'></i></button></div>
                                     
                                 </div>
 
