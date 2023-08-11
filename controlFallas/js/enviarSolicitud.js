@@ -12,24 +12,38 @@ const enviar = () => {
 
     });
 
+    Swal.fire({
+        icon: 'info',
+        title: 'Desea enviar la solicitud?',
+        showDenyButton: true,
+        confirmButtonText: 'Enviar',
+        denyButtonText: 'No enviar',
+        }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+         
+            $.ajax({
+                url: "Controller/RecodificacionController.php?accion=enviar",
+                type: "POST",
+                data: {
+                    data: data,
+                    numSolicitud: numSolicitud
+                },
+                success: function (response) {
+                    Swal.fire('La solicitud fue enviada!', '', 'success').then((result) => {
 
-    $.ajax({
-        url: "Controller/RecodificacionController.php?accion=enviar",
-        type: "POST",
-        data: {
-            data: data,
-            numSolicitud: numSolicitud
-        },
-        success: function (response) {
-            swal.fire({
-                title: "Solicitud enviada",
-                icon: "success",
-                confirmButtonText: "Aceptar",
-            }).then((result) => {
-                location.href = "seleccionDeSolicitudes.php";
+                        location.href = "seleccionDeSolicitudes.php";
+                    })
+                }
             })
-
+       
+        } else if (result.isDenied) {
+        Swal.fire('La solicitud no fue enviada!', '', 'info')
         }
-    })
+        })
+        
+        
+
+
 
 }

@@ -54,8 +54,6 @@
 
     <body>
         
-      
-        <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
@@ -118,17 +116,18 @@
                                            <tr>
                                             <td style="text-align:center;width:7%"><?= $detalle['COD_ARTICU'] ?></td>
                                             <td style="text-align:center;width:12%"><?= $detalle['DESCRIPCION'] ?></td>
-                                            <td style="text-align:center;width:7%" attr-realvalue="<?= $detalle['PRECIO'] ?>">$ <?= number_format($detalle['PRECIO'], 0, ".",".") ?></td>
-                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> <button class="btn btn-warning"><i class="bi bi-eye"></i></button></td>
+                                            <td style="text-align:center;width:7%" attr-realvalue="<?= $detalle['PRECIO'] ?>">$ <?= number_format($detalle['PRECIO'], 0, ",",".") ?></td>
+                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> <button class="btn btn-warning" onclick= "mostrarImagen(this)"><i class="bi bi-eye"></i></button></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="activarRecodificacion(this)"></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="unico" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.9" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.8" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.7" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.6" disabled ></td>
-                                            <td style="text-align:center"></td>
+                                            <td style="text-align:center;width:10%"></td>
                                             <td style="text-align:center">
-                                                <select style="width: 178px;height: 28px;" class="sucursal">
+                                                <select style="width: 178px;height: 28px;" class="sucursal" disabled>
+                                                    <option value="1" selected>CENTRAL</option>
                                                     <?php
                                                         foreach ($locales as $key => $local) {
                                                             echo '<option value="'.$local['NRO_SUCURSAL'].'">'.$local['DESC_SUCURSAL'].'</option>';
@@ -166,6 +165,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
         <script src="js/autorizarSolicitud.js"></script>
+        <script src="js/mostrarImagen.js"></script>
     </body>
 
 </html>

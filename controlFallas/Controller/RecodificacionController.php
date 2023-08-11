@@ -185,7 +185,6 @@ function solicitar () {
     $dataArticulos = $_POST['dataArticulos'];
     $esBorrador = $_POST['esBorrador'];
     $valores = "";
-
     foreach ($dataArticulos as $key => $articulo) {
         $valores .= "('$numSolicitud', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
     }
@@ -196,7 +195,7 @@ function solicitar () {
     $encabezado = $Recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
 
     if($encabezado == true && $esBorrador == "false"){
-        $Recodificacion->insertarDetalle($valores, $encabezado);
+        $Recodificacion->insertarDetalle($valores);
     }
 
     return true;
@@ -218,9 +217,21 @@ function borrador () {
 
     
     
-    $Recodificacion = new Recodificacion();
+    $recodificacion = new Recodificacion();
 
-    $encabezado = $Recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 4, "false" );
+    $buscarBorradorEnc = $recodificacion->buscarBorradorEnc($numSolicitud, "4");
+
+
+    if(count($buscarBorradorEnc) > 0){
+        
+        $encabezado = $buscarBorradorEnc[0]['ID'];
+        $recodificacion->borrarDetalle($encabezado);
+
+    }else{
+
+        $encabezado = $recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 4, "false" );
+    }
+
     
     foreach ($dataArticulos as $key => $articulo) {
 
@@ -230,7 +241,7 @@ function borrador () {
     $valores = substr_replace($valores, ";", -1, 1);
     
     if($encabezado == true){
-        $Recodificacion->insertarDetalle($valores);
+        $recodificacion->insertarDetalle($valores);
     }
 
     return true;

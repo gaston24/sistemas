@@ -461,6 +461,17 @@ const solicitar = (esBorrador = false) => {
     codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]);
   })
 
+
+  if(document.querySelector("#bodyArticulos").querySelector("td").querySelector("select").value == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Debe ingresar al menos un artículo',
+    })
+    return 1;
+
+  }
+
   $.ajax({
   
     url: "Controller/RecodificacionController.php?accion=contarImagenes",
@@ -568,36 +579,45 @@ const solicitar = (esBorrador = false) => {
               return;
           }
         
+          Swal.fire({
+            icon: 'info',
+            title: 'Desea confirmar la solicitud?',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: 'Cancelar',
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+
+              $.ajax({
         
-          $.ajax({
-        
-            url: "Controller/RecodificacionController.php?accion=solicitar",
-            type: "POST",
-            data: {
-              nroSucursal: nroSucursal,
-              fecha: fecha,
-              usuario: usuario,
-              estado: estado,
-              numSolicitud: numSolicitud,
-              dataArticulos: dataArticulos,
-              esBorrador: esBorrador
-            },
-            success: function (response) {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Solicitud Cargada Correctamente',
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then ((result) => {
-        
-                    location.href = "seleccionDeSolicitudes.php";
-        
-                });
-        
+                url: "Controller/RecodificacionController.php?accion=solicitar",
+                type: "POST",
+                data: {
+                  nroSucursal: nroSucursal,
+                  fecha: fecha,
+                  usuario: usuario,
+                  estado: estado,
+                  numSolicitud: numSolicitud,
+                  dataArticulos: dataArticulos,
+                  esBorrador: esBorrador
+                },
+                success: function (response) {
+                   
+                  Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
+                      location.href = "seleccionDeSolicitudes.php";
+                  });
+          
+            
+                }
+    
+              });
+
+          
+            } else if (result.isDenied) {
+              Swal.fire('La solicitud no fue confirmada!', '', 'info')
             }
-
-          });
-
+            })
 
         }
     }
@@ -636,6 +656,16 @@ const borrador = () => {
 
   });
 
+  if(document.querySelector("#bodyArticulos").querySelector("td").querySelector("select").value == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Debe ingresar al menos un artículo',
+    })
+    return 1;
+
+  }
+
   $.ajax({
 
     url: "Controller/RecodificacionController.php?accion=borrador",
@@ -651,7 +681,7 @@ const borrador = () => {
     success: function (response) {
         Swal.fire({
           icon: 'success',
-          title: 'Solicitud Cargada Correctamente',
+          title: 'Solicitud Guardada Correctamente',
           showConfirmButton: false,
           timer: 1500
         }).then ((result) => {

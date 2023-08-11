@@ -7,12 +7,26 @@ const activarRecodificacion  = (div) => {
                 e.disabled = false;
             }
         });
+        div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select").disabled = false;
+        div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select").options[0].remove();
+
     }else{
+
+        div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select").disabled = true;
+        const nuevaOpcion = new Option("CENTRAL", "1");
+
+        nuevaOpcion.setAttribute("selected", "selected");
+
+        // Obtener el elemento select
+        const select = div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select");
+      
+        // Insertar la nueva opción al principio del select
+        select.insertBefore(nuevaOpcion, select.firstChild);
+
         allCheck.forEach((e ,y)=> {
             if(y != 0){
                 e.disabled = true;
                 e.checked = false;
-                e.parentElement.parentElement.querySelectorAll("td")[2].textContent = e.parentElement.parentElement.querySelectorAll("td")[2].getAttribute("attr-realvalue");
                 e.parentElement.parentElement.querySelectorAll("td")[10].textContent = "";
             }
         });
@@ -73,6 +87,8 @@ const comprobarCheckbox = (div) => {
 
 
 const autorizar = () => {
+
+        
     let allTr = document.querySelectorAll("tbody tr");
     let numSolicitud = document.querySelector("#numSolicitud").value;
     
@@ -89,28 +105,44 @@ const autorizar = () => {
         });
 
     })
- 
-    $.ajax({
-        url: "Controller/RecodificacionController.php?accion=autorizar",
-        type: "POST",
-        data: {
-            data: data,
-            numSolicitud: numSolicitud
-        },
-        success: function (response) {
-            Swal.fire ({
-                title: "Solicitud autorizada",
-                icon: "success",
-                confirmButtonText: "Aceptar"
-            }).then((result) => {
-                location.href = "seleccionDeSolicitudesSup.php";
-            })
+    
+    Swal.fire({
+        icon: 'info',
+        title: 'Desea autorizar la solicitud?',
+        showDenyButton: true,
+        confirmButtonText: 'Autorizar',
+        denyButtonText: 'No autorizar',
+        }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: "Controller/RecodificacionController.php?accion=autorizar",
+                type: "POST",
+                data: {
+                    data: data,
+                    numSolicitud: numSolicitud
+                },
+                success: function (response) {
+
+                    Swal.fire('La solicitud fue autorizada!', '', 'success')
+                    location.href = "seleccionDeSolicitudesSup.php";
+
+                }
+            });
+
+       
+
+        } else if (result.isDenied) {
+        Swal.fire('No se realizaron cambios!', '', 'info')
         }
-    });
+        })
+   
 
 
 
 }
+
 const parseNumber = (number) => {
     number = parseInt(number);
   
@@ -121,4 +153,5 @@ const parseNumber = (number) => {
     });
   
     return newNumber;
-  }
+}
+
