@@ -1,6 +1,9 @@
 <?php 
     session_start();
-   
+    require_once '../ajustes/Class/Articulo.php';
+    $maestroArticulos = new Articulo();
+    $todosLosArticulos = $maestroArticulos->traerMaestroArticulo();
+
 ?>
 
 <!DOCTYPE html>
@@ -40,14 +43,14 @@
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
-        <div class="alert alert-secondary">
-            <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-                <div class="wrapper wrapper--w280"><div style="color:white; text-align:center"><h6>Solicitud De Recodificacion</h6></div>
+        <div style="margin-left:30%">
+            <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo" style="width:500px">
+                <div class="wrapper wrapper--w280" style="width:500px"><div style="color:white; text-align:center"><h6>Consulta Stock y Precio</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
                         
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Carga solicitud de recodificacion </strong></h3>
+                            <h3><strong><i class="bi bi-search" style="margin-right:20px;font-size:40px"></i>Consulta Stock y Precio </strong></h3>
 
                         </div>
 
@@ -55,27 +58,33 @@
 
                             <div class="row" style="margin-top:10px">
 
-                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px"  ></div>
-                                <div style="margin-left:90px">Usuario Emisor: 
-                                        <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
-                                    </select>
+                                <div style="margin-left:90px">
+                                <select name="selectArticulo" id="selectArticulo" class = "selectArticulo" style="width:200px" onchange="traerArticulo(this)">
+                                    <option value=""></option>
+                                    <?php foreach ($todosLosArticulos as $key => $value) { 
+                                        echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                    } ?>
+                                </select> <button class="btn btn-primary" style="margin-left:0.2rem;margin-bottom:0.2rem">Buscar <i class="bi bi-search"></i></button></div>
+                               <div style="margin-top:1.5rem">
+
+                                    <div style="margin-left:90px;margin-bottom:1rem">
+                                        Articulo : <input type="text" style="margin-left:1.7rem" id="articulo" disabled>
+                                        </select>
+                                    </div>
+                                    <div style="margin-left:90px;margin-bottom:1rem">
+                                        Descripcion : <input type="text" id="descripcion" disabled>
+                                        </select>
+                                    </div>
+                                    <div style="margin-left:90px;margin-bottom:1rem" >
+                                        Stock : <input type="text" style="margin-left:2.8rem" id="stock" disabled>
+                                        </select>
+                                    </div>
+                                    <div style="margin-left:90px;margin-bottom:1rem">
+                                        Precio : <input type="text"  style="margin-left:2.5rem" id="precio" disabled>
+                                        </select>
+                                    </div>
+
                                 </div>
-
-                                <div>   
-                                    <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
-                                    <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
-                                </div>
-
-                            </div>
-
-                            <div class="row" style="margin-top:10px">
-
-                                <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" ></div>
-                                <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" disabled> </div>
-
-                            </div>
-
                             </div>
             
                        
@@ -93,13 +102,28 @@
         <script src="assets/select2/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <!-- <script src="js/controlFallas.js"></script> -->
+        <script src="js/consultaStockPrecio.js"></script>
     </body>
 
 </html>
 <script>
 
+$('.selectArticulo').select2({
+        placeholder: 'Ingresar artículo...',
+        minimumInputLength: 3,
+        data: function(params) {
+            // Obtener los datos del Local Storage
+            const storedData = JSON.parse(localStorage.getItem('articulos'));
 
+            // Filtrar los datos para que coincidan con el término de búsqueda
+            const filteredData = storedData.filter(item => item.text.includes(params.term));
+
+            // Devolver los datos filtrados para que Select2 los utilice
+            return {
+            results: filteredData
+            };
+        }
+});
 </script>
 <!-- <script src="js/gastosTesoreria.js"></script> -->
 
