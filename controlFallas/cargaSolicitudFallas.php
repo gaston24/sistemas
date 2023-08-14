@@ -109,6 +109,8 @@
                                     <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
                                     <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
                                     <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+                                    <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="margin-left:300px">Volver Al Listado</a>
+                              
                                 </div>
 
                             </div>
