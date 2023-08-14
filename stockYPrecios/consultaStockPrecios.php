@@ -11,8 +11,8 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Solicitud de Recodificacion</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="css/style.css">
         
         </link>
         <style>
@@ -43,44 +44,46 @@
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
-        <div style="margin-left:30%">
-            <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo" style="width:500px">
-                <div class="wrapper wrapper--w280" style="width:500px"><div style="color:white; text-align:center"><h6>Consulta Stock y Precio</h6></div>
+        <div class="card">
+            <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
+                <div class="wrapper wrapper--w280"><div style="color:white; text-align:center"><h6>Consulta Stock y Precios</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
-                        <div class="row" style="margin-left:50px; margin-top:30px">
+                        <div>
                         
-                            <h3><strong><i class="bi bi-search" style="margin-right:20px;font-size:40px"></i>Consulta Stock y Precio </strong></h3>
+                            <h4><strong><i class="bi bi-search"></i>Consulta Stock y Precios </strong></h4>
 
                         </div>
 
-                        <div style="margin-bottom:20px">
+                        <div>
 
-                            <div class="row" style="margin-top:10px">
+                            <div class="contInputs">
 
-                                <div style="margin-left:90px">
-                                <select name="selectArticulo" id="selectArticulo" class = "selectArticulo" style="width:200px" onchange="traerArticulo(this)">
-                                    <option value=""></option>
-                                    <?php foreach ($todosLosArticulos as $key => $value) { 
-                                        echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
-                                    } ?>
-                                </select> <button class="btn btn-primary" style="margin-left:0.2rem;margin-bottom:0.2rem">Buscar <i class="bi bi-search"></i></button></div>
-                               <div style="margin-top:1.5rem">
+                                <div class="form-inline" style="margin-left: 0.5rem;">
+                                    <select name="selectArticulo" id="selectArticulo" class = "form-control selectArticulo" style="width: 13rem;" onchange="traerArticulo(this)">
+                                        <option value=""></option>
+                                        <?php foreach ($todosLosArticulos as $key => $value) { 
+                                            echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                        } ?>
+                                    </select> 
+                                    <button class="btn btn-primary btn-sm">Buscar <i class="bi bi-search"></i></button>
+                                </div>
+                               <div id="cont">
 
-                                    <div style="margin-left:90px;margin-bottom:1rem">
-                                        Articulo : <input type="text" style="margin-left:1.7rem" id="articulo" disabled>
+                                    <div>
+                                        Articulo : <input type="text" id="articulo" disabled>
                                         </select>
                                     </div>
-                                    <div style="margin-left:90px;margin-bottom:1rem">
+                                    <div>
                                         Descripcion : <input type="text" id="descripcion" disabled>
                                         </select>
                                     </div>
-                                    <div style="margin-left:90px;margin-bottom:1rem" >
-                                        Stock : <input type="text" style="margin-left:2.8rem" id="stock" disabled>
+                                    <div >
+                                        Stock : <input type="text" id="stock" disabled>
                                         </select>
                                     </div>
-                                    <div style="margin-left:90px;margin-bottom:1rem">
-                                        Precio : <input type="text"  style="margin-left:2.5rem" id="precio" disabled>
+                                    <div>
+                                        Precio : <input type="text" id="precio" disabled>
                                         </select>
                                     </div>
 
