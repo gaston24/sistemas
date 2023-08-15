@@ -45,7 +45,21 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
         </link>
-
+        <style>
+            input[type='search'] {
+                margin-right:45px
+            }
+            .dataTables_length{
+                margin-left:50px
+            }
+            .dataTables_info{
+                margin-left:50px
+            }
+            #tablaArticulos_paginate{
+                margin-right:42px 
+            }
+            
+        </style>
     </head>
 
     <body>
@@ -61,27 +75,27 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-list-task" style="margin-right:20px;font-size:50px"></i>Lista de Solicitudes </strong></h3>
+                            <h3><strong><i class="bi bi-list-task" style="margin-right:20px;font-size:40px"></i>Lista de Solicitudes </strong></h3>
                         </div>
-                        <form action="#">
+                        <form class="form-inline" action="#">
 
                             <div style="margin-bottom:20px">
 
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">Desde : <input type="date" style="width:145px; height:40px" id="desde" name="desde" value="<?=  $desde ?>"></div>
-                                    <div style="margin-left:30px">Hasta: <input type="date" style="width:145px; height:40px" id="hasta"  name="hasta" value="<?=  $hasta ?>"></div>
+                                    <div style="margin-left:90px">Desde : <input type="date" class="form-control form-control-sm" id="desde" name="desde" value="<?=  $desde ?>"></div>
+                                    <div style="margin-left:30px">Hasta: <input type="date" class="form-control form-control-sm" id="hasta"  name="hasta" value="<?=  $hasta ?>"></div>
                                     <div style="margin-left:30px">Estado: 
-                                        <select name="estado" id="estado" style="width:145px; height:40px">
+                                        <select name="estado" id="estado" class="form-control form-control-sm">
 
                                             <option value="%">Todos</option>
                                             <option value="1">Solicitada</option>
                                             <option value="2">Autorizada</option>
                                             <option value="3">Enviada</option>
-                                                        
+
                                         </select>
                                     </div>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" >Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
+                                    <button class="btn btn-primary btn-submit ml-2" style="margin-top: -0.15em;">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                 </div>
 
                             </div>
@@ -96,8 +110,8 @@
                                     <th style="text-align:center;width:10%" >CLIENTE</th>
                                     <th style="text-align:center;width:20%" >EMISOR</th>
                                     <th style="text-align:center;width:10%">UNIDADES</th>
-                                    <th style="text-align:center;width:20%" >ESTADO</th>
-                                    <th style="text-align:center;width:20%" >ULT.ESTADO</th>
+                                    <th style="text-align:center;width:15%" >ESTADO</th>
+                                    <th style="text-align:center;width:10%" >ULT.ESTADO</th>
                                     <th style="text-align:center;width:10%" >ACCION</th>
                                 </tr>
                             </thead>
@@ -109,30 +123,30 @@
                                     switch ($encabezado['ESTADO']) {
                                             
                                         case '1':
-                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px' ><i class='bi bi-box-arrow-in-up'></i></button>";
-                                            $accion = "<a href='enviarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary'><i class='bi bi-pencil-square'></i></button></a>";
+                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-box-arrow-in-up'></i></button>";
+                                            $accion = "<a href='autorizarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-primary' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
 
                                         case '2':
-                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px' ><i class='bi bi-check2-square'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-check2-square'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '3':
-                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px' ><i class='fa fa-paper-plane'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;'' ><i class='fa fa-paper-plane'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '4':
                                             $valorIdBorrador =$encabezado['ID'] - 1;
-                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px' ><i class='fa-solid fa-eraser'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-warning'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;'' ><i class='fa-solid fa-eraser'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                         
                                         default:
                                             break;
                                     }
-                                   
+                                    $usuario = str_replace("_"," ",$encabezado['USUARIO_EMISOR']);
                                     echo "<tr>";
                                     echo "<td style='text-align:center;'>".$encabezado['FECHA']->format('d/m/Y')."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['ID']."</td>";
@@ -142,10 +156,10 @@
                                             echo "<td style='text-align:center;'>".$local['DESC_SUCURSAL']."</td>";
                                         }
                                     }
-                                    echo "<td style='text-align:center;'>".$encabezado['USUARIO_EMISOR']."</td>";
+                                    echo "<td style='text-align:center;'>".$usuario."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['cantidad_total_articulos']."</td>";
                                     echo "<td style='text-align:center;'>".$estado."</td>";
-                                    echo "<td style='text-align:center;'>".$encabezado['UPDATED_AT']->format('d/m/Y H:i:s.u')."</td>";
+                                    echo "<td style='text-align:center;'>".$encabezado['UPDATED_AT']->format('d/m/Y H:i')."</td>";
                                     echo "<td style='text-align:center;'>$accion</td>";
                                     echo "</tr>";
 
@@ -174,7 +188,38 @@
 
 </html>
 <script>
-  
+  $('#tablaArticulos').DataTable({
+        "bLengthChange": true,
+        "language": {
+                    "lengthMenu": "mostrar _MENU_ registros",
+                    "info":           "Mostrando registros del _START_ al _END_ de un total de  _TOTAL_ registros",
+                    "paginate": {
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+
+        },
+    
+        
+        "bInfo": true,
+        "aaSorting": false,
+        'columnDefs': [
+            {
+                "targets": "_all", 
+                "className": "text-center",
+                "sortable": false,
+         
+            },
+        ],
+        "oLanguage": {
+    
+            "sSearch": "Busqueda rapida:",
+            "sSearchPlaceholder" : "Sobre cualquier campo"
+            
+    
+        },
+    });
+
 
 </script>
 <!-- <script src="js/gastosTesoreria.js"></script> -->

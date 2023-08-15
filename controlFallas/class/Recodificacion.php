@@ -42,16 +42,19 @@ class Recodificacion
 
     }
 
-    public function insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, $estado ) 
+    public function insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, $estado ,$borrador = false) 
     {   
 
-        $sql = "DELETE FROM sj_reco_locales_enc WHERE ID = $numSolicitud AND ESTADO = '4';";
+        if($borrador != "false"){
 
-        $result = sqlsrv_query($this->cid, $sql);
+            $sql = "UPDATE sj_reco_locales_enc SET ESTADO = $estado, UPDATED_AT = GETDATE() WHERE ID = $numSolicitud AND ESTADO = '4';";
 
-        $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($nroSucursal, '$fecha', '$usuario', $estado )";
+        }else{
 
-        
+            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($nroSucursal, '$fecha', '$usuario', $estado )";
+            
+        }
+ 
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 
@@ -75,39 +78,8 @@ class Recodificacion
 
     }
 
-    public function insertarEncabezadoTemp($id, $nroSucursal, $fecha, $usuario, $estado ) 
-    {   
 
-        $sql="DELETE FROM sj_reco_locales_enc_temp WHERE ID = $id;";
-        $result = sqlsrv_query($this->cid, $sql);
-
-        $sql = "INSERT INTO sj_reco_locales_enc_temp (ID, NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($id, $nroSucursal, '$fecha', '$usuario', '4')";
-
-        try {
-
-            $result = sqlsrv_query($this->cid, $sql); 
-
-            $sql = "SELECT MAX(ID) AS ultimo_id
-            FROM sj_reco_locales_enc_temp;";
-
-            $result = sqlsrv_query($this->cid, $sql);
-
-            $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-          
-            $ultimo_id = $row['ultimo_id'];
-
-            return $ultimo_id;
-
-        } catch (\Throwable $th) {
-
-            print_r($th);
-
-        }
-        
-
-    }
-
-    public function insertarDetalle($valores ) 
+    public function insertarDetalle($valores) 
     {   
 
         $sql = "INSERT INTO sj_reco_locales_det (ID_ENC, COD_ARTICU, DESCRIPCION, PRECIO, CANTIDAD, DESC_FALLA) VALUES $valores";
@@ -126,13 +98,11 @@ class Recodificacion
 
     }
 
-    public function insertarDetalleTemp($valores, $id) 
+    public function borrarDetalle($idEnc) 
     {   
 
-        $sql="DELETE FROM sj_reco_locales_det_temp WHERE ID_ENC = $id;";
-        $result = sqlsrv_query($this->cid, $sql);
+        $sql = "DELETE FROM sj_reco_locales_det WHERE ID_ENC = $idEnc";
 
-        $sql = "INSERT INTO sj_reco_locales_det_temp (ID_ENC, COD_ARTICU, DESCRIPCION, PRECIO, CANTIDAD, DESC_FALLA) VALUES $valores";
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 
@@ -249,9 +219,9 @@ class Recodificacion
     {   
 
         $sql = "
-            SELECT NRO_SUCURSAL, DESC_SUCURSAL FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1
+            SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1
             UNION ALL
-            SELECT NRO_SUCURSAL, DESC_SUCURSAL FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16'
+            SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
             ORDER BY NRO_SUCURSAL
         ";
 
@@ -357,6 +327,36 @@ class Recodificacion
 
     }
 
+    public function traerRemitos($nroSucursal,$destino) 
+    {   
+        $sql = "SET DATEFORMAT YMD 
+		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM [LAKERBIS].locales_lakers.dbo.CTA09 
+        WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE 'GT%'
+        AND FECHA_MOV >= GETDATE()-60 AND NRO_SUCURS = '$nroSucursal' AND COD_PRO_CL LIKE '%$destino%'";
+ 
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+        
+
+    }
+
     public function autorizar ($numSolicitud)
     {
         $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '2' WHERE ID = $numSolicitud";
@@ -373,6 +373,7 @@ class Recodificacion
 
         }
     }
+
 
     public function actualizarDetalle ($precio, $nuevoCodigo, $destino, $observaciones, $id)
     {
@@ -392,5 +393,43 @@ class Recodificacion
 
         }
     }
+
+    public function enviar ($numSolicitud)
+    {
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '3' WHERE ID = $numSolicitud";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
+    public function cargarRemito ($id, $numRemito)
+    {
+      
+        $sql = "UPDATE sj_reco_locales_det SET N_COMP = '$numRemito' WHERE ID = $id";
+        
+        try {
+
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
+    
    
 }
