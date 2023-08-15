@@ -20,10 +20,21 @@ try {
 	$_SESSION['articulosControlados'] = null;
 	$_SESSION['articulosControlados'] = json_encode($articulosControlados);
 
+	if($_SESSION['articulosControlados'] != json_encode($articulosControlados)){
+		$_SESSION['articulosControlados'] = json_encode($articulosControlados)
+	}
+
 	// TRAER TODOS LOS ARTICULOS DEL REMITO PARA LUEGO COMPARARLO
 
 	$_SESSION['articulosRemito'] = null;
-	$_SESSION['articulosRemito'] = json_encode($remito->traerTodosLosArticulosRemito($rem));
+	
+	$articulosRemito = $remito->traerTodosLosArticulosRemito($rem);
+
+	$_SESSION['articulosRemito'] = json_encode($articulosRemito);
+
+	if($_SESSION['articulosRemito'] != json_encode($articulosRemito)){
+		$_SESSION['articulosRemito'] = json_encode($articulosRemito);
+	}
 
 
 	// LOGUEAR TODO PARA DEBUG
