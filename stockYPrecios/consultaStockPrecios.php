@@ -66,7 +66,7 @@
                                             echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
                                         } ?>
                                     </select> 
-                                    <button class="btn btn-primary btn-sm">Buscar <i class="bi bi-search"></i></button>
+                                    <button class="btn btn-danger btn-sm" onclick="borrar()">Borrar <i class="bi bi-x-circle"></i></button>
                                 </div>
                                <div id="cont">
 
