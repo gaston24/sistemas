@@ -12,7 +12,7 @@ class StockPrecio
         require_once $_SERVER['DOCUMENT_ROOT'] .'/sistemas/class/conexion.php';
         
         $conn = new Conexion();
-        $this->cid = $conn->conectar('central');
+        $this->cid = $conn->conectar('local');
 
     }
     
