@@ -63,10 +63,14 @@ const parseNumber = (number) => {
 }
 
 const borrar = () => {
-  $('#selectArticulo').val(null).trigger('change');
+
+
+  
+  document.querySelector("#select2-selectArticulo-container").textContent = "";
   document.querySelector("#articulo"). value = "" ;
   document.querySelector("#descripcion").value = "";
   document.querySelector("#stock").value =  "" ;
   document.querySelector("#precio").value = "";
+
 
 }
