@@ -21,7 +21,7 @@ try {
 	$_SESSION['articulosControlados'] = json_encode($articulosControlados);
 
 	if($_SESSION['articulosControlados'] != json_encode($articulosControlados)){
-		$_SESSION['articulosControlados'] = json_encode($articulosControlados)
+		$_SESSION['articulosControlados'] = json_encode($articulosControlados);
 	}
 
 	// TRAER TODOS LOS ARTICULOS DEL REMITO PARA LUEGO COMPARARLO
