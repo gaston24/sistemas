@@ -1,24 +1,7 @@
-const traerArticulos = () => {
-
-  $.ajax({
-    url: "Controller/StockPrecioController.php?accion=traerArticulos",
-    type: "GET",
-    success: function (response) {
-  
-      localStorage.setItem("articulos", response);
-    }
-
-  });
-}
-
-document.addEventListener("DOMContentLoaded", traerArticulos);
-
 const traerArticulo = (div) => {
 
-  codArticulo =  div.value.split("-")[0] ;
-  
+  codArticulo =  div.value
 
-  
   $.ajax({
       url: "Controller/StockPrecioController.php?accion=traerArticulos",
       type: "POST",
@@ -64,9 +47,7 @@ const parseNumber = (number) => {
 
 const borrar = () => {
 
-
-  
-  document.querySelector("#select2-selectArticulo-container").textContent = "";
+  document.querySelector("#selectArticulo").value = "";
   document.querySelector("#articulo"). value = "" ;
   document.querySelector("#descripcion").value = "";
   document.querySelector("#stock").value =  "" ;

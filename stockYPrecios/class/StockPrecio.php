@@ -16,7 +16,7 @@ class StockPrecio
 
     }
     
-    public function traerMaestroArticulo($codArticulo  = null) 
+    public function traerMaestroArticulo($codArticulo) 
     {   
         $sql = "SELECT A.COD_ARTICU, D.DESCRIPCIO, A.CANT_STOCK, C.PRECIO FROM STA19 A
         INNER JOIN STA22 B ON A.COD_DEPOSI = B.COD_SUCURS
@@ -25,15 +25,9 @@ class StockPrecio
         WHERE COD_SUCURS LIKE '[0-9]%' 
         AND INHABILITA = 0 
         AND A.CANT_STOCK > 0
-        AND A.COD_ARTICU LIKE '[XO]%'";
+        AND A.COD_ARTICU LIKE '[XO]%' 
+        AND A.COD_ARTICU = '$codArticulo'";
 
-
-
-        if($codArticulo  != null){
-
-            $sql .= " AND A.COD_ARTICU = '$codArticulo '";
-
-        }
 
         try {
 
