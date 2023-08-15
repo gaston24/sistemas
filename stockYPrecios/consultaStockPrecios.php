@@ -29,10 +29,10 @@
         </link>
         <style>
 
-            .select2-dropdown.select2-dropdown--above {
+            /* .select2-dropdown.select2-dropdown--above {
 
                 width:300px;
-            }
+            } */
         </style>
 
     </head>
