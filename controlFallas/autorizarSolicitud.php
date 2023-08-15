@@ -18,6 +18,14 @@
     }
     $locales = $recodificacion->traerLocales();
 
+    $localSolicitud = "";
+
+    foreach ($locales as $key => $local) {
+        
+        if($local['NRO_SUCURSAL'] == $solicitudEncabezado[0]['NUM_SUC']){
+            $localSolicitud = $local['DESC_SUCURSAL'];
+        }
+    }
 
 ?>
 
@@ -46,8 +54,6 @@
 
     <body>
         
-      
-        <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
@@ -57,7 +63,7 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Autorización de Solicitud</strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Autorización de Solicitud</strong></h3>
                         </div>
                         <form action="#">
 
@@ -65,15 +71,16 @@
 
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  $solicitudEncabezado[0]['USUARIO_EMISOR'] ?>" disabled></div>
+                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:35px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
+                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:35px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
+                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:35px" id="hasta"  name="hasta" value="<?=   str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>" disabled></div>
                                     
                                 </div>
                                 <div class="row" style="margin-top:10px">
 
-                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $solicitudEncabezado[0]['ID'] ?>" disabled></div>
-                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px" id="estado"  name="estado" value="Solicitada" disabled></div>
-                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:900px" class ="btn btn-success" onclick="autorizar()" >Autorizar <i class='bi bi-check2-square'></i></button></div>
+                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:35px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $solicitudEncabezado[0]['ID'] ?>" disabled></div>
+                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:35px; margin-left:30px" id="estado"  name="estado" value="Solicitada" disabled></div>
+                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:35px; margin-left:900px" class ="btn btn-success" onclick="autorizar()" >Autorizar <i class='bi bi-check2-square'></i></button></div>
                                     
                                 </div>
 
@@ -109,17 +116,18 @@
                                            <tr>
                                             <td style="text-align:center;width:7%"><?= $detalle['COD_ARTICU'] ?></td>
                                             <td style="text-align:center;width:12%"><?= $detalle['DESCRIPCION'] ?></td>
-                                            <td style="text-align:center;width:7%" attr-realvalue="<?= $detalle['PRECIO'] ?>">$ <?= number_format($detalle['PRECIO'], 0, ".",".") ?></td>
-                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> <button class="btn btn-warning"><i class="bi bi-eye"></i></button></td>
+                                            <td style="text-align:center;width:7%" attr-realvalue="<?= $detalle['PRECIO'] ?>">$ <?= number_format($detalle['PRECIO'], 0, ",",".") ?></td>
+                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> <button class="btn btn-warning" onclick= "mostrarImagen(this)"><i class="bi bi-eye"></i></button></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="activarRecodificacion(this)"></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="unico" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.9" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.8" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.7" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.6" disabled ></td>
-                                            <td style="text-align:center"></td>
+                                            <td style="text-align:center;width:10%"></td>
                                             <td style="text-align:center">
-                                                <select style="width: 178px;height: 28px;" class="sucursal">
+                                                <select style="width: 178px;height: 28px;" class="sucursal" disabled>
+                                                    <option value="1" selected>CENTRAL</option>
                                                     <?php
                                                         foreach ($locales as $key => $local) {
                                                             echo '<option value="'.$local['NRO_SUCURSAL'].'">'.$local['DESC_SUCURSAL'].'</option>';
@@ -157,6 +165,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
         <script src="js/autorizarSolicitud.js"></script>
+        <script src="js/mostrarImagen.js"></script>
     </body>
 
 </html>

@@ -19,6 +19,8 @@
         $solicitudDetalle = $recodificacion->traerDetalle($numSolicitud[0]['ultimo_id']);
        
     }
+    $tipoU = $_GET['tipoU'] ;
+
    
 ?>
 
@@ -55,7 +57,7 @@
     <body>
         
       
-        <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
+        <!-- <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" /> -->
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
@@ -65,7 +67,7 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Carga solicitud de recodificacion </strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Solicitud de recodificacion </strong></h3>
                         </div>
 
                         <div style="margin-bottom:20px">
@@ -75,7 +77,17 @@
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= $solicitudEncabezado[0]['FECHA']->format("Y-d-m") ?> id="fecha"  disabled ></div>
                                 
                                 <div style="margin-left:90px">Usuario Emisor: 
-                                   <input type="text" syle="width:145px; height:35px" disabled value="<?= $solicitudEncabezado[0]['USUARIO_EMISOR'] ?>">              
+                                   <input type="text" syle="width:145px; height:35px" disabled value="<?= str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>">              
+                                </div>
+                                <div style="margin-left:30%"> 
+                                <?php 
+                                if($tipoU == 1){
+                                    echo '<a href="seleccionDeSolicitudes.php" class="btn btn-secondary">Volver Al Listado</a>';
+                                } else if ($tipoU == 2){
+                                    echo '<a href="seleccionDeSolicitudesSup.php" class="btn btn-secondary">Volver Al Listado</a>';
+                                }
+                                ?>
+                                  
                                 </div>
 
                             </div>
@@ -127,11 +139,8 @@
                                   
                                             echo '
                                             <tr id="bodyArticulos"> 
-                                                <td>
-                                                    <input type="text" value='.$detalle['COD_ARTICU'].' disabled>
-                                                </td>
-
-                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].'</td>
+                                                <td style="text-align:center">'.$detalle['COD_ARTICU'].'</td>
+                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].' <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button> </td>
                                                 <td style="text-align:center">$'.number_format($detalle['PRECIO'], 0, ",",".").'</td>
                                                 <td style="text-align:center">'.$detalle['CANTIDAD'].'</td>
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'" disabled></td>
@@ -161,7 +170,8 @@
         <script src="assets/select2/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <script src="js/controlFallas.js"></script>
+      
+        <script src="js/mostrarImagen.js"></script>
     </body>
 
 </html>

@@ -26,15 +26,11 @@
        $borradorDet = $recodificacion->buscarBorradorDet($numSolicitud[0]['ultimo_id']+1);
        
    }
-
-   
-
-    // $ajuste = new Ajuste();
-    // $result = $ajuste->traerAjustes();
-
-    // var_dump($result);
-    // die();
-
+   $esBorrador = false;
+   if(count($borradorEnc) > 0){
+       $esBorrador = true;
+    }
+  
 
    
 ?>
@@ -82,7 +78,11 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
+
+                        
                             <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Carga solicitud de recodificacion </strong></h3>
+
+
                         </div>
 
                         <div style="margin-bottom:20px">
@@ -91,16 +91,18 @@
 
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-d-m") : date("Y-d-m"); ?> id="fecha"  disabled ></div>
                                 <div style="margin-left:90px">Usuario Emisor: 
-                                    <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
+
+                                        <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
+
                                     <?php
                                         foreach($usuarios as $usuario => $key){
 
-                                        $usuario = $key['APELLIDO'].'_'.$key['NOMBRE'].'++'.$key['BLOQUE'];
+                                        $usuario = $key['APELLIDO'].'_'.$key['NOMBRE'];
                                  
                                         $existeUsuarioEnDb = (isset($borradorEnc[0]['USUARIO_EMISOR'])) ? $borradorEnc[0]['USUARIO_EMISOR'] : "";
                                         
                                     ?>
-                                       <option value="<?= $key['APELLIDO'] ?>_<?= $key['NOMBRE'] ?>++<?=$key['BLOQUE']?>" <?php (isset($borradorEnc) && $usuario == $existeUsuarioEnDb ) ? "selected" : ""  ?> ><?= $key['APELLIDO'] ?> <?= $key['NOMBRE'] ?></option>
+                                       <option value="<?= $key['APELLIDO'] ?>_<?= $key['NOMBRE'] ?>" <?php (isset($borradorEnc) && $usuario == $existeUsuarioEnDb ) ? "selected" : ""  ?> ><?= $key['APELLIDO'] ?> <?= $key['NOMBRE'] ?></option>
                                     <?php
                                         }                            
                                     ?>
@@ -110,7 +112,9 @@
                                 <div>   
                                     <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
                                     <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar()">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+
+                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+
                                 </div>
 
                             </div>
@@ -167,15 +171,15 @@
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'"></td>
                                                 <td style="text-align:center">
                                                     
-                                                    <button class="btn btn-primary" type="button" style="margin-left: 5px" onclick="elegirImagen(this)">
+                                                    <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
                                                     <i class="bi bi-upload"></i> 
                                                     </button>
 
-                                                    <button class="btn btn-warning" style="margin-left:5px"  onclick="mostrarImagen(this)">
+                                                    <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem"  onclick="mostrarImagen(this)">
                                                     <i class="bi bi-eye" style="color:white"></i>
                                                     </button>
 
-                                                    <button class="btn btn-danger" style="margin-left:5px" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
+                                                    <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
 
                                                 </td>
                                             </tr>

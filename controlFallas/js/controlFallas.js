@@ -33,6 +33,7 @@ const limitarArchivos = (input,codArticulo) => {
 }
 
 const elegirImagen = (e) => {
+
     let codArticulo = e.parentElement.parentElement.querySelectorAll("td")[0].querySelector("select").value;
     document.querySelector('#archivos').setAttribute("onchange",`limitarArchivos(this,'${codArticulo}')`);
     document.getElementById('archivos').click();
@@ -148,6 +149,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
         numSolicitud:numSolicitud
 
       },
+
       success: function (response) {
 
         response = JSON.parse(response);
@@ -184,7 +186,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
 
                 let carouselItem = document.createElement('div');
                 carouselItem.className = index === startIndex ? 'carousel-item active' : 'carousel-item';
-
+                carouselItem.style = "text-align:center"
                 let imgElement = document.createElement('img');
                 imgElement.src = 'assets/uploads/' + imagen;
 
@@ -209,6 +211,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
           prevControl.setAttribute("onclick",'pasarImagen(-1)')
           let prevIcon = document.createElement('span');
           prevIcon.className = 'carousel-control-prev-icon';
+          prevIcon.style = 'background-color: black';
           prevIcon.setAttribute('aria-hidden', 'true');
           prevControl.appendChild(prevIcon);
 
@@ -221,6 +224,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
           nextControl.setAttribute("onclick",'pasarImagen(1)')
           let nextIcon = document.createElement('span');
           nextIcon.className = 'carousel-control-next-icon';
+          nextIcon.style = 'background-color: black';
           nextIcon.setAttribute('aria-hidden', 'true');
           nextControl.appendChild(nextIcon);
 
@@ -296,7 +300,17 @@ const copiarFila = (div) => {
 
       e.querySelector("input").value = "";
       e.querySelector("input").setAttribute("onchange","comprobarFila(this)");
+      e.querySelector("input").style.border = "1px solid";
 
+    }
+    if(x == 5){
+
+      if( e.querySelector("div") != null){
+
+        e.querySelector("div").remove();
+
+      }
+     
     }
       
   });
@@ -432,7 +446,7 @@ const parseNumber = (number) => {
   return newNumber;
 }
 
-const solicitar = () => {
+const solicitar = (esBorrador = false) => {
 
   let nroSucursal = document.querySelector("#nroSucursal").textContent;
   let fecha = document.querySelector("#fecha").value;
@@ -441,63 +455,176 @@ const solicitar = () => {
   let numSolicitud = document.querySelector("#numSolicitud").value;
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
-  let error = false;
-
-
+  let codArticulos = [];
   allTr.forEach(e => {
+    
+    codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]);
+  })
 
-    if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
 
-      dataArticulos.push({
-        codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
-        descripcion: e.querySelectorAll("td")[1].textContent,
-        precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
-        cantidad: e.querySelectorAll("td")[3].textContent,
-        descFalla: e.querySelectorAll("td")[4].querySelector("input").value
-      });
+  if(document.querySelector("#bodyArticulos").querySelector("td").querySelector("select").value == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Debe ingresar al menos un artículo',
+    })
+    return 1;
 
-    }else{
-
-      if(e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value == ""){
-
-        e.querySelectorAll("td")[4].querySelector("input").style.border = "1px solid red";
-      
-        error = true;
-      }
-
-    }
-
-  });
-
-  if(error == true){
-
-    alert("Debe completar los Campos Obligatorios");
-      return;
   }
 
-
   $.ajax({
-
-    url: "Controller/RecodificacionController.php?accion=solicitar",
+  
+    url: "Controller/RecodificacionController.php?accion=contarImagenes",
     type: "POST",
     data: {
-      nroSucursal: nroSucursal,
-      fecha: fecha,
-      usuario: usuario,
-      estado: estado,
-      numSolicitud: numSolicitud,
-      dataArticulos: dataArticulos
+      codArticulos: codArticulos,
+      numSolicitud:numSolicitud
+
     },
     success: function (response) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Solicitud Cargada Correctamente',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        let error = false
 
+        response = JSON.parse(response);
+
+        if(response['cantidad'] > 0) {
+
+          codArticulos.forEach(element => {   
+
+            if(response['nombre'].includes(element) == false){
+              allTr.forEach(e => {
+
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+
+                  if( e.querySelectorAll("td")[5].querySelector("div") != null){
+
+                    e.querySelectorAll("td")[5].querySelector("div").remove();
+
+                  }
+                 if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
+                  e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+                 }
+                  error = true;
+                }
+              })
+            }else{
+              
+              allTr.forEach(e => {
+
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+
+                  if( e.querySelectorAll("td")[5].querySelector("div") != null){
+
+                    e.querySelectorAll("td")[5].querySelector("div").remove();
+
+                  }
+                 
+                }
+              })
+
+            }
+
+          });
+ 
+        }else{
+
+          allTr.forEach(e => {
+
+            if( e.querySelectorAll("td")[5].querySelector("div") != null){
+
+              e.querySelectorAll("td")[5].querySelector("div").remove();
+
+            }
+            if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
+              e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+             }
+
+            error =  true;
+          })
+
+        }
+
+        if(error == false){
+
+          allTr.forEach(e => {
+
+    
+  
+
+            if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
+        
+              dataArticulos.push({
+                codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
+                descripcion: e.querySelectorAll("td")[1].textContent,
+                precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
+                cantidad: e.querySelectorAll("td")[3].textContent,
+                descFalla: e.querySelectorAll("td")[4].querySelector("input").value
+              });
+        
+            }else{
+        
+              if(e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value == ""){
+        
+                e.querySelectorAll("td")[4].querySelector("input").style.border = "1px solid red";
+              
+                error = true;
+              }
+        
+            }
+        
+          });
+        
+          if(error == true){
+        
+            alert("Debe completar los Campos Obligatorios");
+              return;
+          }
+        
+          Swal.fire({
+            icon: 'info',
+            title: 'Desea confirmar la solicitud?',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: 'Cancelar',
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+
+              $.ajax({
+        
+                url: "Controller/RecodificacionController.php?accion=solicitar",
+                type: "POST",
+                data: {
+                  nroSucursal: nroSucursal,
+                  fecha: fecha,
+                  usuario: usuario,
+                  estado: estado,
+                  numSolicitud: numSolicitud,
+                  dataArticulos: dataArticulos,
+                  esBorrador: esBorrador
+                },
+                success: function (response) {
+                   
+                  Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
+                      location.href = "seleccionDeSolicitudes.php";
+                  });
+          
+            
+                }
+    
+              });
+
+          
+            } else if (result.isDenied) {
+              Swal.fire('La solicitud no fue confirmada!', '', 'info')
+            }
+            })
+
+        }
     }
   });
+
+  return 1
+  
 
 
 }
@@ -529,6 +656,16 @@ const borrador = () => {
 
   });
 
+  if(document.querySelector("#bodyArticulos").querySelector("td").querySelector("select").value == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Debe ingresar al menos un artículo',
+    })
+    return 1;
+
+  }
+
   $.ajax({
 
     url: "Controller/RecodificacionController.php?accion=borrador",
@@ -544,10 +681,14 @@ const borrador = () => {
     success: function (response) {
         Swal.fire({
           icon: 'success',
-          title: 'Solicitud Cargada Correctamente',
+          title: 'Solicitud Guardada Correctamente',
           showConfirmButton: false,
           timer: 1500
-        })
+        }).then ((result) => {
+
+          location.href = "seleccionDeSolicitudes.php";
+
+        });
 
     }
   });
@@ -557,6 +698,7 @@ const borrador = () => {
 
 
 const existeBorrador = () =>{
+  
   let bodyArticulos = document.querySelectorAll("#bodyArticulos");
 
   bodyArticulos.forEach(articulo => {
@@ -568,5 +710,6 @@ const existeBorrador = () =>{
    
   });
   comprobarFila(bodyArticulos[bodyArticulos.length-1].querySelectorAll("td")[4].querySelector("input"));
-    // return true;
+  
 }
+
