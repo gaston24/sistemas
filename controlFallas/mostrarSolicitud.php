@@ -21,7 +21,7 @@
     }
     $tipoU = $_GET['tipoU'] ;
 
-   
+    $locales = $recodificacion->traerLocales();
 ?>
 
 <!DOCTYPE html>
@@ -129,6 +129,14 @@
                                     <th style="text-align:center;width: 200px;" >Precio</th>
                                     <th style="text-align:center;width: 200px;">Cantidad</th>
                                     <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
+                                    <?php 
+                                    if($tipoU == 2){
+                                        echo '<th style="text-align:center;width: 600px;" >Nuevo Codgio</th>';                              
+                                        echo '<th style="text-align:center;width: 600px;" >Destino</th>';                              
+                                        echo '<th style="text-align:center;width: 600px;" >Observaciones</th>';                              
+                                    }
+                                    
+                                    ?>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,7 +144,7 @@
                          
 
                                         foreach ($solicitudDetalle as $key => $detalle) {
-                                  
+                            
                                             echo '
                                             <tr id="bodyArticulos"> 
                                                 <td style="text-align:center">'.$detalle['COD_ARTICU'].'</td>
@@ -144,8 +152,28 @@
                                                 <td style="text-align:center">$'.number_format($detalle['PRECIO'], 0, ",",".").'</td>
                                                 <td style="text-align:center">'.$detalle['CANTIDAD'].'</td>
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'" disabled></td>
-                                              
-                                            </tr>
+                                                ';
+                                            if($tipoU == 2){
+                                                
+                                                $destino = "";
+                                                foreach ($locales as $key => $local) {
+
+                                                    if($local['NRO_SUCURSAL'] == $detalle['DESTINO']){
+                                                        $destino = $local['DESC_SUCURSAL'];
+                                                    }
+
+                                                }
+
+                                                echo '
+                                                    <td style="text-align:center">'.$detalle['NUEVO_CODIGO'].'</td>
+                                                    <td style="text-align:center">'.$destino.'</td>
+                                                    <td style="text-align:center">'.$detalle['OBSERVACIONES'].'</td>
+                                               ';
+        
+                                            }
+
+                                            echo '
+                                                </tr>
                                             ';
                                         }
 
