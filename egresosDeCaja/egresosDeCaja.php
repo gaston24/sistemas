@@ -16,7 +16,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 }
 
    $data = $egreso->traerGastos($desde, $hasta);
-   var_dump($desde);
+
 
    
 ?>
@@ -28,7 +28,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Solicitud de Recodificacion</title>
+        <title>Egresos de cajan</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
@@ -60,12 +60,12 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 
         <div class="alert alert-secondary">
             <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-                <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Solicitud De Recodificacion</h6></div>
+                <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Egresos de caja</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
                         
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Carga solicitud de recodificacion </strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Egresos de caja</strong></h3>
 
                         </div>
                         <form action="#">
@@ -108,7 +108,11 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 
                             <?php
 
-                                foreach ($data as $key => $gasto) {     
+                                foreach ($data as $key => $gasto) {   
+                                     
+                                    if($gasto['guardado'] == 1){
+                                      
+                                    } 
                                     
                             ?>
                         
@@ -122,16 +126,28 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                     <td style="text-align:center"><?= $gasto['USUARIO'] ?></td>
                                     <td style="text-align:center"><?= $gasto['LEYENDA'] ?></td>
                                     <td style="text-align:center;">
-
-                                        <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
-                                            <i class="bi bi-upload"></i> 
-                                        </button>
+                                    <?php 
+                                        if($gasto['guardado'] != 1){
+                                    ?>
+                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
+                                                <i class="bi bi-upload"></i> 
+                                            </button>
+                                    <?php
+                                        }
+                                    ?>
 
                                         <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
                                             <i class="bi bi-eye" style="color:white"></i>
                                         </button>
+                                        
+                                    <?php 
+                                        if($gasto['guardado'] != 1){
+                                    ?>
+                                            <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
+                                    <?php
+                                        }
+                                    ?>
 
-                                        <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
                                     </td>
                                     
                                 </tr>

@@ -1,6 +1,7 @@
 <?php
 
-// require_once "../class/Recodificacion.php";
+require_once "../class/Egreso.php";
+
 $accion = $_GET['accion'];
 
 switch ($accion) {
@@ -138,13 +139,23 @@ function contarFotosEnCarpeta() {
 }
 
 function guardar ()  {
+
+    $egreso = new Egreso();
     $data = $_POST['listaDeComprobantes'];
+    $arrayNcomp = [];
+
     foreach ($data as $key => $nComp) {
-        var_dump($nComp);
+
+        if(!in_array($nComp, $arrayNcomp)){
+            $arrayNcomp[] = $nComp;
+        }
         
 
     }
-
+    foreach ($arrayNcomp as $key => $value) {
+        
+        $egreso->existeFoto($value);
+    }
 }
 
 
