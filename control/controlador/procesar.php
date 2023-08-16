@@ -46,7 +46,7 @@ try {
 	error_log("NRO SUCURS: ".$nroSucurs);
 	error_log("SUC ORIG: ".$sucOrig);
 	error_log("SUC DESTIN: ".$sucDestin);
-	error_log("FECHA REM: ".$fechaRem);
+	error_log("FECHA REM: ".json_encode($fechaRem));
 	error_log("ARTICULOS CONTROLADOS: ".json_encode($articulosControlados));
 	error_log("ARTICULOS REMITO: ".$_SESSION['articulosRemito']);
 	error_log("-------- PROCESAR REMITO FINAL --------");
