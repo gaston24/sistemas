@@ -31,10 +31,14 @@ function eliminarArchivo () {
 
     $nComp = $_POST['nComp'];
 
+    $root = $_SERVER["DOCUMENT_ROOT"];
+
+    $targetDir = $root.'/Imagenes/egresosCaja/';
+    
 
     $fileName = $nComp;
 
-    if ($gestor = opendir("../assets/uploads")) {
+    if ($gestor = opendir($targetDir)) {
     
         while (($archivo = readdir($gestor)) !== false) {
       
@@ -43,7 +47,7 @@ function eliminarArchivo () {
                 if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
              
                   
-                    unlink("../assets/uploads/".pathinfo($archivo, PATHINFO_FILENAME).".jpg");
+                    unlink($targetDir.pathinfo($archivo, PATHINFO_FILENAME).".jpg");
                  
                 } 
  
@@ -63,6 +67,10 @@ function contarFotosEnCarpeta() {
     
     $nComp = (isset($_POST['nComp'])) ? $_POST['nComp'] : "";
     
+    $root = $_SERVER["DOCUMENT_ROOT"];
+
+    $targetDir = $root.'/Imagenes/egresosCaja/';
+    
     if(isset($_POST['arrayNcomp'])){
 
         $arrayArticulos = $_POST['arrayNcomp'];
@@ -78,7 +86,7 @@ function contarFotosEnCarpeta() {
         foreach ($arrayArticulos as $key => $codigo) {
             $fileName = $codigo;
             // Abre el directorio
-            if ($gestor = opendir("../assets/uploads")) {
+            if ($gestor = opendir($targetDir)) {
                 // Recorre los archivos en el directorio
                 while (($archivo = readdir($gestor)) !== false) {
                     // Ignora las carpetas "." y ".."
@@ -111,7 +119,7 @@ function contarFotosEnCarpeta() {
         $datosDeLosArchivos = [];
         $datosDeLosArchivos['cantidad'] = 0;
         // Abre el directorio
-        if ($gestor = opendir("../assets/uploads")) {
+        if ($gestor = opendir($targetDir)) {
             // Recorre los archivos en el directorio
             while (($archivo = readdir($gestor)) !== false) {
                 // Ignora las carpetas "." y ".."

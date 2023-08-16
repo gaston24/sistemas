@@ -1,9 +1,11 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][0])) {
-
     // Directorio donde se guardarán los archivos subidos
-    $targetDir = 'assets/uploads/';
+    $root = $_SERVER["DOCUMENT_ROOT"];
 
+    $targetDir = $root.'/Imagenes/egresosCaja/';
+    
+  
     // Crear el directorio si no existe
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
