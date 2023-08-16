@@ -14,9 +14,9 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 }else{
     $hasta = date('Y-m-d',strtotime("+1 days"));
 }
-
+ 
    $data = $egreso->traerGastos($desde, $hasta);
-
+    
 
    
 ?>
@@ -65,7 +65,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
                         
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Egresos de caja</strong></h3>
+                            <h3><strong><i class="bi bi-cash" style="margin-right:20px;font-size:40px"></i>Egresos de caja</strong></h3>
 
                         </div>
                         <form action="#">
@@ -73,10 +73,12 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                             <div style="margin-bottom:20px">
 
                                 <div class="row" style="margin-top:10px">
-
-                                    <div style="margin-left:90px">Desde: <input type="date" style="width:145px; height:35px" id="desde"  name="desde"  value = "<?= $desde ?> "  ></div>
-                                    <div style="margin-left:30px">Hasta : <input type="date" style="width:145px; height:35px" id="hsata"   name="hasta" value= "<?= $hasta ?> " ></div>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Filtrar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+                                        <?php
+                               
+                                        ?>
+                                    <div style="margin-left:90px">Desde: <input type="date" style="width:145px; height:35px"   name="desde"  value="<?php echo $desde ?>"  ></div>
+                                    <div style="margin-left:30px">Hasta : <input type="date" style="width:145px; height:35px"  name="hasta" value="<?php echo $hasta ?>"></div>
+                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                     
 
                                     <div style="margin-left:50%;">   
