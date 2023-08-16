@@ -53,5 +53,6 @@ const borrar = () => {
   document.querySelector("#stock").value =  "" ;
   document.querySelector("#precio").value = "";
 
+  document.querySelector("#selectArticulo").focus();
 
 }
