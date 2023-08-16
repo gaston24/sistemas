@@ -4,5 +4,5 @@
 procedimientos/archivos
 .env
 test.php
-controlFallas/assets/uploads
 egresosDeCaja/assets/uploads
+controlFallas/assets/uploads
