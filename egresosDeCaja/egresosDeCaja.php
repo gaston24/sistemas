@@ -99,7 +99,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                     <th style="text-align:center;width: 5%;" >MONTO</th>
                                     <th style="text-align:center;width: 5%;" >USUARIO</th>
                                     <th style="text-align:center;width: 15%;" >LEYENDA</th>
-                                    <th style="text-align:center;width: 10%;" ></th>
+                                    <th style="text-align:center;width: 10%;" >IMAGENES</th>
                                 </tr>
                             </thead>
                             <tbody>
