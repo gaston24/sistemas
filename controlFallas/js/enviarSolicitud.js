@@ -35,7 +35,7 @@ const enviar = () => {
                         type: "POST",
                         data: {
                             numSolicitud: numSolicitud,
-                            urlEmail: "emails/solicituEnviada.php",
+                            urlEmail: "emails/solicitudEnviada.php",
                         },
                         success: function (response) {
                     

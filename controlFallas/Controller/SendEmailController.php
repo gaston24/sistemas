@@ -100,9 +100,7 @@ function autorizarSolicitud () {
 
     $mailLocal = $recodificacion->traerMailAutorizaSolicitud($numSuc);
     $mailLocal = $mailLocal[0]['MAIL'];
-    var_dump($mailLocal);
-    die();
-    
+
     $message = str_replace('$desc_sucursal', $nombreSuc, $message);
     $message = str_replace('$numSolicitud', $numSolicitud , $message);
     $message = str_replace('$nombreSup', $usuario , $message);
@@ -173,7 +171,7 @@ function enviarSolicitud () {
 
             // Detalles del correo electrónico
             $mail->setFrom('notificaciones@xl.com.ar', 'XL Extralarge');
-            $mail->addAddress($usuario['MAIL']);
+            $mail->addAddress("paulobarrionuevo05@gmail.com");
             $mail->Subject = $asunto;
             $mail->Body = $message;
             $mail->isHTML(true);

@@ -138,7 +138,7 @@ const autorizar = () => {
                         success: function (response) {
                             Swal.fire('La solicitud fue autorizada!', '', 'success').then((result) => {
 
-                                // location.href = "seleccionDeSolicitudesSup.php";
+                                location.href = "seleccionDeSolicitudesSup.php";
 
                             })
 
