@@ -23,17 +23,8 @@ function traerArticulos () {
     
     $codArticulo = $_POST['codArticulo'];
 
-
-    if($codArticulo != null ){
-
-
-        $result = $articulo->traerMaestroArticulo($codArticulo);
+    $result = $articulo->traerMaestroArticulo($codArticulo);
      
-    }else{
-
-        $result = $articulo->traerMaestroArticulo();
-    }
-
 
     echo json_encode($result);
 

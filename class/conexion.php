@@ -25,7 +25,9 @@ class Conexion{
         }elseif($nameServer == 'locales'){
             return array($this->host_locales, $this->database_locales);
         }else{
-            session_start();
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
             return array($_SESSION['conexion_dns'], $_SESSION['base_nombre']);
         }
 

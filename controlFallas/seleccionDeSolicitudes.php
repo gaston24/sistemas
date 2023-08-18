@@ -95,8 +95,10 @@
                                     
                                         </select>
                                     </div>
+
                                     <button class="btn btn-primary btn-submit ml-2" style="margin-top: -0.15em; margin-right: 5rem; height: 38px">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                     <a href='cargaSolicitudFallas.php' class='btn btn-success' style="margin-top: -0.15em;">Nueva Solicitud <i class="bi bi-pencil-square"></i></a>
+
 
                                 </div>
 
@@ -124,24 +126,32 @@
                                     switch ($encabezado['ESTADO']) {
                                             
                                         case '1':
+
                                             $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px; border-style:none; padding: .3rem .6rem;' ><i class='bi bi-box-arrow-in-up'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+
                                             break;
 
                                         case '2':
                                             $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .3rem .6rem;'><i class='bi bi-check2-square'></i></button>";
+
                                             $accion = "<a href='enviarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-primary' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
+
                                             break;
 
                                         case '3':
                                             $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
+
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+
                                             break;
 
                                         case '4':
                                             $valorIdBorrador =$encabezado['ID'] - 1;
                                             $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
+
                                             $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
+
                                             break;
                                         
                                         default:

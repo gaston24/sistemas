@@ -10,7 +10,7 @@ const mostrarDescripcion = (div) => {
 
     cantidad.textContent = "1";
     descripcion.textContent = value.split("-")[1];
-    console.log(value);
+    // console.log(value);
     precio.textContent = "$"+ parseNumber(value.split("-")[2]);
 
 
@@ -117,6 +117,8 @@ const enviarImagenes = (codArticulo) => {
 
         alert(response); 
 
+        quitarErrorImagen()
+
       },
       error: function() {
 
@@ -126,6 +128,16 @@ const enviarImagenes = (codArticulo) => {
 
     });
     
+}
+
+const quitarErrorImagen = () => {
+  let divErrorImagen = document.querySelectorAll("#errorImagen");
+
+  divErrorImagen.forEach(e => {
+      e.remove();
+    }
+  );
+
 }
 
 const mostrarImagen = (divImagen, startIndex = 0) => {
@@ -189,6 +201,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
                 carouselItem.style = "text-align:center"
                 let imgElement = document.createElement('img');
                 imgElement.src = 'assets/uploads/' + imagen;
+                imgElement.classList.add('img-fluid');
 
                 carouselItem.appendChild(imgElement);
                 carouselInner.appendChild(carouselItem);
@@ -345,7 +358,7 @@ filaOriginal.after(filaClonada);
     data: function(params) {
         // Obtener los datos del Local Storage
         const storedData = JSON.parse(localStorage.getItem('articulos'));
-        console.log(storedData)
+        // console.log(storedData)
         // Filtrar los datos para que coincidan con el término de búsqueda
         const filteredData = storedData.filter(item => item.text.includes(params.term));
 
@@ -478,7 +491,7 @@ const solicitar = (esBorrador = false) => {
     type: "POST",
     data: {
       codArticulos: codArticulos,
-      numSolicitud:numSolicitud
+      numSolicitud: numSolicitud
 
     },
     success: function (response) {
@@ -501,7 +514,7 @@ const solicitar = (esBorrador = false) => {
 
                   }
                  if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
-                  e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+                  e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div id="errorImagen" style="font-size:20px;color:red">* cargar imagen</div>`
                  }
                   error = true;
                 }
@@ -535,7 +548,7 @@ const solicitar = (esBorrador = false) => {
 
             }
             if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
-              e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+              e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div id="errorImagen" style="font-size:20px;color:red">* cargar imagen</div>`
              }
 
             error =  true;
