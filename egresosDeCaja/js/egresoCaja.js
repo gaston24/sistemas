@@ -163,7 +163,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
 
           codigosImagenes.forEach((imagen, index) => {
 
-            validarExistenciaArchivo('assets/uploads/' + imagen, function(existe) {
+            validarExistenciaArchivo('../../../Imagenes/egresosCaja/' + imagen, function(existe) {
 
               if (existe) { 
 
@@ -171,7 +171,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
                 carouselItem.className = index === startIndex ? 'carousel-item active' : 'carousel-item';
                 carouselItem.style = "text-align:center"
                 let imgElement = document.createElement('img');
-                imgElement.src = 'assets/uploads/' + imagen;
+                imgElement.src = '../../../Imagenes/egresosCaja/' + imagen;
 
                 carouselItem.appendChild(imgElement);
                 carouselInner.appendChild(carouselItem);

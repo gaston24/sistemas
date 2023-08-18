@@ -78,7 +78,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                         ?>
                                     <div style="margin-left:90px">Desde: <input type="date" style="width:145px; height:35px"   name="desde"  value="<?php echo $desde ?>"  ></div>
                                     <div style="margin-left:30px">Hasta : <input type="date" style="width:145px; height:35px"  name="hasta" value="<?php echo $hasta ?>"></div>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
+                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" onclick= "">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                     
 
                                     <div style="margin-left:50%;">   
@@ -112,9 +112,6 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 
                                 foreach ($data as $key => $gasto) {   
                                      
-                                    if($gasto['guardado'] == 1){
-                                      
-                                    } 
                                     
                             ?>
                         
@@ -124,7 +121,21 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                     <td style="text-align:center"><?= $gasto['N_COMP'] ?></td>
                                     <td style="text-align:center"><?= $gasto['COD_CTA'] ?></td>
                                     <td style="text-align:center"><?= $gasto['DESC_CUENTA'] ?></td>
-                                    <td style="text-align:center"><?= $gasto['MONTO'] ?></td>
+                                    <?php 
+                                        if($gasto['MONTO'] < 0){
+
+                                            $monto = $gasto['MONTO'] * -1;
+                                            $valor = "- $". number_format($monto, 0, '.','.');
+                                            echo "<td style='text-align:center'>$valor</td>";
+
+                                        }else{
+
+                                            $valor = "$". number_format($gasto['MONTO'], 0, '.','.');
+                                            echo "<td style='text-align:center'>$valor</td>";
+
+                                        }
+                                    ?>
+                                    
                                     <td style="text-align:center"><?= $gasto['USUARIO'] ?></td>
                                     <td style="text-align:center"><?= $gasto['LEYENDA'] ?></td>
                                     <td style="text-align:center;">
