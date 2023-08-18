@@ -78,8 +78,10 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
+
                         
                             <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Carga solicitud de recodificacion </strong></h3>
+
 
                         </div>
 
@@ -89,7 +91,9 @@
 
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-d-m") : date("Y-d-m"); ?> id="fecha"  disabled ></div>
                                 <div style="margin-left:90px">Usuario Emisor: 
+
                                         <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
+
                                     <?php
                                         foreach($usuarios as $usuario => $key){
 
@@ -108,9 +112,12 @@
                                 <div>   
                                     <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
                                     <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
+
                                     <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+
                                     <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="margin-left:300px">Volver Al Listado</a>
                               
+
                                 </div>
 
                             </div>

@@ -50,6 +50,16 @@ include('estado_cuenta.php');
                 </div>
             </li>
 
+         
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Consultas
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item spinner" href="stockYprecios/consultaStockPrecios.php" onclick="location.href='guia_local'">Stock y Precios</a>
+                </div>
+            </li>
+       
             <!-- ECOMMERCE -->
             <?php
             if ($_SESSION['tipo'] != 'MAYORISTA') {
