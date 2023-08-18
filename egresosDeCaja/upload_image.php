@@ -13,8 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $totalFiles = count($_FILES['archivos']['name']);
 
     $uploadedFiles = 0;
+    $maxFileSize = 2 * 1024 * 1024; // 2 MB en bytes
   
     for ($i = 0; $i < $totalFiles; $i++) {
+
+        // Verificar el tamaño del archivo
+        if ($_FILES['archivos']['size'][$i] <= $maxFileSize) {
 
         // Obtener el timestamp actual en milisegundos
         $timestamp = strval(round(microtime(true) * 1000));  
@@ -59,6 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
 
                 $uploadedFiles++;
             }
+        }
+        } else {
+            echo "Error: El archivo excede el tamaño máximo permitido.";
         }
     }
 
