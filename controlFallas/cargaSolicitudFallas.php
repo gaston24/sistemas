@@ -115,6 +115,9 @@
 
                                     <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
 
+                                    <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="margin-left:300px">Volver Al Listado</a>
+                              
+
                                 </div>
 
                             </div>
