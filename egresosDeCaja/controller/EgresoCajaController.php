@@ -66,7 +66,7 @@ function eliminarArchivo () {
 function contarFotosEnCarpeta() {
     
     $nComp = (isset($_POST['nComp'])) ? $_POST['nComp'] : "";
-    
+
     $root = $_SERVER["DOCUMENT_ROOT"];
 
     $targetDir = $root.'/Imagenes/egresosCaja/';
@@ -76,7 +76,7 @@ function contarFotosEnCarpeta() {
         $arrayArticulos = $_POST['arrayNcomp'];
 
     }
-
+ 
 
     if(isset($arrayArticulos)){
         
@@ -160,9 +160,13 @@ function guardar ()  {
         
 
     }
+
     foreach ($arrayNcomp as $key => $value) {
         
-        $egreso->existeFoto($value);
+        $nComp = substr($value, 0, 14);
+        $codCta = substr($value, 14); 
+
+        $egreso->existeFoto($nComp, $codCta);
     }
 }
 
