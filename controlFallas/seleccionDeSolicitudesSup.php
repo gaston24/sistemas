@@ -4,6 +4,8 @@
  
     $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
     $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+ 
+
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();

@@ -121,12 +121,30 @@ const autorizar = () => {
                 type: "POST",
                 data: {
                     data: data,
-                    numSolicitud: numSolicitud
+                    numSolicitud: numSolicitud,
                 },
                 success: function (response) {
 
-                    Swal.fire('La solicitud fue autorizada!', '', 'success')
-                    location.href = "seleccionDeSolicitudesSup.php";
+               
+                    $.ajax({
+                        url: "Controller/SendEmailController.php?accion=autorizarSolicitud",
+                        type: "POST",
+                        data: {
+                            numSolicitud: numSolicitud,
+                            urlEmail: "emails/solicitudAutorizada.php",
+                            numSuc: document.querySelector("#nombreSuc").getAttribute("attr-realvalue"),
+                            nombreSuc: document.querySelector("#nombreSuc").value,
+                        },
+                        success: function (response) {
+                            Swal.fire('La solicitud fue autorizada!', '', 'success').then((result) => {
+
+                                // location.href = "seleccionDeSolicitudesSup.php";
+
+                            })
+
+                        }
+                    });
+
 
                 }
             });
