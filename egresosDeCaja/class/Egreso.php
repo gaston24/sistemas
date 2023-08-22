@@ -21,8 +21,10 @@ class Egreso
   
         $sql = "SELECT a.*, (case when b.FECHA_GUARDADO is not null then 1 else 0 end) guardado
         FROM [Lakerbis].locales_lakers.dbo.RO_V_GASTOS_CAJA_SUCURSALES  a
-        LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN
+        LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN AND a.cod_cta = b.COD_CTA 
         WHERE FECHA BETWEEN '$desde' AND '$hasta'";
+  
+
 
         $stmt = sqlsrv_query($this->cid_central, $sql);
 
@@ -42,9 +44,15 @@ class Egreso
 
     }
 
-    public function existeFoto ($nComp) {
+    public function existeFoto ($nComp, $codCta) {
         
-        $sql = "INSERT INTO SJ_EGRESOS_DE_CAJA_GUARDADO (N_COMP,FECHA_GUARDADO) VALUES ('$nComp', GETDATE())";
+        $sql = "INSERT INTO SJ_EGRESOS_DE_CAJA_GUARDADO (N_COMP, FECHA_GUARDADO, COD_CTA)
+        SELECT '$nComp', GETDATE(), '$codCta'
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM SJ_EGRESOS_DE_CAJA_GUARDADO
+            WHERE N_COMP = '$nComp' AND COD_CTA = '$codCta'
+        );";
 
         try{
 

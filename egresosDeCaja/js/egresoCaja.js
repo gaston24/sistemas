@@ -1,5 +1,5 @@
 
-const limitarArchivos = (input,nComp) => {
+const limitarArchivos = (input,nComp,codCta) => {
 
     const maxFiles = 3;
 
@@ -11,22 +11,23 @@ const limitarArchivos = (input,nComp) => {
 
     }
 
-    cargarArchivos(input,nComp);
+    cargarArchivos(input,nComp,codCta);
 
 }
 
 const elegirImagen = (e) => {
 
     let nComp = e.parentElement.parentElement.querySelectorAll("td")[2].textContent;
-    document.querySelector('#archivos').setAttribute("onchange",`limitarArchivos(this,'${nComp}')`);
+    let codCta = e.parentElement.parentElement.querySelectorAll("td")[3].textContent;
+    document.querySelector('#archivos').setAttribute("onchange",`limitarArchivos(this,'${nComp}','${codCta}')`);
     document.getElementById('archivos').click();
 
 }
   
-const cargarArchivos = (input,nComp) => {
+const cargarArchivos = (input,nComp,codCta) => {
 
 
-  eliminarArchivo(input,false,nComp); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
+  eliminarArchivo(input,false,nComp,codCta); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
 
   const file = document.getElementById('archivos').files[0];
 
@@ -52,17 +53,17 @@ const cargarArchivos = (input,nComp) => {
       
   }
 
-  enviarImagenes(nComp);
+  enviarImagenes(nComp,codCta);
 
 };
 
-const enviarImagenes = (nComp) => {
+const enviarImagenes = (nComp,codCta) => {
    
     // nComp = codArticulo.split("-")[0];
   
     const input = document.getElementById('archivos');
     let files = input.files;
-    nameFile = nComp ;
+    nameFile = nComp+codCta;
     const formData = new FormData();
     const maxFiles = 3;
 
@@ -116,7 +117,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
  
     let codigosImagenes = [];
   
-    let nComp = divImagen.parentElement.parentElement.querySelectorAll("td")[2].textContent;
+    let nombre = divImagen.parentElement.parentElement.querySelectorAll("td")[2].textContent + divImagen.parentElement.parentElement.querySelectorAll("td")[3].textContent;
 
     
     let carouselElement = document.querySelector('#carruselImagenes'); 
@@ -128,7 +129,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
       url: "Controller/EgresoCajaController.php?accion=contarImagenes",
       type: "POST",
       data: {
-        nComp:nComp
+        nComp:nombre
      
 
       },
@@ -265,16 +266,16 @@ const validarExistenciaArchivo = (rutaArchivo, callback) => {
     img.src = rutaArchivo;
 }
   
-const eliminarArchivo = (div,alerta = true,nComp = null) => {
+const eliminarArchivo = (div,alerta = true,nComp = null,codCta = null) => {
 
 
   if(!nComp) {
 
-    numComp = div.parentElement.parentElement.querySelectorAll("td")[2].textContent;
+    numComp = div.parentElement.parentElement.querySelectorAll("td")[2].textContent + div.parentElement.parentElement.querySelectorAll("td")[3].textContent;
 
   }else{
 
-    numComp = nComp;
+    numComp = nComp+codCta;
 
   }
 
@@ -305,9 +306,10 @@ const guardar = (esBorrador = false) => {
   let allTr = document.querySelectorAll("#bodyTable");
   let dataArticulos = [];
   let nComp = [];
+
   allTr.forEach(e => {
 
-    nComp.push(e.querySelectorAll("td")[2].textContent);
+    nComp.push(e.querySelectorAll("td")[2].textContent+e.querySelectorAll("td")[3].textContent);
 
   })
 
@@ -333,7 +335,7 @@ const guardar = (esBorrador = false) => {
             },
             success: function (response) {
               alert("Se guardó correctamente");
-              location.reload(); 
+              // location.reload(); 
             }
 
             });
