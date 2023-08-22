@@ -15,8 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $totalFiles = count($_FILES['archivos']['name']);
 
     $uploadedFiles = 0;
+    $maxFileSize = 2 * 1024 * 1024; // 2 MB en bytes
   
     for ($i = 0; $i < $totalFiles; $i++) {
+
+        // Verificar el tamaño del archivo
+        if ($_FILES['archivos']['size'][$i] <= $maxFileSize) {
 
         // Obtener el timestamp actual en milisegundos
         $timestamp = strval(round(microtime(true) * 1000));  
@@ -33,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
 
                 // Obtener las dimensiones originales de la imagen
                 list($originalWidth, $originalHeight) = getimagesize($targetFile);
+                
 
-                // Redimensionar solo si es más grande que 800x600
                 if ($originalWidth > 800 || $originalHeight > 600) {
                     $newWidth = 800;
                     $newHeight = 600;
@@ -60,9 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
                     imagedestroy($sourceImage);
                     imagedestroy($resizedImage);
                 }
-                
+
+
+
                 $uploadedFiles++;
             }
+        }
+        } else {
+            echo "Error: El archivo excede el tamaño máximo permitido.";
         }
     }
 
@@ -70,4 +79,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
 } else {
     echo "Error: No se seleccionaron archivos o se produjo un error en la carga.";
 }
+
 ?>

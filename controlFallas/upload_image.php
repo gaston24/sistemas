@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $totalFiles = count($_FILES['archivos']['name']);
 
     $uploadedFiles = 0;
+    $maxFileSize = 2 * 1024 * 1024; // 2 MB en bytes
   
     for ($i = 0; $i < $totalFiles; $i++) {
 
@@ -26,10 +27,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
 
         // Permitir solo ciertos tipos de archivos
         $allowedTypes = array('pdf', 'jpg', 'png');
-        if (in_array($fileType, $allowedTypes)) {
+
+        if (in_array($fileType, $allowedTypes) && $_FILES['archivos']['size'][$i] <= $maxFileSize) {
             if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $targetFile)) {
+                
+                 // Obtener las dimensiones originales de la imagen
+                 list($originalWidth, $originalHeight) = getimagesize($targetFile);
+                
+                 if ($originalWidth > 800 || $originalHeight > 600) {
+                     $newWidth = 800;
+                     $newHeight = 600;
+ 
+                     $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+                     $sourceImage = imagecreatefromjpeg($targetFile); // Cambia a la función adecuada según el tipo de imagen
+ 
+                     imagecopyresized(
+                         $resizedImage,
+                         $sourceImage,
+                         0,
+                         0,
+                         0,
+                         0,
+                         $newWidth,
+                         $newHeight,
+                         $originalWidth,
+                         $originalHeight
+                     );
+ 
+                     imagejpeg($resizedImage, $targetFile);
+ 
+                     imagedestroy($sourceImage);
+                     imagedestroy($resizedImage);
+                 }
                 $uploadedFiles++;
             }
+        } else {
+            echo "Error: El archivo no es de un tipo permitido o excede el tamaño máximo permitido.";
         }
     }
 
@@ -37,4 +70,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
 } else {
     echo "Error: No se seleccionaron archivos o se produjo un error en la carga.";
 }
+
 ?>
