@@ -603,7 +603,6 @@ const solicitar = (esBorrador = false) => {
                   esBorrador: esBorrador
                 },
                 success: function (response) {
-                  return 1;
                    
                   Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
                       $.ajax({
@@ -614,7 +613,7 @@ const solicitar = (esBorrador = false) => {
                           urlEmail: "emails/solicitudConfirmada.php"
                         },
                         success: function (response) {
-                          // location.href = "seleccionDeSolicitudes.php";
+                          location.href = "seleccionDeSolicitudes.php";
                         }
                       });
                   });
