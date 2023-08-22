@@ -1,9 +1,11 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][0])) {
-
     // Directorio donde se guardarán los archivos subidos
-    $targetDir = 'assets/uploads/';
+    $root = $_SERVER["DOCUMENT_ROOT"];
 
+    $targetDir = $root.'/Imagenes/egresosCaja/';
+    
+  
     // Crear el directorio si no existe
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -32,9 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
         $allowedTypes = array('pdf', 'jpg', 'png');
         if (in_array($fileType, $allowedTypes)) {
             if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $targetFile)) {
+
                 // Obtener las dimensiones originales de la imagen
                 list($originalWidth, $originalHeight) = getimagesize($targetFile);
                 
+
                 if ($originalWidth > 800 || $originalHeight > 600) {
                     $newWidth = 800;
                     $newHeight = 600;
@@ -60,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
                     imagedestroy($sourceImage);
                     imagedestroy($resizedImage);
                 }
+
+
 
                 $uploadedFiles++;
             }

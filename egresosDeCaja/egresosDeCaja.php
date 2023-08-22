@@ -14,9 +14,9 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 }else{
     $hasta = date('Y-m-d',strtotime("+1 days"));
 }
-
+ 
    $data = $egreso->traerGastos($desde, $hasta);
-   var_dump($desde);
+    
 
    
 ?>
@@ -28,7 +28,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Solicitud de Recodificacion</title>
+        <title>Egresos de cajan</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
@@ -60,12 +60,12 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 
         <div class="alert alert-secondary">
             <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-                <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Solicitud De Recodificacion</h6></div>
+                <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Egresos de caja</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
                         
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Carga solicitud de recodificacion </strong></h3>
+                            <h3><strong><i class="bi bi-cash" style="margin-right:20px;font-size:40px"></i>Egresos de caja</strong></h3>
 
                         </div>
                         <form action="#">
@@ -73,10 +73,12 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                             <div style="margin-bottom:20px">
 
                                 <div class="row" style="margin-top:10px">
-
-                                    <div style="margin-left:90px">Desde: <input type="date" style="width:145px; height:35px" id="desde"  name="desde"  value = "<?= $desde ?> "  ></div>
-                                    <div style="margin-left:30px">Hasta : <input type="date" style="width:145px; height:35px" id="hsata"   name="hasta" value= "<?= $hasta ?> " ></div>
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Filtrar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+                                        <?php
+                               
+                                        ?>
+                                    <div style="margin-left:90px">Desde: <input type="date" style="width:145px; height:35px"   name="desde"  value="<?php echo $desde ?>"  ></div>
+                                    <div style="margin-left:30px">Hasta : <input type="date" style="width:145px; height:35px"  name="hasta" value="<?php echo $hasta ?>"></div>
+                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:20px;width:110px" onclick= "">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                     
 
                                     <div style="margin-left:50%;">   
@@ -99,7 +101,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                     <th style="text-align:center;width: 5%;" >MONTO</th>
                                     <th style="text-align:center;width: 5%;" >USUARIO</th>
                                     <th style="text-align:center;width: 15%;" >LEYENDA</th>
-                                    <th style="text-align:center;width: 10%;" ></th>
+                                    <th style="text-align:center;width: 10%;" >IMAGENES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,7 +110,8 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
 
                             <?php
 
-                                foreach ($data as $key => $gasto) {     
+                                foreach ($data as $key => $gasto) {   
+                                     
                                     
                             ?>
                         
@@ -118,20 +121,46 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                     <td style="text-align:center"><?= $gasto['N_COMP'] ?></td>
                                     <td style="text-align:center"><?= $gasto['COD_CTA'] ?></td>
                                     <td style="text-align:center"><?= $gasto['DESC_CUENTA'] ?></td>
-                                    <td style="text-align:center"><?= $gasto['MONTO'] ?></td>
+                                    <?php 
+                                        if($gasto['MONTO'] < 0){
+
+                                            $monto = $gasto['MONTO'] * -1;
+                                            $valor = "- $". number_format($monto, 0, '.','.');
+                                            echo "<td style='text-align:center'>$valor</td>";
+
+                                        }else{
+
+                                            $valor = "$". number_format($gasto['MONTO'], 0, '.','.');
+                                            echo "<td style='text-align:center'>$valor</td>";
+
+                                        }
+                                    ?>
+                                    
                                     <td style="text-align:center"><?= $gasto['USUARIO'] ?></td>
                                     <td style="text-align:center"><?= $gasto['LEYENDA'] ?></td>
                                     <td style="text-align:center;">
-
-                                        <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
-                                            <i class="bi bi-upload"></i> 
-                                        </button>
+                                    <?php 
+                                        if($gasto['guardado'] != 1){
+                                    ?>
+                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
+                                                <i class="bi bi-upload"></i> 
+                                            </button>
+                                    <?php
+                                        }
+                                    ?>
 
                                         <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
                                             <i class="bi bi-eye" style="color:white"></i>
                                         </button>
+                                        
+                                    <?php 
+                                        if($gasto['guardado'] != 1){
+                                    ?>
+                                            <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
+                                    <?php
+                                        }
+                                    ?>
 
-                                        <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
                                     </td>
                                     
                                 </tr>
