@@ -3,8 +3,8 @@
     session_start();
     require_once 'class/Recodificacion.php';
  
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
+    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();

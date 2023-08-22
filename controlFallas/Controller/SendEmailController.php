@@ -171,7 +171,7 @@ function enviarSolicitud () {
 
             // Detalles del correo electrónico
             $mail->setFrom('notificaciones@xl.com.ar', 'XL Extralarge');
-            $mail->addAddress("paulobarrionuevo05@gmail.com");
+            $mail->addAddress($usuario['MAIL']);
             $mail->Subject = $asunto;
             $mail->Body = $message;
             $mail->isHTML(true);

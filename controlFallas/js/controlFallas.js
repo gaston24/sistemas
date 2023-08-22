@@ -603,6 +603,7 @@ const solicitar = (esBorrador = false) => {
                   esBorrador: esBorrador
                 },
                 success: function (response) {
+                  return 1;
                    
                   Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
                       $.ajax({

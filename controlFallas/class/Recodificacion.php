@@ -47,11 +47,11 @@ class Recodificacion
 
         if($borrador != "false"){
 
-            $sql = "UPDATE sj_reco_locales_enc SET ESTADO = $estado, UPDATED_AT = GETDATE() WHERE ID = $numSolicitud AND ESTADO = '4';";
+            $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '$estado', UPDATED_AT = GETDATE() WHERE ID = '$numSolicitud' AND ESTADO = '4';";
 
         }else{
 
-            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($nroSucursal, '$fecha', '$usuario', $estado )";
+            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ('$nroSucursal', '$fecha', '$usuario', '$estado' )";
             
         }
  
