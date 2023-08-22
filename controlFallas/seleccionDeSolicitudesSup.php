@@ -18,7 +18,7 @@
     $hastaFormat = $fecha_objeto->format('Y-m-d');
 
 
-    $result = $recodificacion->traerSolicitudes($nroSucurs, $desdeFormat, $hastaFormat, $estado, 1);
+    $result = $recodificacion->traerSolicitudes(null, $desdeFormat, $hastaFormat, $estado, 1);
     $locales = $recodificacion->traerLocales();
 
     

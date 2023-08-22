@@ -168,9 +168,8 @@ class Recodificacion
     }
 
 
-    public function traerSolicitudes($nroSucursal, $desde, $hasta, $estado, $sup = null) 
+    public function traerSolicitudes($nroSucursal = null, $desde, $hasta, $estado, $sup = null) 
     {   
-
         $sql = "
         SET DATEFORMAT YMD
         SELECT 
@@ -183,9 +182,13 @@ class Recodificacion
         SUM(det.cantidad) AS cantidad_total_articulos
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
-        WHERE enc.NUM_SUC ='$nroSucursal' 
-        AND enc.FECHA BETWEEN '$desde' AND '$hasta'
+        WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'
         AND enc.ESTADO LIKE '%$estado%'";
+
+        if($nroSucursal != null){
+            $sql .= "AND enc.NUM_SUC = '$nroSucursal'";
+        }
+
         if($sup == 1){
             $sql .= "AND enc.ESTADO != '4'";
         }
