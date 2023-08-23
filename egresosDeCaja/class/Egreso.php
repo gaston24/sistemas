@@ -16,13 +16,14 @@ class Egreso
 
     } 
 
-    public function traerGastos($desde, $hasta)
+    public function traerGastos($desde, $hasta, $nroSucursal)
     {
   
         $sql = "SELECT a.*, (case when b.FECHA_GUARDADO is not null then 1 else 0 end) guardado
         FROM [Lakerbis].locales_lakers.dbo.RO_V_GASTOS_CAJA_SUCURSALES  a
         LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN AND a.cod_cta = b.COD_CTA 
-        WHERE FECHA BETWEEN '$desde' AND '$hasta'";
+        WHERE FECHA BETWEEN '$desde' AND '$hasta'
+        AND a.NRO_SUCURS = '$nroSucursal'";
   
 
 

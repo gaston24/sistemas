@@ -47,11 +47,11 @@ class Recodificacion
 
         if($borrador != "false"){
 
-            $sql = "UPDATE sj_reco_locales_enc SET ESTADO = $estado, UPDATED_AT = GETDATE() WHERE ID = $numSolicitud AND ESTADO = '4';";
+            $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '$estado', UPDATED_AT = GETDATE() WHERE ID = '$numSolicitud' AND ESTADO = '4';";
 
         }else{
 
-            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ($nroSucursal, '$fecha', '$usuario', $estado )";
+            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ('$nroSucursal', '$fecha', '$usuario', '$estado' )";
             
         }
  
@@ -434,5 +434,55 @@ class Recodificacion
     }
 
     
-   
+   public function traerUsuariosNotificaSolicitud () {
+    
+        $sql = " SELECT DESCRIPCION, MAIL FROM SOF_USUARIOS WHERE TIPO = 'SUPERVISION' AND NOTIFICA = 1";
+
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+   }
+
+   public function traerMailAutorizaSolicitud ($numSucursal) {
+
+        $sql = "select MAIL from RO_MAILS_LOCALES_PROPIOS WHERE NRO_SUCURS = '$numSucursal'";
+
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+   }
 }

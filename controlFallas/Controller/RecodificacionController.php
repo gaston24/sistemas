@@ -1,6 +1,7 @@
 <?php
 
-require_once "../class/Recodificacion.php";
+require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
+
 $accion = $_GET['accion'];
 
 switch ($accion) {
@@ -177,8 +178,9 @@ function contarFotosEnCarpeta() {
 function solicitar () {
 
     $nroSucursal = $_POST['nroSucursal'];
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $_POST['fecha']);
-    $fecha = $fecha_objeto->format('Y-m-d');
+
+    $fecha = $_POST['fecha'];
+    
     $usuario = $_POST['usuario'];
     $estado = $_POST['estado'];
     $numSolicitud = $_POST['numSolicitud'];
@@ -206,8 +208,8 @@ function borrador () {
    
     $nroSucursal = $_POST['nroSucursal'];
 
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $_POST['fecha']);
-    $fecha = $fecha_objeto->format('Y-m-d');
+
+    $fecha = $_POST['fecha'];
 
     $usuario = $_POST['usuario'];
     $estado = $_POST['estado'];

@@ -3,7 +3,7 @@
    require_once __DIR__.'/../class/remito.php';
    require_once '../ajustes/class/Articulo.php';
    require_once '../ajustes/class/Ajuste.php';
-   require_once 'class/Recodificacion.php';
+   require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();
@@ -89,7 +89,7 @@
 
                             <div class="row" style="margin-top:10px">
 
-                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-d-m") : date("Y-d-m"); ?> id="fecha"  disabled ></div>
+                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-m-d") : date("Y-m-d") ?> id="fecha"  disabled ></div>
                                 <div style="margin-left:90px">Usuario Emisor: 
 
                                         <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
