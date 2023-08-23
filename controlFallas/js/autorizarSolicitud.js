@@ -131,7 +131,6 @@ const autorizar = () => {
                         type: "POST",
                         data: {
                             numSolicitud: numSolicitud,
-                            urlEmail: "emails/solicitudAutorizada.php",
                             numSuc: document.querySelector("#nombreSuc").getAttribute("attr-realvalue"),
                             nombreSuc: document.querySelector("#nombreSuc").value,
                         },

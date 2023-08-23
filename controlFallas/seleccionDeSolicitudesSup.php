@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    require_once 'class/Recodificacion.php';
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
     $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
     $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
@@ -12,10 +12,10 @@
     $nroSucurs = $_SESSION['numsuc'];
    
 
-    $result = $recodificacion->traerSolicitudes($nroSucurs, $desde, $hasta, $estado, 1);
+    $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
     $locales = $recodificacion->traerLocales();
 
-    
+
    
 ?>
 

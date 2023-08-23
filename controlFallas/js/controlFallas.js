@@ -609,10 +609,10 @@ const solicitar = (esBorrador = false) => {
                         url: "Controller/SendEmailController.php?accion=confirmarSolicitud",
                         type: "POST",
                         data: {
-                          numSolicitud:numSolicitud,
-                          urlEmail: "emails/solicitudConfirmada.php"
+                          numSolicitud:numSolicitud
                         },
                         success: function (response) {
+                          console.log(response)
                           location.href = "seleccionDeSolicitudes.php";
                         }
                       });

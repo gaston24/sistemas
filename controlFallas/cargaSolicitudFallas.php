@@ -3,7 +3,7 @@
    require_once __DIR__.'/../class/remito.php';
    require_once '../ajustes/class/Articulo.php';
    require_once '../ajustes/class/Ajuste.php';
-   require_once 'class/Recodificacion.php';
+   require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();

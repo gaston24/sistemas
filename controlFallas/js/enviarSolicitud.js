@@ -34,8 +34,7 @@ const enviar = () => {
                         url: "Controller/SendEmailController.php?accion=enviarSolicitud",
                         type: "POST",
                         data: {
-                            numSolicitud: numSolicitud,
-                            urlEmail: "emails/solicitudEnviada.php",
+                            numSolicitud: numSolicitud
                         },
                         success: function (response) {
                     
