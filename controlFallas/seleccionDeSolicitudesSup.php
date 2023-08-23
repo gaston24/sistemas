@@ -13,6 +13,7 @@
    
 
     $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
+
     $locales = $recodificacion->traerLocales();
 
 
