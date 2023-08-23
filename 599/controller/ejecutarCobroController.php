@@ -20,6 +20,13 @@ $remitoEquis = new RemitoEquis();
 
 $remitosParceados = "";
 
+$existeCobro = $remitoEquis->buscarCobro ($codClient, $cobroEfectivo, $cobroCheque, $importeTotal) ;
+
+if($existeCobro) {
+    echo false;
+    die();
+}
+
 
 $idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente, $valorDescontado, $username);
 
@@ -72,7 +79,8 @@ foreach ($remitosDetalle as $detalle) {
 
 
 
- 
+echo true;
+
 
 
 ?>

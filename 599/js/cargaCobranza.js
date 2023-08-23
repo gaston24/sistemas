@@ -83,8 +83,16 @@ const confirmarCobro = (codClient) => {
                     },
                     success: function (data) {
 
-                        window.location.href = "composicionDeRemitos.php";
-                        Swal.fire('Saved!', '', 'success');
+                        if(data == true){
+
+                            window.location.href = "composicionDeRemitos.php";
+                            Swal.fire('Saved!', '', 'success');
+
+                        }else {
+                            Swal.fire('Error!', 'El cobro ya existe en la base de datos, porfavor regrese a la pantalla de seleccion y recargue', 'error').then((result) => {
+                                window.location.href = "seleccionCobranza.php";
+                            });
+                        }
 
                     }
                 });
