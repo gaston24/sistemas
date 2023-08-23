@@ -58,6 +58,10 @@ class DotEnv
             'PASS_LOCALES' => getenv('PASS_LOCALES'),
             'CHARACTER' => getenv('CHARACTER'),
             'ENV' => getenv('ENV'),
+            'HOST_EMAIL' => getenv('HOST_EMAIL'),
+            'USER_EMAIL' => getenv('USER_EMAIL'),
+            'PASS_EMAIL' => getenv('PASS_EMAIL'),
+            
 
         );
 
