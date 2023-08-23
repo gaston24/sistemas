@@ -136,11 +136,10 @@ const autorizar = () => {
                             nombreSuc: document.querySelector("#nombreSuc").value,
                         },
                         success: function (response) {
-                            Swal.fire('La solicitud fue autorizada!', '', 'success').then((result) => {
-
+                            Swal.fire('La solicitud fue autorizada!', '', 'success').then((result) => {    
+                            }).then((result) => {
                                 location.href = "seleccionDeSolicitudesSup.php";
-
-                            })
+                            } )
 
                         }
                     });
