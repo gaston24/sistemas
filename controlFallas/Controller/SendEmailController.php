@@ -1,12 +1,10 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+session_start();
 
-require  $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/PHPMailer/PHPMailer.php';
-require  $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/PHPMailer/SMTP.php';
-require  $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/PHPMailer/Exception.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/email.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/controlFallas/class/Recodificacion.php';
 
+$recodificacion = new Recodificacion();
 
 $accion = $_GET['accion'];
 
@@ -28,16 +26,8 @@ switch ($accion ) {
         break;
 }
 
-  
-
-
 
 function confirmarSolicitud () {
-
-    session_start();
-
-    require_once '../class/Recodificacion.php';
-    $recodificacion = new Recodificacion();
 
     $usuarios = $recodificacion->traerUsuariosNotificaSolicitud();
     
@@ -46,35 +36,20 @@ function confirmarSolicitud () {
     $url = $_SERVER["DOCUMENT_ROOT"].'/sistemas/controlFallas/'. $urlEmail;
 
     $message = file_get_contents($url); // Carga el contenido del archivo HTML
-
     $message = str_replace('$desc_sucursal', $_SESSION['descLocal'], $message);
     $message = str_replace('$numSolicitud', $numSolicitud , $message);
-    $mail = new PHPMailer(true);
     $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud N ° $numSolicitud";
 
+    $email = new Email();
+    
     try {
-        // Configuración del servidor SMTP
+
         foreach ($usuarios as $key => $usuario) {
 
-            $mail->isSMTP();
-            $mail->Host = 'mail.xl.com.ar';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'notificaciones@xl.com.ar';
-            $mail->Password = '%3xtr44415_';
-            $mail->SMTPSecure = false;
-            $mail->Port = 26;
-
-            // Detalles del correo electrónico
-            $mail->setFrom('notificaciones@xl.com.ar', 'XL Extralarge');
-            $mail->addAddress($usuario['MAIL']);
-            $mail->Subject = $asunto;
-            $mail->Body = $message;
-            $mail->isHTML(true);
-
-            $mail->send();
+            $email->enviarEmail($usuario['MAIL'], $asunto, $message);
 
         }
-        echo 'Correo enviado correctamente';
+        
     } catch (Exception $e) {
         echo "Error al enviar el correo: {$mail->ErrorInfo}";
     }
@@ -82,10 +57,6 @@ function confirmarSolicitud () {
 }
 
 function autorizarSolicitud () {
-
-    require_once '../class/Recodificacion.php';
-    $recodificacion = new Recodificacion();
-    session_start();
 
     $usuario = $_SESSION['username'];
     
@@ -97,9 +68,8 @@ function autorizarSolicitud () {
 
     $message = file_get_contents($url); // Carga el contenido del archivo HTML
 
-
-    $mailLocal = $recodificacion->traerMailAutorizaSolicitud($numSuc);
-    $mailLocal = $mailLocal[0]['MAIL'];
+    $emailLocal = $recodificacion->traerMailAutorizaSolicitud($numSuc);
+    $emailLocal = $emailLocal[0]['MAIL'];
 
     $message = str_replace('$desc_sucursal', $nombreSuc, $message);
     $message = str_replace('$numSolicitud', $numSolicitud , $message);
@@ -110,27 +80,9 @@ function autorizarSolicitud () {
     $asunto =  "$nombreSuc - Cambio de estado en Solicitud N ° $numSolicitud";
 
     try {
-        // Configuración del servidor SMTP
 
-            $mail->isSMTP();
-            $mail->Host = 'mail.xl.com.ar';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'notificaciones@xl.com.ar';
-            $mail->Password = '%3xtr44415_';
-            $mail->SMTPSecure = false;
-            $mail->Port = 26;
-
-            // Detalles del correo electrónico
-            $mail->setFrom('notificaciones@xl.com.ar', 'XL Extralarge');
-            $mail->addAddress($mailLocal);
-            $mail->Subject = $asunto;
-            $mail->Body = $message;
-            $mail->isHTML(true);
-
-            $mail->send();
-
+        $email->enviarEmail($emailLocal, $asunto, $message);
     
-        echo 'Correo enviado correctamente';
     } catch (Exception $e) {
         echo "Error al enviar el correo: {$mail->ErrorInfo}";
     }
@@ -138,11 +90,6 @@ function autorizarSolicitud () {
 }
 
 function enviarSolicitud () {
-
-    session_start();
-
-    require_once '../class/Recodificacion.php';
-    $recodificacion = new Recodificacion();
 
     $usuarios = $recodificacion->traerUsuariosNotificaSolicitud();
     
@@ -158,26 +105,11 @@ function enviarSolicitud () {
     $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud N ° $numSolicitud";
 
     try {
-        // Configuración del servidor SMTP
+
         foreach ($usuarios as $key => $usuario) {
 
-            $mail->isSMTP();
-            $mail->Host = 'mail.xl.com.ar';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'notificaciones@xl.com.ar';
-            $mail->Password = '%3xtr44415_';
-            $mail->SMTPSecure = false;
-            $mail->Port = 26;
-
-            // Detalles del correo electrónico
-            $mail->setFrom('notificaciones@xl.com.ar', 'XL Extralarge');
-            $mail->addAddress($usuario['MAIL']);
-            $mail->Subject = $asunto;
-            $mail->Body = $message;
-            $mail->isHTML(true);
-
-            $mail->send();
-
+            $email->enviarEmail($usuario['MAIL'], $asunto, $message);
+            
         }
         echo 'Correo enviado correctamente';
     } catch (Exception $e) {
