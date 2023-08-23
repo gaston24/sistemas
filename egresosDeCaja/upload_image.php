@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
                 
 
                 if ($originalWidth > 800 || $originalHeight > 600) {
-                    $newWidth = 1920;
-                    $newHeight = 1000;
+                    $newWidth = 1200;
+                    $newHeight = 1700;
 
                     $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
                     $sourceImage = imagecreatefromjpeg($targetFile); // Cambia a la función adecuada según el tipo de imagen

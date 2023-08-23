@@ -336,7 +336,7 @@ const guardar = (esBorrador = false) => {
             },
             success: function (response) {
               alert("Se guardó correctamente");
-              // location.reload(); 
+              location.reload(); 
             }
 
             });
