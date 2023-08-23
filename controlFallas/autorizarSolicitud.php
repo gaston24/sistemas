@@ -1,10 +1,10 @@
 <?php 
 
     session_start();
-    require_once 'class/Recodificacion.php';
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
+    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();
@@ -72,7 +72,7 @@
                                 <div class="row" style="margin-top:10px">
 
                                     <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:35px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:35px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
+                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:35px;margin-left:16px" id="nombreSuc"  name="nombreSuc" attr-realvalue="<?= $solicitudEncabezado[0]['NUM_SUC'] ?>" value="<?=  $localSolicitud ?>" disabled></div>
                                     <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:35px" id="hasta"  name="hasta" value="<?=   str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>" disabled></div>
                                     
                                 </div>

@@ -1,24 +1,15 @@
 <?php 
     session_start();
-    require_once 'class/Recodificacion.php';
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
+    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();
     $nroSucurs = $_SESSION['numsuc'];
     
-    // $desdeFormat = date('Y-m-d', strtotime($desde));
-
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $desde);
-    $desdeFormat = $fecha_objeto->format('Y-m-d');
-
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $hasta);
-    $hastaFormat = $fecha_objeto->format('Y-m-d');
-
-
-    $result = $recodificacion->traerSolicitudes($nroSucurs, $desdeFormat, $hastaFormat, $estado);
+    $result = $recodificacion->traerSolicitudes($nroSucurs, $desde, $hasta, $estado);
 
     
    

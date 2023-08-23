@@ -1,7 +1,7 @@
 <?php 
 
     session_start();
-    require_once 'class/Recodificacion.php';
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
     $recodificacion = new Recodificacion();
 
     $encabezadoSolicitud = $recodificacion->traerEncabezado($_GET['numSolicitud']);

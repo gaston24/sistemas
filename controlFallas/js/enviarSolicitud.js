@@ -30,10 +30,22 @@ const enviar = () => {
                     numSolicitud: numSolicitud
                 },
                 success: function (response) {
-                    Swal.fire('La solicitud fue enviada!', '', 'success').then((result) => {
+                    $.ajax({
+                        url: "Controller/SendEmailController.php?accion=enviarSolicitud",
+                        type: "POST",
+                        data: {
+                            numSolicitud: numSolicitud
+                        },
+                        success: function (response) {
+                    
+                            Swal.fire('La solicitud fue enviada!', '', 'success').then((result) => {
+        
+                                location.href = "seleccionDeSolicitudes.php";
+                            })
 
-                        location.href = "seleccionDeSolicitudes.php";
+                        }
                     })
+                    
                 }
             })
        
