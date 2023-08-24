@@ -82,7 +82,7 @@ const confirmarCobro = (codClient) => {
 
                     },
                     success: function (data) {
-                        console.log("paso1");
+                      
                         if(data == 1){
 
                             Swal.fire('Cobro confirmado!', '', 'success').then((result) => {
