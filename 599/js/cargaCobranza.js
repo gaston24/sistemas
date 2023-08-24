@@ -82,11 +82,14 @@ const confirmarCobro = (codClient) => {
 
                     },
                     success: function (data) {
-               
+                        console.log("paso1");
                         if(data == 1){
 
-                            window.location.href = "composicionDeRemitos.php";
-                            Swal.fire('Saved!', '', 'success');
+                            Swal.fire('Cobro confirmado!', '', 'success').then((result) => {
+
+                                window.location.href = "composicionDeRemitos.php"
+
+                            });
 
                         }else {
                             Swal.fire('Error!', 'El cobro ya existe en la base de datos, porfavor regrese a la pantalla de seleccion y recargue', 'error').then((result) => {
