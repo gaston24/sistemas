@@ -90,7 +90,7 @@ const confirmarCobro = (codClient) => {
 
                         }else {
                             Swal.fire('Error!', 'El cobro ya existe en la base de datos, porfavor regrese a la pantalla de seleccion y recargue', 'error').then((result) => {
-                                window.location.href = "seleccionCobranza.php";
+                                window.location.href = "composicionDeRemitos.php";
                             });
                         }
 
