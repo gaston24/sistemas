@@ -82,8 +82,8 @@ const confirmarCobro = (codClient) => {
 
                     },
                     success: function (data) {
-
-                        if(data == true){
+               
+                        if(data == 1){
 
                             window.location.href = "composicionDeRemitos.php";
                             Swal.fire('Saved!', '', 'success');
