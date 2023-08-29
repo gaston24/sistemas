@@ -16,6 +16,8 @@ class Conexion{
         $this->user = $this->envVars['USER'];
         $this->pass = $this->envVars['PASS'];
         $this->character = $this->envVars['CHARACTER'];
+        $this->env = $this->envVars['ENV'];
+        $this->prefix = ($this->env == 'DEV') ? '[LAKERBIS].locales_lakers.dbo.' : '';
     }
 
     private function servidor($nameServer) {
@@ -59,7 +61,17 @@ class Conexion{
 
     private function buscarLocal($nameLocal){
 
-        $sql = "select * from [LAKERBIS].locales_lakers.dbo.sucursales_lakers where cod_client = '$nameLocal'";
+        $prefix = ($this->env == 'DEV') ? '[LAKERBIS].locales_lakers.dbo.' : '';
+
+        if($this->env == 'DEV'){
+            $database = $this->database_central;
+            $pass = $this->pass;
+        } else {
+            $database = $this->database_locales;
+            $pass = $this->pass_locales;
+        }
+
+        $sql = "select * from ".$prefix." sucursales_lakers where cod_client = '$nameLocal'";
 
         $params = array( 
             "Database" => $this->database_central, 

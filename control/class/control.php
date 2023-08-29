@@ -6,7 +6,7 @@ class Remito
 
     function __construct(){
 
-        require_once __DIR__.'../../class/conexion.php';
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
         $this->conn = new Conexion;
 
     }
@@ -232,5 +232,39 @@ class Remito
 
         return $array;
     } 
+
+    public function traerEstadoControlRemitos ($desde, $hasta, $estado) {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "SELECT * FROM ".$this->conn->prefix." RO_V_REMITOS_ESTADO_CONTROL 
+        WHERE FECHA BETWEEN '$desde' AND '$hasta' 
+        AND ESTADO LIKE '%$estado%'
+        ORDER BY FECHA DESC";
+        var_dump($sql);
+        die();
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $v = [];
+
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+            
+            return $v;
+
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+        
+
+    }
 
 }
