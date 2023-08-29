@@ -1,3 +1,7 @@
+<?php
+// session_start();
+?>
+
 <div class="modal fade" id="dataFranquiciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -28,12 +32,19 @@
         </li>
         <li class="list-group-item">
             Disponible para pedidos
-            <?php if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) < 0.10){ ?>
-                <span class="badge badge-warning badge-pill" id="icon"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-                <p id="info" class="text-danger"><small>El importe disponible en $ es inferior al 10% del cupo de crédito!</small></p>
-                <?php }else if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) >= 0.10){ ?>
-                <span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-            <?php } ?>				
+            <?php 
+              var_dump("here");
+            if(isset($_SESSION)){
+              // var_dump("session ".print_r($_SESSION));
+              // if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) < 0.10){ ?>
+              
+              
+            
+            <?php 
+              // } 				
+            }
+
+            ?>
         </li>
         </ul>	
       </div>

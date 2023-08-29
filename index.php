@@ -14,6 +14,7 @@ $dashboard	= $_SESSION['dashboard'];
 $habPedidos = $_SESSION['habPedidos'];
 
 
+
 require 'class/fechaEntrega.php';
 
 
@@ -27,6 +28,8 @@ require 'class/fechaEntrega.php';
         echo $e->getMessage();
 }
 
+
+
 ?>
 	<!DOCTYPE HTML>
 	<html charset="UTF-8">
@@ -39,13 +42,41 @@ require 'class/fechaEntrega.php';
 <?php include_once __DIR__.'/assets/css/fontawesome/css.php';?>
 <link rel="stylesheet" href="ajustes/css/msj-seincomp.css">
 <link rel="stylesheet" href="css/style.css"> 
-<?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; ?>
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-submenu@3.0.1/dist/css/bootstrap-submenu.css">
+<?php include_once __DIR__.'/ajustes/css/headers/include_index.php'; 
+
+
+?>
+
+<style>
+
+	.dropdown-submenu {
+	position: relative;
+	}
+
+	.dropdown-submenu a::after {
+	transform: rotate(-90deg);
+	position: absolute;
+	right: 6px;
+	top: .8em;
+	}
+
+	.dropdown-submenu .dropdown-menu {
+	top: 0;
+	left: 100%;
+	margin-left: .1rem;
+	margin-right: .1rem;
+	}
+
+</style>
+
 </head>
 
 <body>	
 
 	<div class="container">
 		<?php
+		
 		include_once 'Controlador/nav_menu.php';
 		?>
 		<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
@@ -59,6 +90,7 @@ require 'class/fechaEntrega.php';
 					</div>
 				</div>
 				<?php
+				
 				if($_SESSION['tipo']!= 'MAYORISTA'){
 				?>
 					<div class="col-" style="display: flex; justify-content: center;">
@@ -183,3 +215,22 @@ require 'class/fechaEntrega.php';
 <?php
 }
 ?>
+<script>
+
+$('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+  if (!$(this).next().hasClass('show')) {
+    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+  }
+  var $subMenu = $(this).next(".dropdown-menu");
+  $subMenu.toggleClass('show');
+
+
+  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+    $('.dropdown-submenu .show').removeClass("show");
+  });
+
+
+  return false;
+});
+
+</script>
