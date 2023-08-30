@@ -1,3 +1,6 @@
+
+
+
 const mostrarSpiner = () => {
 
     let spinner = document.querySelector("#boxLoading");

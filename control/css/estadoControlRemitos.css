@@ -8,3 +8,8 @@
     background: url('../images/g0R9.gif') 50% 50% no-repeat rgb(0, 0, 0);
     opacity: .8;
   }
+
+  #select2-selectSucursal-container{
+    width: 150px;
+    height: 40px;
+  }

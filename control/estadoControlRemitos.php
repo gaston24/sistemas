@@ -76,7 +76,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                                 
                                 <div >Sucursal :  
 
-                                    <select name="selectSucursal" id="selectSucursal" style="width:150px; height:40px">
+                                    <select name="selectSucursal" id="selectSucursal" class="selectSucursal" style="width:150px; height:40px">
 
                                         <option value="%">TODOS</option>
                                         <?php
@@ -221,4 +221,12 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
             fileext: ".xlsx" // file extension
         });
     });
+    $('.selectSucursal').select2();
+    
+    $(document).ready(function() {
+
+        document.querySelector('.select2-selection.select2-selection--single').style.height = "40px";
+
+    })
+
 </script>
