@@ -233,27 +233,24 @@ class Remito
         return $array;
     } 
 
-    public function traerEstadoControlRemitos ($desde, $hasta, $estado) {
+    public function traerEstadoControlRemitos ($desde, $hasta, $nroSucursal, $estado) {
 
         $cid = $this->conn->conectar('central');
 
-        $sql = "SELECT * FROM ".$this->conn->prefix." RO_V_REMITOS_ESTADO_CONTROL 
-        WHERE FECHA BETWEEN '$desde' AND '$hasta' 
-        AND ESTADO LIKE '%$estado%'
-        ORDER BY FECHA DESC";
-        var_dump($sql);
-        die();
+        $sql = "EXEC ".$this->conn->prefix." RO_SP_REMITOS_ESTADO_CONTROL '$desde', '$hasta', '$nroSucursal', '$estado'";
+
         try {
 
             $stmt = sqlsrv_query($cid, $sql);
 
             $v = [];
 
-            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
-
-                $v[] = $row;
-
-            }
+            do{
+                while($row=sqlsrv_fetch_array($stmt))
+                {
+                    $v[] = $row;
+                }
+            }while(sqlsrv_next_result($stmt));
             
             return $v;
 
@@ -265,6 +262,39 @@ class Remito
         }
         
 
+    }
+
+    public function traerLocales ()
+    {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1
+        UNION ALL
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
+        ORDER BY NRO_SUCURSAL
+        ";
+
+        try {
+
+            $result = sqlsrv_query($cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
     }
 
 }
