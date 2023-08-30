@@ -22,12 +22,19 @@ const limitarArchivos = (input,codArticulo) => {
 
     if (input.files.length > maxFiles) {
 
-        alert(`Solo se pueden seleccionar un máximo de ${maxFiles} archivos.`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de carga',
+        text: `Sólo se pueden subir hasta ${maxFiles} fotos!`
+      })
+
 
         input.value = ''; 
+        return 1;
 
     }
 
+    
     cargarArchivos(input,codArticulo);
 
 }
@@ -115,7 +122,11 @@ const enviarImagenes = (codArticulo) => {
       contentType: false,
       success: function(response) { 
 
-        alert(response); 
+        Swal.fire({
+          icon: 'success',
+          title: 'Carga exitosa',
+          text: `Se subieron ${files.length} archivos correctamente!`
+        })
 
         quitarErrorImagen()
 
@@ -426,7 +437,11 @@ const eliminarArchivo = (div,alerta = true,articulo = null) => {
     success: function (response) {
         if(alerta != false){
 
-          alert("Se eliminó el archivo correctamente");
+          Swal.fire({
+            icon: 'info',
+            title: 'Borrado confirmado',
+            text: 'Se eliminaron las fotos correctamente!'
+          })
 
         }
       
