@@ -63,7 +63,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                     <div class="card card-1">
                         <div id="boxLoading"></div>
                         <div class="row" style="margin-left:50px">
-                            <h3><strong><i class="bi bi-cash-stack" style="margin-right:20px;font-size:50px"></i>Estado Control de Remitos</strong></h3>
+                            <h3><strong><i class="bi bi-check-circle" style="margin-right:20px;font-size:35px"></i>Estado Control de Remitos</strong></h3>
                         </div>
 
                         <form action="#" method="get" style="margin-bottom:20px">
@@ -143,7 +143,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                            
                                 ?>
                                 <tr>
-                                    <td style="text-align:center" title="<?= $remito['USER_INGRESO'] ?>" data-toggle="tooltip"><?= $remito['FECHA']->format("Y-m-d") ?></td>
+                                    <td style="text-align:center" ><?= $remito['FECHA']->format("Y-m-d") ?></td>
                                     <td style="text-align:center" ><?= $remito['N_COMP'] ?></td>
                                     <td style="text-align:center" ><?= $remito['NRO_SUCURS'] ?></td>
                                     <td style="text-align:center" ><?= $remito['DESC_SUC_ORIG'] ?></td>
@@ -151,7 +151,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                                     <td style="text-align:center" ><?= $remito['DESC_SUC_DESTIN'] ?></td>
                                     <td style="text-align:center" ><?= $remito['NRO_GUIA'] ?></td>
                                     <td style="text-align:center" ><?= (isset($remito['FECHA_GUIA'])) ? $remito['FECHA_GUIA']->format("Y-m-d") : ""  ?></td>
-                                    <td style="text-align:center" ><?= (isset($remito['FECHA_INGRESO'])) ? $remito['FECHA_INGRESO']->format("Y-m-d") : ""  ?></td>
+                                    <td style="text-align:center" title="<?= $remito['USER_INGRESO'] ?>" data-toggle="tooltip" ><?= (isset($remito['FECHA_INGRESO'])) ? $remito['FECHA_INGRESO']->format("Y-m-d") : ""  ?></td>
                                     <td style="text-align:center" ><?= (isset($remito['FECHA_CONTROL'])) ? $remito['FECHA_CONTROL']->format("Y-m-d") : ""  ?></td>
                                     <td style="text-align:center" >
                                         <?php 
@@ -222,7 +222,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
         });
     });
     $('.selectSucursal').select2();
-    
+
     $(document).ready(function() {
 
         document.querySelector('.select2-selection.select2-selection--single').style.height = "40px";
