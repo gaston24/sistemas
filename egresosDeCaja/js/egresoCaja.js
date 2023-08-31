@@ -182,6 +182,18 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
             });
           });
 
+          let closeButton = document.createElement('button');
+          closeButton.type = 'button';
+          closeButton.className = 'close';
+          closeButton.setAttribute('data-dismiss', 'modal');
+          closeButton.setAttribute('aria-label', 'Close');
+          closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
+      
+          // Agregar el botón de cierre al encabezado del modal
+          let modalHeader = document.createElement('div');
+          modalHeader.appendChild(closeButton);
+          modalBody.appendChild(modalHeader);
+
           carousel.appendChild(carouselInner);
           modalBody.appendChild(carousel);
           modalContent.appendChild(modalBody);
