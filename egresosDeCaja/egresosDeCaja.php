@@ -72,7 +72,7 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
         
       
         <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
-        <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
+        <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:70%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
         <div class="alert alert-secondary">
