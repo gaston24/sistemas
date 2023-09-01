@@ -187,7 +187,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
           closeButton.className = 'close';
           closeButton.setAttribute('data-dismiss', 'modal');
           closeButton.setAttribute('aria-label', 'Close');
-          closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
+          closeButton.innerHTML = '<span aria-hidden="true" title="Cerrar" style="font-size:50px; margin-right: 0.5rem; color: red;">&times;</span>';
       
           // Agregar el botón de cierre al encabezado del modal
           let modalHeader = document.createElement('div');
