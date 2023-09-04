@@ -48,25 +48,25 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
-                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:50px"></i>Enviar Solicitud</strong></h3>
+                            <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Enviar Solicitud</strong></h3>
                         </div>
-                        <form action="#">
+                        <form class="form-inline"  action="#">
 
-                            <div style="margin-bottom:20px">
-
-                                <div class="row" style="margin-top:10px">
-
-                                    <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:40px" id="desde" name="desde" value="<?= $encabezadoSolicitud[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:160px; height:40px" id="hasta"  name="hasta" value="<?=  str_replace("_"," ",$encabezadoSolicitud[0]['USUARIO_EMISOR']) ?>" disabled></div>
+                            <div class="form-group" style="margin-left:3rem; margin-top: 1rem">
                                     
-                                </div>
-                                <div class="row" style="margin-top:10px">
+                                    <label class="ml-1">Fecha de Solicitud: </label>
+                                    <input class="form-control" style="margin-left:0.8rem; width:10rem"  type="date" id="desde" name="desde" value="<?= $encabezadoSolicitud[0]['FECHA']->format("Y-m-d") ?>" disabled>
+                                    <label class="ml-4">Usuario Emisor: </label>
+                                    <input class="form-control" style="margin-left:0.8rem; width:13rem" type="" id="hasta"  name="hasta" value="<?=  str_replace("_"," ",$encabezadoSolicitud[0]['USUARIO_EMISOR']) ?>" disabled>
+                                    
+                            </div>
+                            <div class="form-group" style="margin-left:3rem; margin-top: 0.5rem; margin-bottom: 1rem">
 
-                                    <div style="margin-left:90px">N° Solicitud : <input type="text" style="width:160px; height:40px; margin-left:45px" id="numSolicitud" name="numSolicitud" value="<?=  $encabezadoSolicitud[0]['ID'] ?>" disabled></div>
-                                    <div style="margin-left:30px">Estado: <input type="text" style="width:160px; height:40px; margin-left:57px"  value="Autorizada" disabled></div>
+                                    <label class="ml-1">N° Solicitud: </label>
+                                    <input class="form-control" style="margin-left:3.5rem; width:10rem" type="text" id="numSolicitud" name="numSolicitud" value="<?=  $encabezadoSolicitud[0]['ID'] ?>" disabled>
+                                    <label class="ml-4">Estado: </label>
+                                    <input class="form-control" style="margin-left:4.5rem; width:13rem" type="text" style="width:160px; height:40px; margin-left:57px"  value="Autorizada" disabled>
                                     <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:900px" class ="btn btn-primary" onclick="enviar()" >Enviar <i class='fa fa-paper-plane'></i></button></div>
-                                    
-                                </div>
 
                             </div>
 
@@ -117,7 +117,7 @@
                                         </td>
                                         <td style="text-align:center"><?= $detalle['OBSERVACIONES'] ?> </td>
                                         <td style="text-align:center">
-                                            <select class="selectRemito" id="selectRemito">
+                                            <select class="form-control selectRemito" id="selectRemito">
                                                     <?php 
                                                         foreach ($remitos as $key => $remito) {
                                                     ?>
