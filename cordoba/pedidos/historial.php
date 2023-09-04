@@ -13,14 +13,15 @@ $permiso = $_SESSION['permisos'];
 
 	<title>GUIAS POR LOCAL</title>	
 	<?php include '../../../css/header.php'; ?>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <body>	
 
 
 
 
-	<form action="" id="sucu" style="margin:20px">
+	<form class="form-inline" action="" id="sucu" style="margin:20px">
 	Elija sucursal:
-	<select name="sucursal" form="sucu" >
+	<select class="form-control ml-1" name="sucursal" form="sucu" >
 
 		<option value="TODOS">Todos</option> 
 		<option value="FRBAUD">BAULERA</option> 
@@ -48,15 +49,17 @@ if(!isset($_GET['desde'])){
 //$ayer = ((date('d'))-1).'-'.date('m-Y');
 ?>
 	
-	Desde
-	<input type="date" name="desde" value="<?php if(!isset($_GET['desde'])){ echo $ayer; } else { echo $desde ; }?>"></input>
+	<label class="ml-1">Desde: </label>
+	<input class="form-control ml-1" type="date" name="desde" value="<?php if(!isset($_GET['desde'])){ echo $ayer; } else { echo $desde ; }?>"></input>
 	
-	Hasta
-	<input type="date" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $ayer; } else { echo $hasta ; }?>"></input>
+	<label class="ml-1">Hasta: </label>
+	<input class="form-control ml-1" type="date" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $ayer; } else { echo $hasta ; }?>"></input>
 	
 	
 	
-		<input type="submit" value="Consultar" class="btn btn-primary">
+		<button type="submit" class="btn btn-primary ml-2">Consultar <i class="bi bi-search"></i></button>
+
+		<button type="button" class="btn btn-warning" onClick="window.location.href='../index.php'" style="margin-left:11rem;">Volver <i class="bi bi-arrow-90deg-left"></i></button>
 	</form>
 
 
@@ -90,7 +93,8 @@ $sql=
 	
 	SET DATEFORMAT YMD
 
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT FROM GVA21 A
+	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT FROM, 
+	CASE WHEN ESTADO = 5 THEN 'ANULADO' ELSE 'APROBADO' END ESTADO FROM GVA21 A
 	INNER JOIN
 	(
 	SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 GROUP BY NRO_PEDIDO
@@ -133,10 +137,11 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 		
                 <td class="col-"><h4>PEDIDO</h4></td>
 				
-				<td class="col-"><h4>OBSERVAC</h4></td>
+				<td class="col-"><h4>OBSERVACIONES</h4></td>
 				
-				<td class="col-"><h4>CANT</h4></td>  
+				<td class="col-"><h4>CANTIDAD</h4></td>  
 
+				<td class="col-"><h4>ESTADO</h4></td>  
                 
         </tr>
 
@@ -161,7 +166,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				
 				<td class="col-"><?php echo $v['CANT'] ;?></a></td>
 
-                
+                <td class="col-"><?php echo $v['ESTADO'] ;?></a></td>
 
         </tr>
 
@@ -189,7 +194,7 @@ $suc = "%";
 
 ?>
 
-<div class="container">
+<div class="container" style="margin-left:0;">
 <table class="table table-striped" >
 
         <tr >
@@ -200,11 +205,11 @@ $suc = "%";
 		
                 <td class="col-"><h4>PEDIDO</h4></td>
 				
-				<td class="col-"><h4>OBSERVAC</h4></td>
+				<td class="col-"><h4>OBSERVACIONES</h4></td>
 				
-				<td class="col-"><h4>CANT</h4></td> 
+				<td class="col-"><h4>CANTIDAD</h4></td> 
 				
-				
+				<td class="col-"><h4>ESTADO</h4></td> 
 
         </tr>
 
@@ -236,7 +241,8 @@ $sql=
 	
 	SET DATEFORMAT YMD
 
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT FROM GVA21 A
+	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT, 
+	CASE WHEN ESTADO = 5 THEN 'ANULADO' ELSE 'APROBADO' END ESTADO FROM GVA21 A
 	INNER JOIN
 	(
 	SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 GROUP BY NRO_PEDIDO
@@ -290,8 +296,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 				
 				<td class="col-"><?php echo $v['CANT'] ;?></a></td>
 				
-				
-
+				<td class="col-"><?php echo $v['ESTADO'] ;?></a></td>
                
 
         </tr>

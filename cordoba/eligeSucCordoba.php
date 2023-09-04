@@ -11,6 +11,7 @@ if (!isset($_SESSION['username'])) {
 
 	<head>
 		<title>Carga Inicial</title>
+		<link rel="stylesheet" href="pedidos/css/preloader.css">
 		<?php include '../../css/header.php'; ?>
 
 
@@ -112,6 +113,8 @@ WHERE A.COD_CLIENT IN
 								</td>
 
 								<!--<td><input type="checkbox" name="selec[]" checked></td>-->
+								<!-- spinner -->
+								<div id="boxLoading"></div>
 
 							</tr>
 
@@ -129,7 +132,7 @@ WHERE A.COD_CLIENT IN
 
 					</table>
 
-					<input type="submit" value="Pedidos" class="btn btn-primary btn-sm">
+					<button type="submit" class="btn btn-primary" style="margin-left:84%">Ingresar</button>
 
 				</form>
 
@@ -141,9 +144,13 @@ WHERE A.COD_CLIENT IN
 
 		</div>
 		<script>
-			//*******TRAER CANTIDAD DE PEDIDOS DE LOS LOCALES DE S.LOPEZ */
-			window.addEventListener('DOMContentLoaded', traerCantidadPedidos);
-			let estado;
+
+			formulario.addEventListener("submit", function (e) {
+			e.preventDefault();
+			preloader.style.display='block';
+
+			/*  e.preventDefault() */
+			});
 
 			function traerCantidadPedidos() {
 
@@ -159,6 +166,23 @@ WHERE A.COD_CLIENT IN
 				conexion1.send();
 			}
 		</script>
+	
+	<div class="container">
+        <div class="cubo">
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span></span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+            <span style="display: flex; justify-content: center; align-items: center;">XL</span>
+          </div>
+          <div>
+            <div class="loading">
+                <h1>Aguarde un momento...</d>
+                <p></p>
+            </div>
+        </div>
+      </div>
 
 	</body>
 
