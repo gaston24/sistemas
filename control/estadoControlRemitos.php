@@ -51,6 +51,18 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+
+        div.dataTables_wrapper div.dataTables_length label {
+            margin-left: 1rem;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter label {
+            margin-right: 1.5rem;
+        }
+
+    </style>
 
 
     </head>
@@ -59,24 +71,24 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
 
         <div class="alert alert-secondary">
             <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-                <div class="wrapper wrapper--w680"><div style="color:white; text-align:center"><h6>Estado Control de Remitos</h6></div>
+                <div class="wrapper wrapper--w680"><div style="color:white; text-align:center;"><h6>Estado Control de Remitos</h6></div>
                     <div class="card card-1">
                         <div id="boxLoading"></div>
-                        <div class="row" style="margin-left:50px">
-                            <h3><strong><i class="bi bi-check-circle" style="margin-right:20px;font-size:35px"></i>Estado Control de Remitos</strong></h3>
+                        <div class="row" style="margin-left:25px">
+                            <h3 class="mt-3"><strong><i class="bi bi-check-circle" style="margin-right:20px;font-size:35px;"></i>Estado Control de Remitos</strong></h3>
                         </div>
 
-                        <form action="#" method="get" style="margin-bottom:20px">
+                        <form class="form-inline ml-4" action="#" method="get" style="margin-bottom:20px">
 
                             <div class="row" style="margin-top:10px">
 
-                                <div style="margin-left:70px;width:250px">Desde: <input type="date" style="width:150px; height:40px" id='desde' name="desde" value="<?php  echo $desde ?>"></div>
+                                <label class="ml-2">Desde: </label>
+                                <input Class="form-control ml-1" type="date" id='desde' name="desde" value="<?php  echo $desde ?>">
+                                <label class="ml-2">Hasta: </label>
+                                <input  Class="form-control ml-1" type="date" id='hasta' name="hasta" value="<?php echo $hasta; ?>">
                                 
-                                <div style="margin-right:20px">Hasta: <input type="date" style="width:150px; height:40px" id='hasta' name="hasta" value="<?php echo $hasta; ?>"></div>
-                                
-                                <div >Sucursal :  
-
-                                    <select name="selectSucursal" id="selectSucursal" class="selectSucursal" style="width:150px; height:40px">
+                                <label class="ml-2">Desde: </label>
+                                    <select Class="form-control ml-1" name="selectSucursal" id="selectSucursal" class="selectSucursal">
 
                                         <option value="%">TODOS</option>
                                         <?php
@@ -89,11 +101,11 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
             
                                     </select>
 
-                                </div>
                                 
-                                <div style="margin-left:10px">Estado :  
+                                
+                                    <label class="ml-2">Desde: </label> 
 
-                                    <select name="selectEstado" id="selectEstado" style="width:150px; height:40px">
+                                    <select class="form-control ml-1" name="selectEstado" id="selectEstado" style="width:150px; height:40px">
 
                                             <option value="%" <?= ( "%" == $estado) ? "selected" : "" ?>>TODOS</option>
                                             <option value="REMITIDO" <?= ( "REMITIDO" == $estado) ? "selected" : "" ?>>REMITIDO</option>
@@ -103,7 +115,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
             
                                     </select>
 
-                                </div>
+                                
 
                                 <div style="margin-left:1rem">   
                                     <button class="btn btn-primary btn-submit" id="btnSubmit" value="" onclick="mostrarSpiner()">filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
@@ -118,7 +130,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
 
             
-                        <table class="table table-striped table-bordered" id="tablaControl" cellspacing="0" data-page-length="100">
+                        <table class="table table-striped table-bordered" id="tablaControl" style="width:98%; margin-left:1rem;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" >
                                 <tr style="text-align:center">
 
