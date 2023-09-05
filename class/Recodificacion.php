@@ -485,4 +485,74 @@ class Recodificacion
         }
 
    }
+   public function comprobarStock ($articulo) {
+    $sql="SELECT CASE 
+                WHEN A.CANT_STOCK >= $articulo[cantidad] THEN 'True'
+                ELSE 'False'
+            END AS TieneStock
+        FROM STA19 A
+        INNER JOIN (
+        SELECT COD_SUCURS 
+        FROM STA22 
+        WHERE COD_SUCURS LIKE '[0-9]%' 
+            AND INHABILITA = 0
+        ) B ON A.COD_DEPOSI = B.COD_SUCURS
+        WHERE A.COD_ARTICU = '$articulo[articulo]' ;";
+
+
+        $stmt = sqlsrv_query($this->cid, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+    
+        $row = sqlsrv_fetch_array($stmt);
+ 
+        if( $row == null || $row['TieneStock'] == 'False'){
+
+
+            $tieneStock = false ;
+            
+        }else{
+            
+            $tieneStock = true ;
+        }
+    
+        return $tieneStock;
+   }
+
+   public function validarCodigosOulet ($articulo) {
+
+        $sql="SELECT CASE WHEN EXISTS (
+            SELECT 1
+            FROM STA19 A
+            INNER JOIN (
+                SELECT COD_SUCURS
+                FROM STA22
+                WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0
+            ) B ON A.COD_DEPOSI = B.COD_SUCURS
+            WHERE CANT_STOCK > 0 AND COD_ARTICU LIKE 'O%' and COD_ARTICU = '$articulo'
+        ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
+
+
+        $stmt = sqlsrv_query($this->cid, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+    
+        $row = sqlsrv_fetch_array($stmt);
+ 
+        if( $row == null || $row['ArticuloExiste'] == 'false'){
+
+
+            $existeArticulo = false ;
+            
+        }else{
+            
+            $existeArticulo = true ;
+        }
+    
+        return $existeArticulo;
+   }
 }

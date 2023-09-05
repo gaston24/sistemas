@@ -88,11 +88,14 @@ const comprobarCheckbox = (div) => {
 
 const autorizar = () => {
 
+
+
         
     let allTr = document.querySelectorAll("tbody tr");
     let numSolicitud = document.querySelector("#numSolicitud").value;
-    
+    let nombreSuc = document.querySelector("#nombreSuc").value;
     let data = [];
+    let codigosOulet = []; 
 
     allTr.forEach((element,y) => {
         data.push({
@@ -103,6 +106,8 @@ const autorizar = () => {
             DESTINO: element.querySelectorAll("td")[11].querySelector("select").value,
             OBSERVACIONES: element.querySelectorAll("td")[12].querySelector("input").value
         });
+
+        codigosOulet.push(element.querySelectorAll("td")[10].textContent);
 
     })
     
@@ -116,6 +121,21 @@ const autorizar = () => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
 
+    
+            $.ajax({
+                url: "Controller/RecodificacionController.php?accion=validarCodigosOulet",
+                type: "POST",
+                data: {
+                    codigosOulet: codigosOulet,
+                    numSolicitud: numSolicitud,
+                    nombreSuc: nombreSuc
+
+                },
+                success: function (response) {
+          
+                }
+            });
+    
             $.ajax({
                 url: "Controller/RecodificacionController.php?accion=autorizar",
                 type: "POST",

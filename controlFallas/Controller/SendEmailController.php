@@ -125,4 +125,38 @@ function enviarSolicitud ($recodificacion) {
     }
 
 }
+
+function notificarCodigosOulet ($data, $numSolicitud, $nombreSuc) {
+   
+    $recodificacion = new Recodificacion();
+
+    $usuarios = ["florencia.bocchicchio@xl.com.ar","valeria.villarreal@xl.com.ar"];
+
+    $arrayData = [
+
+        'tipo' => 4,
+        'numSolicitud' => $numSolicitud,
+        'descSucursal' => $nombreSuc,
+        'data' => $data,
+
+    ];
+
+    $email = new Email();
+    $asunto =  "$nombreSuc - Cambio de estado en Solicitud N ° $numSolicitud";
+
+    try {
+
+        foreach ($usuarios as $key => $usuario) {
+   
+            $email->enviarEmail($usuario, $asunto, $arrayData);
+            
+        }
+        echo 'Correo enviado correctamente';
+    } catch (Exception $e) {
+        echo "Error al enviar el correo: {$mail->ErrorInfo}";
+    }
+
+    
+
+}
 ?>
