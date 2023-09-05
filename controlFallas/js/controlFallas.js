@@ -811,3 +811,21 @@ const comprobarStock = async () => {
     
 }
 
+const eliminarFila = (div) => {
+
+  let allTr = document.querySelectorAll("#bodyArticulos");
+
+  if(allTr.length <= 1){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'La Solicitud Debe tener Al Menos Un Artículo',
+    })
+
+  }else{
+
+    div.parentElement.parentElement.remove();
+
+  }
+}
+
