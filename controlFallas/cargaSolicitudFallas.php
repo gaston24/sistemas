@@ -139,7 +139,8 @@
                                     <th style="text-align:center;width: 7%;" >Precio</th>
                                     <th style="text-align:center;width: 7%;">Cantidad</th>
                                     <th style="text-align:center;width: 30%;" >Descripcion Falla</th>
-                                    <th style="text-align:center;width: 10%;" ></th>
+                                    <th style="text-align:center;width: 10%;" >Fotos</th>
+                                    <th style="text-align:center;width: 10%;" >Fila</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -212,15 +213,20 @@
                                             <td style="text-align:center;">
 
 
-                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
+                                            <button class="btn btn-primary" title="Subir" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
                                                 <i class="bi bi-upload"></i> 
                                             </button>
 
-                                            <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
+                                            <button class="btn btn-warning" title="Ver" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
                                                 <i class="bi bi-eye" style="color:white"></i>
                                             </button>
 
-                                            <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button></td>
+                                            <button class="btn btn-danger" title="Eliminar" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button></td>
+                                            <td style="text-align:center">
+                                                <button class="btn btn-danger" title="Eliminar fila" style="margin-left:5px; padding:.3rem .5rem;"  >
+                                                    <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            </td>
                                           
                                         </tr>
                               <?php 
