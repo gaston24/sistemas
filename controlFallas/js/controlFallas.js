@@ -474,7 +474,7 @@ const parseNumber = (number) => {
   return newNumber;
 }
 
-const solicitar = (esBorrador = false) => {
+const solicitar = async (esBorrador = false) => {
 
   let nroSucursal = document.querySelector("#nroSucursal").textContent;
   let fecha = document.querySelector("#fecha").value;
@@ -499,6 +499,12 @@ const solicitar = (esBorrador = false) => {
     return 1;
 
   }
+  let stock = await comprobarStock();
+
+  if(stock == false ){
+    return 1  
+  }
+  
 
   $.ajax({
   
@@ -749,5 +755,59 @@ const existeBorrador = () =>{
   });
   comprobarFila(bodyArticulos[bodyArticulos.length-1].querySelectorAll("td")[4].querySelector("input"));
   
+}
+
+
+const comprobarStock = async () => {
+
+  let articulos = document.querySelectorAll("#selectArticulo");
+  let codArticulos = [];
+
+
+  articulos.forEach(articulo => {
+    if(articulo.value != ""){
+
+      codArticulos.push({
+        articulo:articulo.value.split("-")[0],
+        cantidad:articulo.parentElement.parentElement.querySelectorAll("td")[3].textContent
+      });
+
+    }
+
+  });
+
+    let  response = await $.ajax({
+      url : "Controller/RecodificacionController.php?accion=comprobarStock",
+      type: "POST",
+      data: {
+        codArticulos:codArticulos
+      },
+    });
+
+    let result = ""
+
+    response = JSON.parse(response);
+    articulos.forEach(element => {
+        if(response.length > 0){
+          if(response.includes(element.value.split("-")[0])){
+
+            element.parentElement.parentElement.querySelectorAll("td")[3].style = "text-align:center;color:red";  
+
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de stock',
+            text: 'Hay artículos sin stock! Corregir y volver a solicitar'
+          })
+          result = false;
+
+        }else{
+
+          result = true;
+
+        }
+    });
+    return result;
+    
 }
 

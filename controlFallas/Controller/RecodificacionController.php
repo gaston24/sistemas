@@ -45,6 +45,11 @@ switch ($accion) {
         traerCodigoRecodificacion();
 
         break;
+
+    case 'comprobarStock':
+        comprobarStock();
+
+        break;
     
     default:
         # code...
@@ -304,4 +309,25 @@ function enviar () {
     }
     return true;
 }
+
+function comprobarStock () {
+
+    $codArticulos = $_POST['codArticulos'];
+
+    $Recodificacion = new Recodificacion();
+    $arrayResult = [];
+
+    foreach ($codArticulos as $key => $articulo) {
+        $result = $Recodificacion->comprobarStock($articulo);
+
+        if($result == false){
+
+            $arrayResult[] = $articulo['articulo'];
+            
+        }
+    }
+    
+    echo json_encode($arrayResult);
+}
+
 ?>
