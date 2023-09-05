@@ -59,3 +59,25 @@ const enviar = () => {
 
 
 }
+
+const comprobarArticuloEnRemito = (div) => {
+    let nComp = div.value
+    let articulo = div.parentElement.parentElement.querySelectorAll("td")[0].textContent
+
+    $.ajax({
+        url: "Controller/RecodificacionController.php?accion=comprobarArticuloEnRemito",
+        type: "POST",
+        data: {
+            nComp: nComp,
+            articulo: articulo
+        },
+        success: function (response) {
+            console.log(response)
+            if(response == false){
+
+                alert("El articulo no se encuentra en el remito seleccionado")
+            }
+        }
+    });
+
+}

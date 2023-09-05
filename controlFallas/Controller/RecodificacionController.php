@@ -57,6 +57,11 @@ switch ($accion) {
         validarCodigosOulet();
 
         break;
+
+    case 'comprobarArticuloEnRemito':
+        comprobarArticuloEnRemito();
+
+        break;
     
     default:
         # code...
@@ -364,6 +369,19 @@ function validarCodigosOulet () {
     }
     notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
     echo true;
+}
+
+function comprobarArticuloEnRemito () {
+
+    $nComp = $_POST['nComp'];
+    $articulo = $_POST['articulo'];
+
+
+    $recodificacion = new Recodificacion();
+    
+    $result = $recodificacion->comprobarArticuloEnRemito($nComp, $articulo);
+
+    echo $result;
 }
 
 ?>
