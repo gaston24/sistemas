@@ -11,9 +11,20 @@ $permiso = $_SESSION['permisos'];
 <html>
 <head>
 
-	<title>GUIAS POR LOCAL</title>	
-	<?php include '../../../css/header.php'; ?>
+	<title>Historial pedidos</title>	
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" class="rel">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
+
+	<!-- Bootstrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 <body>	
 
 
@@ -59,7 +70,7 @@ if(!isset($_GET['desde'])){
 	
 		<button type="submit" class="btn btn-primary ml-2">Consultar <i class="bi bi-search"></i></button>
 
-		<button type="button" class="btn btn-warning" onClick="window.location.href='../index.php'" style="margin-left:11rem;">Volver <i class="bi bi-arrow-90deg-left"></i></button>
+		<button type="button" class="btn btn-warning" onClick="window.location.href='../index.php'" style="margin-left:20rem;">Volver <i class="bi bi-arrow-90deg-left"></i></button>
 	</form>
 
 
@@ -194,25 +205,25 @@ $suc = "%";
 
 ?>
 
-<div class="container" style="margin-left:0;">
-<table class="table table-striped" >
 
+<table class="table table-striped table-bordered table-sm table-hover" style="width:70%; margin-left:1rem">
+	<thead class="thead-dark" >
         <tr >
 		
-				<td class="col-"><h4>CLIENTE</h4></td>
+				<td style="position: sticky; top: 0; z-index: 10; background: #343a40; color: white;"><h6>CLIENTE</h6></td>
 		
-				<td class="col-"><h4>FECHA</h4></td>
+				<td style="position: sticky; top: 0; z-index: 10; background: #343a40; color: white;" class="col-"><h6>FECHA</h6></td>
 		
-                <td class="col-"><h4>PEDIDO</h4></td>
+                <td style="position: sticky; top: 0; z-index: 10; background: #343a40; color: white;" class="col-"><h6>PEDIDO</h6></td>
 				
-				<td class="col-"><h4>OBSERVACIONES</h4></td>
+				<td style="position: sticky; top: 0; z-index: 10; background: #343a40; color: white;" class="col-"><h6>OBSERVACIONES</h6></td>
 				
-				<td class="col-"><h4>CANTIDAD</h4></td> 
+				<td style="position: sticky; top: 0; z-index: 10; background: #343a40; color: white;" class="col-"><h6>CANTIDAD</h6></td> 
 				
-				<td class="col-"><h4>ESTADO</h4></td> 
+				<td style="position: sticky; top: 0; z-index: 10; background: #343a40; color: white;" class="col-"><h6>ESTADO</h6></td> 
 
         </tr>
-
+	</thead>
 
 <?php
 
@@ -316,3 +327,4 @@ echo '</table>	</div>';
 
 }
 ?>
+
