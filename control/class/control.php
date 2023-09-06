@@ -244,7 +244,13 @@ class Remito
             $stmt = sqlsrv_query($cid, $sql);
 
             $v = [];
+            
+            if($stmt === false){
 
+                die("Error en sqlsrv_exec");
+
+            }
+            
             do{
                 while($row=sqlsrv_fetch_array($stmt))
                 {
