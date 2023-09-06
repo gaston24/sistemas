@@ -21,7 +21,21 @@ const enviar = () => {
         }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-         
+
+            let error = false;
+
+            document.querySelectorAll("#selectRemito").forEach(element => {
+
+                if(element.getAttribute("remitoAprobado") == "false"){
+                    Swal.fire('Debe seleccionar un remito valido para cada articulo', '', 'error')
+                    error = true
+                }
+            });
+
+            if(error) return 1;
+
+
+
             $.ajax({
                 url: "Controller/RecodificacionController.php?accion=enviar",
                 type: "POST",
@@ -72,10 +86,19 @@ const comprobarArticuloEnRemito = (div) => {
             articulo: articulo
         },
         success: function (response) {
-            console.log(response)
+
             if(response == false){
 
-                alert("El articulo no se encuentra en el remito seleccionado")
+                Swal.fire('El articulo no se encuentra en el remito seleccionado', '', 'error')
+                div.parentElement.querySelector("span").querySelector(".selection").querySelector("span").querySelector("span").style="color:red"
+                div.setAttribute("remitoAprobado", false)
+
+            }else{
+
+                div.parentElement.querySelector("span").querySelector(".selection").querySelector("span").querySelector("span").style="color:black"
+                div.setAttribute("remitoAprobado", true)
+
+
             }
         }
     });

@@ -558,6 +558,9 @@ class Recodificacion
 
    public function comprobarArticuloEnRemito ($nComp, $articulo) {
 
+        $conn = new Conexion();
+        $cid = $conn->conectar('local');
+
         $sql="SELECT CASE WHEN EXISTS (
             SELECT 1 FROM STA14 A 
             INNER JOIN STA20 B 
@@ -569,7 +572,8 @@ class Recodificacion
             AND B.COD_ARTICU ='$articulo'
         ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
 
-        $stmt = sqlsrv_query($this->cid, $sql);
+
+        $stmt = sqlsrv_query($cid, $sql);
 
         if ($stmt === false) {
             die("Error en la consulta: " . sqlsrv_errors());
