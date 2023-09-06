@@ -1,4 +1,7 @@
 <?php 
+require_once $_SERVER['DOCUMENT_ROOT']."/sistemas/class/conexion.php";
+require_once "../class/Pedidos.php";
+
 session_start(); 
 if(!isset($_SESSION['username'])){
 	header("Location:login.php");
@@ -13,49 +16,31 @@ $permiso = $_SESSION['permisos'];
 	<meta charset="utf-8">
 	<title>DETALLE REMITOS</title>	
 	<link rel="shortcut icon" href="XL.png" />
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <body>	
 
 <?php
 	
-$dsn = "1 - CENTRAL";
-$usuario = "sa";
-$clave="Axoft1988";
 
 $suc = $_GET['suc'];
-$pedido = $_GET['pedido'];
+$pedidoSeleccionado = $_GET['pedido'];
 
+$pedido = new Pedido();
 
-$cid=odbc_connect($dsn, $usuario, $clave);
-
-
-
-$sql=
-	"
-	SET DATEFORMAT YMD
-
-	SELECT CAST(A.FECHA_PEDI AS DATE)FECHA, B.COD_ARTICU, C.DESCRIPCIO, CAST(B.CANT_PEDID AS FLOAT) CANT FROM GVA03 B
-	INNER JOIN GVA21 A
-	ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
-	INNER JOIN STA11 C
-	ON B.COD_ARTICU = C.COD_ARTICU
-	WHERE A.NRO_PEDIDO = '$pedido'
-	AND A.COD_CLIENT = '$suc'
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+$data = $pedido->traerDetallePedido( $pedidoSeleccionado, $suc);
 
 ?>
-<a href="historial.php"><img src="botonAtras.png"></a>
+<a href="javascript:history.go(-1)"><img src="botonAtras.png"></a>
 <a href="javascript:window.print();"><img src="print.png"></a>
 
 
 
 </br>
 
-<div align="center"><?php echo '<h3>Pedido: '.$pedido.' </h3>' ?></div>
+<div align="center"><?php echo '<h3>Pedido: '.$pedidoSeleccionado.' </h3>' ?></div>
 </br>
 
 <div class="container">
@@ -78,20 +63,20 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         <?php
 
        
-		while($v=odbc_fetch_array($result)){
+		foreach ($data as $key => $v) {
 
         ?>
 
 		
         <tr style="font-size:smaller; height: 5px">
 
-				<td class="col-" style="height: 5px"><?php echo $v['FECHA'] ;?></a></td>
+				<td class="col-" style="height: 5px"><?= $v['FECHA']->format("Y-m-d") ;?></a></td>
 		
-                <td class="col-" style="height: 5px"><?php echo $v['COD_ARTICU'] ;?></a></td>
+                <td class="col-" style="height: 5px"><?= $v['COD_ARTICU'] ;?></a></td>
 				
-				<td class="col-" style="height: 5px"><?php echo $v['DESCRIPCIO'] ;?></a></td>
+				<td class="col-" style="height: 5px"><?= $v['DESCRIPCIO'] ;?></a></td>
 				
-				<td class="col-" style="height: 5px"><?php echo (int) ($v['CANT']) ;?></a></td>
+				<td class="col-" style="height: 5px"><?= (int) ($v['CANT']) ;?></a></td>
 
                 
 

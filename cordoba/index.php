@@ -20,7 +20,7 @@ $local = $_SESSION['descLocal'];
 
 
 
-<?php include '../../css/header_simple.php'; ?>
+<?php include '../assets/css/header_simple.php'; ?>
 
 <title>INICIO</title>
 

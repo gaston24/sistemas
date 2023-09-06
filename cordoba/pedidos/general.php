@@ -1,4 +1,7 @@
 <?php 
+require_once $_SERVER['DOCUMENT_ROOT']."/sistemas/class/conexion.php";
+require_once "../class/Pedidos.php";
+
 session_start(); 
 
 if(!isset($_SESSION['username'])){
@@ -13,15 +16,12 @@ if(!isset($_SESSION['username'])){
 		<head>
 		<title>Carga de Pedidos - General</title>
 		<link rel="stylesheet" href="css/preloader.css">
-		<?php include '../../../css/header.php'; ?>
+		<?php include '../../assets/css/header.php'; ?>
 		</head>
 		<body>
 
 		<?php
 
-		$dsn = "1 - CENTRAL";
-		$user = "sa";
-		$pass = "Axoft1988";
 		$suc = $_SESSION['numsuc'];
 		
 		$_SESSION['tipo_pedido'] = 'GENERAL';
@@ -29,17 +29,8 @@ if(!isset($_SESSION['username'])){
 		
 		$codClient = $_SESSION['username'];
 		
-		$cid = odbc_connect($dsn, $user, $pass);
-
-
-		$sql="
-		SET DATEFORMAT YMD
-		
-		EXEC SJ_TIPO_PEDIDO_CORDOBA_1
-		
-		";
-
-		$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+		$pedido = new Pedido();
+		$data = $pedido->ejecutarSpPedidosGenerales();
 
 		?>
 
@@ -59,7 +50,7 @@ if(!isset($_SESSION['username'])){
 		<?php
 
 
-		while($v=odbc_fetch_array($result)){
+		foreach ($data as $key => $v) {		
 
 			include 'tabla.php';
 

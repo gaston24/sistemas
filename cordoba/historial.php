@@ -1,4 +1,7 @@
 <?php 
+require_once $_SERVER['DOCUMENT_ROOT']."/sistemas/class/conexion.php";
+require_once "class/Pedidos.php";
+
 session_start(); 
 
 if(!isset($_SESSION['username'])){
@@ -22,49 +25,18 @@ $permiso = $_SESSION['permisos'];
 
 <?php
 
-	
-$dsn = "1 - CENTRAL";
 
 
-
-$dsn = "1 - CENTRAL";
-$usuario = "sa";
-$clave="Axoft1988";
 $suc = $_SESSION['numsuc'];
 $codClient = $_SESSION['codClient'];
 
-$cid=odbc_connect($dsn, $usuario, $clave);
 
 
+$pedidos = new Pedidos();
+
+$data = $pedidos->traerHistorial();
 
 
-
-$sql=
-	"
-	SET DATEFORMAT YMD
-
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.NRO_PEDIDO, LEYENDA_1, B.CANT FROM GVA21 A
-	INNER JOIN
-	(
-	SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 WHERE TALON_PED IN (96, 97) GROUP BY NRO_PEDIDO
-	)B
-	ON A.NRO_PEDIDO = B.NRO_PEDIDO
-	WHERE COD_CLIENT IN
-	(
-	'FRBAUD', 
-	'FRORCE',
-	'FRORIG',
-	'FRORNC',
-	'FRORSJ',
-	'FRPASJ'
-	) 
-	AND FECHA_PEDI > (GETDATE()-60) AND A.TALON_PED IN (96, 97)
-	ORDER BY 1 desc, 2 desc
-
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 <a href="../index.php"><img src="botonAtras.png"></a>
@@ -91,7 +63,7 @@ $result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
         <?php
 
        
-		while($v=odbc_fetch_array($result)){
+		foreach ($data as $key => $v) {
 
         ?>
 

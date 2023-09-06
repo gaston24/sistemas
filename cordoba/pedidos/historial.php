@@ -1,313 +1,192 @@
 <?php 
+
+require_once $_SERVER['DOCUMENT_ROOT']."/sistemas/class/conexion.php";
+require_once "../class/Pedidos.php";
+
 session_start(); 
 if(!isset($_SESSION['username'])){
 	header("Location:../../login.php");
 }else{
 	
-$permiso = $_SESSION['permisos'];
-?>
-<!DOCTYPE HTML>
-
-<html>
-<head>
-
-	<title>GUIAS POR LOCAL</title>	
-	<?php include '../../../css/header.php'; ?>
-<body>	
+	$permiso = $_SESSION['permisos'];
 
 
 
+	if(!isset($_GET['desde'])){
+		// $ayer = date('Y-m').'-'.strright(('0'.((date('d')))),2);
+		$ayer = date('Y-m') . '-' . str_pad(date('d') - 1, 2, '0', STR_PAD_LEFT);
 
-	<form action="" id="sucu" style="margin:20px">
-	Elija sucursal:
-	<select name="sucursal" form="sucu" >
+	}else{
+		$desde = $_GET['desde'];
+		$hasta = $_GET['hasta'];
+	}
 
-		<option value="TODOS">Todos</option> 
-		<option value="FRBAUD">BAULERA</option> 
-		<option value="FRORCE">VELEZ</option> 
-		<option value="FRORIG">DINO</option> 
-		<option value="FRORNC">NUEVO CENTRO</option> 
-		<option value="FRORSJ">SAN JUAN</option> 
-		<option value="FRPASJ">PASEO DEL JOCKEY</option> 
+	?>
+	<!DOCTYPE HTML>
 
-		
-	
-	</select >
-	
-<?php
+	<html>
+		<head>
 
-
-if(!isset($_GET['desde'])){
-	$ayer = date('Y-m').'-'.strright(('0'.((date('d')))),2);
-}else{
-	$desde = $_GET['desde'];
-	$hasta = $_GET['hasta'];
-}
-
-//$ayer = date('Y-m').'-'.((date('d'))-1); 
-//$ayer = ((date('d'))-1).'-'.date('m-Y');
-?>
-	
-	Desde
-	<input type="date" name="desde" value="<?php if(!isset($_GET['desde'])){ echo $ayer; } else { echo $desde ; }?>"></input>
-	
-	Hasta
-	<input type="date" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $ayer; } else { echo $hasta ; }?>"></input>
-	
-	
-	
-		<input type="submit" value="Consultar" class="btn btn-primary">
-	</form>
-
-
-
-<?php
-
-if(isset ($_GET['sucursal'])){
-	
-$dsn = "1 - CENTRAL";
-$suc = $_GET['sucursal'];
-
-
-if($suc <> 'TODOS' ){
-
-$suc = $_GET['sucursal'];
-$desde = $_GET['desde'];
-$hasta = $_GET['hasta'];
-
-
-$usuario = "sa";
-$clave="Axoft1988";
-
-$cid=odbc_connect($dsn, $usuario, $clave);
+			<title>GUIAS POR LOCAL</title>	
+			<?php include '../../assets/css/header.php'; ?>
+			<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" class="rel">
+        	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
+		</head>
+		<body>	
 
 
 
 
+			<form action="" id="sucu" style="margin:20px">
+			Elija sucursal:
+			<select name="sucursal" form="sucu" >
 
-$sql=
-	"
-	
-	SET DATEFORMAT YMD
-
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT FROM GVA21 A
-	INNER JOIN
-	(
-	SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 GROUP BY NRO_PEDIDO
-	)B
-	ON A.NRO_PEDIDO = B.NRO_PEDIDO
-	WHERE COD_CLIENT IN
-	(
-	'FRBAUD', 
-	'FRORCE',
-	'FRORIG',
-	'FRORNC',
-	'FRORSJ',
-	'FRPASJ'
-	) 
-	AND FECHA_PEDI > (GETDATE()-60) 
-	AND (FECHA_PEDI BETWEEN '$desde' AND '$hasta')
-	AND A.COD_CLIENT = '$suc'
-	ORDER BY 1 desc, 2 desc
-
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
-
-
-
-
-
-
-
-?>
-<div class="container">
-<table class="table table-striped" >
-
-        <tr >
-
-				<td class="col-"><h4>CLIENTE</h4></td>
-		
-				<td class="col-"><h4>FECHA</h4></td>
-		
-                <td class="col-"><h4>PEDIDO</h4></td>
-				
-				<td class="col-"><h4>OBSERVAC</h4></td>
-				
-				<td class="col-"><h4>CANT</h4></td>  
-
-                
-        </tr>
-
-		
-        <?php
-
-       
-		while($v=odbc_fetch_array($result)){
-
-        ?>
-
-		
-        <tr >
-
-				<td class="col-"><?php echo $v['COD_CLIENT'] ;?></a></td>
-		
-                <td class="col-"><?php echo $v['FECHA'] ;?></a></td>
-				
-				<td class="col-"><a href="detallePed.php?pedido=<?php echo $v['NRO_PEDIDO'] ;?>&suc=<?php echo $v['COD_CLIENT'] ;?>&desde=<?php echo $desde ;?>&hasta=<?php echo $hasta ;?>"><?php echo $v['NRO_PEDIDO'] ;?></a></td>
-				
-				<td class="col-"><?php echo $v['LEYENDA_1'] ;?></a></td>
-				
-				<td class="col-"><?php echo $v['CANT'] ;?></a></td>
-
-                
-
-        </tr>
-
-		
-        <?php
-
-        }
-
-        ?>
-
-		
-        		
-</table>
-</div>
-<?php
-
-}
-
-else{
-	
-	
-$suc = "%";
-
-
-
-?>
-
-<div class="container">
-<table class="table table-striped" >
-
-        <tr >
-		
-				<td class="col-"><h4>CLIENTE</h4></td>
-		
-				<td class="col-"><h4>FECHA</h4></td>
-		
-                <td class="col-"><h4>PEDIDO</h4></td>
-				
-				<td class="col-"><h4>OBSERVAC</h4></td>
-				
-				<td class="col-"><h4>CANT</h4></td> 
-				
-				
-
-        </tr>
-
-
-<?php
+				<option value="%" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "%" ? "selected" : "") ?>>Todos</option> 
+				<option value="FRBAUD" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "FRBAUD" ? "selected" : "") ?>>BAULERA</option> 
+				<option value="FRORCE" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "FRORCE" ? "selected" : "") ?>>VELEZ</option> 
+				<option value="FRORIG" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "FRORIG" ? "selected" : "") ?>>DINO</option> 
+				<option value="FRORNC" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "FRORNC" ? "selected" : "") ?>>NUEVO CENTRO</option> 
+				<option value="FRORSJ" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "FRORSJ" ? "selected" : "") ?>>SAN JUAN</option> 
+				<option value="FRPASJ" <?= (isset($_GET['sucursal']) && $_GET['sucursal'] == "FRPASJ" ? "selected" : "") ?>>PASEO DEL JOCKEY</option> 
 
 				
+			
+			</select >
+
+			
+			Desde
+			<input type="date" name="desde" value="<?php if(!isset($_GET['desde'])){ echo $ayer; } else { echo $desde ; }?>"></input>
+			
+			Hasta
+			<input type="date" name="hasta" value="<?php if(!isset($_GET['hasta'])){ echo $ayer; } else { echo $hasta ; }?>"></input>
+			
+			
+			
+				<input type="submit" value="Consultar" class="btn btn-primary">
+			</form>
 
 
 
-		
+			<?php
 
-$desde = $_GET['desde'];
-$hasta = $_GET['hasta'];
+			if(isset ($_GET['sucursal'])){
 
-$usuario = "sa";
-$clave="Axoft1988";
+				$suc = $_GET['sucursal'];
+					
 
-$cid=odbc_connect($dsn, $usuario, $clave);
-
-if (!$cid){
-	exit("<strong>Ha ocurrido un error tratando de conectarse con el origen de datos.</strong>");
-}
+					$suc = $_GET['sucursal'];
+					$desde = $_GET['desde'];
+					$hasta = $_GET['hasta'];
 
 
-
-$sql=
-	"
-	
-	SET DATEFORMAT YMD
-
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT FROM GVA21 A
-	INNER JOIN
-	(
-	SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 GROUP BY NRO_PEDIDO
-	)B
-	ON A.NRO_PEDIDO = B.NRO_PEDIDO
-	WHERE COD_CLIENT IN
-	(
-	'FRBAUD', 
-	'FRORCE',
-	'FRORIG',
-	'FRORNC',
-	'FRORSJ',
-	'FRPASJ'
-	) 
-	AND FECHA_PEDI > (GETDATE()-60) 
-	AND (FECHA_PEDI BETWEEN '$desde' AND '$hasta')
-	ORDER BY 1 desc, 2 desc
-	
-	
-
-	";
-
-ini_set('max_execution_time', 300);
-$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+					$pedidos = new Pedido();
+					$data = $pedidos->traerHistorialPedidos($desde, $hasta , $suc);
 
 
 
+			?>
+					<div class="container">
+						<table class="table table-striped" id="tablaHistoriaPedidos" >
+							<thead>
 
+								<tr >
 
-?>
+										<th class="col-"><h4>CLIENTE</h4></th>
+								
+										<th class="col-"><h4>FECHA</h4></th>
+								
+										<th class="col-"><h4>PEDIDO</h4></th>
+										
+										<th class="col-"><h4>OBSERVAC</h4></th>
+										
+										<th class="col-"><h4>CANT</h4></th>  
 
+										
+								</tr>
+							</thead>
+							<tbody>
+							
+								
+								<?php
 
+							
+								foreach ($data as $key => $v) {
 
-		
-        <?php
+								?>
 
-		while($v=odbc_fetch_array($result)){
+								
+								<tr >
 
-        ?>
+										<td class="col-"><?=  $v['COD_CLIENT'] ;?></a></td>
+								
+										<td class="col-"><?=  $v['FECHA']->format("Y-m-d") ;?></a></td>
+										
+										<td class="col-"><a href="detallePed.php?pedido=<?= $v['NRO_PEDIDO'] ;?>&suc=<?= $v['COD_CLIENT'] ;?>&desde=<?= $desde ;?>&hasta=<?= $hasta ;?>"><?= $v['NRO_PEDIDO'] ;?></a></td>
+										
+										<td class="col-"><?= $v['LEYENDA_1'] ;?></a></td>
+										
+										<td class="col-"><?= $v['CANT'] ;?></a></td>
 
-		
-        <tr >
+										
 
-				<td class="col-"><?php echo $v['COD_CLIENT'] ;?></a></td>
-		
-                <td class="col-"><?php echo $v['FECHA'] ;?></a></td>
+								</tr>
+
+								
+								<?php
+
+								}
+
+								?>
+
+							</tbody>
+										
+						</table>
+					</div>
+
+		</body>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+		<script>
+			 $('#tablaHistoriaPedidos').DataTable({
+				"bLengthChange": true,
+				"language": {
+							"lengthMenu": "mostrar _MENU_ registros",
+							"info":           "Mostrando registros del _START_ al _END_ de un total de  _TOTAL_ registros",
+							"paginate": {
+								"next":       "Siguiente",
+								"previous":   "Anterior"
+							},
+
+				},
+			
 				
-				<td class="col-"><a href="detallePed.php?pedido=<?php echo $v['NRO_PEDIDO'] ;?>&suc=<?php echo $v['COD_CLIENT'] ;?>&desde=<?php echo $desde ;?>&hasta=<?php echo $hasta ;?>"><?php echo $v['NRO_PEDIDO'] ;?></a></td>
+				"bInfo": true,
+				"aaSorting": false,
+				'columnDefs': [
+					{
+						"targets": "_all", 
+						"className": "text-center",
+						"sortable": false,
 				
-				<td class="col-"><?php echo $v['LEYENDA_1'] ;?></a></td>
-				
-				<td class="col-"><?php echo $v['CANT'] ;?></a></td>
-				
-				
+					},
+				],
+				"oLanguage": {
+			
+					"sSearch": "Busqueda rapida:",
+					"sSearchPlaceholder" : "Sobre cualquier campo"
+					
+			
+				},
+			});
 
-               
-
-        </tr>
-
+		</script>
 		
-        <?php
-
-        }
-
-        
+	</html>
 
 
-echo '</table>	</div>';
-}
-
-}
-
+		<?php
+		}
 }
 ?>

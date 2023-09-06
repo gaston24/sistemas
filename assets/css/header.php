@@ -83,9 +83,7 @@ table.table-fh > tbody > tr {
 table.table-fh > tbody > tr > td {
     border: none;
 }
-body {
-	overflow-y: hidden;
-}
+
 
 
 </style>
