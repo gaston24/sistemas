@@ -15,6 +15,7 @@ class Conexion{
         $this->database_locales = $this->envVars['DATABASE_LOCALES'];
         $this->user = $this->envVars['USER'];
         $this->pass = $this->envVars['PASS'];
+        $this->pass_locales = $this->envVars['PASS_LOCALES'];
         $this->character = $this->envVars['CHARACTER'];
         $this->env = $this->envVars['ENV'];
         $this->prefix = ($this->env == 'DEV') ? '[LAKERBIS].locales_lakers.dbo.' : '';
@@ -40,10 +41,16 @@ class Conexion{
 
             $serverDB = $this->servidor($nameServer);
 
+            if($this->env == 'PROD' && (strtolower($serverDB[0]) == strtolower('lakerbis'))){
+                $pass = $this->pass_locales;
+            } else {
+                $pass = $this->pass;
+            }
+
             $params = array( 
                 "Database" => $serverDB[1], 
                 "UID" => $this->user, 
-                "PWD" => $this->pass, 
+                "PWD" => $pass, 
                 "CharacterSet" => $this->character
             );
 
@@ -51,6 +58,7 @@ class Conexion{
 
             if(!$cid) return false;
 
+            // este cid va a cambiar mil veces
             $_SESSION['cid'] = $cid;
             return $cid;
             
