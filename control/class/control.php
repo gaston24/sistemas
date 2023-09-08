@@ -238,7 +238,7 @@ class Remito
         $cid = $this->conn->conectar('locales');
 
         $sql = "EXEC ".$this->conn->prefix." RO_SP_REMITOS_ESTADO_CONTROL '$desde', '$hasta', '$nroSucursal', '$estado'";
-
+   
         try {
 
             $stmt = sqlsrv_query($cid, $sql);
@@ -270,7 +270,7 @@ class Remito
 
     }
 
-    public function traerLocales ()
+    public function traerLocales ($orderBy = "NRO_SUCURSAL")
     {
 
         $cid = $this->conn->conectar('central');
@@ -279,7 +279,7 @@ class Remito
         SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1
         UNION ALL
         SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
-        ORDER BY NRO_SUCURSAL
+        ORDER BY $orderBy
         ";
 
         try {

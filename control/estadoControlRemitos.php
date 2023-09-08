@@ -19,7 +19,8 @@ if(isset($_GET['hasta']) && $_GET['hasta'] != "" ){
 }
 
 $sucursal = (isset($_GET['selectSucursal'])) ? $_GET['selectSucursal'] : "%" ;
-$locales = $control->traerLocales();
+
+$locales = $control->traerLocales("DESC_SUCURSAL");
 
 
 
@@ -87,7 +88,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                                 <label class="ml-2">Hasta: </label>
                                 <input  Class="form-control ml-1" type="date" id='hasta' name="hasta" value="<?php echo $hasta; ?>">
                                 
-                                <label class="ml-2">Desde: </label>
+                                <label class="ml-2">Destino: </label>
                                     <select Class="form-control ml-1" name="selectSucursal" id="selectSucursal" class="selectSucursal">
 
                                         <option value="%">TODOS</option>
@@ -103,7 +104,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
 
                                 
                                 
-                                    <label class="ml-2">Desde: </label> 
+                                    <label class="ml-2">Estado: </label> 
 
                                     <select class="form-control ml-1" name="selectEstado" id="selectEstado" style="width:150px; height:40px">
 
@@ -134,17 +135,17 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                             <thead class="thead-dark" >
                                 <tr style="text-align:center">
 
-                                    <th style="width:15%"> FECHA </th>
-                                    <th style="width:10%" > REMITO</th>
-                                    <th style="width:5%" > NRO.SUCURSAL.ORIGEN</th>
-                                    <th style="width:5%" > SUCURSAL.ORIGEN</th>
-                                    <th style="width:5%" > NRO.SUC.DESTINO</th>
-                                    <th style="width:5%" > SUCURSAL DESTINO </th>
-                                    <th style="width:5%" > GUIA </th>
-                                    <th style="width:10%" > FECHA GUIA </th>
-                                    <th style="width:10%" > FECHA INGRESO </th>
-                                    <th style="width:10%" > FECHA CONTROL </th>
-                                    <th style="width:5%" ></th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;"> FECHA </th>
+                                    <th style="width:10%; position: sticky; top: 0; z-index: 10;" > REMITO</th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > NRO.SUCURSAL.ORIGEN</th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > SUCURSAL.ORIGEN</th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > NRO.SUC.DESTINO</th>
+                                    <th style="width:10%; position: sticky; top: 0; z-index: 10;" > SUCURSAL DESTINO </th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > GUIA </th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;" > FECHA GUIA </th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;" > FECHA INGRESO </th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;" > FECHA CONTROL </th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" ></th>
 
                                 </tr>
                             </thead>
@@ -223,16 +224,17 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    $('#selectSucursal').select2();
+    document.querySelector('.select2-selection.select2-selection--single').style = "height:40px;"
     $("#btnExport").click(function() {
         $("#tablaControl").table2excel({
-            // exclude CSS class
+
             exclude: ".noE  xl",
-            name: "Ventas por medio de pago",
-            filename: "Ventas por medio de pago", //do not include extension
-            fileext: ".xlsx" // file extension
+            name: "EstadoControRemitos",
+            filename: "EstadoControRemitos", 
+            fileext: ".xlsx" 
         });
     });
-    $('.selectSucursal').select2();
 
     // $(document).ready(function() {
 
