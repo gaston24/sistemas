@@ -31,7 +31,7 @@ function confirmarSolicitud ($recodificacion) {
     
     $numSolicitud = $_POST["numSolicitud"];
 
-    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud Nro. $numSolicitud";
 
     $arrayData = [
 
@@ -82,7 +82,7 @@ function autorizarSolicitud ($recodificacion) {
 
     $email = new Email();
 
-    $asunto =  "$nombreSuc - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$nombreSuc - Cambio de estado en Solicitud Nro. $numSolicitud";
 
     try {
 
@@ -110,7 +110,7 @@ function enviarSolicitud ($recodificacion) {
     ];
 
     $email = new Email();
-    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud Nro. $numSolicitud";
 
     try {
 
@@ -142,7 +142,7 @@ function notificarCodigosOulet ($data, $numSolicitud, $nombreSuc) {
     ];
 
     $email = new Email();
-    $asunto =  "$nombreSuc - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$nombreSuc - Solicitud de alta de articulos para Solicitud Nro. $numSolicitud";
 
     try {
 
