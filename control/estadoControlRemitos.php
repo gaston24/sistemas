@@ -135,17 +135,17 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                             <thead class="thead-dark" >
                                 <tr style="text-align:center">
 
-                                    <th style="width:15%"> FECHA </th>
-                                    <th style="width:10%" > REMITO</th>
-                                    <th style="width:5%" > NRO.SUCURSAL.ORIGEN</th>
-                                    <th style="width:5%" > SUCURSAL.ORIGEN</th>
-                                    <th style="width:5%" > NRO.SUC.DESTINO</th>
-                                    <th style="width:5%" > SUCURSAL DESTINO </th>
-                                    <th style="width:5%" > GUIA </th>
-                                    <th style="width:10%" > FECHA GUIA </th>
-                                    <th style="width:10%" > FECHA INGRESO </th>
-                                    <th style="width:10%" > FECHA CONTROL </th>
-                                    <th style="width:5%" ></th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;"> FECHA </th>
+                                    <th style="width:10%; position: sticky; top: 0; z-index: 10;" > REMITO</th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > NRO.SUCURSAL.ORIGEN</th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > SUCURSAL.ORIGEN</th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > NRO.SUC.DESTINO</th>
+                                    <th style="width:10%; position: sticky; top: 0; z-index: 10;" > SUCURSAL DESTINO </th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" > GUIA </th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;" > FECHA GUIA </th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;" > FECHA INGRESO </th>
+                                    <th style="width:9%; position: sticky; top: 0; z-index: 10;" > FECHA CONTROL </th>
+                                    <th style="width:5%; position: sticky; top: 0; z-index: 10;" ></th>
 
                                 </tr>
                             </thead>
