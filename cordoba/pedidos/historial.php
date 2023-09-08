@@ -49,13 +49,13 @@ $permiso = $_SESSION['permisos'];
 <?php
 
 
-if(!isset($_GET['desde'])){
+/* if(!isset($_GET['desde'])){
 	$ayer = date('Y-m').'-'.strright(('0'.((date('d')))),2);
 }else{
 	$desde = $_GET['desde'];
 	$hasta = $_GET['hasta'];
 }
-
+ */
 //$ayer = date('Y-m').'-'.((date('d'))-1); 
 //$ayer = ((date('d'))-1).'-'.date('m-Y');
 ?>
@@ -104,7 +104,7 @@ $sql=
 	
 	SET DATEFORMAT YMD
 
-	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT FROM, 
+	SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.COD_CLIENT, A.NRO_PEDIDO, LEYENDA_1, CAST(B.CANT AS INT)CANT,
 	CASE WHEN ESTADO = 5 THEN 'ANULADO' ELSE 'APROBADO' END ESTADO FROM GVA21 A
 	INNER JOIN
 	(
