@@ -33,6 +33,7 @@ if( count($loginRes) == 0 ){
 	$_SESSION['tipo'] = $loginRes['TIPO'];
 	$_SESSION['habPedidos'] = $loginRes['EXCLUYE_PEDIDOS'];
 	$_SESSION['esOutlet'] = $loginRes['IS_OUTLET'];
+	// esto hay que revisarlo, esta mal
 	$_SESSION['connection_db'] = $_SESSION['cid'] != false ? true : false;
 	
 	// datos de credito del cliente
