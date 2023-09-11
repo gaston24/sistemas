@@ -31,7 +31,7 @@ function confirmarSolicitud ($recodificacion) {
     
     $numSolicitud = $_POST["numSolicitud"];
 
-    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud Nro. $numSolicitud";
 
     $arrayData = [
 
@@ -82,7 +82,7 @@ function autorizarSolicitud ($recodificacion) {
 
     $email = new Email();
 
-    $asunto =  "$nombreSuc - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$nombreSuc - Cambio de estado en Solicitud Nro. $numSolicitud";
 
     try {
 
@@ -110,7 +110,7 @@ function enviarSolicitud ($recodificacion) {
     ];
 
     $email = new Email();
-    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud N ° $numSolicitud";
+    $asunto =  "$_SESSION[descLocal] - Cambio de estado en Solicitud Nro. $numSolicitud";
 
     try {
 
@@ -123,6 +123,40 @@ function enviarSolicitud ($recodificacion) {
     } catch (Exception $e) {
         echo "Error al enviar el correo: {$mail->ErrorInfo}";
     }
+
+}
+
+function notificarCodigosOulet ($data, $numSolicitud, $nombreSuc) {
+   
+    $recodificacion = new Recodificacion();
+
+    $usuarios = ["florencia.bocchicchio@xl.com.ar","valeria.villarreal@xl.com.ar"];
+
+    $arrayData = [
+
+        'tipo' => 4,
+        'numSolicitud' => $numSolicitud,
+        'descSucursal' => $nombreSuc,
+        'data' => $data,
+
+    ];
+
+    $email = new Email();
+    $asunto =  "$nombreSuc - Solicitud de alta de articulos para Solicitud Nro. $numSolicitud";
+
+    try {
+
+        foreach ($usuarios as $key => $usuario) {
+   
+            $email->enviarEmail($usuario, $asunto, $arrayData);
+            
+        }
+        echo 'Correo enviado correctamente';
+    } catch (Exception $e) {
+        echo "Error al enviar el correo: {$mail->ErrorInfo}";
+    }
+
+    
 
 }
 ?>

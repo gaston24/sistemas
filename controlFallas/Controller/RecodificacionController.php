@@ -1,6 +1,8 @@
 <?php
 
 require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
+require_once  $_SERVER["DOCUMENT_ROOT"]."/sistemas/controlFallas/Controller/SendEmailController.php";
+
 
 $accion = $_GET['accion'];
 
@@ -50,6 +52,13 @@ switch ($accion) {
         comprobarStock();
 
         break;
+
+
+    case 'validarCodigosOulet':
+        validarCodigosOulet();
+
+        break;
+
     
     default:
         # code...
@@ -198,11 +207,11 @@ function solicitar () {
 
     $valores = substr_replace($valores, ";", -1, 1);
 
-    $Recodificacion = new Recodificacion();
-    $encabezado = $Recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
+    $recodificacion = new Recodificacion();
+    $encabezado = $recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
 
     if($encabezado == true && $esBorrador == "false"){
-        $Recodificacion->insertarDetalle($valores);
+        $recodificacion->insertarDetalle($valores);
     }
 
     return true;
@@ -271,16 +280,16 @@ function autorizar () {
 
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
-    $Recodificacion = new Recodificacion();
+    $recodificacion = new Recodificacion();
 
  
-    $result  = $Recodificacion->autorizar($numSolicitud);
+    $result  = $recodificacion->autorizar($numSolicitud);
     
     if ($result == true) {
 
         foreach ($data as $key => $value) {
 
-            $Recodificacion->actualizarDetalle($value['PRECIO'], $value['NUEVO_CODIGO'], $value['DESTINO'], $value['OBSERVACIONES'], $value['ID']);
+            $recodificacion->actualizarDetalle($value['PRECIO'], $value['NUEVO_CODIGO'], $value['DESTINO'], $value['OBSERVACIONES'], $value['ID']);
 
         }
 
@@ -294,15 +303,15 @@ function enviar () {
     $data = $_POST['data'];
     $numSolicitud = $_POST['numSolicitud'];
 
-    $Recodificacion = new Recodificacion();
+    $recodificacion = new Recodificacion();
 
-    $result = $Recodificacion->enviar($numSolicitud);
+    $result = $recodificacion->enviar($numSolicitud);
 
     if ($result == true) {
 
         foreach ($data as $key => $value) {
 
-            $Recodificacion->cargarRemito($value['id'], $value['remito']);
+            $recodificacion->cargarRemito($value['id'], $value['remito']);
 
         }
 
@@ -314,11 +323,13 @@ function comprobarStock () {
 
     $codArticulos = $_POST['codArticulos'];
 
-    $Recodificacion = new Recodificacion();
+
+    $recodificacion = new Recodificacion();
     $arrayResult = [];
 
     foreach ($codArticulos as $key => $articulo) {
-        $result = $Recodificacion->comprobarStock($articulo);
+        $result = $recodificacion->comprobarStock($articulo);
+
 
         if($result == false){
 
@@ -329,5 +340,36 @@ function comprobarStock () {
     
     echo json_encode($arrayResult);
 }
+
+
+function validarCodigosOulet () {
+
+    $codigosOulet = $_POST['codigosOulet'];
+    $numSolicitud = $_POST['numSolicitud'];
+    $nombreSuc = $_POST['nombreSuc'];
+
+    $recodificacion = new Recodificacion();
+    $arrayResult = [];
+
+    foreach ($codigosOulet as $key => $articulo) {
+    
+        if($articulo != ""){
+
+            $result = $recodificacion->validarCodigosOulet($articulo);
+ 
+            if($result == false){
+
+                $arrayResult[] = $articulo;
+            
+            }
+
+        }
+
+    
+    }
+    notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
+    echo true;
+}
+
 
 ?>
