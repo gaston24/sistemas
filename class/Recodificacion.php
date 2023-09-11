@@ -521,6 +521,7 @@ class Recodificacion
         return $tieneStock;
    }
 
+
    public function validarCodigosOulet ($articulo) {
 
         $sql="SELECT CASE WHEN EXISTS (
@@ -555,4 +556,6 @@ class Recodificacion
     
         return $existeArticulo;
    }
+
+
 }

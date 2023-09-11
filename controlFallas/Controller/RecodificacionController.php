@@ -53,10 +53,12 @@ switch ($accion) {
 
         break;
 
+
     case 'validarCodigosOulet':
         validarCodigosOulet();
 
         break;
+
     
     default:
         # code...
@@ -321,11 +323,13 @@ function comprobarStock () {
 
     $codArticulos = $_POST['codArticulos'];
 
+
     $recodificacion = new Recodificacion();
     $arrayResult = [];
 
     foreach ($codArticulos as $key => $articulo) {
         $result = $recodificacion->comprobarStock($articulo);
+
 
         if($result == false){
 
@@ -336,6 +340,7 @@ function comprobarStock () {
     
     echo json_encode($arrayResult);
 }
+
 
 function validarCodigosOulet () {
 
@@ -365,5 +370,6 @@ function validarCodigosOulet () {
     notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
     echo true;
 }
+
 
 ?>

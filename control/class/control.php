@@ -6,7 +6,7 @@ class Remito
 
     function __construct(){
 
-        require_once __DIR__.'../../class/conexion.php';
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
         $this->conn = new Conexion;
 
     }
@@ -232,5 +232,75 @@ class Remito
 
         return $array;
     } 
+
+    public function traerEstadoControlRemitos ($desde, $hasta, $nroSucursal, $estado) {
+
+        $cid = $this->conn->conectar('locales');
+
+        $sql = "EXEC ".$this->conn->prefix." RO_SP_REMITOS_ESTADO_CONTROL '$desde', '$hasta', '$nroSucursal', '$estado'";
+   
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            $v = [];
+            
+            if($stmt === false){
+
+                die("Error en sqlsrv_exec");
+
+            }
+            
+            do{
+                while($row=sqlsrv_fetch_array($stmt))
+                {
+                    $v[] = $row;
+                }
+            }while(sqlsrv_next_result($stmt));
+            
+            return $v;
+
+        }
+        catch (\Throwable $th) {
+
+            die("Error en sqlsrv_exec");
+
+        }
+        
+
+    }
+
+    public function traerLocales ($orderBy = "NRO_SUCURSAL")
+    {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1
+        UNION ALL
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
+        ORDER BY $orderBy
+        ";
+
+        try {
+
+            $result = sqlsrv_query($cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+    }
 
 }
