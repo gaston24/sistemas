@@ -117,7 +117,7 @@
                                         </td>
                                         <td style="text-align:center"><?= $detalle['OBSERVACIONES'] ?> </td>
                                         <td style="text-align:center">
-                                            <select class="form-control selectRemito" id="selectRemito">
+                                            <select class="form-control selectRemito" id="selectRemito" onchange="comprobarArticuloEnRemito(this)">
                                                     <?php 
                                                         foreach ($remitos as $key => $remito) {
                                                     ?>

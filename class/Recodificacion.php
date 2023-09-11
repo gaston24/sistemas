@@ -558,4 +558,43 @@ class Recodificacion
    }
 
 
+   public function comprobarArticuloEnRemito ($nComp, $articulo) {
+
+        $conn = new Conexion();
+        $cid = $conn->conectar('local');
+
+        $sql="SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM STA14 A 
+            INNER JOIN STA20 B 
+            ON A.ID_STA14 = B.ID_STA14
+            WHERE A.FECHA_MOV >= GETDATE()-60 
+            AND T_COMP = 'REM'
+            AND A.COD_PRO_CL LIKE 'GT%'
+            AND A.N_COMP ='$nComp'
+            AND B.COD_ARTICU ='$articulo'
+        ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
+
+
+        $stmt = sqlsrv_query($cid, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+
+        $row = sqlsrv_fetch_array($stmt);
+   
+        if( $row == null || $row['ArticuloExiste'] == 'false'){
+
+
+            $existeArticulo = false ;
+            
+        }else{
+            
+            $existeArticulo = true ;
+        }
+
+        return $existeArticulo;
+
+   }
+
 }
