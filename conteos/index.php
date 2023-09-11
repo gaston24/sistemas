@@ -21,11 +21,11 @@ if(!isset($_SESSION['username'])){
 <img src="../../css/logo.jpg">
 </div>
 
-<ul class="nav justify-content-center">
+<ul class="nav justify-content-center mt-4">
 	<div class="btn-group" role="group" aria-label="Basic example">
-		<li class="list-group-item">Pedidos</li>
-		<button type="button" class="btn btn-secondary" onclick="location.href=''">Conteos</button>
-		<button type="button" class="btn btn-secondary" onclick="location.href='../control/control_auditoria.php'">Remitos</button>
+		<li class="list-group-item">Control de Remitos</li>
+		<button type="button" class="btn btn-secondary" onclick="location.href='../control/control_auditoria.php'">Controlados</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href='../control/estadoControlRemitos.php'">Estado Remitos</button>
 	</div>
 </ul>
 </br>
