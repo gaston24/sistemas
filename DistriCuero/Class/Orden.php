@@ -89,7 +89,10 @@ if(!isset($_SESSION['codClient'])){
         public function traerOrdenesConNotaPedido($orden){
 
             $sql = "SELECT A.NRO_SUCURSAL, A.COD_CLIENT, A.DESC_SUCURSAL, REPLACE(ISNULL(B.FECHA, ''),'1900-01-01','') FECHA, B.HORA, B.NRO_ORDEN, NRO_NOTA_PEDIDO, TOTAL, CANTIDAD, 
-                    CASE WHEN C.FECHA IS NULL THEN 'PENDIENTE' ELSE 'RECHAZADA' END ESTADO
+                    CASE WHEN C.FECHA IS NOT NULL THEN 'RECHAZADA'
+                        WHEN NRO_NOTA_PEDIDO IS NOT NULL THEN 'CARGADA'
+                        ELSE 'PENDIENTE' 
+                    END ESTADO
                     FROM [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS A
                     LEFT JOIN 
                     (
@@ -112,7 +115,6 @@ if(!isset($_SESSION['codClient'])){
                     LEFT JOIN (SELECT * FROM RO_ORDENES_RECHAZADAS WHERE NRO_ORDEN = '$orden') C ON A.COD_CLIENT = C.COD_CLIENT
                     WHERE CANAL = 'FRANQUICIAS' AND HABILITADO = 1 AND NRO_SUC_MADRE IS NULL
                     ORDER BY NRO_SUCURSAL
-
                 ";
                 
                 $rows = $this->retornarArray($sql);
