@@ -54,7 +54,7 @@ foreach ($data as $key => $value) {
 				
 				
 				if($codConsulta != '***DESTRUCCION'){
-				
+					
 					//ACTUALIZAR CODIGO NUEVO
 					$ajuste->actualizarCodigoNuevo($nuevo, $codigo, $ncomp);
 					

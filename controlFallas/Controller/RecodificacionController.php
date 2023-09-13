@@ -306,6 +306,7 @@ function autorizar () {
 }
 
 function enviar () {
+
     $data = $_POST['data'];
     $numSolicitud = $_POST['numSolicitud'];
 
@@ -323,6 +324,7 @@ function enviar () {
 
     }
     return true;
+
 }
 
 function comprobarStock () {
@@ -380,15 +382,40 @@ function validarCodigosOulet () {
 
 function comprobarArticuloEnRemito () {
 
-    $nComp = $_POST['nComp'];
-    $articulo = $_POST['articulo'];
+
+    if(isset($_POST['arrayRemitos'])){
+
+        $arrayRemitos = $_POST['arrayRemitos'];
+        
+    }else{
+        
+        $nComp = $_POST['nComp'];
+        $articulo = $_POST['articulo'];
+
+    }
 
 
     $recodificacion = new Recodificacion();
     
-    $result = $recodificacion->comprobarArticuloEnRemito($nComp, $articulo);
+    if(isset($arrayRemitos)){
 
-    echo $result;
+        $arrayResponse = [];
+
+        foreach ($arrayRemitos as $key => $remito) {
+            
+            $result = $recodificacion->comprobarArticuloRecodifica($remito['nComp'], $remito['articulo'], $remito['cantidad']);
+            $arrayResponse[] = ["remito"=>$remito['nComp'], "articulo"=>$remito['articulo'] , "respuesta"=>$result];
+        }
+        
+        echo json_encode($arrayResponse);
+
+    }else{
+
+        $result = $recodificacion->comprobarArticuloEnRemito($nComp, $articulo);
+    
+        echo $result;
+
+    }
 }
 
 

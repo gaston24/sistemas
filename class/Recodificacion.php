@@ -434,8 +434,8 @@ class Recodificacion
     }
 
     
-   public function traerUsuariosNotificaSolicitud () {
-    
+    public function traerUsuariosNotificaSolicitud () 
+    {
         $sql = " SELECT DESCRIPCION, MAIL FROM SOF_USUARIOS WHERE TIPO = 'SUPERVISION' AND NOTIFICA = 1";
 
         try {
@@ -458,9 +458,10 @@ class Recodificacion
 
         }
 
-   }
+    }
 
-   public function traerMailAutorizaSolicitud ($numSucursal) {
+    public function traerMailAutorizaSolicitud ($numSucursal) 
+    {
 
         $sql = "select MAIL from RO_MAILS_LOCALES_PROPIOS WHERE NRO_SUCURS = '$numSucursal'";
 
@@ -484,45 +485,49 @@ class Recodificacion
 
         }
 
-   }
-   public function comprobarStock ($articulo) {
-    $sql="SELECT CASE 
-                WHEN A.CANT_STOCK >= $articulo[cantidad] THEN 'True'
-                ELSE 'False'
-            END AS TieneStock
-        FROM STA19 A
-        INNER JOIN (
-        SELECT COD_SUCURS 
-        FROM STA22 
-        WHERE COD_SUCURS LIKE '[0-9]%' 
-            AND INHABILITA = 0
-        ) B ON A.COD_DEPOSI = B.COD_SUCURS
-        WHERE A.COD_ARTICU = '$articulo[articulo]' ;";
+    }
+
+    public function comprobarStock ($articulo) 
+    {
+
+        $sql="SELECT CASE 
+                    WHEN A.CANT_STOCK >= $articulo[cantidad] THEN 'True'
+                    ELSE 'False'
+                END AS TieneStock
+            FROM STA19 A
+            INNER JOIN (
+            SELECT COD_SUCURS 
+            FROM STA22 
+            WHERE COD_SUCURS LIKE '[0-9]%' 
+                AND INHABILITA = 0
+            ) B ON A.COD_DEPOSI = B.COD_SUCURS
+            WHERE A.COD_ARTICU = '$articulo[articulo]' ;";
 
 
-        $stmt = sqlsrv_query($this->cid, $sql);
+            $stmt = sqlsrv_query($this->cid, $sql);
 
-        if ($stmt === false) {
-            die("Error en la consulta: " . sqlsrv_errors());
-        }
+            if ($stmt === false) {
+                die("Error en la consulta: " . sqlsrv_errors());
+            }
+        
+            $row = sqlsrv_fetch_array($stmt);
     
-        $row = sqlsrv_fetch_array($stmt);
- 
-        if( $row == null || $row['TieneStock'] == 'False'){
+            if( $row == null || $row['TieneStock'] == 'False'){
 
 
-            $tieneStock = false ;
-            
-        }else{
-            
-            $tieneStock = true ;
-        }
-    
-        return $tieneStock;
-   }
+                $tieneStock = false ;
+                
+            }else{
+                
+                $tieneStock = true ;
+            }
+        
+            return $tieneStock;
+    }
 
 
-   public function validarCodigosOulet ($articulo) {
+    public function validarCodigosOulet ($articulo)
+    {
 
         $sql="SELECT CASE WHEN EXISTS (
             SELECT 1
@@ -555,10 +560,11 @@ class Recodificacion
         }
     
         return $existeArticulo;
-   }
+    }
 
 
-   public function comprobarArticuloEnRemito ($nComp, $articulo) {
+    public function comprobarArticuloEnRemito ($nComp, $articulo) 
+    {
 
         $conn = new Conexion();
         $cid = $conn->conectar('local');
@@ -573,7 +579,7 @@ class Recodificacion
             AND A.N_COMP ='$nComp'
             AND B.COD_ARTICU ='$articulo'
         ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
-
+    
 
         $stmt = sqlsrv_query($cid, $sql);
 
@@ -595,6 +601,101 @@ class Recodificacion
 
         return $existeArticulo;
 
-   }
+    }
 
+    public function comprobarArticuloRecodifica ($nComp, $articulo, $cantidad) 
+    {
+
+        $conn = new Conexion();
+        $cid = $conn->conectar('local');
+
+        $sql="SELECT CASE WHEN EXISTS (
+          	 SELECT 1 FROM STA14 A 
+            INNER JOIN STA20 B ON A.ID_STA14 = B.ID_STA14
+            WHERE A.NCOMP_ORIG ='$nComp'
+            AND B.COD_ARTICU ='$articulo'
+            AND B.CANTIDAD = '$cantidad'
+        ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
+    
+         
+        $stmt = sqlsrv_query($cid, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+
+        $row = sqlsrv_fetch_array($stmt);
+   
+        if( $row == null || $row['ArticuloExiste'] == 'false'){
+
+
+            $existeArticulo = false ;
+            
+        }else{
+            
+            $existeArticulo = true ;
+        }
+
+        return $existeArticulo;
+
+    }
+
+    
+
+
+    public function traerRecodificacionDeArticulos ()
+    {
+
+        $sql = "SELECT A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO FROM sj_reco_locales_enc A
+        INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC";
+
+        try {
+
+            $result = sqlsrv_query($this->cid, $sql); 
+            
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+    }
+    
+    public function traerRemitosEnElLocal($remitos)
+    {
+        $conn = new Conexion();
+        $cid = $conn->conectar('local');
+
+        $remitosList = implode("', '", $remitos);
+
+        $sql = "SELECT NCOMP_ORIG FROM STA14 WHERE NCOMP_ORIG IN ('$remitosList')";
+
+        $stmt = sqlsrv_query($cid, $sql);
+    
+        $resultados = [];
+    
+        if ($stmt) {
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+
+                $resultados[] = $row["NCOMP_ORIG"];
+
+            }
+        } else {
+
+            die(print_r(sqlsrv_errors(), true));
+        }
+    
+        return $resultados;
+    }
+    
 }
