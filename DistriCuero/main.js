@@ -352,7 +352,22 @@ function validarCredito(){
 
 //Suma el total de artículos del pedido//
 
-function total() {
+function total(div) {
+
+  let cant = div.value;
+  let max = div.getAttribute("max");
+
+  if(cant > max){
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de carga',
+      text: 'La cantidad supera el stock disponible: '+max
+    });
+    div.value = 0;
+
+  }
+
   var suma = 0;
   var x = document.querySelectorAll("#tablePed input[name='inputNum[]']");
 

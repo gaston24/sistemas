@@ -135,7 +135,7 @@ $creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
                             <a>LANZAMIENTO!</a>
                             <?php } else { ?> <?php } ?>
                         </td>
-                        <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" max="<?= $key['CANT_MAX'] ?>" title="Cantidad máxima a solicitar <?= $key['CANT_MAX'] ?>" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
+                        <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" max="<?= $key['CANT_MAX'] ?>" title="Cantidad máxima a solicitar <?= $key['CANT_MAX'] ?>" id="inputNum" name="inputNum[]" onchange="total(this); precioTotal()"></td>                
                         <?php if($key['RUBRO']== 'KITS'){ ?>
                         <td>
                             <a href="detalleKits.php?cod_kit=<?= $key['COD_ARTICU'] ?>"><button type="button" class="btn btn-sm btn-warning" style="width: 80px;"><i class="fa fa-search"></i>  Ver</button></a>
