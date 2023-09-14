@@ -4,7 +4,7 @@
 // 	header("Location:http://192.168.0.13:8000/");
 // }else{
     include_once "controller/traerEquis.php";
-
+    include_once "controller/ejecutarSpController.php";
 
     $inputBuscar = isset($_GET['inputBuscar']) ? $_GET['inputBuscar'] : '%' ;
     $selectEstado = isset($_GET['selectEstado']) ? $_GET['selectEstado'] : '%' ;
