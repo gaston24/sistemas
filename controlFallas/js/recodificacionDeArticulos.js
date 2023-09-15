@@ -46,9 +46,9 @@ const ajustar = () =>{
                                 tr.querySelectorAll("td")[2].style="color:black"
 
                                 arrayDeArticulos.push({
-                      
-                                    articulo: tr.querySelectorAll("td")[2].textContent,
-                                    codigo:  tr.querySelectorAll("td")[5].textContent,
+                                    
+                                    articulo: tr.querySelectorAll("td")[5].textContent,
+                                    codigo: tr.querySelectorAll("td")[2].textContent ,
                                     cant: tr.querySelectorAll("td")[4].textContent,
                                     ncomp: tr.querySelectorAll("td")[1].textContent,
                                     tcomp: ''

@@ -2,6 +2,8 @@
     session_start();
     require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
 
+    error_log("hola mundo");
+
     $nroSucurs = $_SESSION['numsuc'];
     $recodificacion = new Recodificacion();
 
@@ -77,11 +79,11 @@
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
 
         <div class="alert alert-secondary">
-            <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
+            <div class="page-wrapper bg-secondary p-b-100 pt-1 font-robo">
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Recodificacion de Articulos</h6></div>
                     <div class="card card-1">
                       
-                        <div class="row" style="margin-left:50px; margin-top:30px">
+                        <div class="row" style="margin-left:50px; margin-top:20px">
                             <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Recodificacion de Articulos </strong></h3>
                         </div>
                         <div class="right-div">
@@ -93,8 +95,8 @@
                                 <tr>
                                     <th style="text-align:center;width:10%" >FECHA SOLICITUD</th>
                                     <th style="text-align:center;width:10%" >REMITO</th>
-                                    <th style="text-align:center;width:20%" >CODIGO</th>
-                                    <th style="text-align:center;width:10%">DESCRIPCION</th>
+                                    <th style="text-align:center;width:10%" >CODIGO</th>
+                                    <th style="text-align:center;width:20%">DESCRIPCION</th>
                                     <th style="text-align:center;width:20%" >CANTIDAD</th>
                                     <th style="text-align:center;width:20%" >NUEVO CODIGO</th>
                                     <th style="text-align:center;width:3%" ></th>
