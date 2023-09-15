@@ -89,7 +89,10 @@ if(!isset($_SESSION['codClient'])){
         public function traerOrdenesConNotaPedido($orden){
 
             $sql = "SELECT A.NRO_SUCURSAL, A.COD_CLIENT, A.DESC_SUCURSAL, REPLACE(ISNULL(B.FECHA, ''),'1900-01-01','') FECHA, B.HORA, B.NRO_ORDEN, NRO_NOTA_PEDIDO, TOTAL, CANTIDAD, 
-                    CASE WHEN C.FECHA IS NULL THEN 'PENDIENTE' ELSE 'RECHAZADA' END ESTADO
+                    CASE WHEN C.FECHA IS NOT NULL THEN 'RECHAZADA'
+                        WHEN NRO_NOTA_PEDIDO IS NOT NULL THEN 'CARGADA'
+                        ELSE 'PENDIENTE' 
+                    END ESTADO
                     FROM [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS A
                     LEFT JOIN 
                     (
@@ -112,7 +115,6 @@ if(!isset($_SESSION['codClient'])){
                     LEFT JOIN (SELECT * FROM RO_ORDENES_RECHAZADAS WHERE NRO_ORDEN = '$orden') C ON A.COD_CLIENT = C.COD_CLIENT
                     WHERE CANAL = 'FRANQUICIAS' AND HABILITADO = 1 AND NRO_SUC_MADRE IS NULL
                     ORDER BY NRO_SUCURSAL
-
                 ";
                 
                 $rows = $this->retornarArray($sql);
@@ -133,10 +135,11 @@ class Orden
 
     private function retornarArray($sqlEnviado){
 
-        require_once 'Conexion.php';
+        require_once $_SERVER['DOCUMENT_ROOT']. '/sistemas/class/conexion.php';
 
         $cid = new Conexion();
-        $cid_central = $cid->conectar();  
+        $cid_central = $cid->conectar('central');  
+        
         $sql = $sqlEnviado;
 
         $stmt = sqlsrv_query( $cid_central, $sql );
@@ -152,7 +155,7 @@ class Orden
     }
 
     public function traerDetalleOrden($a){
-
+        
         $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE NRO_ORDEN LIKE '$a' ";
 
         $rows = $this->retornarArray($sql);
@@ -172,7 +175,7 @@ class Orden
             ORDER BY NRO_ORDEN DESC
 
         ";
-        
+
         $rows = $this->retornarArray($sql);
 
         return $rows;

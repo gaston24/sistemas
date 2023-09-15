@@ -485,10 +485,13 @@ class Recodificacion
 
         }
 
+
     }
+
 
     public function comprobarStock ($articulo) 
     {
+
 
         $sql="SELECT CASE 
                     WHEN A.CANT_STOCK >= $articulo[cantidad] THEN 'True'
@@ -502,6 +505,7 @@ class Recodificacion
                 AND INHABILITA = 0
             ) B ON A.COD_DEPOSI = B.COD_SUCURS
             WHERE A.COD_ARTICU = '$articulo[articulo]' ;";
+
 
 
             $stmt = sqlsrv_query($this->cid, $sql);

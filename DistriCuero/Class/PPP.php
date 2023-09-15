@@ -3,13 +3,20 @@
 
 class PPP
 {
+    private $conn;
+    
+    function __construct(){
+
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        $this->conn = new Conexion;
+        
+    }
+
 
     private function retornarArray($sqlEnviado){
     
-        require_once 'Conexion.php';
+        $cid_central = $this->conn->conectar('central');
 
-        $cid = new Conexion();
-        $cid_central = $cid->conectar();  
         $sql = $sqlEnviado;
 
         $stmt = sqlsrv_query( $cid_central, $sql );
