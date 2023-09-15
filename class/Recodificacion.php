@@ -486,6 +486,11 @@ class Recodificacion
 
    }
    public function comprobarStock ($articulo) {
+
+
+    $conn = new Conexion();
+    $cid = $conn->conectar('local');
+
     $sql="SELECT CASE 
                 WHEN A.CANT_STOCK >= $articulo[cantidad] THEN 'True'
                 ELSE 'False'
@@ -500,7 +505,7 @@ class Recodificacion
         WHERE A.COD_ARTICU = '$articulo[articulo]' ;";
 
 
-        $stmt = sqlsrv_query($this->cid, $sql);
+        $stmt = sqlsrv_query($cid, $sql);
 
         if ($stmt === false) {
             die("Error en la consulta: " . sqlsrv_errors());
