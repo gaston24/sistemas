@@ -65,6 +65,11 @@ switch ($accion) {
 
         break;
 
+    case 'ajustarArticulos':
+        ajustarArticulos();
+
+        break;
+
     
     default:
         # code...
@@ -416,6 +421,21 @@ function comprobarArticuloEnRemito () {
         echo $result;
 
     }
+
+}
+
+function ajustarArticulos () {
+
+    $data = $_POST['arrayDeArticulos'];
+
+    foreach ($data as $key => $value) {
+
+        $recodificacion = new Recodificacion();
+        $result = $recodificacion->ajustarArticulos($value['id_enc'], $value['codigo']);
+
+    }
+
+    echo true;
 }
 
 
