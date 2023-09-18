@@ -100,13 +100,14 @@
                                     <th style="text-align:center;width:20%" >CANTIDAD</th>
                                     <th style="text-align:center;width:20%" >NUEVO CODIGO</th>
                                     <th style="text-align:center;width:3%" ></th>
+                                    <th hidden></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
                                     foreach ($data as $key => $remito) {
                                         if(in_array($remito['N_COMP'], $remitos)){
-         
+                              
                                 ?>
                                     <tr>
                                         <td  style="text-align:center;"><?= $remito['FECHA']->format("Y-m-d") ?></td>
@@ -116,6 +117,7 @@
                                         <td  style="text-align:center;"><?= $remito['CANTIDAD'] ?></td>
                                         <td  style="text-align:center;"><?= $remito['NUEVO_CODIGO'] ?></td>
                                         <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;"></td>
+                                        <td hidden><?= $remito['ID_ENC'] ?></td>
                                     </tr>
                                     
                                 <?php 
