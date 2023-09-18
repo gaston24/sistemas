@@ -650,8 +650,9 @@ class Recodificacion
     public function traerRecodificacionDeArticulos ()
     {
 
-        $sql = "SELECT A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO FROM sj_reco_locales_enc A
-        INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC";
+        $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO FROM sj_reco_locales_enc A
+        INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC
+        WHERE B.AJUSTADO IS NULL OR AJUSTADO = 0";
 
         try {
 
@@ -702,4 +703,20 @@ class Recodificacion
         return $resultados;
     }
     
+    public function ajustarArticulos ($id, $codArticulo) {
+
+        $sql = "UPDATE sj_reco_locales_det SET AJUSTADO = '1' WHERE ID_ENC = '$id' AND COD_ARTICU = '$codArticulo'";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
 }

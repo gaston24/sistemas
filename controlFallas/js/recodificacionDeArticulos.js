@@ -51,7 +51,8 @@ const ajustar = () =>{
                                     codigo: tr.querySelectorAll("td")[2].textContent ,
                                     cant: tr.querySelectorAll("td")[4].textContent,
                                     ncomp: tr.querySelectorAll("td")[1].textContent,
-                                    tcomp: ''
+                                    tcomp: '',
+                                    id_enc: tr.querySelectorAll("td")[7].textContent,
                                 })
 
                             }
@@ -92,7 +93,24 @@ const ajustar = () =>{
                                     },
                                     success: function (response) {
 
-                                        Swal.fire('Artículos ajustados!', '', 'success')
+                                        $.ajax({
+                                            url:"/Controller/RecodificacionController.php?accion=ajustarArticulos",
+                                            type:"POST",
+                                            data:{
+                                                arrayDeArticulos:arrayDeArticulos
+                                            },
+                                            success:function(data){
+                                           
+                                                Swal.fire('Artículos ajustados!', '', 'success').then((result) => {
+                                                    location.reload();
+                                                })
+                                            
+                                            }
+
+                                        });
+                                        
+                                        
+                                        
 
                                     }
                                 });
