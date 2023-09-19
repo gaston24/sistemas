@@ -132,6 +132,14 @@ include('estado_cuenta.php');
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Calidad</a>
                                 <ul class="dropdown-menu">
                                     <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas <span class="badge badge-warning">Testing</span</a>
+                                    <?php
+                                    if ($_SESSION['esOutlet'] == 1) {
+                                    ?>
+                                        <!-- OUTLET -->
+                                        <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/recodificacionDeArticulos.php'">Recodificar articulos <span class="badge badge-warning">Testing</span</a>
+                                    <?php
+                                    } 
+                                    ?>
                                     <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a>
                                 </ul>
                             </li>
