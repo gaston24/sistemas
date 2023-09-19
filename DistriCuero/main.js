@@ -547,7 +547,7 @@ function precioTotal() {
       var i;
 
       for (i = 0; i < p.length; i++) {
-          precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
+          precioTodos += parseInt(0+p[i].innerHTML.replace(/[$.]/g, "") * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
          }
 
       document.getElementById('totalPrecio').value = new Intl.NumberFormat("es-ar",{style: "currency", currency: "ARS", minimumFractionDigits: 0}).format(precioTodos);

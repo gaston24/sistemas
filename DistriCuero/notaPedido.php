@@ -128,7 +128,7 @@ $creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
                         <td id="articuloPed" name="articuloPed"><?=  $key['COD_ARTICU']?></td>
                         <td id="descripcioPed" name="descripcioPed"><?=  $key['DESCRIPCIO']?></td>
                         <td id="rubro" name="rubro"><?=  $key['RUBRO']?></td>
-                        <td id="precioPed" name="precioPed"><?= $key['PRECIO_ESTIMADO'] ?></td>
+                        <td id="precioPed" name="precioPed">$<?= number_format($key['PRECIO_ESTIMADO'], 0, ',', '.') ?></td>
                         <td id="temporadaPed" name="temporadaPed"><?=  $key['TEMPORADA'] ?></td>
                         <td id="novedadPed" name="novedadPed">
                             <?php if($key['LANZAMIENTO']== 1){ ?>
