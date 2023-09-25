@@ -89,18 +89,17 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
                                 <input  Class="form-control ml-1" type="date" id='hasta' name="hasta" value="<?php echo $hasta; ?>">
                                 
                                 <label class="ml-2">Destino: </label>
-                                    <select Class="form-control ml-1" name="selectSucursal" id="selectSucursal" class="selectSucursal">
-
-                                        <option value="%">TODOS</option>
-                                        <?php
-                                            foreach ($locales as $key => $local) {
-                                        ?>
-                                            <option value="<?= $local['NRO_SUCURSAL'] ?>" <?= ($local['NRO_SUCURSAL'] = $sucursal) ? "selected" : "" ?> ><?= $local['DESC_SUCURSAL'] ?></option>
-                                        <?php
-                                            }
-                                        ?>
-            
-                                    </select>
+                                <select class="form-control ml-1" name="selectSucursal" id="selectSucursal" class="selectSucursal">
+                                    <option value="%">TODOS</option>
+                                    <?php
+                                    foreach ($locales as $key => $local) {
+                                        $selected = ($local['NRO_SUCURSAL'] == $sucursal) ? "selected" : "";
+                                    ?>
+                                        <option value="<?= $local['NRO_SUCURSAL'] ?>" <?= $selected ?>><?= $local['DESC_SUCURSAL'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
 
                                 
                                 
