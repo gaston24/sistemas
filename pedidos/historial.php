@@ -15,10 +15,12 @@ $permiso = $_SESSION['permisos'];
 <head>
 	<meta charset="utf-8">
 	<title>Detalle de Pedidos</title>	
-	<link rel="shortcut icon" href="imagenes/logo.jpg" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-<?php include_once __DIR__.'/../assets/css/fontawesome/css.php';?>
+	<link rel="shortcut icon" href="../assets/images/logo.jpg" />
+	<?php 
+		require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/css/css.php';
+	?>
+
+<?php include_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/css/fontawesome/css.php';?>
 <body>	
 
 <?php

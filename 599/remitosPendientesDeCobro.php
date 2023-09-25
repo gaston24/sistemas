@@ -1,8 +1,5 @@
 <?php
-// session_start(); 
-// if(!isset($_GET['userName'])){
-// 	header("Location:http://192.168.0.13:8000/");
-// }else{
+    session_start();
     include_once "controller/traerEquis.php";
     $detalleDeRemito = traerDetalle($_GET['codClient']);
 
@@ -19,17 +16,11 @@
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <title>Remitos pendientes de cobro</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" class="rel">
-        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
+    <?php 
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/css/css.php';
+    ?>
 
-        <!-- Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
 
     </link>
 
@@ -38,6 +29,7 @@
     <body>
 
     <div class="alert">
+        
         <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
             <div class="wrapper wrapper--w680">
                 <div style="color:white; text-align:center">
@@ -99,71 +91,14 @@
                 </div>
             </div>
 
+            <?php 
+                require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/js/js.php';
+            ?>
 
-
-
-            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-            <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-            <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-            <script src="js/remitosPendientesDeCobro.js?version=1.0"></script>
             <script src="js/jquery.table2excel.js"></script>
+            
 
     </body>
 
     </html>
 
-    <script>
-        
-        const todosLosMontos = document.querySelectorAll('#monto');
-        
-        
-        $(document).ready(function() {
-                parseNumber();
-                $('#myTable').DataTable({
-                    responsive: true,
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ]
-                });
-
-
-
-                let total = 0;
-
-                todosLosMontos.forEach(e => {
-
-                    total = total + parseInt(e.getAttribute("attr-realValue"))
-                    
-                }); 
-                document.querySelector("#totalDeuda").value = "$ "+total.toLocaleString('de-De', {
-                style: 'decimal',
-                maximumFractionDigits: 0,
-                minimumFractionDigits: 0
-            });
-                
-        });
-            
-        $("#btnExport").click(function() {
-
-            $('input[type=number]').each(function(){
-                this.setAttribute('value',$(this).val());
-            });
-
-            $("table").table2excel({
-                // exclude CSS class
-                exclude: ".noExl",
-                name: "Worksheet Name",
-                filename: "Remitos", //do not include extension
-                fileext: ".xls", // file extension
-            });
-        });
-    </script>
-<!-- <?php
-// }
-?> -->

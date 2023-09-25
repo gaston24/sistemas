@@ -28,9 +28,12 @@ if (!isset($_SESSION['username'])) {
 		<title>Carga de Pedidos</title>
 		<meta charset="UTF-8">
 		</meta>
-		<link rel="shortcut icon" href="../../css/icono.jpg" />
-		<?php include_once __DIR__.'/../ajustes/css/headers/include_pedidos.php' ;?>
-		<?php include_once __DIR__.'/../assets/css/fontawesome/css.php';?>
+		<link rel="shortcut icon" href="../assets/images/icono.jpg" />
+		<?php
+			require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/css/css.php';
+	 		include_once  $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/css/fontawesome/css.php';
+
+		?>
 		<link rel="stylesheet" href="style/style.css">
 
 	</head>
@@ -220,6 +223,9 @@ if (!isset($_SESSION['username'])) {
 
 				</tbody>
 
+			<?php
+				require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/assets/js/js.php';
+			?>
 
 
 			</table>
@@ -244,9 +250,6 @@ if (!isset($_SESSION['username'])) {
 		let cupo_credito = '<?= (int)$_SESSION['cupoCredi'];  ?>'
 	</script>
 
-	<script src="js/main.js"></script>
-	<script src="js/envio.js"></script>
-	<script src="js/jquery.table2excel.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	</body>
