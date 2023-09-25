@@ -235,7 +235,7 @@ class Remito
 
     public function traerEstadoControlRemitos ($desde, $hasta, $nroSucursal, $estado) {
 
-        $cid = $this->conn->conectar('locales');
+        $cid = $this->conn->conectar('central');
 
         $sql = "EXEC ".$this->conn->prefix." RO_SP_REMITOS_ESTADO_CONTROL '$desde', '$hasta', '$nroSucursal', '$estado'";
    
