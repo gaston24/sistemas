@@ -119,7 +119,7 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
 
                                 <div style="margin-left:1rem">   
                                     <button class="btn btn-primary btn-submit" id="btnSubmit" value="" onclick="mostrarSpiner()">filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
-                                    <button type="button"  class="btn btn-success" id="btnExport" style="margin-left:1rem">Exportar <i class="bi bi-file-earmark-excel"></i></button>
+                                    <!-- <button type="button"  class="btn btn-success" id="btnExport" style="margin-left:1rem">Exportar <i class="bi bi-file-earmark-excel"></i></button> -->
                                 
                                 </div>
 
@@ -222,6 +222,19 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.min.css"> -->
+
+<!-- DataTables JavaScript -->
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script> -->
+
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.1.1/css/buttons.dataTables.min.css">
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
+
 <script>
     $('#selectSucursal').select2();
     document.querySelector('.select2-selection.select2-selection--single').style = "height:40px;"
@@ -235,10 +248,53 @@ $data = $control->traerEstadoControlRemitos($desde, $hasta, $sucursal, $estado);
         });
     });
 
-    // $(document).ready(function() {
+    $(document).ready(function() { 
 
-    //     // document.querySelector('.select2-selection.select2-selection--single').style.height = "40px";
+        $('#tablaControl').DataTable( { 
+            select: true,
+            dom: '<"float-right"B>frtip',
+  
+            buttons: [
+                'excel',
+            ],
+            fixedHeader: true,
+            "bLengthChange": true,
+            "language": {
+                        "lengthMenu": "mostrar _MENU_ registros",
+                        "info":           "Mostrando registros del _START_ al _END_ de un total de  _TOTAL_ registros",
+                        "paginate": {
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
 
-    // })
+            },
+
+            
+            "bInfo": true,
+            "aaSorting": false,
+            'columnDefs': [
+                {
+                    "targets": "_all", 
+                    "className": "text-center",
+                    "sortable": false,
+            
+                },
+            ],
+            "oLanguage": {
+
+                "sSearch": "Busqueda rapida:",
+                "sSearchPlaceholder" : "Sobre cualquier campo"
+                
+
+            },
+        }); 
+
+        document.querySelector('.dt-button.buttons-excel.buttons-html5').style.backgroundColor = " #28a745";
+        document.querySelector('.dt-button.buttons-excel.buttons-html5').style.color = "white";
+        document.querySelector('.dt-button.buttons-excel.buttons-html5').innerHTML  = "Exportar <i class='bi bi-file-earmark-excel'></i>";
+        document.querySelector('.dt-button.buttons-excel.buttons-html5').style.marginRight = "20px";
+
+        
+});
 
 </script>

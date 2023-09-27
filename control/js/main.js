@@ -308,7 +308,18 @@ btnBorrador.addEventListener("click", ()=>{
     let  borradorString = JSON.stringify(borrador);
 
     sessionStorage.setItem("borrador",borradorString);
-    
+
+    if(sessionStorage.getItem("borrador")){
+
+        Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: 'Borrador guardado',
+            showConfirmButton: false,
+            timer: 1500
+        })
+
+    }
     
 })
 
@@ -320,7 +331,8 @@ btnTraerBorrador.addEventListener("click", ()=>{
     borrador = JSON.parse(borrador);
 
     table.innerHTML = '';
-    
+    let ultimo = "";
+
     borrador.forEach(x => {
         if(numRem == x[0]){
             
@@ -335,6 +347,7 @@ btnTraerBorrador.addEventListener("click", ()=>{
                 }
                 
                 addArticulo(articulo);
+                ultimo = element[0];
             });
 
     
@@ -342,6 +355,9 @@ btnTraerBorrador.addEventListener("click", ()=>{
         }
         
     });
+    
+    updateUltimoCodigo(ultimo);
+    sumarTotal();
 
 })
 

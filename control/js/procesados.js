@@ -115,12 +115,15 @@ const totales = () =>{
     let dif = 0;
     
     rows.forEach(x=>{
+        
+        let diferencia = 0;
 
         cantRem += parseInt(x.querySelector("#cantRem").innerHTML);
         cantControl += parseInt(x.querySelector("#cantControl").innerHTML);
         dif += parseInt(x.querySelector("#dif").innerHTML);
+        diferencia = parseInt(x.querySelector("#dif").innerHTML);
 
-        if(dif != 0){
+        if(diferencia != 0){
             x.style.color = '#FE2E2E'
             x.style.fontWeight = 'bold'
         }
