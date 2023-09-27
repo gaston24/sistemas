@@ -89,7 +89,9 @@ const ajustar = () =>{
                                 $.ajax({
                                     url: "../ajustes/ConfirmAjus.php",
                                     type: "POST",
-                                    data: {data:JSON.stringify(arrayDeArticulos)
+                                    data: {
+                                        data:JSON.stringify(arrayDeArticulos),
+                                        ajusteNuevaRecodificacion:true
                                     },
                                     success: function (response) {
 
