@@ -20,8 +20,12 @@ $codClient = $_GET['codClient'];
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
 <?php require_once __DIR__.'/../assets/css/header.php';?>
+
+<script src="js/jquery.table2excel.js"></script>
 <link rel="stylesheet" href="css/style.css">
+
 
 <style>
 	table.table-fh > thead > tr >th, table.table-fh > tbody > tr > td {
@@ -36,7 +40,7 @@ $codClient = $_GET['codClient'];
 
 <div>
 	<div class="row mt-2">
-		<a href="javascript:window.print();"><i class="fa fa-print" style="font-size: 2.2rem; margin-left: 2em" aria-hidden="true"></i></a>
+		<a  style="color:blue" onclick="imprimir()"><i class="fa fa-print" style="font-size: 2.2rem; margin-left: 2em" aria-hidden="true"></i></a>
 		<button onClick="window.location.href= 'index.php'" class="btn btn-success" style="margin-left: 10em">Inicio</button>
 	</div>
 </div>
@@ -87,5 +91,20 @@ $codClient = $_GET['codClient'];
 
 <script src="js/procesados.js"></script>
 
+<script>
+
+	const imprimir=()=>{
+
+		$("#id_tabla").table2excel({
+			// exclude CSS class
+			exclude: ".noExl",
+			name: "Worksheet Name",
+			filename: "diferenciasControlRemito", //do not include extension
+			fileext: ".xls", // file extension
+		});
+
+	}
+	
+</script>
 </body>
 </html>
