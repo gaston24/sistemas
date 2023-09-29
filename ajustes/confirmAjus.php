@@ -22,6 +22,8 @@ $ajuste->ejecutarSqlNuevos();
 
 $data = json_decode($_POST['data']);
 
+$esNuevoAjuste = (isset($_POST['ajusteNuevaRecodificacion'])) ? $_POST['ajusteNuevaRecodificacion'] : false;
+
 
 foreach ($data as $key => $value) {
 
@@ -75,10 +77,10 @@ foreach ($data as $key => $value) {
 					
 					
 					//INSERTA DETALLE SALIDA
-					$ajuste->insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno);
+					$ajuste->insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno, $esNuevoAjuste);
 						
 					//RESTA CANTIDAD
-					$ajuste->restarCantidad($cant, $codigo);
+					$ajuste->restarCantidad($cant, $codigo, $esNuevoAjuste);
 					
 					
 					//INSERTA DETALLE ENTRADA

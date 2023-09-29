@@ -89,12 +89,14 @@ const ajustar = () =>{
                                 $.ajax({
                                     url: "../ajustes/ConfirmAjus.php",
                                     type: "POST",
-                                    data: {data:JSON.stringify(arrayDeArticulos)
+                                    data: {
+                                        data:JSON.stringify(arrayDeArticulos),
+                                        ajusteNuevaRecodificacion:true
                                     },
                                     success: function (response) {
 
                                         $.ajax({
-                                            url:"/Controller/RecodificacionController.php?accion=ajustarArticulos",
+                                            url:"Controller/RecodificacionController.php?accion=ajustarArticulos",
                                             type:"POST",
                                             data:{
                                                 arrayDeArticulos:arrayDeArticulos
