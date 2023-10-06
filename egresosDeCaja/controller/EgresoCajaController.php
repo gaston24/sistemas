@@ -66,6 +66,7 @@ function eliminarArchivo () {
 function contarFotosEnCarpeta() {
     
     $nComp = (isset($_POST['nComp'])) ? $_POST['nComp'] : "";
+    $nroSucursal = (isset($_POST['nroSucursal'])) ? $_POST['nroSucursal'] : "";
 
     $root = $_SERVER["DOCUMENT_ROOT"];
 
@@ -97,7 +98,7 @@ function contarFotosEnCarpeta() {
                             $datosDeLosArchivos['cantidad'] ++;
         
                             $datosDeLosArchivos['nombre'][] = $codigo;
-        
+
                             // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
                         } 
          
@@ -150,6 +151,7 @@ function guardar ()  {
 
     $egreso = new Egreso();
     $data = $_POST['listaDeComprobantes'];
+    $nroSucursal = $_POST['nroSucursal'];
     $arrayNcomp = [];
 
     foreach ($data as $key => $nComp) {
@@ -163,10 +165,35 @@ function guardar ()  {
 
     foreach ($arrayNcomp as $key => $value) {
         
-        $nComp = substr($value, 0, 14);
-        $codCta = substr($value, 14); 
+        switch (strlen($value)) {
 
-        $egreso->existeFoto($nComp, $codCta);
+            case '21':
+
+                $nComp = substr($value, 0, 15);
+                $nComp = substr($nComp, 0, -1);
+                $codCta = substr($value, 15);
+                
+                break;
+
+            case '22':
+
+                $nComp = substr($value, 0, 16);
+                $nComp = substr($nComp, 0, -2);
+                $codCta = substr($value, 16);
+
+                break;
+
+            case '23':
+
+                $nComp = substr($value, 0, 17);
+                $nComp = substr($nComp, 0, -3);
+                $codCta = substr($value, 17);
+
+                break;
+
+        }
+
+        $egreso->existeFoto($nComp, $codCta, $nroSucursal);
     }
 }
 
