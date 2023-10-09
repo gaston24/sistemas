@@ -84,4 +84,21 @@ class Pedido
 
     }
 
+    public function traerResumenPorPedido($desde, $hasta)
+    {
+        
+        $sql = "SELECT CAST(A.FECHA AS DATE) FECHA, A.ESTADO, A.HORA_INGRESO, A.COD_CLIENT, A.RAZON_SOCI, LOCALIDAD, A.TALON_PED, A.NRO_PEDIDO, A.CANT_PEDIDO, A.CANT_PENDIENTE, IMP_PENDIENTE, COD_VENDED, VENDEDOR, A.TIPO_COMP, A.EMBALAJE, A.DESPACHO, FECHA_DESPACHO
+                FROM RO_PEDIDOS_MAYORISTA_ASIGNADOS A
+                LEFT JOIN SJ_PICKING_ENCABEZADO B ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
+                WHERE B.ESTADO = 'ABIERTO' AND A.FECHA_DESPACHO BETWEEN '$desde' AND '$hasta'
+                ORDER BY FECHA, RAZON_SOCI, NRO_PEDIDO";
+
+        $rows = $this->retornarArray($sql);
+        
+        $myJSON = json_encode($rows);
+
+        return $myJSON;
+
+    }
+
 }

@@ -30,7 +30,7 @@ class Cliente
     public function traerClientes()
     {
 
-        $sql = "SELECT DISTINCT(COD_CLIENT), RAZON_SOCI FROM RO_PEDIDOS_MAYORISTA_ASIGNADOS";
+        $sql = "SELECT DISTINCT(COD_CLIENT), RAZON_SOCI FROM RO_PEDIDOS_MAYORISTA_ASIGNADOS ORDER BY RAZON_SOCI";
         
         $rows = $this->retornarArray($sql);
 

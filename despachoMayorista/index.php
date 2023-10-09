@@ -31,6 +31,7 @@ $pedido = new Pedido();
     <!-- Including Font Awesome CSS from CDN to show icons -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -53,7 +54,10 @@ $pedido = new Pedido();
         <a class="nav-link" disabled><i class="fa fa-list"></i> Seleccionar ordenes</a>
       </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="pedidosAsignados.php"><i class="fa fa-calendar-check-o"></i> Pedidos asignados</a>
+                    <a class="nav-link" href="pedidosAsignados.php"><i class="bi bi-person-standing"></i> Resumen por cliente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="resumenPorPedido.php"><i class="bi bi-receipt"></i> Resumen por pedido</a>
                 </li>
             </ul>
         </div>

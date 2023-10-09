@@ -63,6 +63,10 @@
     font-size: 1.5rem;
 }
 
+.form-inline{
+    margin-left: 4rem;
+}
+
 @media only screen and (min-width: 1401px) and (max-width: 3000px) {
 
 
@@ -147,17 +151,12 @@ thead tr th {
 
 #btn_filtro
 {
-   /*  position: absolute */;
-   /*  margin-left:17.5%; */
    margin-left: 0.2rem;
-    /* margin-top: 10.5%; */
 }
 
 #btnExport
 {
-    /* position: absolute; */
-   /*  margin-top: 6%; */
-    margin-left: 6%;
+    margin-left: 3%;
 }
 
 #btn_filtro2
