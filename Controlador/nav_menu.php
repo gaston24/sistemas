@@ -154,6 +154,27 @@ include('estado_cuenta.php');
                                 <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                                 </ul>
                             </li>
+                                    
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
+                                <ul class="dropdown-menu">
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='fichaje/registro.php'">Fichada por legajo <span class="badge badge-warning">Testing</span></a>
+
+                                <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">First subsubmenu</a>
+                                    <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Second subsubmenu</a>
+                                    <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
+                                    </ul>
+                                </li> -->
+                                </ul>
+                            </li>
+
+
 
                             </ul>
                         </li>
