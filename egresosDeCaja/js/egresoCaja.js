@@ -58,12 +58,12 @@ const cargarArchivos = (input,nComp,codCta) => {
 };
 
 const enviarImagenes = (nComp,codCta) => {
-   
+    let nroSucursal = document.querySelector("#nroSucursal").textContent;
     // nComp = codArticulo.split("-")[0];
   
     const input = document.getElementById('archivos');
     let files = input.files;
-    nameFile = nComp+codCta;
+    nameFile = nComp+nroSucursal+codCta;
     const formData = new FormData();
     const maxFiles = 3;
 
@@ -117,9 +117,9 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
  
     let codigosImagenes = [];
   
-    let nombre = divImagen.parentElement.parentElement.querySelectorAll("td")[2].textContent + divImagen.parentElement.parentElement.querySelectorAll("td")[3].textContent;
-
     
+    let nroSucursal = document.querySelector("#nroSucursal").textContent;
+    let nombre = divImagen.parentElement.parentElement.querySelectorAll("td")[2].textContent +nroSucursal+divImagen.parentElement.parentElement.querySelectorAll("td")[3].textContent;
     let carouselElement = document.querySelector('#carruselImagenes'); 
   
     carouselElement.innerHTML = ''; 
@@ -130,7 +130,6 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
       type: "POST",
       data: {
         nComp:nombre
-     
 
       },
 
@@ -281,14 +280,14 @@ const validarExistenciaArchivo = (rutaArchivo, callback) => {
   
 const eliminarArchivo = (div,alerta = true,nComp = null,codCta = null) => {
 
-
+  let nroSucursal = document.querySelector("#nroSucursal").textContent;
   if(!nComp) {
 
-    numComp = div.parentElement.parentElement.querySelectorAll("td")[2].textContent + div.parentElement.parentElement.querySelectorAll("td")[3].textContent;
+    numComp = div.parentElement.parentElement.querySelectorAll("td")[2].textContent +nroSucursal+ div.parentElement.parentElement.querySelectorAll("td")[3].textContent;
 
   }else{
 
-    numComp = nComp+codCta;
+    numComp = nComp+nroSucursal+codCta;
 
   }
 
@@ -320,9 +319,12 @@ const guardar = (esBorrador = false) => {
   let dataArticulos = [];
   let nComp = [];
 
+  let nroSucursal = document.querySelector("#nroSucursal").textContent;
+
+
   allTr.forEach(e => {
 
-    nComp.push(e.querySelectorAll("td")[2].textContent+e.querySelectorAll("td")[3].textContent);
+    nComp.push(e.querySelectorAll("td")[2].textContent+nroSucursal+e.querySelectorAll("td")[3].textContent);
 
   })
 
@@ -334,6 +336,7 @@ const guardar = (esBorrador = false) => {
       arrayNcomp: nComp,
     },
     success: function (response) {
+        let nroSucursal = document.querySelector("#nroSucursal").textContent;
         let error = false
 
         response = JSON.parse(response);
@@ -344,7 +347,8 @@ const guardar = (esBorrador = false) => {
             url: "Controller/EgresoCajaController.php?accion=guardar",
             type: "POST",
             data: {
-              listaDeComprobantes : response['nombre']
+              listaDeComprobantes : response['nombre'],
+              nroSucursal : nroSucursal
             },
             success: function (response) {
               alert("Se guardó correctamente");
