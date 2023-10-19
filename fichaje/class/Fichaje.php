@@ -72,7 +72,7 @@ class Fichaje {
 
 
 
-    function verificarFichaje ($numeroLegajo) {
+    public function verificarFichaje ($numeroLegajo) {
 
         $cid = $this->conn->conectar('central');
 
@@ -94,7 +94,7 @@ class Fichaje {
     }
 
 
-    function fichar ($numeroLegajo, $sucursal){
+    public function fichar ($numeroLegajo, $sucursal){
 
         $cid = $this->conn->conectar('central');
 
@@ -106,6 +106,22 @@ class Fichaje {
         $result = sqlsrv_query($cid, $sql);
 
         return true ;
+
+    }
+
+
+    public function cerrarTurno ($numeroLegajo) {
+
+        $cid = $this->conn->conectar('central');
+
+        $fechaHoy = date('Y-m-d');
+
+        $sql = "SET DATEFORMAT YMD UPDATE SJ_FICHADAS SET SALIDA = GETDATE() WHERE LEGAJO = '$numeroLegajo' AND CONVERT(DATE, FECHA_REG) = '$fechaHoy'";
+
+        $result = sqlsrv_query($cid, $sql);
+
+        return true;
+
 
     }
 }

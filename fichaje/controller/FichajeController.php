@@ -17,6 +17,10 @@ switch ($accion) {
     case 'verificarFichaje':
         verificarFichaje($fichaje);
         break;
+
+    case 'cerrarTurno':
+        cerrarTurno($fichaje);
+        break;
     
     default:
         # code...
@@ -62,5 +66,16 @@ function verificarFichaje($fichaje){
     }else{
         echo false;
     }
+    
+}
+
+
+function cerrarTurno ($fichaje) {
+
+    $numeroLegajo = $_POST['numeroLegajo'];
+ 
+    $result = $fichaje->cerrarTurno($numeroLegajo);
+
+    return true ;
     
 }

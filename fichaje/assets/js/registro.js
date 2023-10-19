@@ -107,7 +107,7 @@ const login = (numeroLegajo, password) =>{
                             });
 
                             setTimeout(function () {
-                                console.log("aca")
+                                location.reload();
                             }, 2000); 
 
                             document.querySelector("#swal2-html-container").style.height = '190px'
@@ -119,24 +119,86 @@ const login = (numeroLegajo, password) =>{
 
                                 html: `
                                     <div class="circle-icon">
-                                        <i class="bi bi-clock" style="font-size: 40px; color: #FF4572;"></i>
+                                        <i class="bi bi-exclamation-triangle" style="font-size: 40px; color: orange;"></i>
                                     </div>
                                     <br>
                                     <div>¡ Ya tienes registrado el ingreso !</div>
-                                    <div><h3 style="font-style: italic">¿ Cerrar turno ?</h3></div>
+                                    <div><h2 style="font-style: italic">¿ Cerrar turno ?</h2></div>
                                     
                                     </div>
 
                                 `,
-                                showCancelButton: true, 
-                                cancelButtonText: 'no',
+                                showCancelButton: true,
+                                cancelButtonText: 'si', // Cambiamos el texto del botón cancelar
                                 showConfirmButton: true,
-                                confirmButtonText: 'si',
-                                allowOutsideClick: false, 
-                            });
+                                confirmButtonText: 'no', // Cambiamos el texto del botón confirmar
+                                allowOutsideClick: false,
 
+                            }).then((result) => {
+
+                                if (result.isConfirmed) {
+
+                                    location.reload();
+                                   
+                                } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                                    $.ajax({
+                                        url : 'controller/FichajeController.php?action=cerrarTurno',
+                                        type : 'POST',
+                                        data : {numeroLegajo:numeroLegajo.split(' - ')[0]},
+                                        success: function(response){
+
+                                            var parts = numeroLegajo.split(',');
+
+                                            var segundoElemento = parts[1].trim();
+                
+                                            var nombreCompleto = segundoElemento.split(' ');
+                
+                                            let apellido = parts[0].split('-')[1].trim();
+                                
+                                            var primerNombre = nombreCompleto[0];
+                
                             
+                                            var nombre = primerNombre + ' ' + apellido[0];
 
+
+                                            Swal.fire({
+
+                                                html: `
+                                                    <div class="circle-icon">
+                                                        <i class="bi bi-clock" style="font-size: 40px; color: #FF4572;"></i>
+                                                    </div>
+                                                    <br>
+                                                    <div><h3 style="font-style: italic">¡Hasta pronto!,${nombre}.!</h3></div>
+                                                    <div style="margin-top:50px;margin-left:40px">
+                
+                                                            <i class="fa-solid fa-person-running" style="color: #06c4f4; font-size: 60px; position: absolute; top: 110px; left: 60px;"></i>
+                                                    
+                                                    Has fichado tu salida correctamente
+                                                    
+                                                    </div>
+                
+                                                `,
+                                                showConfirmButton: false, 
+                                                allowOutsideClick: false, 
+                                                timer: 3000, 
+                                                
+                                            });
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 2000); 
+                                            document.querySelector("#swal2-html-container").style.height = '190px'
+                                        },
+
+                                    })
+                                  
+                                }
+                            })
+                            ;
+                            document.querySelector(".swal2-confirm").style.backgroundColor = 'red'
+                
+                            document.querySelector(".swal2-cancel").style.backgroundColor = 'green'
+                            
                         }
                     }   
 
