@@ -39,22 +39,22 @@ class Fichaje {
     public function login ($numeroLegajo, $password){
 
 
-        // $cid = $this->conn->conectar('central');
+        $cid = $this->conn->conectar('central');
 
-        // $sql = "SELECT NRO_LEGAJO, CONTRASENA FROM RO_T_LEGAJOS_PERSONAL WHERE NRO_LEGAJO = '$numeroLegajo'";
+        $sql = "SELECT NRO_LEGAJO, CONTRASEÑA FROM RO_T_LEGAJOS_PERSONAL WHERE NRO_LEGAJO = '$numeroLegajo'";
 
        
-        // $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($cid, $sql);
 
-        // if ($result === false) {
-        //     die(print_r(sqlsrv_errors(), true));
-        // }
+        if ($result === false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
 
-        // $data = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+        $data = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 
-        // if ($data) {
+        if ($data) {
  
-            $dbPassword = '123123';
+            $dbPassword = $data['CONTRASEÑA'];
 
             if ($password == $dbPassword) {
                 // Contraseña válida
@@ -63,10 +63,10 @@ class Fichaje {
                 // Contraseña incorrecta
                 return false;
             }
-        // } else {
-        //     // Usuario no encontrado en la base de datos
-        //     return false;
-        // }
+        } else {
+            // Usuario no encontrado en la base de datos
+            return false;
+        }
 
     }
 
