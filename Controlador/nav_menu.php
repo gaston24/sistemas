@@ -157,20 +157,12 @@ include('estado_cuenta.php');
                                     
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
                                 <ul class="dropdown-menu">
-                                <a class="dropdown-item spinner" href="#" onclick="location.href='fichaje/registro.php'">Fichada por legajo <span class="badge badge-warning">Testing</span></a>
-
-                                <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">First subsubmenu</a>
-                                    <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Second subsubmenu</a>
-                                    <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
-                                    </ul>
-                                </li> -->
+                                    <li>
+                                        <form action="fichaje/registro.php" method="get" target="_blank">
+                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Fichada por legajo <span class="badge badge-warning">Testing</span></button>
+                                        </form>
+                                    </li>
+                                    <!-- Otros elementos de menú si los tienes -->
                                 </ul>
                             </li>
 
@@ -244,4 +236,5 @@ include('estado_cuenta.php');
      el.addEventListener("click", ()=>{$("#boxLoading").addClass("loading")});
    })
 
+   document.querySelector("#FichadaPorLegajo").addEventListener("click", ()=>{$("#boxLoading").removeClass("loading")});
 </script>

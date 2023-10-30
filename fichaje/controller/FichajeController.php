@@ -45,10 +45,21 @@ function login ($fichaje){
 
    $password = $_POST['password'];
 
-    $result = $fichaje->login($numeroLegajo, $password);
+   $habilitado = $fichaje->comprobarHabilitado($numeroLegajo);
 
 
-    echo $result;
+   if($habilitado == true){
+
+       $result = $fichaje->login($numeroLegajo, $password);
+    
+    
+       echo $result;
+
+   }else{
+
+       echo '3';
+   }
+
 
 }
 

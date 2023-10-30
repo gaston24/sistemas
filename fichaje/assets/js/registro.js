@@ -54,7 +54,7 @@ const login = (numeroLegajo, password) =>{
         data : {numeroLegajo:numeroLegajo.split(' - ')[0], password:password},
 
         success : function(response){
-
+   
             if(response == 1){
 
                 let sucursal = document.querySelector("#sucursal").textContent
@@ -203,6 +203,51 @@ const login = (numeroLegajo, password) =>{
                     }   
 
                 })      
+
+            }else if(response == 3){
+
+                Swal.fire({
+                    // title: 'Iniciar Sesión',
+                    html: `
+                        <div class="circle-icon">
+                            <i class="bi bi-exclamation-circle" style="font-size: 40px; color: orange;"></i>
+                        </div>
+                        <br>
+                        <div><h3 style="font-style: italic">¡ Usuario No habilitado !</h3></div>
+                        <div>Por favor Comuniquese con Recursos Humanos</div>
+                        <input type="text" id="campo" class="swal2-input" placeholder="Usuario" onchange="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px">
+                        <div class="password-input">
+                            <input type="password" id="password" class="swal2-input" placeholder="Contraseña">
+                            <i class="bi bi-eye-slash toggle-password"></i>
+                        </div>
+                    `,
+                    allowOutsideClick: false, // Evita que se cierre al hacer clic fuera
+                    confirmButtonText: 'Cargar',
+                    preConfirm: () => {
+                        let campo = document.querySelector('#campo').value;
+                        let password = document.querySelector('#password').value;
+    
+                        login(campo, password);
+                    }
+                });
+
+                document.querySelector(".toggle-password").style.top = '65%'
+
+                document.querySelector('.toggle-password').addEventListener('click', function () {
+
+                    const passwordInput = document.querySelector('#password');
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        this.classList.add('bi-eye');
+                        this.classList.remove('bi-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        this.classList.remove('bi-eye');
+                        this.classList.add('bi-eye-slash');
+                    }
+
+                });
+
 
             }else{
                 

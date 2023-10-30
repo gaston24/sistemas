@@ -72,6 +72,37 @@ class Fichaje {
 
 
 
+    public function comprobarHabilitado ($numeroLegajo) {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "SELECT HABILITADO AS H FROM RO_T_LEGAJOS_PERSONAL WHERE NRO_LEGAJO = '$numeroLegajo'";
+
+       
+        $stmt = sqlsrv_query($cid, $sql);
+
+        if ($stmt === false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
+ 
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+ 
+    
+        $habilitado = $row['H'];
+
+        if($habilitado == 'S'){
+
+            return true ;
+
+        }else{
+
+            return false ;
+
+        }
+
+
+    }
+
     public function verificarFichaje ($numeroLegajo) {
 
         $cid = $this->conn->conectar('central');
