@@ -54,7 +54,7 @@ if (!isset($_SESSION['username'])) {
 	$usuarios = $data->listarUsuarios($nroSucurs);
 
 	foreach ($usuarios as $v) {
-		echo '<option value="'.$v['APELLIDO'].'_'.$v['NOMBRE'].'++'.$v['BLOQUE'].'">'.$v['APELLIDO'].' '.$v['NOMBRE'].'</option>';
+		echo '<option value="'.$v['NOMBRE_VEN'].'++'.$v['BLOQUE'].'">'.$v['NOMBRE_VEN'].'</option>';
 	}
 ?>
 	       
