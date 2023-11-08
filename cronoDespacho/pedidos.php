@@ -132,10 +132,13 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                     <th scope="col" style="width: 1%">TALONARIO</th>
                     <th scope="col" style="width: 1%">PEDIDO</th>
                     <th scope="col" style="width: 1%">UNIDADES</th>
+                    <th scope="col" style="width: 1%">COMPROBANTE</th>
+                    <th scope="col" style="width: 1%"></th>
                     <th scope="col" style="width: 1%">FECHA<br>DESPACHO</th>
                     <th scope="col" style="width: 1%">2DA FECHA<br>DESPACHO</th>
                     <th scope="col" style="width: 1%">DIA</th>
                     <th scope="col" style="width: 1%">PRIORIDAD</th>
+                    <th scope="col" style="width: 1%"></th>
                     <th scope="col" style="width: 1%"></th>
                     <th scope="col" style="width: 1%"></th>
                     <th scope="col" style="width: 1%"></th>
@@ -158,23 +161,36 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                             <td><?= $value->TALON_PED; ?></td>
                             <td class="pedido"><?= $value->NRO_PEDIDO; ?></td>
                             <td class="sumTotal"><?= $value->CANT_PEDIDO; ?></td>
-                            <td><?= substr($value->PROX_DESPACHO->date,0,10); ?></td>
-                            <td><?= substr($value->RE_DESPACHO->date,0,10); ?></td>
-                            <td><?= $value->RUTA; ?></td>
-                            <td><?= $value->PRIORIDAD; ?></td>
+                            <td><?= $value->N_COMP; ?></td>
                             <td id='condicion'>
                                 <?php if(isset($value->TIPO_COMP)){ ?>
                                     <i class="bi bi-info-circle-fill" aria-hidden="true" title="<?= $value->TIPO_COMP.' / '.$value->EMBALAJE.' / '.$value->DESPACHO?>" data-toggle="tooltip" data-placement="top"></i>
                                 <?php } else { ?> <?php } ?>
                             </td>
-                            <td id='estado1'>
-                                <?php if($value->IMPRESO == 'SI'){ ?>
-                                    <i class="fa fa-cart-plus" aria-hidden="true" title="PREPARACION" data-toggle="tooltip" data-placement="top"></i>
-                                <?php } else { ?> <?php } ?>
-                            </td>
+                            <td><?= substr($value->PROX_DESPACHO->date,0,10); ?></td>
+                            <td><?= substr($value->RE_DESPACHO->date,0,10); ?></td>
+                            <td><?= $value->RUTA; ?></td>
+                            <td><?= $value->PRIORIDAD; ?></td>
                             <td id='estado'>
                                 <?php if(substr($value->PROX_DESPACHO->date,0,10) != substr($value->RE_DESPACHO->date,0,10)){ ?>
                                     <i class="fa fa-exclamation-triangle" aria-hidden="true" title="DEMORADO" data-toggle="tooltip" data-placement="top"></i>
+                                <?php } else { ?> <?php } ?>
+                            </td>
+                            <td id='estado1'>
+                                <?php if(isset($value->FIN_PICKING)){ ?>
+                                    <i class="fa fa-cart-plus" aria-hidden="true" title="PREPARADO" style="display: flex; text-align: right; color:#28a745; font-size: 1.5em;" data-toggle="tooltip" data-placement="top"></i>
+                                <?php } else if (isset($value->INI_PICKING)) { ?>
+                                    <i class="fa fa-cart-plus" aria-hidden="true" title="PREPARACION" style="display: flex; text-align: right; color:#ffc107; font-size: 1.5em;"  data-toggle="tooltip" data-placement="top"></i>
+                                <?php{ ?> <?php } ?>
+                            </td>
+                            <td id='estado2'>
+                                <?php if(isset($value->N_COMP)){ ?>
+                                    <i class="bi bi-clipboard2-check-fill" aria-hidden="true" title="FACTURADO" data-toggle="tooltip" data-placement="top"></i>
+                                <?php } else { ?> <?php } ?>
+                            </td>
+                            <td id='estado3'>
+                                <?php if(isset($value->FECHA_GUIA)){ ?>
+                                    <i class="fas fa-truck" aria-hidden="true" title="DESPACHADO" data-toggle="tooltip" data-placement="top"></i>
                                 <?php } else { ?> <?php } ?>
                             </td>
                         </tr>
