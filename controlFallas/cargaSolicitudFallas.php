@@ -90,22 +90,22 @@
                             <div class="row" style="margin-top:10px">
 
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-m-d") : date("Y-m-d") ?> id="fecha"  disabled ></div>
-                                <div style="margin-left:90px">Usuario Emisor: 
+                                <div style="margin-left:90px">Usuario Emisor:
+                                    <select name="usuario" id="usuario" style="width:15rem; height:35px;" class="usuario">
 
-                                        <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
-
-                                    <?php
-                                        foreach($usuarios as $usuario => $key){
-
-                                        $usuario = $key['APELLIDO'].'_'.$key['NOMBRE'];
-                                 
-                                        $existeUsuarioEnDb = (isset($borradorEnc[0]['USUARIO_EMISOR'])) ? $borradorEnc[0]['USUARIO_EMISOR'] : "";
+                                        <option value="" <?php echo (empty($existeUsuarioEnDb)) ? "selected" : ""; ?>></option>
                                         
-                                    ?>
-                                       <option value="<?= $key['APELLIDO'] ?>_<?= $key['NOMBRE'] ?>" <?php (isset($borradorEnc) && $usuario == $existeUsuarioEnDb ) ? "selected" : ""  ?> ><?= $key['APELLIDO'] ?> <?= $key['NOMBRE'] ?></option>
-                                    <?php
-                                        }                            
-                                    ?>
+                                        <?php
+                                            foreach ($usuarios as $usuario => $key) {
+
+                                            $usuario = $key['NOMBRE_VEN'];
+
+                                            $existeUsuarioEnDb = (isset($borradorEnc[0]['USUARIO_EMISOR'])) ? $borradorEnc[0]['USUARIO_EMISOR'] : "";
+                                        ?>
+                                            <option value="<?= $key['NOMBRE_VEN'] ?>" <?php echo (isset($borradorEnc) && $usuario == $existeUsuarioEnDb) ? "selected" : ""; ?>> <?= $key['NOMBRE_VEN'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 
