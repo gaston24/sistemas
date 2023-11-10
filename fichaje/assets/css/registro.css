@@ -1,0 +1,48 @@
+#tableVb {
+    font-size: small
+}
+
+#inputDetalleNroTarea {
+    margin-left:10px;
+    margin-right:10px;
+    height:35px;
+    width:90px;
+}
+
+
+.loading {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('images/g0R9.gif') 50% 50% no-repeat rgb(0, 0, 0);
+    opacity: .8;
+}
+
+.circle-icon {
+    position: absolute;
+    top: -40px;
+    left: calc(50% - 40px); /* Ajusta el desplazamiento horizontal según tu diseño */
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #CBCACA; /* Color de fondo del círculo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid orange; /* Borde amarillo */
+}
+.toggle-password {
+    cursor: pointer;
+    position: absolute;
+    top: 66%;
+    transform: translateY(-50%);
+    right: 27%;
+}
+
+/* Estilo para mostrar el icono del ojo cuando la contraseña es visible */
+.show-password .toggle-password {
+    transform: translateY(-50%) rotate(0deg);
+}

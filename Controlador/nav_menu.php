@@ -154,6 +154,19 @@ include('estado_cuenta.php');
                                 <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                                 </ul>
                             </li>
+                                    
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form action="fichaje/registro.php" method="get" target="_blank">
+                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Fichada por legajo <span class="badge badge-warning">Testing</span></button>
+                                        </form>
+                                    </li>
+                                    <!-- Otros elementos de menú si los tienes -->
+                                </ul>
+                            </li>
+
+
 
                             </ul>
                         </li>
@@ -223,4 +236,5 @@ include('estado_cuenta.php');
      el.addEventListener("click", ()=>{$("#boxLoading").addClass("loading")});
    })
 
+   document.querySelector("#FichadaPorLegajo").addEventListener("click", ()=>{$("#boxLoading").removeClass("loading")});
 </script>
