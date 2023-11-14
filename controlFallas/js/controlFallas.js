@@ -162,7 +162,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
     let carouselElement = document.querySelector('#carruselImagenes'); 
   
     carouselElement.innerHTML = ''; 
-
+    console.log(codigoArticulo.split("-")[0],numSolicitud)
     $.ajax({
 
       url: "Controller/RecodificacionController.php?accion=contarImagenes",

@@ -131,7 +131,7 @@ function contarFotosEnCarpeta() {
     }
 
     $numSolicitud = $_POST['numSolicitud'];
-
+ 
     if(isset($arrayArticulos)){
         
         $contadorFotos = 0;
@@ -167,7 +167,7 @@ function contarFotosEnCarpeta() {
 
     }else{
 
-    
+  
         $fileName = $numSolicitud.$codArticulo;
         $contadorFotos = 0;
         $datosDeLosArchivos = [];
