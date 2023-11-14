@@ -60,6 +60,8 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
                 carouselItem.style = "text-align:center"
                 let imgElement = document.createElement('img');
                 imgElement.src = 'assets/uploads/' + imagen;
+                imgElement.style.maxWidth = '100%';  // Establecer el ancho máximo
+                imgElement.style.height = 'auto';    // Permitir que la altura se ajuste automáticamente
 
                 carouselItem.appendChild(imgElement);
                 carouselInner.appendChild(carouselItem);
