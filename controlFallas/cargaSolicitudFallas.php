@@ -4,6 +4,11 @@
    require_once '../ajustes/class/Articulo.php';
    require_once '../ajustes/class/Ajuste.php';
    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
+   
+   if(!isset($_SESSION['numsuc'])){
+        header('Location: ../login.php');
+   }
+
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();
