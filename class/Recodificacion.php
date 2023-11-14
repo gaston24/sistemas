@@ -330,16 +330,21 @@ class Recodificacion
 
     }
 
-    public function traerRemitos($nroSucursal,$destino) 
+    public function traerRemitos($nroSucursal, $destino) 
     {   
+
+        $conn = new Conexion();
+        $cid = $conn->conectar('local');
+
+
         $sql = "SET DATEFORMAT YMD 
-		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM [LAKERBIS].locales_lakers.dbo.CTA09 
+		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM STA14 
         WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE 'GT%'
         AND FECHA_MOV >= GETDATE()-60 AND NRO_SUCURS = '$nroSucursal' AND COD_PRO_CL LIKE '%$destino%'";
  
         try {
 
-            $result = sqlsrv_query($this->cid, $sql); 
+            $result = sqlsrv_query($cid, $sql); 
             
             $v = [];
             
