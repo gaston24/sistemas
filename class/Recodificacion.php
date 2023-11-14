@@ -684,7 +684,6 @@ class Recodificacion
         $remitosList = implode("', '", $remitos);
 
         $sql = "SELECT NCOMP_ORIG FROM STA14 WHERE NCOMP_ORIG IN ('$remitosList')";
-
         $stmt = sqlsrv_query($cid, $sql);
     
         $resultados = [];

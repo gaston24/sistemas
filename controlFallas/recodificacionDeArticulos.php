@@ -2,7 +2,6 @@
     session_start();
     require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
 
-    error_log("hola mundo");
 
     $nroSucurs = $_SESSION['numsuc'];
     $recodificacion = new Recodificacion();
@@ -19,9 +18,15 @@
         }
         
     }
- 
-    $remitos = $recodificacion->traerRemitosEnElLocal($arrayRemitos);
-  
+    if(count($arrayRemitos) > 0){
+
+        $remitos = $recodificacion->traerRemitosEnElLocal($arrayRemitos);
+        
+    }else{
+
+        $remitos = [];
+    }
+   
    
 ?>
 
