@@ -66,7 +66,7 @@
                                     <input class="form-control" style="margin-left:3.5rem; width:10rem" type="text" id="numSolicitud" name="numSolicitud" value="<?=  $encabezadoSolicitud[0]['ID'] ?>" disabled>
                                     <label class="ml-4">Estado: </label>
                                     <input class="form-control" style="margin-left:4.5rem; width:13rem" type="text" style="width:160px; height:40px; margin-left:57px"  value="Autorizada" disabled>
-                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:900px" class ="btn btn-primary" onclick="enviar()" >Enviar <i class='fa fa-paper-plane'></i></button></div>
+                                    <div style="margin-left:30px"><button type="button" style="width:140px; height:40px; margin-left:650px" class ="btn btn-primary" onclick="enviar()" >Enviar <i class='fa fa-paper-plane'></i></button></div>
 
                             </div>
 
