@@ -136,7 +136,9 @@
                                         echo '<th style="text-align:center;width: 600px;" >Observaciones</th>';                              
                                     }
                                     
+                                    
                                     ?>
+                                    <th  style="text-align:center;width: 200px;">REMITO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -171,6 +173,7 @@
                                                ';
         
                                             }
+                                                echo '<td style="text-align:center">'.$detalle['N_COMP'].'</td>';
 
                                             echo '
                                                 </tr>

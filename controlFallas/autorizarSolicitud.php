@@ -16,7 +16,7 @@
         $solicitudDetalle = $recodificacion->traerDetalle($_GET['numSolicitud']);
        
     }
-    $locales = $recodificacion->traerLocales();
+    $locales = $recodificacion->traerLocales(0);
 
     $localSolicitud = "";
 

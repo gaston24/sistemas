@@ -218,16 +218,23 @@ class Recodificacion
 
     }
     
-    public function traerLocales() 
+    public function traerLocales($outlet = true) 
     {   
 
         $sql = "
-            SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 AND OUTLET = 1
-            UNION ALL
-            SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
-            ORDER BY DESC_SUCURSAL
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
+     
+        if($outlet == true){
+
+            $sql .= "AND OUTLET = 1";
+        }
+
+        $sql  .="UNION ALL
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
+        ORDER BY DESC_SUCURSAL
         ";
 
+       
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 
