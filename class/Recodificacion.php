@@ -13,6 +13,9 @@ class Recodificacion
         
         $conn = new Conexion();
         $this->cid = $conn->conectar('central');
+        
+        $this->cidLocal = $conn->conectar('local');
+        
 
     }
     
@@ -520,7 +523,7 @@ class Recodificacion
 
 
 
-            $stmt = sqlsrv_query($this->cid, $sql);
+            $stmt = sqlsrv_query($this->cidLocal, $sql);
 
             if ($stmt === false) {
                 die("Error en la consulta: " . sqlsrv_errors());
