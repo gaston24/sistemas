@@ -14,7 +14,7 @@
 
     $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
 
-    $locales = $recodificacion->traerLocales();
+    $locales = $recodificacion->traerLocales(0);
 
 
    
@@ -102,7 +102,7 @@
                                 <tr>
                                     <th style="text-align:center;width:10%" >FECHA</th>
                                     <th style="text-align:center;width:10%" >NUMERO</th>
-                                    <th style="text-align:center;width:10%" >CLIENTE</th>
+                                    <th style="text-align:center;width:10%" >SUCURSAL</th>
                                     <th style="text-align:center;width:20%" >EMISOR</th>
                                     <th style="text-align:center;width:10%">UNIDADES</th>
                                     <th style="text-align:center;width:15%" >ESTADO</th>
@@ -145,8 +145,8 @@
                                     echo "<tr>";
                                     echo "<td style='text-align:center;'>".$encabezado['FECHA']->format('d/m/Y')."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['ID']."</td>";
-
                                     foreach ($locales as $key => $local) {
+                                        
                                         if($local['NRO_SUCURSAL'] == $encabezado['NUM_SUC']){
                                             echo "<td style='text-align:center;'>".$local['DESC_SUCURSAL']."</td>";
                                         }
