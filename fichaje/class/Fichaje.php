@@ -128,11 +128,9 @@ class Fichaje {
     public function fichar ($numeroLegajo, $sucursal){
 
         $cid = $this->conn->conectar('central');
-
-        $fechaHoy = date('Y-m-d'); 
     
         $sql = "SET DATEFORMAT YMD
-        INSERT INTO SJ_FICHADAS (FECHA_REG, LEGAJO, ENTRADA, SUCURSAL) VALUES ( '$fechaHoy', '$numeroLegajo', GETDATE(), '$sucursal')";
+        INSERT INTO SJ_FICHADAS (FECHA_REG, LEGAJO, ENTRADA, SUCURSAL) VALUES ( GETDATE(), '$numeroLegajo', GETDATE(), '$sucursal')";
        
         $result = sqlsrv_query($cid, $sql);
 
@@ -147,7 +145,11 @@ class Fichaje {
 
         $fechaHoy = date('Y-m-d');
 
-        $sql = "SET DATEFORMAT YMD UPDATE SJ_FICHADAS SET SALIDA = GETDATE() WHERE LEGAJO = '$numeroLegajo' AND CONVERT(DATE, FECHA_REG) = '$fechaHoy'";
+        $sql = "
+        UPDATE SJ_FICHADAS
+        SET SALIDA = GETDATE()
+        WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL
+        AND ENTRADA = (SELECT MAX(ENTRADA) FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL);";
 
         $result = sqlsrv_query($cid, $sql);
 
