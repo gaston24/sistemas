@@ -109,8 +109,8 @@ class Fichaje {
 
         $fechaHoy = date('Y-m-d'); 
     
-        $sql = "SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CONVERT(DATE, FECHA_REG) = '$fechaHoy'";
-        
+        $sql = "SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CONVERT(DATE, FECHA_REG) = '$fechaHoy' AND SALIDA IS NULL";
+   
         $result = sqlsrv_query($cid, $sql);
     
         if ($result === false) {
@@ -150,7 +150,7 @@ class Fichaje {
         SET SALIDA = GETDATE()
         WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL
         AND ENTRADA = (SELECT MAX(ENTRADA) FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL);";
-
+       
         $result = sqlsrv_query($cid, $sql);
 
         return true;

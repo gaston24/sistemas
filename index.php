@@ -152,7 +152,7 @@ require 'class/fechaEntrega.php';
 			echo '<h1 class="text text-center text-danger">Inhabilitado para realizar pedidos</h1>';
 		}
 		?>
-		<?php if($_SESSION['numsuc']>800)
+		<?php if($_SESSION['numsuc']>0)
 		{
 			include('Seincomp/msjSeincomp.php');
 		}
