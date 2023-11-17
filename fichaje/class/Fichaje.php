@@ -108,9 +108,10 @@ class Fichaje {
         $cid = $this->conn->conectar('central');
 
         $fechaHoy = date('Y-m-d'); 
+
+        $sql = "set dateformat ymd
+        SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CAST(FECHA_REG AS DATE) = CAST('$fechaHoy' AS DATE)";
     
-        $sql = "SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CONVERT(DATE, FECHA_REG) = '$fechaHoy'";
-        
         $result = sqlsrv_query($cid, $sql);
     
         if ($result === false) {
@@ -118,9 +119,10 @@ class Fichaje {
         }
     
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-    
-        return $row['ExisteRegistro'] > 0 ? 1 : 0;
-        
+
+        $res = ($row['ExisteRegistro'] > 0) ? 1 : 0;
+
+        return $res;
 
     }
 
@@ -146,6 +148,8 @@ class Fichaje {
         $fechaHoy = date('Y-m-d');
 
         $sql = "
+        set dateformat ymd
+
         UPDATE SJ_FICHADAS
         SET SALIDA = GETDATE()
         WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL
