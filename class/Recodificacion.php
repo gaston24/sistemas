@@ -350,7 +350,7 @@ class Recodificacion
         $sql = "SET DATEFORMAT YMD 
 		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM STA14 
         WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE 'GT%'
-        AND FECHA_MOV >= GETDATE()-60 AND NRO_SUCURS = '$nroSucursal' AND COD_PRO_CL LIKE '%$destino%'";
+        AND FECHA_MOV >= GETDATE()-60 AND COD_PRO_CL LIKE '%$destino%'";
  
         try {
 
