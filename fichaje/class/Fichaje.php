@@ -107,10 +107,8 @@ class Fichaje {
 
         $cid = $this->conn->conectar('central');
 
-        $fechaHoy = date('Y-m-d'); 
-
         $sql = "set dateformat ymd
-        SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CAST(FECHA_REG AS DATE) = CAST('$fechaHoy' AS DATE)  AND SALIDA IS NULL";
+        SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CAST(FECHA_REG AS DATE) = CAST(GETDATE() AS DATE)  AND SALIDA IS NULL";
     
         $result = sqlsrv_query($cid, $sql);
     
