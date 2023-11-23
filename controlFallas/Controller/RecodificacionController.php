@@ -60,6 +60,12 @@ switch ($accion) {
         break;
 
 
+    case 'comprobarStockArticulos':
+        comprobarStockArticulos();
+
+        break;
+
+
     case 'comprobarArticuloEnRemito':
         comprobarArticuloEnRemito();
 
@@ -436,6 +442,49 @@ function ajustarArticulos () {
     }
 
     echo true;
+}
+
+function comprobarStockArticulos () {
+
+    $data = json_decode($_POST['data'],true);
+
+    $arrayDeArticulosSinStock = [];
+ 
+    foreach ($data as $key => $value) {
+   
+        $recodificacion = new Recodificacion();
+
+        $codAnterior = $recodificacion->comprobarStockMaestroDeArticulos($value['codigo']);
+
+        if($codAnterior == false){
+
+            $arrayDeArticulosSinStock[] = ['1',$value['codigo']];
+
+        }else{
+
+            $stockSuficiente = $recodificacion->comprobarStockDepositoLocal($value['codigo'], $value['cant']);
+
+            if($stockSuficiente == false){
+
+                $arrayDeArticulosSinStock[] = ['2',$value['codigo']];
+
+            }
+        }
+
+
+        $nuevoCodigo = $recodificacion->comprobarStockMaestroDeArticulos($value['articulo']);
+
+        if($nuevoCodigo == false){
+
+            $arrayDeArticulosSinStock[] = ['1',$value['articulo']];
+
+        }
+
+
+    }
+    
+    echo json_encode($arrayDeArticulosSinStock);
+
 }
 
 

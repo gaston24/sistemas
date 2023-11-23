@@ -2,11 +2,11 @@
     session_start();
     require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
 
-
     $nroSucurs = $_SESSION['numsuc'];
     $recodificacion = new Recodificacion();
 
     $data = $recodificacion->traerRecodificacionDeArticulos();
+
 
     $arrayRemitos = [];
     foreach ($data as $key => $value) {
@@ -19,7 +19,7 @@
         
     }
     if(count($arrayRemitos) > 0){
-
+     
         $remitos = $recodificacion->traerRemitosEnElLocal($arrayRemitos);
         
     }else{
@@ -72,6 +72,17 @@
             .right-div {
                 margin-left: 90%;
             }
+
+            .loading {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url('images/g0R9.gif') 50% 50% no-repeat rgb(0, 0, 0);
+                opacity: .8;
+            }
             
         </style>
     </head>
@@ -87,6 +98,7 @@
             <div class="page-wrapper bg-secondary p-b-100 pt-1 font-robo">
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Recodificacion de Articulos</h6></div>
                     <div class="card card-1">
+                        <div id="boxLoading"></div>
                       
                         <div class="row" style="margin-left:50px; margin-top:20px">
                             <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Recodificacion de Articulos </strong></h3>

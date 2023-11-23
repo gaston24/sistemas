@@ -1,5 +1,5 @@
 const ajustar = () =>{
-    
+
     let allTr = document.querySelectorAll("tbody tr")
     let arrayDeArticulos = []
     let arrayRemitos = []
@@ -84,39 +84,106 @@ const ajustar = () =>{
                         /* Read more about isConfirmed, isDenied below */
                         if (result.isConfirmed) {
                        
-                            arrayDeArticulos.forEach(element => {
+                            mostrarSpiner();
 
-                                $.ajax({
-                                    url: "../ajustes/ConfirmAjus.php",
-                                    type: "POST",
-                                    data: {
-                                        data:JSON.stringify(arrayDeArticulos),
-                                        ajusteNuevaRecodificacion:true
-                                    },
-                                    success: function (response) {
+                            $.ajax({
 
-                                        $.ajax({
-                                            url:"Controller/RecodificacionController.php?accion=ajustarArticulos",
-                                            type:"POST",
-                                            data:{
-                                                arrayDeArticulos:arrayDeArticulos
-                                            },
-                                            success:function(data){
-                                           
-                                                Swal.fire('Artículos ajustados!', '', 'success').then((result) => {
-                                                    location.reload();
-                                                })
+                                url: "Controller/RecodificacionController.php?accion=comprobarStockArticulos",
+                                type: "POST",
+                                data: {
+                                    data:JSON.stringify(arrayDeArticulos),
+                                  
+                                },
+                                success: function (response) {
+
+                                    data = JSON.parse(response)
+                                    
+                                    if(data.length > 0){
+
+                                        let mensaje = "Los siguientes artículos no existen el maestro: \n\n"
+                                        let mensajeStock = "Los siguientes artículos no tienen stock suficiente: \n\n"
+                                        let codigosNoEncontrados = '';
+                                        let codigosSinStock = '';
+                                        let mensajeFinal = '';
+
+                                        data.forEach(element => {
                                             
+                                            if(element[0] == '1'){
+
+                                                codigosNoEncontrados += element[1] +',' +"\n "
+
+                                            }else{
+
+                                                codigosSinStock += element[1] +',' +"\n "
                                             }
 
                                         });
+
+                                        if(codigosNoEncontrados != ''){
+
+                                            mensaje += codigosNoEncontrados + "\n\n"
+
+                                            mensajeFinal += mensaje
+
+                                        }
                                         
+                                        if (codigosSinStock != ''){
+
+                                            mensajeStock += codigosSinStock + "\n\n"
+
+                                            mensajeFinal += mensajeStock
+
+                                        }
+                                        document.querySelector("#boxLoading").classList.remove('loading')
+
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Atención!',
+                                            text: mensajeFinal,
+                                        })
                                         
-                                        
+                                    }else{
+
+                                          $.ajax({
+                                            url: "../ajustes/ConfirmAjus.php",
+                                            type: "POST",
+                                            data: {
+                                                data:JSON.stringify(arrayDeArticulos),
+                                                ajusteNuevaRecodificacion:true
+                                            },
+                                            success: function (response) {
+
+                                                $.ajax({
+
+                                                    url:"Controller/RecodificacionController.php?accion=ajustarArticulos",
+                                                    type:"POST",
+                                                    data:{
+                                                        arrayDeArticulos:arrayDeArticulos
+                                                    },
+                                                    success:function(data){
+                                                        document.querySelector("#boxLoading").classList.remove('loading')
+                                                        Swal.fire('Artículos ajustados!', '', 'success').then((result) => {
+                                                            location.reload();
+                                                        })
+                                                    
+                                                    }
+
+                                                });
+                                                
+                                                
+                                                
+
+                                            }
+                                        });
 
                                     }
-                                });
-                            });
+                                } 
+
+
+                           })
+
+                          
+                        
 
                           
 
@@ -134,5 +201,14 @@ const ajustar = () =>{
     });
 
   
+
+}
+
+
+const mostrarSpiner = () => {
+
+    let spinner = document.querySelector("#boxLoading");
+
+    spinner.className += " loading";
 
 }
