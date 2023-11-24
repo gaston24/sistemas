@@ -733,4 +733,52 @@ class Recodificacion
 
         }
     }
+
+    public function comprobarStockMaestroDeArticulos($codArticulo) {
+    
+        $sql = "SELECT 1 FROM STA11 WHERE COD_ARTICU = '$codArticulo' ";
+    
+        $stmt = sqlsrv_query($this->cidLocal, $sql);
+    
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+    
+    
+        if (sqlsrv_has_rows($stmt)) {
+        
+            return true;
+        } else {
+
+            return false;
+        }
+        
+    }
+
+    public function comprobarStockDepositoLocal ($codArticulo, $cantidad) {
+
+        $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+
+        $sql = "SELECT CANT_STOCK FROM STA19 WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = $codDeposito" ;
+
+        $stmt = sqlsrv_query($this->cidLocal, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+
+        $row = sqlsrv_fetch_array($stmt);
+
+        
+        if( $row == null || $row['CANT_STOCK'] < $cantidad){
+
+            return false;
+        }else{
+
+            return true;
+        }
+
+
+    }
+    
 }
