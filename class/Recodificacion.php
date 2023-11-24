@@ -171,7 +171,7 @@ class Recodificacion
     }
 
 
-    public function traerSolicitudes($nroSucursal = null, $desde, $hasta, $estado, $sup = null) 
+    public function traerSolicitudes($nroSucursal = null, $desde, $hasta, $estado, $sup = null, $destino = null) 
     {   
         $sql = "
         SET DATEFORMAT YMD
@@ -179,14 +179,23 @@ class Recodificacion
         enc.ID ,
         enc.FECHA,
         enc.USUARIO_EMISOR,
-        enc.ESTADO,
+        CASE 
+        WHEN MIN(det.AJUSTADO) = 1 THEN 6
+        ELSE enc.ESTADO
+        END AS ESTADO,
         enc.NUM_SUC,
         enc.UPDATED_AT,
-        SUM(det.cantidad) AS cantidad_total_articulos
+        SUM(det.cantidad) AS cantidad_total_articulos,
+        det.N_COMP
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
         WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'
         AND enc.ESTADO LIKE '%$estado%'";
+
+        if($destino != null){
+            $sql .= "AND det.DESTINO = '$destino'";
+        }
+
 
         if($nroSucursal != null){
             $sql .= "AND enc.NUM_SUC = '$nroSucursal'";
@@ -196,8 +205,9 @@ class Recodificacion
             $sql .= "AND enc.ESTADO != '4'";
         }
         $sql .= "
-        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT";
+        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP";
 
+     
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 
@@ -220,6 +230,35 @@ class Recodificacion
         
 
     }
+
+
+    public function comrpobarIngresada ($nroRemito) {
+
+        $sql ="SELECT CASE WHEN EXISTS (
+            SELECT 1
+            FROM sta14 where NCOMP_ORIG = '$nroRemito'
+        ) THEN 'true' ELSE 'false' END AS remitoExiste;";
+
+        $stmt = sqlsrv_query($this->cidLocal, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+
+        $row = sqlsrv_fetch_array($stmt);
+
+        if( $row == null || $row['remitoExiste'] == 'false'){
+
+
+            return false ;
+            
+        }else{
+            
+            return true ;
+        }
+
+
+    }
     
     public function traerLocales($outlet = true) 
     {   
@@ -229,10 +268,10 @@ class Recodificacion
      
         if($outlet == true){
 
-            $sql .= "AND OUTLET = 1";
+            $sql .= "AND OUTLET = 1 ";
         }
 
-        $sql  .="UNION ALL
+        $sql  .=" UNION ALL
         SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
         ORDER BY DESC_SUCURSAL
         ";
@@ -287,9 +326,9 @@ class Recodificacion
         
     }
 
-    public function traerDetalle ($numSolicitud) {
+    public function traerDetalle ($numSolicitud, $numSucursal = null) {
             
-        $sql = "SELECT * FROM sj_reco_locales_det where ID_ENC = $numSolicitud";
+        $sql = "SELECT * FROM sj_reco_locales_det where ID_ENC = $numSolicitud AND DESTINO = '$numSucursal' ";
 
         try {
 
@@ -662,12 +701,18 @@ class Recodificacion
     
 
 
-    public function traerRecodificacionDeArticulos ()
+    public function traerRecodificacionDeArticulos ($numSolicitud = null)
     {
 
         $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO FROM sj_reco_locales_enc A
         INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC
         WHERE B.AJUSTADO IS NULL OR AJUSTADO = 0";
+
+        if($numSolicitud != null){
+
+            $sql .= " AND A.ID = $numSolicitud";
+
+        }
 
         try {
 
