@@ -94,27 +94,9 @@
                             <div class="row" style="margin-top:10px">
 
                                 <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']) ?>" id="numSolicitud" disabled></div>
-                               <?php 
-                                    switch ($solicitudEncabezado[0]['ESTADO']) {
-                                        case '1':
-                                            $estado = "Solicitada";
-                                            break;
-                                        case '2':
-                                            $estado = "Autorizada";
-                                            break;
-                                        case '3':
-                                            $estado = "Enviada";
-                                            break;
-                                        case '4':
-                                            $estado = "Borrador";
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                               ?>
+
                                
-                                <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" value="<?= $estado ?> " disabled> </div>
+                                <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" value="<?= $_GET['estado'] ?> " disabled> </div>
 
                             </div>
 

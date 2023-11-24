@@ -189,8 +189,17 @@ class Recodificacion
         det.N_COMP
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
-        WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'
-        AND enc.ESTADO LIKE '%$estado%'";
+        WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'";
+      
+        if($estado != "5" && $estado != "6"){
+            
+            $sql .= "AND enc.ESTADO LIKE '%$estado%'";
+
+        }
+
+        if($estado == 6){
+            $sql .= "AND det.AJUSTADO = 1";
+        }
 
         if($destino != null){
             $sql .= "AND det.DESTINO = '$destino'";
@@ -207,7 +216,6 @@ class Recodificacion
         $sql .= "
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP";
 
-     
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 
