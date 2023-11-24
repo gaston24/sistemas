@@ -18,6 +18,7 @@ const ajustar = () =>{
 
     })
 
+    mostrarSpiner();
     $.ajax({
         url: "Controller/RecodificacionController.php?accion=comprobarArticuloEnRemito",
         type: "POST",
@@ -62,7 +63,9 @@ const ajustar = () =>{
                 })
 
             });
-            
+
+            document.querySelector("#boxLoading").classList.remove('loading')
+
             if(error == true){
 
                 Swal.fire({
