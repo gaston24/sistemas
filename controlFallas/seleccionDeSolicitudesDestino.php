@@ -19,15 +19,34 @@
 
         if($value['ESTADO'] == 6){
 
+            if($estado == 5){
+
+                unset($result[$key]);
+
+            }
+
+            if($estado == 3){
+                    
+                unset($result[$key]);
+
+            }
+
             continue;
 
         }
 
         $existe = $recodificacion->comrpobarIngresada($value['N_COMP']);
-     
+        
         if($existe == 1){
+          
 
             $value['ESTADO'] = 5;
+
+            if($estado == 3){
+                    
+                unset($result[$key]);
+
+            }
 
         }else{
 
@@ -40,7 +59,6 @@
 
         }
     }
-    
 
     $locales = $recodificacion->traerLocales(0);
 
