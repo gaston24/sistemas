@@ -136,7 +136,7 @@ include('estado_cuenta.php');
                                     if ($_SESSION['esOutlet'] == 1) {
                                     ?>
                                         <!-- OUTLET -->
-                                        <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/recodificacionDeArticulos.php'">Recodificar articulos <span class="badge badge-warning">Testing</span</a>
+                                        <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudesDestino.php'">Gestionar recodificaciones <span class="badge badge-warning">Testing</span</a>
                                     <?php
                                     } 
                                     ?>
@@ -154,7 +154,9 @@ include('estado_cuenta.php');
                                 <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
                                 </ul>
                             </li>
-                                    
+                            
+                            <?php if ($_SESSION['numsuc'] < 100) { ?>
+                            
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -165,6 +167,7 @@ include('estado_cuenta.php');
                                     <!-- Otros elementos de menú si los tienes -->
                                 </ul>
                             </li>
+                            <?php } ?>
 
 
 

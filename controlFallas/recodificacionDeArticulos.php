@@ -4,8 +4,14 @@
 
     $nroSucurs = $_SESSION['numsuc'];
     $recodificacion = new Recodificacion();
+    $numSolicitud = null;
 
-    $data = $recodificacion->traerRecodificacionDeArticulos();
+    if(isset($_GET['numSolicitud'])){
+        $numSolicitud = $_GET['numSolicitud'];
+    }
+
+
+    $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud);
 
 
     $arrayRemitos = [];

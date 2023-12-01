@@ -7,7 +7,7 @@
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();
- 
+    $numSucursal = $_SESSION['numsuc'];
 
 
     $numSolicitud = [];
@@ -15,13 +15,14 @@
 
     
     $solicitudEncabezado = $recodificacion->traerEncabezado($numSolicitud[0]['ultimo_id']);
+
     if(count($solicitudEncabezado) > 0){
-        $solicitudDetalle = $recodificacion->traerDetalle($numSolicitud[0]['ultimo_id']);
+        
+        $solicitudDetalle = $recodificacion->traerDetalle($numSolicitud[0]['ultimo_id'],$numSucursal);
        
     }
-    $tipoU = $_GET['tipoU'] ;
 
-    $locales = $recodificacion->traerLocales();
+    $locales = $recodificacion->traerLocales(null);
 ?>
 
 <!DOCTYPE html>
@@ -81,11 +82,9 @@
                                 </div>
                                 <div style="margin-left:30%"> 
                                 <?php 
-                                if($tipoU == 1){
-                                    echo '<a href="seleccionDeSolicitudes.php" class="btn btn-secondary">Volver Al Listado</a>';
-                                } else if ($tipoU == 2){
-                                    echo '<a href="seleccionDeSolicitudesSup.php" class="btn btn-secondary">Volver Al Listado</a>';
-                                }
+                               
+                                    echo '<a href="seleccionDeSolicitudesDestino.php" class="btn btn-secondary">Volver Al Listado</a>';
+                               
                                 ?>
                                   
                                 </div>
@@ -95,27 +94,9 @@
                             <div class="row" style="margin-top:10px">
 
                                 <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']) ?>" id="numSolicitud" disabled></div>
-                               <?php 
-                                    switch ($solicitudEncabezado[0]['ESTADO']) {
-                                        case '1':
-                                            $estado = "Solicitada";
-                                            break;
-                                        case '2':
-                                            $estado = "Autorizada";
-                                            break;
-                                        case '3':
-                                            $estado = "Enviada";
-                                            break;
-                                        case '4':
-                                            $estado = "Borrador";
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                               ?>
+
                                
-                                <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" value="<?= $estado ?> " disabled> </div>
+                                <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" value="<?= $_GET['estado'] ?> " disabled> </div>
 
                             </div>
 
@@ -124,21 +105,15 @@
                         <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" style="">
                                 <tr>
-                                    <th style="text-align:center;width: 400pxx;" >Articulo</th>
-                                    <th style="text-align:center;width: 600px;" >Descripcion</th>
-                                    <th style="text-align:center;width: 200px;" >Precio</th>
-                                    <th style="text-align:center;width: 200px;">Cantidad</th>
-                                    <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
-                                    <?php 
-                                    if($tipoU == 2){
-                                        echo '<th style="text-align:center;width: 600px;" >Nuevo Codigo</th>';                              
-                                        echo '<th style="text-align:center;width: 600px;" >Destino</th>';                              
-                                        echo '<th style="text-align:center;width: 600px;" >Observaciones</th>';                              
-                                    }
-                                    
-                                    
-                                    ?>
-                                    <th  style="text-align:center;width: 200px;">REMITO</th>
+                                    <th style="text-align:center;width: 10%;" >Articulo</th>
+                                    <th style="text-align:center;width: 20%;" >Descripcion</th>
+                                    <th style="text-align:center;width: 8%;" >Precio</th>
+                                    <th style="text-align:center;width: 5%;">Cantidad</th>
+                                    <th style="text-align:center;width: 15%;" >Descripcion Falla</th>
+                                    <th style="text-align:center;width: 10%;" >Nuevo Codigo</th>
+                                    <th style="text-align:center;width: 10%;" >Observaciones</th>
+                                    <th style="text-align:center;width: 10%;" >Origen</th>
+                                    <th  style="text-align:center;width: 10%;">REMITO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -150,29 +125,27 @@
                                             echo '
                                             <tr id="bodyArticulos"> 
                                                 <td style="text-align:center">'.$detalle['COD_ARTICU'].'</td>
-                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].' <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button> </td>
+                                                <td style="text-align:center; white-space: pre-line;">'.$detalle['DESCRIPCION'].' <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button> </td>
                                                 <td style="text-align:center">$'.number_format($detalle['PRECIO'], 0, ",",".").'</td>
                                                 <td style="text-align:center">'.$detalle['CANTIDAD'].'</td>
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'" disabled></td>
                                                 ';
-                                            if($tipoU == 2){
+                                
                                                 
-                                                $destino = "";
+                                                $origen = "";
                                                 foreach ($locales as $key => $local) {
-
-                                                    if($local['NRO_SUCURSAL'] == $detalle['DESTINO']){
-                                                        $destino = $local['DESC_SUCURSAL'];
+                                              
+                                                    if($local['NRO_SUCURSAL'] == $solicitudEncabezado[0]['NUM_SUC']){
+                                                        $origen = $local['DESC_SUCURSAL'];
                                                     }
 
                                                 }
-
                                                 echo '
                                                     <td style="text-align:center">'.$detalle['NUEVO_CODIGO'].'</td>
-                                                    <td style="text-align:center">'.$destino.'</td>
                                                     <td style="text-align:center">'.$detalle['OBSERVACIONES'].'</td>
+                                                    <td style="text-align:center">'.$origen.'</td>
                                                ';
-        
-                                            }
+                                        
                                                 echo '<td style="text-align:center">'.$detalle['N_COMP'].'</td>';
 
                                             echo '
