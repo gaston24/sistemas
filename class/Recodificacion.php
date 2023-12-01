@@ -190,7 +190,7 @@ class Recodificacion
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
         WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'";
-      
+        
         if($estado != "5" && $estado != "6"){
             
             $sql .= "AND enc.ESTADO LIKE '%$estado%'";
@@ -215,6 +215,8 @@ class Recodificacion
         }
         $sql .= "
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP";
+  
+      
 
         try {
 
@@ -336,7 +338,14 @@ class Recodificacion
 
     public function traerDetalle ($numSolicitud, $numSucursal = null) {
             
-        $sql = "SELECT * FROM sj_reco_locales_det where ID_ENC = $numSolicitud AND DESTINO = '$numSucursal' ";
+        $sql = "SELECT * FROM sj_reco_locales_det where ID_ENC = $numSolicitud";
+
+        if($numSucursal != null){
+
+            $sql .= " AND DESTINO = '$numSucursal'";
+
+        }
+
 
         try {
 

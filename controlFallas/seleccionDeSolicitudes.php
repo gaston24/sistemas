@@ -10,8 +10,61 @@
     $nroSucurs = $_SESSION['numsuc'];
     
     $result = $recodificacion->traerSolicitudes($nroSucurs, $desde, $hasta, $estado);
-
     
+    $array = array();
+
+    foreach ($result as $key => $value) {
+        if(in_array($value['ID'], $array)){
+            unset($result[$key]);
+        }else{
+            array_push($array, $value['ID']);
+        }
+    }
+    
+    foreach ($result as $key => &$value) {
+
+        if($value['ESTADO'] == 6){
+
+            if($estado == 5){
+
+                unset($result[$key]);
+
+            }
+
+            if($estado == 3){
+                    
+                unset($result[$key]);
+
+            }
+
+            continue;
+
+        }
+
+        $existe = $recodificacion->comrpobarIngresada($value['N_COMP']);
+        
+        if($existe == 1){
+          
+         
+            $value['ESTADO'] = 5;
+
+            if($estado == 3){
+                    
+                unset($result[$key]);
+
+            }
+
+        }else{
+
+            if($estado == 5){
+
+                unset($result[$key]);
+
+            }
+
+
+        }
+    }
    
 ?>
 
@@ -78,11 +131,13 @@
                                     <div style="margin-left:30px">Estado: 
                                         <select name="estado" id="estado" class="form-control form-control-sm">
 
-                                            <option value="%">Todos</option>
-                                            <option value="1">Solicitada</option>
-                                            <option value="2">Autorizada</option>
-                                            <option value="3">Enviada</option>
-                                            <option value="4">Borrador</option>
+                                            <option value="%" <?= (isset($_GET['estado']) && $_GET['estado'] == '%') ? 'selected' : '' ?>>Todos</option>
+                                            <option value="1" <?= (isset($_GET['estado']) && $_GET['estado'] == '1') ? 'selected' : '' ?>>Solicitada</option>
+                                            <option value="2" <?= (isset($_GET['estado']) && $_GET['estado'] == '2') ? 'selected' : '' ?>>Autorizada</option>
+                                            <option value="3" <?= (isset($_GET['estado']) && $_GET['estado'] == '3') ? 'selected' : '' ?>>Enviada</option>
+                                            <option value="4" <?= (isset($_GET['estado']) && $_GET['estado'] == '4') ? 'selected' : '' ?>>Borrador</option>
+                                            <option value="5" <?= (isset($_GET['estado']) && $_GET['estado'] == '5') ? 'selected' : '' ?>>Ingresada</option>
+                                            <option value="6" <?= (isset($_GET['estado']) && $_GET['estado'] == '6') ? 'selected' : '' ?>>Ajustada</option>
                                     
                                         </select>
                                     </div>
@@ -144,7 +199,19 @@
                                             $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
 
                                             break;
+
+                                        case '5':
+                                            $valorIdBorrador =$encabezado['ID'] - 1;
+                                            $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                            
                                         
+                                        case '6':
+                                            $valorIdBorrador =$encabezado['ID'] - 1;
+                                            $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
                                         default:
                                             break;
                                     }
