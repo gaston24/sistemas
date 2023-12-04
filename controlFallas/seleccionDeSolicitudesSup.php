@@ -15,6 +15,7 @@
     $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
     $tipo = $_SESSION['tipo'];
     $array = array();
+
     foreach ($result as $key => $value) {
         if(in_array($value['ID'], $array)){
             unset($result[$key]);
@@ -22,10 +23,12 @@
             array_push($array, $value['ID']);
         }
     }
-    // if($tipo != 'SUPERVISION'){
+
+
 
         foreach ($result as $key => &$value) {
     
+            
             if($value['ESTADO'] == 6){
     
                 if($estado == 5){
@@ -43,33 +46,36 @@
                 continue;
     
             }
-    
-            // $existe = $recodificacion->comprobarIngresada($value['N_COMP']);
+            $existe = 0;
+            if($value['N_COMP'] != null){
+
+                $existe = $recodificacion->comprobarIngresada($value['N_COMP'], true);
+            }
             
-            // if($existe == 1){
+            if($existe == 1){
               
              
-            //     $value['ESTADO'] = 5;
+                $value['ESTADO'] = 5;
     
-            //     if($estado == 3){
+                if($estado == 3){
                         
-            //         unset($result[$key]);
+                    unset($result[$key]);
     
-            //     }
+                }
     
-            // }else{
+            }else{
     
-                // if($estado == 5){
+                if($estado == 5){
     
-                //     unset($result[$key]);
+                    unset($result[$key]);
     
-                // }
+                }
     
     
-            // }
+            }
         }
         
-    // }
+
 
     $locales = $recodificacion->traerLocales(0);
 
@@ -192,20 +198,20 @@
                                             break;
 
                                         case '4':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
+               
                                             $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;'' ><i class='fa-solid fa-eraser'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                         
                                         case '5':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
+                                
                                             $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                             
                                         
                                         case '6':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
+                     
                                             $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;

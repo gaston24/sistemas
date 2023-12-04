@@ -242,14 +242,40 @@ class Recodificacion
     }
 
 
-    public function comprobarIngresada ($nroRemito) {
+    public function comprobarIngresada ($nroRemito, $esSupervisor = null) {
 
         $sql ="SELECT CASE WHEN EXISTS (
             SELECT 1
             FROM sta14 where NCOMP_ORIG = '$nroRemito'
         ) THEN 'true' ELSE 'false' END AS remitoExiste;";
 
-        $stmt = sqlsrv_query($this->cidLocal, $sql);
+        if($esSupervisor != null){
+
+            $sql = "
+            set dateformat ymd
+            SELECT CASE WHEN EXISTS (
+                select * from 
+                (
+                    select a.fecha, a.estado, a.num_suc, b.*
+                    from sj_reco_locales_enc a
+                    inner join sj_reco_locales_det b on a.ID = b.ID_ENC 
+                ) a
+                left join 
+                (
+                    select cod_pro_cl, estado_mov, fecha_mov, fecha_impo, hora_impo, n_comp, nro_sucurs suc_origen, suc_Destin, observacio from [LAKERBIS].[locales_lakers].dbo.cta09 
+                    where fecha_mov >= cast(getdate()-100 as date)
+                    and n_comp like 'R%'
+                    and suc_destin != 0
+                ) b
+                on a.n_comp collate Latin1_General_BIN = b.n_comp
+                WHERE a.N_COMP = '$nroRemito'
+            ) THEN 'true' ELSE 'false' END AS remitoExiste;";
+
+        }
+        
+        $cid = $esSupervisor != null ?  $this->cid  : $this->cidLocal;
+
+        $stmt = sqlsrv_query($cid, $sql);
 
         if ($stmt === false) {
             die("Error en la consulta: " . sqlsrv_errors());
@@ -269,6 +295,7 @@ class Recodificacion
 
 
     }
+
     
     public function traerLocales($outlet = true) 
     {   
