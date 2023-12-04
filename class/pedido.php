@@ -9,7 +9,7 @@ class Pedido {
         
     }
 
-    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient){
+    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null){
 
         $cid = $this->conn->conectar('central');
 
@@ -27,7 +27,15 @@ class Pedido {
             
         try{
 
-            $sql="EXEC SJ_TIPO_PEDIDO_".$tipoPedido." $suc, '$codClient'";
+            if($esOutlet == null){
+
+                $sql="EXEC SJ_TIPO_PEDIDO_".$tipoPedido." $suc, '$codClient'";
+                
+            }else {
+
+                $sql="EXEC SJ_TIPO_PEDIDO_".$tipoPedido."_OUTLET $suc, '$codClient'";
+
+            }
 
             ini_set('max_execution_time', 300);
 

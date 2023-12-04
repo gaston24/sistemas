@@ -16,9 +16,11 @@ if (!isset($_SESSION['username'])) {
 	$suc = $_SESSION['numsuc'];
 	$codClient = $_SESSION['username'];
 	$tipo_cli = $_SESSION['tipo'];
+	$esOutlet = $_SESSION['esOutlet'];
 
 	$pedido = new Pedido();
-	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient);
+	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient, $esOutlet);
+	
 ?>
 	<!doctype html>
 	<html>
