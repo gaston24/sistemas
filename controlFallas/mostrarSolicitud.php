@@ -12,13 +12,16 @@
 
     $numSolicitud = [];
     $numSolicitud[0]['ultimo_id'] = $_GET['numSolicitud'];
+   
 
     
     $solicitudEncabezado = $recodificacion->traerEncabezado($numSolicitud[0]['ultimo_id']);
+ 
     if(count($solicitudEncabezado) > 0){
         $solicitudDetalle = $recodificacion->traerDetalle($numSolicitud[0]['ultimo_id']);
        
     }
+  
     $tipoU = $_GET['tipoU'] ;
 
     $locales = $recodificacion->traerLocales();

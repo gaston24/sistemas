@@ -35,7 +35,13 @@
 
         }
 
-        $existe = $recodificacion->comrpobarIngresada($value['N_COMP']);
+        $existe = 0;
+
+        if($value['N_COMP'] != null){
+
+            $existe = $recodificacion->comprobarIngresada($value['N_COMP']);
+        }
+        
         
         if($existe == 1){
           
@@ -184,14 +190,12 @@
                                             break;
                                         
                                         case '5':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
                                             $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";
                                             $accion = "<a href='recodificacionDeArticulos.php?numSolicitud=$encabezado[ID]' class='href'><button class='btn btn-primary' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
                                         
                                         
                                         case '6':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
                                             $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
                                             $accion = "<a href='mostrarSolicitudDestino.php?numSolicitud=$encabezado[ID]&estado=Ajustada' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;

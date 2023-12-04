@@ -13,6 +13,69 @@
    
 
     $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
+    $tipo = $_SESSION['tipo'];
+    $array = array();
+
+    foreach ($result as $key => $value) {
+        if(in_array($value['ID'], $array)){
+            unset($result[$key]);
+        }else{
+            array_push($array, $value['ID']);
+        }
+    }
+
+
+
+        foreach ($result as $key => &$value) {
+    
+            
+            if($value['ESTADO'] == 6){
+    
+                if($estado == 5){
+    
+                    unset($result[$key]);
+    
+                }
+    
+                if($estado == 3){
+                        
+                    unset($result[$key]);
+    
+                }
+    
+                continue;
+    
+            }
+            $existe = 0;
+            if($value['N_COMP'] != null){
+
+                $existe = $recodificacion->comprobarIngresada($value['N_COMP'], true);
+            }
+            
+            if($existe == 1){
+              
+             
+                $value['ESTADO'] = 5;
+    
+                if($estado == 3){
+                        
+                    unset($result[$key]);
+    
+                }
+    
+            }else{
+    
+                if($estado == 5){
+    
+                    unset($result[$key]);
+    
+                }
+    
+    
+            }
+        }
+        
+
 
     $locales = $recodificacion->traerLocales(0);
 
@@ -83,10 +146,12 @@
                                     <div style="margin-left:30px">Estado: 
                                         <select name="estado" id="estado" class="form-control form-control-sm">
 
-                                            <option value="%">Todos</option>
-                                            <option value="1">Solicitada</option>
-                                            <option value="2">Autorizada</option>
-                                            <option value="3">Enviada</option>
+                                            <option value="%" <?= (isset($_GET['estado']) && $_GET['estado'] == '%') ? 'selected' : '' ?>>Todos</option>
+                                            <option value="1" <?= (isset($_GET['estado']) && $_GET['estado'] == '1') ? 'selected' : '' ?>>Solicitada</option>
+                                            <option value="2" <?= (isset($_GET['estado']) && $_GET['estado'] == '2') ? 'selected' : '' ?>>Autorizada</option>
+                                            <option value="3" <?= (isset($_GET['estado']) && $_GET['estado'] == '3') ? 'selected' : '' ?>>Enviada</option>
+                                            <option value="5" <?= (isset($_GET['estado']) && $_GET['estado'] == '5') ? 'selected' : '' ?>>ingresada</option>
+                                            <option value="6" <?= (isset($_GET['estado']) && $_GET['estado'] == '6') ? 'selected' : '' ?>>Ajustada</option>
 
                                         </select>
                                     </div>
@@ -133,14 +198,29 @@
                                             break;
 
                                         case '4':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
+               
                                             $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;'' ><i class='fa-solid fa-eraser'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                         
+                                        case '5':
+                                
+                                            $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                            
+                                        
+                                        case '6':
+                     
+                                            $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                            
+                                        
                                         default:
                                             break;
                                     }
+
                                     $usuario = str_replace("_"," ",$encabezado['USUARIO_EMISOR']);
                                     echo "<tr>";
                                     echo "<td style='text-align:center;'>".$encabezado['FECHA']->format('d/m/Y')."</td>";
@@ -178,7 +258,7 @@
         <script src="assets/select2/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <!-- <script src="js/controlFallas.js"></script> -->
+        <script src="js/seleccionDeSolicitudesSup.js"></script>
     </body>
 
 </html>
