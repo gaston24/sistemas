@@ -76,6 +76,11 @@ switch ($accion) {
 
         break;
 
+    case 'comprobarIngresados':
+        comprobarIngresados();
+
+        break;
+
     
     default:
         # code...
@@ -487,5 +492,13 @@ function comprobarStockArticulos () {
 
 }
 
+
+function comprobarIngresados () {
+
+    $data = $_POST['solicitudes'];
+
+    
+
+}
 
 ?>

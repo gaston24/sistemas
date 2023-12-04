@@ -13,7 +13,7 @@
    
 
     $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
-
+    $tipo = $_SESSION['tipo'];
     $array = array();
     foreach ($result as $key => $value) {
         if(in_array($value['ID'], $array)){
@@ -22,51 +22,54 @@
             array_push($array, $value['ID']);
         }
     }
+    // if($tipo != 'SUPERVISION'){
 
-    foreach ($result as $key => &$value) {
-
-        if($value['ESTADO'] == 6){
-
-            if($estado == 5){
-
-                unset($result[$key]);
-
+        foreach ($result as $key => &$value) {
+    
+            if($value['ESTADO'] == 6){
+    
+                if($estado == 5){
+    
+                    unset($result[$key]);
+    
+                }
+    
+                if($estado == 3){
+                        
+                    unset($result[$key]);
+    
+                }
+    
+                continue;
+    
             }
-
-            if($estado == 3){
-                    
-                unset($result[$key]);
-
-            }
-
-            continue;
-
+    
+            // $existe = $recodificacion->comprobarIngresada($value['N_COMP']);
+            
+            // if($existe == 1){
+              
+             
+            //     $value['ESTADO'] = 5;
+    
+            //     if($estado == 3){
+                        
+            //         unset($result[$key]);
+    
+            //     }
+    
+            // }else{
+    
+                // if($estado == 5){
+    
+                //     unset($result[$key]);
+    
+                // }
+    
+    
+            // }
         }
-
-        $existe = $recodificacion->comrpobarIngresada($value['N_COMP']);
         
-        if($existe == 1){
-          
-         
-            $value['ESTADO'] = 5;
-
-            if($estado == 3){
-                    
-                unset($result[$key]);
-
-            }
-
-        }else{
-
-            if($estado == 5){
-
-                unset($result[$key]);
-
-            }
-
-
-        }
-    }
+    // }
 
     $locales = $recodificacion->traerLocales(0);
 
@@ -249,7 +252,7 @@
         <script src="assets/select2/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <!-- <script src="js/controlFallas.js"></script> -->
+        <script src="js/seleccionDeSolicitudesSup.js"></script>
     </body>
 
 </html>

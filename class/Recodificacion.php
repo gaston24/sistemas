@@ -242,7 +242,7 @@ class Recodificacion
     }
 
 
-    public function comrpobarIngresada ($nroRemito) {
+    public function comprobarIngresada ($nroRemito) {
 
         $sql ="SELECT CASE WHEN EXISTS (
             SELECT 1

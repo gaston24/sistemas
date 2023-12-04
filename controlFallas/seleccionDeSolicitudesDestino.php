@@ -35,7 +35,7 @@
 
         }
 
-        $existe = $recodificacion->comrpobarIngresada($value['N_COMP']);
+        $existe = $recodificacion->comprobarIngresada($value['N_COMP']);
         
         if($existe == 1){
           
