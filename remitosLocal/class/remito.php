@@ -22,7 +22,7 @@ class Remito{
         $sql = "
         SET DATEFORMAT YMD
         SELECT N_COMP, NCOMP_IN_S, COD_PRO_CL
-        FROM CTA09 WHERE FECHA_MOV >= GETDATE()-50 AND NRO_SUCURS = $suc AND N_COMP LIKE 'R%'
+        FROM STA14 WHERE FECHA_MOV >= GETDATE()-30 AND N_COMP LIKE 'R%'
         ORDER BY N_COMP DESC
         ";
       
