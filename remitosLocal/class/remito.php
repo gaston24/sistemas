@@ -2,26 +2,31 @@
 
 class Remito{
 
-    function __construct(){
-
-        require_once __DIR__.'/../../class/conexion.php';
-        $this->conn = new Conexion;
+    function __construct() 
+    {
         
+        require_once $_SERVER['DOCUMENT_ROOT'] .'/sistemas/class/conexion.php';
+        
+        $conn = new Conexion();
+        $this->cid = $conn->conectar('central');
+        
+        $this->cidLocal = $conn->conectar('local');
+        
+
     }
+    
    
     public function traerRemitos($suc){
 
-        include __DIR__.'\..\AccesoDatos\conn.php';
-        
-      /*   $cid = $this->$cid_locales->conectar('central'); */
         
         $sql = "
         SET DATEFORMAT YMD
         SELECT N_COMP, NCOMP_IN_S, COD_PRO_CL
-        FROM CTA09 WHERE FECHA_MOV >= GETDATE()-50 AND NRO_SUCURS = $suc AND N_COMP LIKE 'R%'
+        FROM STA14 WHERE FECHA_MOV >= GETDATE()-30 AND N_COMP LIKE 'R%'
         ORDER BY N_COMP DESC
         ";
-        $stmt = sqlsrv_query( $cid_locales, $sql );
+      
+        $stmt = sqlsrv_query( $this->cidLocal, $sql );
 
         $rows = array();
 
