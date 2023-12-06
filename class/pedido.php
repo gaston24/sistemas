@@ -27,15 +27,19 @@ class Pedido {
             
         try{
 
-            if($esOutlet == null){
+          
+            $sql = "EXEC SJ_TIPO_PEDIDO_".$tipoPedido." $suc, '$codClient'";
+            
+            if($esOutlet != null){
 
-                $sql="EXEC SJ_TIPO_PEDIDO_".$tipoPedido." $suc, '$codClient'";
-                
-            }else {
+                if($tipoPedido == 1){
 
-                $sql="EXEC SJ_TIPO_PEDIDO_".$tipoPedido."_OUTLET $suc, '$codClient'";
+                    $sql = "EXEC SJ_TIPO_PEDIDO_".$tipoPedido."_OUTLET '$suc', '$codClient'";
+                }
+
 
             }
+
 
             ini_set('max_execution_time', 300);
 
