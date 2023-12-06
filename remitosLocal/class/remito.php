@@ -9,7 +9,7 @@ class Remito{
         
         $conn = new Conexion();
         $this->cid = $conn->conectar('central');
-        
+        $this->cidLakerbis = $conn->conectar('locales');
         $this->cidLocal = $conn->conectar('local');
         
 
@@ -25,7 +25,7 @@ class Remito{
         FROM STA14 WHERE FECHA_MOV >= GETDATE()-30 AND N_COMP LIKE 'R%'
         ORDER BY N_COMP DESC
         ";
-      
+        
         $stmt = sqlsrv_query( $this->cidLocal, $sql );
 
         $rows = array();
@@ -41,8 +41,6 @@ class Remito{
 
     public function traerRemito($suc, $ncompInS){
 
-        include __DIR__.'\..\AccesoDatos\conn.php';
-
        /*  $cid = $this->conn->conectar('central'); */
 
         $sql = "
@@ -50,7 +48,8 @@ class Remito{
 
         EXEC SJ_CONSULTA_REMITO_SUCURSAL $suc, '$ncompInS'
         ";
-        $stmt = sqlsrv_query( $cid_locales, $sql );
+       
+        $stmt = sqlsrv_query( $this->cidLakerbis, $sql );
 
         $rows = array();
 

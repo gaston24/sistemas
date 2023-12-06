@@ -159,4 +159,34 @@ class Fichaje {
 
 
     }
+
+    public function traerReporteDeAsistencias ($desde, $hasta, $usuario, $sucursal) {
+
+        $cid = $this->conn->conectar('central');
+
+        $sql = "SELECT * 
+        FROM Reporte_Fichadas 
+        WHERE CONVERT(DATE, FECHA_REG, 103) BETWEEN '$desde' AND '$hasta'
+          AND (LEGAJO LIKE '%$usuario%' OR APELLIDO_Y_NOMBRE LIKE '%$usuario%')
+          AND SUCURSAL LIKE '%$sucursal%'
+        ORDER BY CONVERT(DATE, FECHA_REG, 103) DESC;
+        
+        ";
+      
+  
+        $result = sqlsrv_query($cid, $sql);
+
+        if($result === false){
+            die( print_r( sqlsrv_errors(), true));
+        }
+
+        $data = array();
+
+        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+            $data[] = $row;
+        }
+
+        return $data;
+
+    }
 }
