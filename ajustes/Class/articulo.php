@@ -39,7 +39,7 @@ class Articulo
     }
 
 
-    public function traerMaestroArticulo($codArticulo=null) 
+    public function traerMaestroArticulo($codArticulo = null) 
     {
         $codArt = $codArticulo ? $codArticulo : '%';
 
