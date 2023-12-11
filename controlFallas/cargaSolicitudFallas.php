@@ -163,10 +163,10 @@
                                                     foreach ($todosLosArticulos as $key => $value) {
                                                 
                                                         if($detalle['COD_ARTICU'] == $value['COD_ARTICU']){
-                                                            echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' " selected>'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                            echo '<option value="'.$value["COD_ARTICU"].'?'.$value["DESCRIPCIO"].'?'.$value['PRECIO'].' " selected>'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
                                                         }else{
 
-                                                            echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                            echo '<option value="'.$value["COD_ARTICU"].'?'.$value["DESCRIPCIO"].'?'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
                                                         }
                                                     }
 
@@ -205,7 +205,7 @@
                                                 <?php 
                                                 foreach ($todosLosArticulos as $key => $value) {
                                             
-                                                    echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].'">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                    echo '<option value="'.$value["COD_ARTICU"].'?'.$value["DESCRIPCIO"].'?'.$value['PRECIO'].'">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
                                                 }
                                                 ?>
                                                 </select>
