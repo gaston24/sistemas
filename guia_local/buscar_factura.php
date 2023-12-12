@@ -15,7 +15,7 @@ $numsuc = $_SESSION['numsuc'];
 <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
 	<title>Comprobantes de ecommerce</title>	
 <?php include '../assets/css/header_simple.php'; ?>
-<link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css" >
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -24,6 +24,31 @@ $numsuc = $_SESSION['numsuc'];
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" class="rel">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+	
+.loading {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url('images/spinnervlll.gif') 50% 50% no-repeat rgb(240, 240, 240);
+	opacity: .8;
+  }
+
+</style>
 
 </head>
 
@@ -45,6 +70,7 @@ if(!isset($_GET['desde'])){
 	
 	<form id="sucu" method="GET" style="margin-top:15px">
 	<div class="container col mb-3">
+		<div class="boxLoading"></div>
 		<div class="form-row mb-1">
 			<button type="button" class="btn btn-primary" style="margin-left:1%; width:max-content; height:max-content" onClick="window.location.href='../index.php'">Inicio</button>
 			
@@ -61,7 +87,7 @@ if(!isset($_GET['desde'])){
 				<label class="col-sm col-form-label ml-3">Búsqueda:</label>
 				<input type="text" style="display: inline-block; margin-left: 30px; width:50%;" class="form-control form-control-sm" id="textBox1" name="comprobante" placeholder="Factura o cliente" class="form-control form-control"></input>
 					<!--<button><i class="fas fa-search"></i></button>-->
-				<input type="submit" value="Buscar" class="btn btn-primary ml-2">
+				<input type="submit" value="Buscar" class="btn btn-primary ml-2" onclick="mostrarSpinner()">
 			</div>
 				
 			<div class="col-sm-2">
@@ -135,13 +161,14 @@ $sql=
 
 	";
 
+
 ini_set('max_execution_time', 300);
 $result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
 
 <div class="container-fluid">
-<table class="table table-sm table-striped table-condensed table-bordered">
+<table class="table table-sm table-striped table-condensed table-bordered" id="tablaFactura">
 	<thead style="background-color: #343a40; color: white">
         <tr >
 			<td class="col-1" style="font-size: 12px; font-weight:bold;">FECHA</td>
@@ -228,15 +255,39 @@ $result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 }
 }
 ?>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="main.js"></script>
 
 <script>
-
+document.querySelector("#tablaFactura").data
+$('#tablaFactura').DataTable({
+	searching: false, 
+})
+// $('#table').DataTable( { 
+// 		select: true,
+// 		dom: 'lBfrtip', buttons: [   'copy', 'csv', 'excel', 'pdf', 'print' ],
+// 		fixedHeader: true
+// 	} ); 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
+const mostrarSpinner = () => {
+	let spinner = document.querySelector('.boxLoading')
+	spinner.classList.add('loading')
+
+}
 </script>
 
 </body>
