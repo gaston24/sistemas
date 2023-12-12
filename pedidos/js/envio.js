@@ -1,4 +1,6 @@
 
+console.log("envio.js");
+
 // MATRIZ DE PEDIDOS (LOCALES PROPIOS Y FRANQUICIAS --- MAYORISTAS)
 function matrizPedidos()  {
     const matriz = Array.from(document.getElementById("tabla").rows);
@@ -208,14 +210,19 @@ function muestraDiferencia(resultCompara){
     resultCompara.forEach((x)=>{
         texto += x[0]+' -- ';
     });
-    texto += ' -- Los articulos seran realtados, por favor, modifique las cantidades solicitadas';
+    texto += ' -- Los articulos seran resaltados, por favor, modifique las cantidades solicitadas';
 
     swal.fire({
         title: "Error! El stock de central se ha modificado",
         text: texto,
         icon: "warning",
         button: "Aceptar",
-    });
+    }).then(() => {
+        $("#aguarde").fadeOut();
+        $("#pantalla").show();
+        $('#btnEnviar').show();
+        $('#spinnerEnviar').hide();
+    })
 
     marcarDiferencia(resultCompara);
 
