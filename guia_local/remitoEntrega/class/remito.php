@@ -3,7 +3,12 @@
 class Remito{
 
     public function traerRemito($nComp){
-        include __DIR__.'\..\AccesoDatos\conn.php';
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+
+        $cid = new Conexion();
+        $cid_central = $cid->conectar('central');  
+
+        
 
         $sql = "
         SET DATEFORMAT YMD
@@ -26,7 +31,7 @@ class Remito{
         AND A.FECHA_EMIS >= GETDATE()-180
         AND (A.N_COMP = '$nComp')
         ";
-        $stmt = sqlsrv_query( $cid, $sql );
+        $stmt = sqlsrv_query( $cid_central, $sql );
 
         $rows = array();
 
@@ -49,7 +54,7 @@ class Remito{
         AND A.FECHA_EMIS >= GETDATE()-180
         AND (A.N_COMP = '$nComp')
         ";
-        $stmt = sqlsrv_query( $cid, $sql2 );
+        $stmt = sqlsrv_query( $cid_central, $sql2 );
 
         $art = array();
 

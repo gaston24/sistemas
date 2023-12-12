@@ -77,13 +77,7 @@ if(!isset($_GET['desde'])){
 if(isset($_GET['comprobante'])){
 	$comp = $_GET['comprobante'];
 
-
-// $dsn = "1 - CENTRAL";
-// $usuario = "sa";
-// $clave="Axoft1988";
-//  include __DIR__.'\class\conexion.php'; 
-// $cid=odbc_connect($dsn, $usuario, $clave);
-include_once __DIR__.'/../class/conexion.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
 
 $conn = new Conexion;
 
