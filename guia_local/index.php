@@ -48,18 +48,18 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 <div class="table-responsive">
 	<table class="table table-hover table-condensed table-striped text-center">
 		<thead class="thead-dark" style="font-size: 13px; font-weight: bold">
-				<td class="col-">CANAL</td>
-				<td class="col-">FECHA PED.</td>
-				<td class="col-">PEDIDO</td>
-				<td class="col-">ORDEN</td>
-				<td class="col-">FACTURA</td>
-				<td class="col-">CLIENTE</td>
-				<td class="col-">DEPOSITO</td>
-				<td class="col-">METODO ENTREGA</td>
-				<td class="col-">GUIA</td>
-				<td class="col-">FECHA GUIA</td>
-				<td class="col-">IMPRIMIR</td>
-				<td class="col-">RETIRO</td>
+				<td >CANAL</td>
+				<td style="width: 10%;">FECHA PED.</td>
+				<td >PEDIDO</td>
+				<td style="width: 15%;">ORDEN</td>
+				<td >FACTURA</td>
+				<td >CLIENTE</td>
+				<td >DEPOSITO</td>
+				<td >METODO ENTREGA</td>
+				<td >GUIA</td>
+				<td >FECHA GUIA</td>
+				<td >IMPRIMIR</td>
+				<td >RETIRO</td>
 		</thead>
 
 		<tbody id="table" class="text-center" style="font-size: 12px;">
@@ -68,18 +68,18 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
             ?>
 
 			<tr >
-				<td class="col-"><?= $key['ORIGEN'] ;?></td>
-				<td class="col-"><?= $key['FECHA_PEDIDO']->format('Y-m-d') ;?></td>
-				<td class="col-"><?= $key['PEDIDO'] ;?></td>
-				<td class="col-"><?= $key['NRO_ORDEN_ECOMMERCE'] ;?></td>
-				<td class="col-"><?= $key['N_COMP'] ;?></td>
-				<td class="col-"><?= $key['RAZON_SOCIAL'] ;?></td>
-				<td class="col-"><?= $key['DEPOSITO'] ;?></td>
-				<td class="col-"><?= $key['METODO_ENVIO'] ;?></td>
-				<td class="col-"><?= $key['GC_GDT_NUM_GUIA'] ;?></td>
-				<td class="col-"><?php if(isset($key['FECHA'])){echo $key['FECHA']->format('Y-m-d');} ?></td>
-				<td class="col-"> <a href="remitoEntrega/?nComp=<?= $key['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" id="iconPrint"></i></a></td>
-				<td class="col-" type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden()" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
+				<td ><?= $key['ORIGEN'] ;?></td>
+				<td ><?= $key['FECHA_PEDIDO']->format('Y-m-d') ;?></td>
+				<td ><?= $key['PEDIDO'] ;?></td>
+				<td ><?= $key['NRO_ORDEN_ECOMMERCE'] ;?></td>
+				<td ><?= $key['N_COMP'] ;?></td>
+				<td ><?= $key['RAZON_SOCIAL'] ;?></td>
+				<td ><?= $key['DEPOSITO'] ;?></td>
+				<td ><?= $key['METODO_ENVIO'] ;?></td>
+				<td ><?= $key['GC_GDT_NUM_GUIA'] ;?></td>
+				<td ><?php if(isset($key['FECHA'])){echo $key['FECHA']->format('Y-m-d');} ?></td>
+				<td > <a href="remitoEntrega/?nComp=<?= $key['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" id="iconPrint"></i></a></td>
+				<td  type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden()" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
 			</tr>
 
 			<?php
