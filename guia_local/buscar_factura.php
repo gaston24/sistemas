@@ -14,16 +14,7 @@ $numsuc = $_SESSION['numsuc'];
 <head>
 <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg">
 	<title>Comprobantes de ecommerce</title>	
-<?php include '../assets/css/header_simple.php'; ?>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-<!-- Including Font Awesome CSS from CDN to show icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<link rel="stylesheet" href="css/style.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
@@ -60,7 +51,8 @@ $numsuc = $_SESSION['numsuc'];
 $hoy = date("Y-m-d");
 
 if(!isset($_GET['desde'])){
-	$ayer = date('Y-m').'-'.strright(('0'.((date('d')))),2);
+	// $ayer = date('Y-m').'-'.strright(('0'.((date('d')))),2);
+	$ayer = date("Y-m-d",strtotime($hoy."- 1 days"));
 }else{
 	$desde = $_GET['desde'];
 	$hasta = $_GET['hasta'];
@@ -103,66 +95,60 @@ if(!isset($_GET['desde'])){
 if(isset($_GET['comprobante'])){
 	$comp = $_GET['comprobante'];
 
+	include_once __DIR__.'/../class/conexion.php';
 
-// $dsn = "1 - CENTRAL";
-// $usuario = "sa";
-// $clave="Axoft1988";
-//  include __DIR__.'\class\conexion.php'; 
-// $cid=odbc_connect($dsn, $usuario, $clave);
-include_once __DIR__.'/../class/conexion.php';
+	$conn = new Conexion;
 
-$conn = new Conexion;
-
-$cid = $conn->conectar('central');
+	$cid = $conn->conectar('central');
 
 
-$sql=
-	"
-	SET DATEFORMAT YMD
+	$sql=
+		"
+		SET DATEFORMAT YMD
 
-	SELECT CAST(A.FECHA_PEDI AS DATE) FECHA, A.LEYENDA_2 NOMBRE, E.N_COMP, A.NRO_PEDIDO PEDIDO, CAST(E.IMPORTE AS DECIMAL(10,2)) IMP_COMPROBANTE, B.COD_ARTICU, F.DESCRIPCIO, CAST(B.CANT_PEDID AS INT) CANT, CAST(B.PRECIO AS DECIMAL(10,2)) IMP_ARTICULO,
-	ISNULL(I.CARD_FIRST_DIGITS+'-'+I.CARD_LAST_DIGITS, '') TARJETA , I.ISSUER BANCO, J.N_CUIT,
-	ISNULL(REPLACE(G.NOMBRE_SUC, 'RT - SUC - ', ''), C.XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK) ORIGEN, C.XML_CA_1111_METODO_ENTREGA TIPO_ENVIO, L.TIENDA,  
-	CASE WHEN AUDITORIA = 1 THEN 1 ELSE 0 END CONTROLADO,
-	CASE WHEN E.N_COMP IS NOT NULL THEN 1 ELSE 0 END FACTURADO, 
-	CASE WHEN M.FECHA_ENTREGADO  IS NOT NULL THEN 1 ELSE 0 END ENTREGADO, 
-	M.FECHA_ENTREGADO 
-	FROM GVA21 A
-	INNER JOIN GVA03 B ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
-	INNER JOIN 
-	(
-		SELECT 
-		COD_TRANSP,
-		GVA24_CAMPOS_ADICIONALES.XML_CA.value('CA_1111_SELECCIONABLE_PARA_TIPO_STOCK', 'varchar(15)') XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK,
-		GVA24_CAMPOS_ADICIONALES.XML_CA.value('CA_1111_METODO_ENTREGA', 'varchar(20)') XML_CA_1111_METODO_ENTREGA
-		FROM GVA24
-		OUTER APPLY GVA24.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as GVA24_CAMPOS_ADICIONALES(XML_CA)
-	) C ON A.COD_TRANSP = C.COD_TRANSP
-	LEFT JOIN GVA55 D ON A.TALON_PED = D.TALON_PED AND A.NRO_PEDIDO = D.NRO_PEDIDO
-	LEFT JOIN GVA12 E ON D.T_COMP = E.T_COMP AND D.N_COMP = E.N_COMP
-	INNER JOIN STA11 F ON B.COD_ARTICU = F.COD_ARTICU
-	LEFT JOIN STA22 G ON E.COD_SUCURS = G.COD_SUCURS
-	LEFT JOIN GC_ECOMMERCE_PEDIDO H ON A.ID_NEXO_PEDIDOS_ORDEN = H.ID_GC_ECOMMERCE_ORDER
-	LEFT JOIN GC_ECOMMERCE_PAYMENT_DETAIL I ON H.ID_GC_ECOMMERCE_ORDER = I.ID_GC_ECOMMERCE_ORDER
-	LEFT JOIN GVA38 J ON J.T_COMP = 'PED' AND A.NRO_PEDIDO = J.N_COMP
-	LEFT JOIN (SELECT NRO_PEDIDO, NRO_ORDEN_ECOMMERCE, AUDITORIA FROM SOF_AUDITORIA GROUP BY NRO_PEDIDO, NRO_ORDEN_ECOMMERCE, AUDITORIA) K ON A.ORDER_ID_TIENDA = K.NRO_ORDEN_ECOMMERCE COLLATE Latin1_General_BIN
-	LEFT JOIN 
+		SELECT TOP 200 CAST(A.FECHA_PEDI AS DATE) FECHA, A.LEYENDA_2 NOMBRE, E.N_COMP, A.NRO_PEDIDO PEDIDO, CAST(E.IMPORTE AS DECIMAL(10,2)) IMP_COMPROBANTE, B.COD_ARTICU, F.DESCRIPCIO, CAST(B.CANT_PEDID AS INT) CANT, CAST(B.PRECIO AS DECIMAL(10,2)) IMP_ARTICULO,
+		ISNULL(I.CARD_FIRST_DIGITS+'-'+I.CARD_LAST_DIGITS, '') TARJETA , I.ISSUER BANCO, J.N_CUIT,
+		ISNULL(REPLACE(G.NOMBRE_SUC, 'RT - SUC - ', ''), C.XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK) ORIGEN, C.XML_CA_1111_METODO_ENTREGA TIPO_ENVIO, L.TIENDA,  
+		CASE WHEN AUDITORIA = 1 THEN 1 ELSE 0 END CONTROLADO,
+		CASE WHEN E.N_COMP IS NOT NULL THEN 1 ELSE 0 END FACTURADO, 
+		CASE WHEN M.FECHA_ENTREGADO  IS NOT NULL THEN 1 ELSE 0 END ENTREGADO, 
+		M.FECHA_ENTREGADO 
+		FROM GVA21 A
+		INNER JOIN GVA03 B ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
+		INNER JOIN 
 		(
-			SELECT NRO_SUCURSAL, DESC_SUCURSAL TIENDA,
-			SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
-			FROM SUCURSAL
-			OUTER APPLY SUCURSAL.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as SUCURSAL_CAMPOS_ADICIONALES(XML_CA)
-			WHERE SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') != ''
-		) L ON A.LEYENDA_3 = L.XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
-	LEFT JOIN (SELECT PEDIDO, FECHA_ENTREGADO FROM SJ_LOCAL_ENTREGA_TABLE GROUP BY PEDIDO, FECHA_ENTREGADO	) M ON A.NRO_PEDIDO = M.PEDIDO COLLATE Latin1_General_BIN
-	WHERE (E.N_COMP = '$comp' OR A.LEYENDA_2 LIKE '%$comp%') AND
-	A.COD_CLIENT = '000000'	AND A.FECHA_PEDI BETWEEN '$desde' AND '$hasta' AND A.TALON_PED = '99'
-	ORDER BY A.NRO_PEDIDO
+			SELECT 
+			COD_TRANSP,
+			GVA24_CAMPOS_ADICIONALES.XML_CA.value('CA_1111_SELECCIONABLE_PARA_TIPO_STOCK', 'varchar(15)') XML_CA_1111_SELECCIONABLE_PARA_TIPO_STOCK,
+			GVA24_CAMPOS_ADICIONALES.XML_CA.value('CA_1111_METODO_ENTREGA', 'varchar(20)') XML_CA_1111_METODO_ENTREGA
+			FROM GVA24
+			OUTER APPLY GVA24.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as GVA24_CAMPOS_ADICIONALES(XML_CA)
+		) C ON A.COD_TRANSP = C.COD_TRANSP
+		LEFT JOIN GVA55 D ON A.TALON_PED = D.TALON_PED AND A.NRO_PEDIDO = D.NRO_PEDIDO
+		LEFT JOIN GVA12 E ON D.T_COMP = E.T_COMP AND D.N_COMP = E.N_COMP
+		INNER JOIN STA11 F ON B.COD_ARTICU = F.COD_ARTICU
+		LEFT JOIN STA22 G ON E.COD_SUCURS = G.COD_SUCURS
+		LEFT JOIN GC_ECOMMERCE_PEDIDO H ON A.ID_NEXO_PEDIDOS_ORDEN = H.ID_GC_ECOMMERCE_ORDER
+		LEFT JOIN GC_ECOMMERCE_PAYMENT_DETAIL I ON H.ID_GC_ECOMMERCE_ORDER = I.ID_GC_ECOMMERCE_ORDER
+		LEFT JOIN GVA38 J ON J.T_COMP = 'PED' AND A.NRO_PEDIDO = J.N_COMP
+		LEFT JOIN (SELECT NRO_PEDIDO, NRO_ORDEN_ECOMMERCE, AUDITORIA FROM SOF_AUDITORIA GROUP BY NRO_PEDIDO, NRO_ORDEN_ECOMMERCE, AUDITORIA) K ON A.ORDER_ID_TIENDA = K.NRO_ORDEN_ECOMMERCE COLLATE Latin1_General_BIN
+		LEFT JOIN 
+			(
+				SELECT NRO_SUCURSAL, DESC_SUCURSAL TIENDA,
+				SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
+				FROM SUCURSAL
+				OUTER APPLY SUCURSAL.CAMPOS_ADICIONALES.nodes('CAMPOS_ADICIONALES') as SUCURSAL_CAMPOS_ADICIONALES(XML_CA)
+				WHERE SUCURSAL_CAMPOS_ADICIONALES.XML_CA.value('CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX', 'varchar(100)') != ''
+			) L ON A.LEYENDA_3 = L.XML_CA_423_ID_DIRECCION_SUCURSAL_ENTREGA_VTEX
+		LEFT JOIN (SELECT PEDIDO, FECHA_ENTREGADO FROM SJ_LOCAL_ENTREGA_TABLE GROUP BY PEDIDO, FECHA_ENTREGADO	) M ON A.NRO_PEDIDO = M.PEDIDO COLLATE Latin1_General_BIN
+		WHERE (E.N_COMP = '$comp' OR A.LEYENDA_2 LIKE '%$comp%') AND
+		A.COD_CLIENT = '000000'	AND (A.FECHA_PEDI BETWEEN '$desde' AND '$hasta') AND A.TALON_PED = '99'
+		ORDER BY A.FECHA_PEDI DESC
 
-	";
+		";
 
-
-ini_set('max_execution_time', 300);
+		
+		ini_set('max_execution_time', 300);
 $result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 
 ?>
@@ -255,40 +241,19 @@ $result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 }
 }
 ?>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script src="main.js"></script>
 
-<script>
-document.querySelector("#tablaFactura").data
-$('#tablaFactura').DataTable({
-	searching: false, 
-})
-// $('#table').DataTable( { 
-// 		select: true,
-// 		dom: 'lBfrtip', buttons: [   'copy', 'csv', 'excel', 'pdf', 'print' ],
-// 		fixedHeader: true
-// 	} ); 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
-const mostrarSpinner = () => {
-	let spinner = document.querySelector('.boxLoading')
-	spinner.classList.add('loading')
-
-}
-</script>
 
 </body>
 </html>
