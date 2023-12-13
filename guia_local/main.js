@@ -1,4 +1,19 @@
 
+$('#tablaFactura').DataTable({
+	searching: false, 
+	pageLength: 50,  
+})
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+const mostrarSpinner = () => {
+	let spinner = document.querySelector('.boxLoading')
+	spinner.classList.add('loading')
+
+}
+
 //Busqueda rápida//
 
 function myFunction() {
