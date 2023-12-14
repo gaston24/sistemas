@@ -96,6 +96,7 @@ const autorizar = () => {
     let nombreSuc = document.querySelector("#nombreSuc").value;
     let data = [];
     let codigosOulet = []; 
+    let outlet = document.querySelector("#outlet").textContent;
 
     allTr.forEach((element,y) => {
         data.push({
@@ -142,6 +143,7 @@ const autorizar = () => {
                 data: {
                     data: data,
                     numSolicitud: numSolicitud,
+                    outlet: outlet
                 },
                 success: function (response) {
 

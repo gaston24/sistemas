@@ -300,7 +300,7 @@ class Recodificacion
     {   
 
         $sql = "
-        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
      
         if($outlet == true){
 
@@ -308,7 +308,7 @@ class Recodificacion
         }
 
         $sql  .=" UNION ALL
-        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
         ORDER BY DESC_SUCURSAL
         ";
 
@@ -474,6 +474,23 @@ class Recodificacion
         }
     }
 
+    public function ingresar ($numSolicitud)
+    {
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '5' WHERE ID = $numSolicitud";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
 
     public function actualizarDetalle ($precio, $nuevoCodigo, $destino, $observaciones, $id)
     {
@@ -585,6 +602,38 @@ class Recodificacion
 
     }
 
+    public function realizarMovimientoOu($codArticulo, $cantidad){
+
+        $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+
+        $sqlBaja = "UPDATE sta19 SET CANT_STOCK = CANT_STOCK - $cantidad WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = $codDeposito";
+
+        sqlsrv_query($this->cidLocal, $sqlBaja);
+
+        // $sqlAlta = "INSERT INTO STA19 (CANT_STOCK, COD_ARTICU, COD_DEPOSI) VALUES ($cantidad, '$codArticulo', 'OU')";
+        $sqlAlta = "IF EXISTS (
+            SELECT 1 
+            FROM STA19 
+            WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = 'OU'
+        )
+        BEGIN
+            UPDATE STA19 
+            SET CANT_STOCK = $cantidad
+            WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = 'OU';
+        END
+        ELSE
+        BEGIN
+            INSERT INTO STA19 (CANT_STOCK, COD_ARTICU, COD_DEPOSI)
+            VALUES ($cantidad, '$codArticulo', 'OU');
+        END;";
+        
+    
+
+        $result = sqlsrv_query($this->cidLocal, $sqlAlta);
+
+        return true;
+
+    }
 
     public function comprobarStock ($articulo) 
     {
@@ -747,7 +796,7 @@ class Recodificacion
     public function traerRecodificacionDeArticulos ($numSolicitud = null)
     {
 
-        $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO FROM sj_reco_locales_enc A
+        $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO, B.DESTINO FROM sj_reco_locales_enc A
         INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC
         WHERE B.AJUSTADO IS NULL OR AJUSTADO = 0";
 

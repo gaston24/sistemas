@@ -638,6 +638,20 @@ const solicitar = async (esBorrador = false) => {
                   esBorrador: esBorrador
                 },
                 success: function (response) {
+                  
+            
+                  $.ajax({
+                    url: "Controller/RecodificacionController.php?accion=realizarMovimientoOu",
+                    type : "POST",
+                    data: {
+                      dataArticulos:dataArticulos
+                    },
+                    success: function (response) {
+                      console.log(response)
+                    }
+                  });
+     
+               
                    
                   Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
                       $.ajax({

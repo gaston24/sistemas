@@ -76,8 +76,8 @@ switch ($accion) {
 
         break;
 
-    case 'comprobarIngresados':
-        comprobarIngresados();
+    case 'realizarMovimientoOu':
+        realizarMovimientoOu();
 
         break;
 
@@ -302,10 +302,19 @@ function autorizar () {
 
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
-    $recodificacion = new Recodificacion();
+    $outlet = $_POST['outlet'];
 
+    $recodificacion = new Recodificacion();
  
-    $result  = $recodificacion->autorizar($numSolicitud);
+    if($outlet == "1"){
+
+        $result = $recodificacion->ingresar($numSolicitud);
+
+    }else{
+
+        $result  = $recodificacion->autorizar($numSolicitud);
+    }
+
     
     if ($result == true) {
 
@@ -493,11 +502,19 @@ function comprobarStockArticulos () {
 }
 
 
-function comprobarIngresados () {
+function realizarMovimientoOu () {
 
-    $data = $_POST['solicitudes'];
+    $dataArticulos = $_POST['dataArticulos'];
 
-    
+    $recodificacion = new Recodificacion();
+
+    foreach ($dataArticulos as $key => $value) {
+  
+        $result = $recodificacion->realizarMovimientoOu($value['codArticulo'], $value['cantidad']);
+
+    }
+
+    echo true;
 
 }
 
