@@ -2,7 +2,7 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
 require_once  $_SERVER["DOCUMENT_ROOT"]."/sistemas/controlFallas/Controller/SendEmailController.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/sistemas/ajuste/Class/Ajuste.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/sistemas/ajustes/Class/Ajuste.php";
 
 $accion = $_GET['accion'];
 
