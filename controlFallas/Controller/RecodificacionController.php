@@ -2,7 +2,7 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
 require_once  $_SERVER["DOCUMENT_ROOT"]."/sistemas/controlFallas/Controller/SendEmailController.php";
-
+require_once $_SERVER["DOCUMENT_ROOT"]."/sistemas/ajuste/Class/Ajuste.php";
 
 $accion = $_GET['accion'];
 
@@ -504,13 +504,35 @@ function comprobarStockArticulos () {
 
 function realizarMovimientoOu () {
 
+
     $dataArticulos = $_POST['dataArticulos'];
+
+    $ajuste = new Ajuste();
 
     $recodificacion = new Recodificacion();
 
+    $fecha = date("Y") . "/" . date("m") . "/" . date("d");
+    
+    $hora = (date("H")-5).date("i").date("s");
+
+
     foreach ($dataArticulos as $key => $value) {
-  
-        $result = $recodificacion->realizarMovimientoOu($value['codArticulo'], $value['cantidad']);
+
+        $proximo = $ajuste->setearProximoRemito();
+
+        $ajuste->updateRemitoEnTalonario();
+
+        $proxInterno = $ajuste->traerProximoInterno();
+
+        $ajuste->insertarEncabezado($fecha, $proximo, $proxInterno, $hora);
+
+        $result = $recodificacion->darBajaArticuloOriginal($value['codArticulo'], $value['cantidad']);
+        
+        $recodificacion->insertarDetalleSalidaOu($cant, $value['codArticulo'], $fecha, $proxInterno);
+        
+        $result = $recodificacion->darAltaEnDepositoOu($value['codArticulo'], $value['cantidad']);
+        
+        $recodificacion->insertarDetalleEntradaOu($cant, $nuevo, $fecha, $proxInterno);
 
     }
 
