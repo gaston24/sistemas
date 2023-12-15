@@ -989,5 +989,39 @@ class Recodificacion
         }
 
     }
+
+    public function insertarEncabezadoTango($fecha, $proximo, $proxInterno, $hora) 
+    {
+        $sqlEncabezado = "
+        INSERT INTO STA14 
+        (
+        COD_PRO_CL, COTIZ, EXPORTADO, EXP_STOCK, FECHA_ANU, FECHA_MOV, HORA, 
+        LISTA_REM, LOTE, LOTE_ANU, MON_CTE, N_COMP, NCOMP_IN_S, 
+        NRO_SUCURS, T_COMP, TALONARIO, TCOMP_IN_S, USUARIO, HORA_COMP,
+        ID_A_RENTA, DOC_ELECTR, IMP_IVA, IMP_OTIMP, IMPORTE_BO, IMPORTE_TO, 
+        DIFERENCIA, SUC_DESTIN, DCTO_CLIEN, FECHA_INGRESO, HORA_INGRESO, 
+        USUARIO_INGRESO, TERMINAL_INGRESO, IMPORTE_TOTAL_CON_IMPUESTOS, 
+        CANTIDAD_KILOS
+        )
+        VALUES
+        (
+        '', 4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'TRA', 850, 'TI', 'AJUSTES', 
+        '$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0
+        )
+        ;";
+
+        try {
+
+            $resultEncabezado = sqlsrv_query($this->cid, $sqlEncabezado);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+    }
     
 }

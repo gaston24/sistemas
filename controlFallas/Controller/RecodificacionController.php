@@ -524,7 +524,7 @@ function realizarMovimientoOu () {
 
         $proxInterno = $ajuste->traerProximoInterno();
 
-        $ajuste->insertarEncabezado($fecha, $proximo, $proxInterno, $hora);
+        $recodificacion->insertarEncabezadoTango($fecha, $proximo, $proxInterno, $hora);
 
         $result = $recodificacion->darBajaArticuloOriginal($value['codArticulo'], $value['cantidad']);
         
