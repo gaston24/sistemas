@@ -937,7 +937,7 @@ class Recodificacion
         VALUES
         (
         1, 0, 0, 0, 0, '$cant', '$nuevo', 'OU','', 1, 
-        '$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
+        '$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'TI', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
         );";
      
         try {
@@ -971,7 +971,7 @@ class Recodificacion
         )
         VALUES
         (
-        1, 0, 0, 0, 0, '$cant', '$codigo', $codDeposito,'', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 
+        1, 0, 0, 0, 0, '$cant', '$codigo', $codDeposito,'', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'TI', 
         'S', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
         );";
         
