@@ -1,3 +1,15 @@
+<?php 
+require_once 'class/fichaje.php';
+
+$fichaje = new Fichaje;
+
+$usuarios = $fichaje->traerUsuarios();
+
+$locales = $fichaje->traerLocales();
+
+
+
+?>
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -47,9 +59,27 @@
                                                     Hasta:
                                                     <input type="date" id="hasta" name="hasta" style="margin-right:20px" value="<?= date("Y-m-d") ?>">
                                                     Usuario:
-                                                    <input type="text" id="usuario" name="usuario" style="margin-right:20px" >
+                                 
+                                                    <select name="usuario" id="usuario" class="usuario">
+                                                        <option value="%">TODOS</option>
+                                                        <?php 
+                                                            foreach ($usuarios as $usuario) {
+                                                                echo "<option value='$usuario[NRO_LEGAJO]'>$usuario[NRO_LEGAJO] - $usuario[APELLIDO_Y_NOMBRE]</option>";
+                                                            }
+
+                                                        ?>
+                                                    </select>
                                                     Sucursal:
-                                                    <input type="text" id="sucursal" name="sucursal" style="margin-right:20px" >
+                                    
+                                                    <select name="sucursal" id="sucursal" class="sucursal">
+                                                        <option value="%">TODOS</option>
+                                                        <?php 
+                                                            foreach ($locales as $local) {
+                                                                echo "<option value='$local[NRO_SUCURS]'>$local[NRO_SUCURS] - $local[DESCRIPCION]</option>";
+                                                            }
+
+                                                        ?>
+                                                    </select>
 
                                                     <button class="btn btn-primary" type="button" onclick="buscar()">Buscar <i class="bi bi-search"></i></button>
                                                     <button class="btn btn-secondary" type="button" onclick="exportar()">Exportar <i class="bi bi-file-earmark-excel"></i></button>
@@ -59,7 +89,7 @@
                                             <tr>
                                                 <td>
                                                     <table id="tablaReporte" >
-                                                        <thead>
+                                                        <thead style="font-size:13px">
                                                             <tr>
                                                                 <th style="width:10%">FECHA.REG</th>
                                                                 <th style="width:10%">SUCURSAL</th>
@@ -73,7 +103,7 @@
                                                     
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="detalleBody">
+                                                        <tbody id="detalleBody" style="font-size:13px">
                                                           
                                                         </tbody>
                                                     </table>
@@ -98,7 +128,10 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
         
-
+         <script>
+            $('.usuario').select2({});
+            $('.sucursal').select2({});
+         </script>                                           
 
         
     </body>
