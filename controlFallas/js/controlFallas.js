@@ -9,9 +9,10 @@ const mostrarDescripcion = (div) => {
     let cantidad = div.parentElement.parentElement.querySelectorAll("td")[3];
 
     cantidad.textContent = "1";
-    descripcion.textContent = value.split("-")[1];
+    console.log(value)
+    descripcion.textContent = value.split("?")[1];
     // console.log(value);
-    precio.textContent = "$"+ parseNumber(value.split("-")[2]);
+    precio.textContent = "$"+ parseNumber(value.split("?")[2]);
 
 
 }
@@ -82,7 +83,7 @@ const cargarArchivos = (input,codArticulo) => {
 
 const enviarImagenes = (codArticulo) => {
    
-    codArticulo = codArticulo.split("-")[0];
+    codArticulo = codArticulo.split("?")[0];
   
     const input = document.getElementById('archivos');
     let files = input.files;
@@ -162,13 +163,13 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
     let carouselElement = document.querySelector('#carruselImagenes'); 
   
     carouselElement.innerHTML = ''; 
-    console.log(codigoArticulo.split("-")[0],numSolicitud)
+    console.log(codigoArticulo.split("?")[0],numSolicitud)
     $.ajax({
 
       url: "Controller/RecodificacionController.php?accion=contarImagenes",
       type: "POST",
       data: {
-        codArticulo:codigoArticulo.split("-")[0],
+        codArticulo:codigoArticulo.split("?")[0],
         numSolicitud:numSolicitud
 
       },
@@ -347,7 +348,7 @@ const copiarFila = (div) => {
   JSON.parse(data).forEach((e, x) => {
     
       opciones += `
-        <option value="${e.COD_ARTICU}-${e.DESCRIPCIO}-${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
+        <option value="${e.COD_ARTICU}?${e.DESCRIPCIO}?${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
       `;
 
   });
@@ -423,7 +424,7 @@ const eliminarArchivo = (div,alerta = true,articulo = null) => {
 
   }
 
-  codArticulo = codArticulo.split("-")[0];
+  codArticulo = codArticulo.split("?")[0];
   
   let numSolicitud = document.querySelector("#numSolicitud").value;
 
@@ -486,7 +487,7 @@ const solicitar = async (esBorrador = false) => {
   let codArticulos = [];
   allTr.forEach(e => {
     
-    codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]);
+    codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]);
   })
 
 
@@ -527,7 +528,7 @@ const solicitar = async (esBorrador = false) => {
             if(response['nombre'].includes(element) == false){
               allTr.forEach(e => {
 
-                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]){
 
                   if( e.querySelectorAll("td")[5].querySelector("div") != null){
 
@@ -544,7 +545,7 @@ const solicitar = async (esBorrador = false) => {
               
               allTr.forEach(e => {
 
-                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]){
 
                   if( e.querySelectorAll("td")[5].querySelector("div") != null){
 
@@ -587,7 +588,7 @@ const solicitar = async (esBorrador = false) => {
             if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
         
               dataArticulos.push({
-                codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
+                codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0],
                 descripcion: e.querySelectorAll("td")[1].textContent,
                 precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
                 cantidad: e.querySelectorAll("td")[3].textContent,
@@ -689,7 +690,7 @@ const borrador = () => {
     if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
 
       dataArticulos.push({
-        codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
+        codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0],
         descripcion: e.querySelectorAll("td")[1].textContent,
         precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
         cantidad: e.querySelectorAll("td")[3].textContent,
@@ -768,7 +769,7 @@ const comprobarStock = async () => {
     if(articulo.value != ""){
 
       codArticulos.push({
-        articulo:articulo.value.split("-")[0],
+        articulo:articulo.value.split("?")[0],
         cantidad:articulo.parentElement.parentElement.querySelectorAll("td")[3].textContent
       });
 
@@ -789,7 +790,7 @@ const comprobarStock = async () => {
     response = JSON.parse(response);
     articulos.forEach(element => {
         if(response.length > 0){
-          if(response.includes(element.value.split("-")[0])){
+          if(response.includes(element.value.split("?")[0])){
 
             element.parentElement.parentElement.querySelectorAll("td")[3].style = "text-align:center;color:red";  
 

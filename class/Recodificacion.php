@@ -214,7 +214,8 @@ class Recodificacion
             $sql .= "AND enc.ESTADO != '4'";
         }
         $sql .= "
-        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP";
+        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
+        ORDER BY enc.ID DESC";
   
       
 
@@ -262,14 +263,13 @@ class Recodificacion
                 ) a
                 left join 
                 (
-                    select cod_pro_cl, estado_mov, fecha_mov, fecha_impo, hora_impo, n_comp, nro_sucurs suc_origen, suc_Destin, observacio from [LAKERBIS].[locales_lakers].dbo.cta09 
+                    select cod_pro_cl, estado_mov, fecha_mov, fecha_impo, hora_impo, n_comp, ncomp_orig, nro_sucurs suc_origen, suc_Destin, observacio from [LAKERBIS].[locales_lakers].dbo.cta09 
                     where fecha_mov >= cast(getdate()-100 as date)
-                    and n_comp like 'R%'
                     and suc_destin != 0
                 ) b
-                on a.n_comp collate Latin1_General_BIN = b.n_comp
-                WHERE a.N_COMP = '$nroRemito'
-            ) THEN 'true' ELSE 'false' END AS remitoExiste;";
+                on a.n_comp collate Latin1_General_BIN = b.ncomp_orig
+                WHERE b.NCOMP_ORIG = '$nroRemito'
+            ) THEN 'true' ELSE 'false' END AS remitoExiste";
 
         }
         

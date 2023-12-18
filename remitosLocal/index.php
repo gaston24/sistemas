@@ -120,7 +120,7 @@ $list = $remitos->traerRemitos($suc);
 
                 <div class="m-1 row">
                     <div class="border border-dark m-1 col-2"><h2>FECHA:</h2></div>
-                    <div class="border border-dark m-1 col-4"><h2><?= $remito['FECHA'];?></h2></div>
+                    <div class="border border-dark m-1 col-4"><h2><?= $remito['FECHA']->format("Y-m-d");?></h2></div>
                     <div class="border border-dark m-1 col-2"><h2>CANT:</h2></div>
                     <div class="border border-dark m-1 col-2"><h2><?= $remito['CANTIDAD'];?></h2></div>
                 </div>
