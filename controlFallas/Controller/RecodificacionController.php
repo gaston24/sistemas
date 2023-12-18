@@ -521,18 +521,21 @@ function realizarMovimientoOu () {
         $proximo = $ajuste->setearProximoRemito();
 
         $ajuste->updateRemitoEnTalonario();
-
+  
         $proxInterno = $ajuste->traerProximoInterno();
-
+ 
         $recodificacion->insertarEncabezadoTango($fecha, $proximo, $proxInterno, $hora);
 
         $result = $recodificacion->darBajaArticuloOriginal($value['codArticulo'], $value['cantidad']);
         
-        $recodificacion->insertarDetalleSalidaOu($cant, $value['codArticulo'], $fecha, $proxInterno);
+        $recodificacion->insertarDetalleSalidaOu($value['cantidad'], $value['codArticulo'], $fecha, $proxInterno);
+  
         
         $result = $recodificacion->darAltaEnDepositoOu($value['codArticulo'], $value['cantidad']);
+
         
-        $recodificacion->insertarDetalleEntradaOu($cant, $nuevo, $fecha, $proxInterno);
+        $recodificacion->insertarDetalleEntradaOu($value['cantidad'], $value['codArticulo'], $fecha, $proxInterno);
+ 
 
     }
 

@@ -939,10 +939,10 @@ class Recodificacion
         1, 0, 0, 0, 0, '$cant', '$nuevo', 'OU','', 1, 
         '$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'TI', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
         );";
-     
+  
         try {
             
-            $resultDetEntrada = sqlsrv_query($this->cid, $sqlDetEntrada);
+            $resultDetEntrada = sqlsrv_query($this->cidLocal, $sqlDetEntrada);
 
             return true;
 
@@ -978,7 +978,7 @@ class Recodificacion
 
         try {
             
-            $resultDetSalida = sqlsrv_query($this->cid, $sqlDetSalida);
+            $resultDetSalida = sqlsrv_query($this->cidLocal, $sqlDetSalida);
 
             return true;
 
@@ -1009,10 +1009,10 @@ class Recodificacion
         '$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0
         )
         ;";
-
+ 
         try {
 
-            $resultEncabezado = sqlsrv_query($this->cid, $sqlEncabezado);
+            $resultEncabezado = sqlsrv_query($this->cidLocal, $sqlEncabezado);
 
             return true;
 

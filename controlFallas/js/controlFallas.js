@@ -51,7 +51,7 @@ const elegirImagen = (e) => {
 const cargarArchivos = (input,codArticulo) => {
 
 
-  eliminarArchivo(input,false,codArticulo); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
+  // eliminarArchivo(input,false,codArticulo); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
 
   const file = document.getElementById('archivos').files[0];
 
@@ -115,30 +115,43 @@ const enviarImagenes = (codArticulo) => {
     }
 
     $.ajax({
-
-      url: 'upload_image.php',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) { 
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Carga exitosa',
-          text: `Se subieron ${files.length} archivos correctamente!`
-        })
-
-        quitarErrorImagen()
-
+      url: "Controller/RecodificacionController.php?accion=eliminarArchivo",
+      type: "POST",
+      data: {
+        codArticulo: codArticulo,
+        numSolicitud: numSolicitud
       },
-      error: function() {
+      success: function (response) {
+        $.ajax({
 
-        alert('Error al enviar las imágenes al servidor.');
-
+          url: 'upload_image.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) { 
+    
+            Swal.fire({
+              icon: 'success',
+              title: 'Carga exitosa',
+              text: `Se subieron ${files.length} archivos correctamente!`
+            })
+    
+            quitarErrorImagen()
+    
+          },
+          error: function() {
+    
+            alert('Error al enviar las imágenes al servidor.');
+    
+          }
+    
+        });
+        
       }
-
     });
+  
+   
     
 }
 

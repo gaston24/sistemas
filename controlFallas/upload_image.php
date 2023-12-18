@@ -2,7 +2,8 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][0])) {
     // Directorio donde se guardarán los archivos subidos
     $root = $_SERVER["DOCUMENT_ROOT"];
-    $targetDir = 'assets/uploads/';
+    $targetDir = __DIR__ . 'assets/uploads/';
+
 
     // Crear el directorio si no existe
     if (!file_exists($targetDir)) {
