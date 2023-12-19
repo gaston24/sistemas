@@ -8,3 +8,11 @@
     background: url('images/g0R9.gif') 50% 50% no-repeat rgb(0, 0, 0);
     opacity: .8;
   }
+
+  thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color:#343a40;
+    color: white;
+}

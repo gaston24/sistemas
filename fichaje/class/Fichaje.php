@@ -189,4 +189,47 @@ class Fichaje {
         return $data;
 
     }
+    public function traerUsuarios () {
+
+        $sql ="SELECT NRO_LEGAJO, APELLIDO_Y_NOMBRE FROM RO_T_LEGAJOS_PERSONAL WHERE HABILITADO = 'S' ORDER BY APELLIDO_Y_NOMBRE ASC";
+
+        $cid = $this->conn->conectar('central');
+
+        $result = sqlsrv_query($cid, $sql);
+
+        if($result === false){
+            die( print_r( sqlsrv_errors(), true));
+        }
+
+        $data = array();
+
+        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+            $data[] = $row;
+        }
+
+        return $data;
+
+    }
+
+    public function traerLocales (){
+
+        $sql ="SELECT  * FROM SOF_USUARIOS WHERE TIPO = 'LOCAL_PROPIO' ORDER BY NRO_SUCURS ASC";
+
+        $cid = $this->conn->conectar('central');
+
+        $result = sqlsrv_query($cid, $sql);
+
+        if($result === false){
+            die( print_r( sqlsrv_errors(), true));
+        }
+
+        $data = array();
+
+        while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+    
 }
