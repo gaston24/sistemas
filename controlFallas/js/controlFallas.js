@@ -485,6 +485,14 @@ const solicitar = async (esBorrador = false) => {
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
   let codArticulos = [];
+  if(usuario == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      text: 'Debe ingresar un usuario',
+    })
+    return 1;
+  }
   allTr.forEach(e => {
     
     codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]);
