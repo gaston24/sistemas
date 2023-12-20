@@ -40,6 +40,18 @@ const buscar = () => {
             let template = '';
        
             response.forEach(response => {
+                if(response.ENTRADA == null){
+                    response.ENTRADA = '';
+                }
+                if(response.SALIDA == null){
+                    response.SALIDA = '';
+                }
+                if(response.AUSENTE == null){
+                    response.AUSENTE = '';
+                }
+                if(response.LLEGA_TARDE == null){
+                    response.LLEGA_TARDE = '';
+                }
                 template += `
                 <tr>
                     <td>${response.FECHA_REG}</td>
