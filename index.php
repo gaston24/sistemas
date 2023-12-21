@@ -91,7 +91,7 @@ require 'class/fechaEntrega.php';
 				</div>
 				<?php
 				
-				if($_SESSION['tipo']!= 'MAYORISTA'){
+				if($_SESSION['tipo']!= 'MAYORISTA' && $_SESSION['usuarioUy'] != 1){
 				?>
 					<div class="col-" style="display: flex; justify-content: center;">
 						<div class="col-"><h5>Próximo despacho: <a class="text-secondary"><?=' '.substr( $proximaEntrega[0]->FECHA->date, 0, 10);?></a></h5></div>
@@ -193,7 +193,7 @@ require 'class/fechaEntrega.php';
 					icon: "error",
 					title: "No puede continuar",
 					text: "TIENE REALIZADO 2 PEDIDOS ESTA SEMANA"
-				});
+				})
 			}
 
 

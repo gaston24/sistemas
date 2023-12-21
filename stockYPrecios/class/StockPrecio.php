@@ -27,6 +27,7 @@ class StockPrecio
         AND A.COD_ARTICU LIKE '[XO]%' 
         AND A.COD_ARTICU = '$codArticulo'";
     
+        // var_dump($sql);
 
         try {
 

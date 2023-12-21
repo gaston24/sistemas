@@ -17,9 +17,18 @@ if (!isset($_SESSION['username'])) {
 	$codClient = $_SESSION['username'];
 	$tipo_cli = $_SESSION['tipo'];
 	$esOutlet = $_SESSION['esOutlet'];
+	$esUsuarioUy = $_SESSION['usuarioUy'];
+	$db = 'central';
+
+	if($esUsuarioUy == 1){
+
+		// $db = 'uy';
+		
+	}
+
 
 	$pedido = new Pedido();
-	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient, $esOutlet);
+	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient, $esOutlet,	$db);
 	
 ?>
 	<!doctype html>

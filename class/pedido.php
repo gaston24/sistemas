@@ -9,9 +9,9 @@ class Pedido {
         
     }
 
-    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null){
+    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null, $db = 'central'){
 
-        $cid = $this->conn->conectar('central');
+        $cid = $this->conn->conectar($db);
 
             switch ($tipoPedido) {
                 case 1:
@@ -40,12 +40,13 @@ class Pedido {
 
             }
 
-
             ini_set('max_execution_time', 300);
 
             $stmt = sqlsrv_query($cid, $sql);
 
             $next_result = sqlsrv_next_result($stmt);
+
+            $v = [];
 
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
 
@@ -80,10 +81,10 @@ class Pedido {
 
         ";
             
-        
+   
         try {
             $stmt = sqlsrv_query($cid, $sql);
-            
+            $v = [];
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
 
                 $v[] = $row;

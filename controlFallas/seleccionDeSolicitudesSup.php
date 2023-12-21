@@ -1,5 +1,9 @@
 <?php 
     session_start();
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
     require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
     $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));

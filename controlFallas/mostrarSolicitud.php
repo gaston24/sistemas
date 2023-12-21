@@ -1,5 +1,9 @@
 <?php 
     session_start();
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
    require_once __DIR__.'/../class/remito.php';
    require_once '../ajustes/class/Articulo.php';
    require_once '../ajustes/class/Ajuste.php';

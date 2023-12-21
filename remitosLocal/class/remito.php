@@ -25,6 +25,7 @@ class Remito{
         SET DATEFORMAT YMD
         SELECT N_COMP, NCOMP_IN_S, COD_PRO_CL
         FROM STA14 WHERE FECHA_MOV >= GETDATE()-30 AND N_COMP LIKE 'R%'
+        AND COD_PRO_CL LIKE 'GT%'
         ORDER BY N_COMP DESC
         ";
         
@@ -62,7 +63,7 @@ class Remito{
         ";
 
        
-        $stmt = sqlsrv_query( $this->cidLakerbis, $sql );
+        $stmt = sqlsrv_query( $this->cidLocal, $sql );
 
 
         $rows = array();
