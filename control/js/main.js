@@ -399,3 +399,8 @@ const existeEnSession = (borrador,numRem) => {
     return existe;
 }
 
+
+const actualizarAjusar = (div) => {
+    console.log(div.value);
+    let 
+}

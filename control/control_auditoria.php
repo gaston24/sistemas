@@ -106,6 +106,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 				<th >CANT CONTROL</th>
 				<th >CANT DIF</th>
 				<th >ESTADO</th>
+				<th >AJUSTE</th>
 				<th >NRO AJUSTE</th>
 				<th >CHAT</th>
 			</tr>
@@ -114,7 +115,11 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
         <?php
 
 		foreach($remitosHistoricos as $data){
-
+			$ajustar = $data['AJUSTAR'];
+		if($data['AJUSTAR'] == null){
+			$ajustar = '';
+		}
+			
 		$dateControl = $data['FECHA_CONTROL']->format('Y-m-d').' '.$data['HORA'];
 		$colorChat = 'primary';
 		switch ($data['ULTIMO_CHAT']) {
@@ -126,7 +131,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 				break;
 		}
 
-		
+	
 		?>
 		
         <tr style="font-size:1em" >
@@ -145,7 +150,7 @@ $remitosHistoricos = $remitos->traerHistoricosAuditoria($fechaDesde, $fechaHasta
 						<option value="RECHAZADO" <?php if($data['OBSERVAC_LOGISTICA'] == 'RECHAZADO'){echo 'selected'; }?>>Rechazado</option>
 					</select>
 				</td>
-
+				<td><?= $ajustar; ?></td>
 				<td ><input type="text" size="8" class="form-control form-control-sm" ajuste="ajuste<?= $data['NRO_REMITO'] ;?>" id="nroAjuste" value="<?= $data['NRO_AJUSTE'] ;?>" onChange="changeNroAjuste('<?= $data['NRO_REMITO'] ;?>', this)"> </td>
 
 				<td >
