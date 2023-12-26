@@ -144,6 +144,8 @@ if(isset($_GET['fechaDesde'])){
 						echo'>No</option>
 						</select>';
 
+				}else{
+					echo $data['AJUSTAR'];
 				} ;?> </td>
 				<td ><?= $data['NRO_AJUSTE'] ;?> </td>
 				<td >
