@@ -900,7 +900,7 @@ class Recodificacion
 
     public function comprobarStockDepositoLocal ($codArticulo, $cantidad) {
 
-        $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+        $codDeposito = '\'OU\'';
 
         $sql = "SELECT CANT_STOCK FROM STA19 WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = $codDeposito" ;
 
