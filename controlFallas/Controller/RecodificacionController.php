@@ -2,7 +2,7 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
 require_once  $_SERVER["DOCUMENT_ROOT"]."/sistemas/controlFallas/Controller/SendEmailController.php";
-
+require_once $_SERVER["DOCUMENT_ROOT"]."/sistemas/ajustes/Class/Ajuste.php";
 
 $accion = $_GET['accion'];
 
@@ -10,6 +10,11 @@ switch ($accion) {
 
     case 'traerArticulos':
         traerArticulos();
+
+        break;
+
+    case 'traerArticuloss':
+        traerArticuloss();
 
         break;
 
@@ -76,8 +81,8 @@ switch ($accion) {
 
         break;
 
-    case 'comprobarIngresados':
-        comprobarIngresados();
+    case 'realizarMovimientoOu':
+        realizarMovimientoOu();
 
         break;
 
@@ -95,6 +100,25 @@ function traerArticulos () {
 
 
     echo json_encode($result);
+
+}
+function traerArticuloss () {
+    $campo = $_GET['q'];
+    
+    require_once "../../ajustes/Class/Articulo.php";
+    $articulo = new Articulo();
+
+    $result = $articulo->traerMaestroArticulo($campo);
+    $data = [];
+    
+    foreach ($result as $key => &$value) {
+        $value['id'] = $key;
+        $value['text'] = $value['COD_ARTICU']." - ".$value['DESCRIPCIO'];
+        $data['items'][] = $value;
+
+    }
+    $data['total_count'] = 3;
+    echo json_encode($data);
 
 }
 
@@ -302,10 +326,19 @@ function autorizar () {
 
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
-    $recodificacion = new Recodificacion();
+    $outlet = $_POST['outlet'];
 
+    $recodificacion = new Recodificacion();
  
-    $result  = $recodificacion->autorizar($numSolicitud);
+    if($outlet == "1"){
+
+        $result = $recodificacion->ingresar($numSolicitud);
+
+    }else{
+
+        $result  = $recodificacion->autorizar($numSolicitud);
+    }
+
     
     if ($result == true) {
 
@@ -493,11 +526,44 @@ function comprobarStockArticulos () {
 }
 
 
-function comprobarIngresados () {
+function realizarMovimientoOu () {
 
-    $data = $_POST['solicitudes'];
 
+    $dataArticulos = $_POST['dataArticulos'];
+
+    $ajuste = new Ajuste();
+
+    $recodificacion = new Recodificacion();
+
+    $fecha = date("Y") . "/" . date("m") . "/" . date("d");
     
+    $hora = (date("H")-5).date("i").date("s");
+
+
+    foreach ($dataArticulos as $key => $value) {
+
+        $proximo = $ajuste->setearProximoRemito();
+
+        $ajuste->updateRemitoEnTalonario();
+  
+        $proxInterno = $ajuste->traerProximoInterno();
+ 
+        $recodificacion->insertarEncabezadoTango($fecha, $proximo, $proxInterno, $hora);
+
+        $result = $recodificacion->darBajaArticuloOriginal($value['codArticulo'], $value['cantidad']);
+        
+        $recodificacion->insertarDetalleSalidaOu($value['cantidad'], $value['codArticulo'], $fecha, $proxInterno);
+  
+        
+        $result = $recodificacion->darAltaEnDepositoOu($value['codArticulo'], $value['cantidad']);
+
+        
+        $recodificacion->insertarDetalleEntradaOu($value['cantidad'], $value['codArticulo'], $fecha, $proxInterno);
+ 
+
+    }
+
+    echo true;
 
 }
 

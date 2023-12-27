@@ -35,7 +35,11 @@
    if(count($borradorEnc) > 0){
        $esBorrador = true;
     }
-  
+    $outlet = 0;
+    if($_SESSION['esOutlet'] == 1)
+    {
+        $outlet = 1;
+    }
 
    
 ?>
@@ -82,6 +86,7 @@
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Solicitud De Recodificacion</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
+                        <div id="outlet" hidden><?= $outlet ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
 
                         

@@ -301,7 +301,7 @@ class Recodificacion
     {   
 
         $sql = "
-        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
      
         if($outlet == true){
 
@@ -309,7 +309,7 @@ class Recodificacion
         }
 
         $sql  .=" UNION ALL
-        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
         ORDER BY DESC_SUCURSAL
         ";
 
@@ -475,6 +475,23 @@ class Recodificacion
         }
     }
 
+    public function ingresar ($numSolicitud)
+    {
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '5' WHERE ID = $numSolicitud";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
+
 
     public function actualizarDetalle ($precio, $nuevoCodigo, $destino, $observaciones, $id)
     {
@@ -586,6 +603,44 @@ class Recodificacion
 
     }
 
+    public function darBajaArticuloOriginal ($codArticulo, $cantidad){
+
+        $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+
+        $sqlBaja = "UPDATE sta19 SET CANT_STOCK = CANT_STOCK - $cantidad WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = $codDeposito";
+
+        sqlsrv_query($this->cidLocal, $sqlBaja);
+
+        return true;
+        
+    }
+
+    public function darAltaEnDepositoOu($codArticulo, $cantidad){
+
+
+        $sqlAlta = "IF EXISTS (
+            SELECT 1 
+            FROM STA19 
+            WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = 'OU'
+        )
+        BEGIN
+            UPDATE STA19 
+            SET CANT_STOCK = $cantidad
+            WHERE COD_ARTICU = '$codArticulo' AND COD_DEPOSI = 'OU';
+        END
+        ELSE
+        BEGIN
+            INSERT INTO STA19 (CANT_STOCK, COD_ARTICU, COD_DEPOSI)
+            VALUES ($cantidad, '$codArticulo', 'OU');
+        END;";
+        
+    
+
+        $result = sqlsrv_query($this->cidLocal, $sqlAlta);
+
+        return true;
+
+    }
 
     public function comprobarStock ($articulo) 
     {
@@ -748,7 +803,7 @@ class Recodificacion
     public function traerRecodificacionDeArticulos ($numSolicitud = null)
     {
 
-        $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO FROM sj_reco_locales_enc A
+        $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO, B.DESTINO FROM sj_reco_locales_enc A
         INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC
         WHERE B.AJUSTADO IS NULL OR AJUSTADO = 0";
 
@@ -867,6 +922,106 @@ class Recodificacion
             return true;
         }
 
+
+    }
+
+    public function insertarDetalleEntradaOu($cant, $nuevo, $fecha, $proxInterno) 
+    {
+        $sqlDetEntrada = "
+        INSERT INTO STA20
+        (
+        CAN_EQUI_V, CANT_DEV, CANT_OC, CANT_PEND, CANT_SCRAP, CANTIDAD, COD_ARTICU, COD_DEPOSI, DEPOSI_DDE, EQUIVALENC, 
+        FECHA_MOV, N_RENGL_OC, N_RENGL_S, NCOMP_IN_S, PLISTA_REM, PPP_EX, PPP_LO, PRECIO, PRECIO_REM, TCOMP_IN_S, TIPO_MOV,
+        CANT_FACTU, DCTO_FACTU, CANT_DEV_2, CANT_PEND_2, CANTIDAD_2, CANT_FACTU_2, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, 
+        PRECIO_REMITO_VENTAS, CANT_OC_2, RENGL_PADR, PROMOCION, PRECIO_ADICIONAL_KIT, TALONARIO_OC
+        )
+        VALUES
+        (
+        1, 0, 0, 0, 0, '$cant', '$nuevo', 'OU','', 1, 
+        '$fecha', 0, 2, '$proxInterno', 0, 0, 0, 0, 0, 'TI', 'E', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
+        );";
+  
+        try {
+            
+            $resultDetEntrada = sqlsrv_query($this->cidLocal, $sqlDetEntrada);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+    }
+
+    public function insertarDetalleSalidaOu($cant, $codigo, $fecha, $proxInterno, $esNuevoAjuste = null) 
+    {
+
+
+        $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+
+       
+        $sqlDetSalida = "
+        INSERT INTO STA20
+        (
+        CAN_EQUI_V, CANT_DEV, CANT_OC, CANT_PEND, CANT_SCRAP, CANTIDAD, COD_ARTICU, COD_DEPOSI, DEPOSI_DDE, EQUIVALENC, 
+        FECHA_MOV, N_RENGL_OC, N_RENGL_S, NCOMP_IN_S, PLISTA_REM, PPP_EX, PPP_LO, PRECIO, PRECIO_REM, TCOMP_IN_S, TIPO_MOV,
+        CANT_FACTU, DCTO_FACTU, CANT_DEV_2, CANT_PEND_2, CANTIDAD_2, CANT_FACTU_2, ID_MEDIDA_STOCK, UNIDAD_MEDIDA_SELECCIONADA, 
+        PRECIO_REMITO_VENTAS, CANT_OC_2, RENGL_PADR, PROMOCION, PRECIO_ADICIONAL_KIT, TALONARIO_OC
+        )
+        VALUES
+        (
+        1, 0, 0, 0, 0, '$cant', '$codigo', $codDeposito,'', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'TI', 
+        'S', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
+        );";
+        
+
+        try {
+            
+            $resultDetSalida = sqlsrv_query($this->cidLocal, $sqlDetSalida);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+    }
+
+    public function insertarEncabezadoTango($fecha, $proximo, $proxInterno, $hora) 
+    {
+        $sqlEncabezado = "
+        INSERT INTO STA14 
+        (
+        COD_PRO_CL, COTIZ, EXPORTADO, EXP_STOCK, FECHA_ANU, FECHA_MOV, HORA, 
+        LISTA_REM, LOTE, LOTE_ANU, MON_CTE, N_COMP, NCOMP_IN_S, 
+        NRO_SUCURS, T_COMP, TALONARIO, TCOMP_IN_S, USUARIO, HORA_COMP,
+        ID_A_RENTA, DOC_ELECTR, IMP_IVA, IMP_OTIMP, IMPORTE_BO, IMPORTE_TO, 
+        DIFERENCIA, SUC_DESTIN, DCTO_CLIEN, FECHA_INGRESO, HORA_INGRESO, 
+        USUARIO_INGRESO, TERMINAL_INGRESO, IMPORTE_TOTAL_CON_IMPUESTOS, 
+        CANTIDAD_KILOS
+        )
+        VALUES
+        (
+        '', 4.5, 0, 0, '1800/01/01', '$fecha', '0000', 0, 0, 0, 1, '$proximo', '$proxInterno', 0, 'TRA', 850, 'TI', 'AJUSTES', 
+        '$hora', 0, 0, 0, 0, 0, 0, 'N', 0, 0, '$fecha', '$hora', 'AJUSTES', (SELECT host_name()), 0, 0
+        )
+        ;";
+ 
+        try {
+
+            $resultEncabezado = sqlsrv_query($this->cidLocal, $sqlEncabezado);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
 
     }
     

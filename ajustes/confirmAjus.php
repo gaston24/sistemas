@@ -58,7 +58,10 @@ foreach ($data as $key => $value) {
 				if($codConsulta != '***DESTRUCCION'){
 					
 					//ACTUALIZAR CODIGO NUEVO
-					$ajuste->actualizarCodigoNuevo($nuevo, $codigo, $ncomp);
+					if($ncomp != ''){
+
+						$ajuste->actualizarCodigoNuevo($nuevo, $codigo, $ncomp);
+					}
 					
 					
 					//LLENAR LA VARIABLE DE PROXIMO NUMERO DE REMITO
@@ -92,10 +95,12 @@ foreach ($data as $key => $value) {
 
 					
 				}
-				
-				//ACTUALIZA REGISTROS PENDIENTES
-				$ajuste->actualizarRegistrosPendientes($ncomp, $codigo);
+				if($ncomp != ''){
 
+					//ACTUALIZA REGISTROS PENDIENTES
+					$ajuste->actualizarRegistrosPendientes($ncomp, $codigo);
+
+				}
 			}
 		}
 
