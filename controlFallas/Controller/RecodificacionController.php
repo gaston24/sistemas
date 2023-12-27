@@ -13,6 +13,11 @@ switch ($accion) {
 
         break;
 
+    case 'traerArticuloss':
+        traerArticuloss();
+
+        break;
+
     case 'eliminarArchivo':
         eliminarArchivo();
 
@@ -95,6 +100,25 @@ function traerArticulos () {
 
 
     echo json_encode($result);
+
+}
+function traerArticuloss () {
+    $campo = $_GET['q'];
+    
+    require_once "../../ajustes/Class/Articulo.php";
+    $articulo = new Articulo();
+
+    $result = $articulo->traerMaestroArticulo($campo);
+    $data = [];
+    
+    foreach ($result as $key => &$value) {
+        $value['id'] = $key;
+        $value['text'] = $value['COD_ARTICU']." - ".$value['DESCRIPCIO'];
+        $data['items'][] = $value;
+
+    }
+    $data['total_count'] = 3;
+    echo json_encode($data);
 
 }
 

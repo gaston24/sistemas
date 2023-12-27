@@ -358,13 +358,6 @@ const copiarFila = (div) => {
   <option value="" selected disabled>Seleccione un artículo</option>
   `; 
 
-  JSON.parse(data).forEach((e, x) => {
-    
-      opciones += `
-        <option value="${e.COD_ARTICU}?${e.DESCRIPCIO}?${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
-      `;
-
-  });
 
   opciones += `</select>`;
 
@@ -376,24 +369,46 @@ filaClonada.querySelectorAll("td")[0].innerHTML = opciones;
 
 filaOriginal.after(filaClonada);
 
+$('.selectArticulo:last').select2({
+  placeholder: 'Buscar artículo...',
+  minimumInputLength: 3,
+  ajax: {
+   
+     transport: function (params, success, failure) {
+      const term = params.data.q;
+      const results = filtrarArticulosLocalStorage(term);
+      success({ results: results });
+      },
+    processResults: function (data, params) {
+      params.page = params.page || 1;
+  
+      return {
+        results: data['results']['items'],
+        pagination: {
+          more: (params.page * 30) < 3 
+        }
+      };
+    },
+    cache: true
+  },
+});
+}
 
-  $('.selectArticulo').select2({
-    placeholder: 'Buscar artículo...',
-    minimumInputLength: 3,
-    data: function(params) {
-        // Obtener los datos del Local Storage
-        const storedData = JSON.parse(localStorage.getItem('articulos'));
-        // console.log(storedData)
-        // Filtrar los datos para que coincidan con el término de búsqueda
-        const filteredData = storedData.filter(item => item.text.includes(params.term));
+function filtrarArticulosLocalStorage(term) {
+  term = convertirAMayusculas(term);
+  const articulos = JSON.parse(localStorage.getItem('articulos')) || [];
+  contadorId = 1; // Restablecer el contador al principio de cada búsqueda
+  const results = articulos.filter(item => item.COD_ARTICU.includes(term))
+  .map(item => ({ id: item.COD_ARTICU+"?"+item.DESCRIPCIO+"?"+item.PRECIO, text: item.COD_ARTICU+" | "+item.DESCRIPCIO }));
+  return  { items: results };
+}
 
-        // Devolver los datos filtrados para que Select2 los utilice
-        return {
-        results: filteredData
-        };
-    }
+function convertirAMayusculas(inputString) {
+  return inputString.replace(/[a-z]/g, function(letra) {
+      return letra.toUpperCase();
   });
 }
+
 
 const traerArticulos = () => {
 
