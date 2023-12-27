@@ -118,17 +118,17 @@
                                         <td style="text-align:center"><?= $detalle['OBSERVACIONES'] ?> </td>
                                         <td style="text-align:center">
                                             <select class="form-control selectRemito" id="selectRemito" onchange="comprobarArticuloEnRemito(this)">
-                                                    <?php 
-                                                        foreach ($remitos as $key => $remito) {
-                                                    ?>
-                                                            <option value="<?= $remito['N_COMP']?>"><?= $remito['N_COMP']?></option>
-
-                                                    <?php
-                                                        } 
-                                                    ?>
+                                                <option value="" selected disabled hidden>Seleccionar remito</option>
+                                                <?php 
+                                                    foreach ($remitos as $key => $remito) {
+                                                ?>
+                                                    <option value="<?= $remito['N_COMP']?>"><?= $remito['N_COMP']?></option>
+                                                <?php
+                                                    } 
+                                                ?>
                                             </select>
                                         </td>
-                                        <td hidden><?= $detalle['ID'] ?></td>
+                                                                                <td hidden><?= $detalle['ID'] ?></td>
 
                                        </tr>
                                         

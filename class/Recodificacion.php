@@ -214,7 +214,8 @@ class Recodificacion
             $sql .= "AND enc.ESTADO != '4'";
         }
         $sql .= "
-        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP";
+        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
+        ORDER BY enc.ID DESC";
   
       
 

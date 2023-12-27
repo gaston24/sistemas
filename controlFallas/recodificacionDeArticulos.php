@@ -133,7 +133,9 @@
                             <tbody>
                                 <?php 
 
+
                                 foreach ($data as $key => $remito) {
+
                                     
                                     if($recodificacionPropia){
                                     ?>

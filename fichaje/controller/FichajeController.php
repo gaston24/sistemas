@@ -21,6 +21,10 @@ switch ($accion) {
     case 'cerrarTurno':
         cerrarTurno($fichaje);
         break;
+
+    case 'traerReporteAsistencias':
+        traerReporteDeAsistencias($fichaje);
+        break;
     
     default:
         # code...
@@ -88,5 +92,18 @@ function cerrarTurno ($fichaje) {
     $result = $fichaje->cerrarTurno($numeroLegajo);
 
     return true ;
+    
+}
+
+function traerReporteDeAsistencias ($fichaje) {
+
+    $desde = $_POST['desde'];
+    $hasta = $_POST['hasta'];
+    $usuario = $_POST['usuario'];
+    $sucursal = $_POST['sucursal'];
+ 
+    $result = $fichaje->traerReporteDeAsistencias($desde, $hasta, $usuario, $sucursal);
+
+    echo json_encode($result) ;
     
 }
