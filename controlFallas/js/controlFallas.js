@@ -361,7 +361,7 @@ const copiarFila = (div) => {
   JSON.parse(data).forEach((e, x) => {
     
       opciones += `
-        <option value="${e.COD_ARTICU}-${e.DESCRIPCIO}-${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
+        <option value="${e.COD_ARTICU}?${e.DESCRIPCIO}?${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
       `;
 
   });
