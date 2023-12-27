@@ -398,8 +398,14 @@ function filtrarArticulosLocalStorage(term) {
   term = convertirAMayusculas(term);
   const articulos = JSON.parse(localStorage.getItem('articulos')) || [];
   contadorId = 1; // Restablecer el contador al principio de cada búsqueda
-  const results = articulos.filter(item => item.COD_ARTICU.includes(term))
-  .map(item => ({ id: item.COD_ARTICU+"?"+item.DESCRIPCIO+"?"+item.PRECIO, text: item.COD_ARTICU+" | "+item.DESCRIPCIO }));
+  const results = articulos.filter(item => {
+    const codigoArticulo = convertirAMayusculas(item.COD_ARTICU);
+    const descripcion = convertirAMayusculas(item.DESCRIPCIO);
+
+    // Buscar en el código de artículo o en la descripción
+    return codigoArticulo.includes(term) || descripcion.includes(term);
+  }).map(item => ({ id: item.COD_ARTICU+"?"+item.DESCRIPCIO+"?"+item.PRECIO, text: item.COD_ARTICU+" | "+item.DESCRIPCIO }));
+  
   return  { items: results };
 }
 
