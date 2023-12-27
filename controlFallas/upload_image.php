@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $maxFiles = 3;
     $totalFiles = count($_FILES['archivos']['name']);
     $uploadedFiles = 0;
-    $maxFileSize = 6 * 1024 * 1024; // 4 MB en bytes
+
+    $maxFileSize = 6 * 1024 * 1024; // 6 MB en bytes
+
 
     for ($i = 0; $i < $totalFiles; $i++) {
         // Verificar el tamaño del archivo
