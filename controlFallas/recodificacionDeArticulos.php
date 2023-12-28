@@ -147,7 +147,7 @@
                                             <td  style="text-align:center;"><?= $remito['DESCRIPCION'] ?></td>
                                             <td  style="text-align:center;"><?= $remito['CANTIDAD'] ?></td>
                                             <td  style="text-align:center;"><?= $remito['NUEVO_CODIGO'] ?></td>
-                                            <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;"></td>
+                                            <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;" checked hidden></td>
                                             <td hidden><?= $remito['ID_ENC'] ?></td>
                                         </tr>
 
@@ -164,7 +164,7 @@
                                             <td  style="text-align:center;"><?= $remito['DESCRIPCION'] ?></td>
                                             <td  style="text-align:center;"><?= $remito['CANTIDAD'] ?></td>
                                             <td  style="text-align:center;"><?= $remito['NUEVO_CODIGO'] ?></td>
-                                            <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;"></td>
+                                            <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;" checked hidden></td>
                                             <td hidden><?= $remito['ID_ENC'] ?></td>
                                         </tr>
                                         
