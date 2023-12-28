@@ -17,10 +17,16 @@
     $array = array();
 
     foreach ($result as $key => $value) {
+        
         if(in_array($value['ID'], $array)){
             unset($result[$key]);
         }else{
-            array_push($array, $value['ID']);
+            if($value['DESTINO'] != '1'){
+
+                array_push($array, $value['ID']);
+            }else{
+                unset($result[$key]);
+            }
         }
     }
 
