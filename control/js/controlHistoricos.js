@@ -12,4 +12,19 @@ const actualizarAjusar = (div) => {
             console.log(data);
         }
     });
+    if(div.value == 'NO'){
+
+        div.disabled = true;
+
+        $.ajax ({
+            url: 'controlador/rechazarRemito.php',
+            type: 'POST',
+            data: {
+                nroRemito: nroRemito,
+            },
+            success: function(data){
+                console.log(data);
+            }
+        })
+    }
 }

@@ -687,5 +687,25 @@ class Remito {
 
     }
 
+    public function rechazarRemito ($remito) {
+
+        $cid = $this->conn->conectar('central');
+        $remito = trim($remito);
+        $sql = "UPDATE SJ_CONTROL_AUDITORIA SET OBSERVAC_LOGISTICA = 'RECHAZADO' WHERE NRO_REMITO like '%$remito%'";
+      
+        try {
+
+            $stmt = sqlsrv_query($cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th);
+
+        }
+
+    }
+
 
 }
