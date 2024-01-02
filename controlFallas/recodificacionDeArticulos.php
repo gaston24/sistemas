@@ -12,7 +12,7 @@
 
     $remitos = [];
 
-    $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud);
+    $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud,$nroSucurs);
     $recodificacionPropia = false;
 
     $arrayRemitos = [];
