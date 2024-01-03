@@ -119,20 +119,19 @@
                                     </select>
                                 </div>
 
-                                <div>   
+                                <div class="form-group">   
                                     <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
-                                    <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
+                                    <button class="btn btn-secondary" style="height:35px;margin-left:10%;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
 
                                     <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
 
-                                    <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="margin-left:300px">Volver Al Listado</a>
-                              
+                                    <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="margin-top: -16.5%; margin-left: 80%; width:150px">Volver Al Listado</a>
 
                                 </div>
 
                             </div>
 
-                            <div class="row" style="margin-top:10px">
+                            <div class="row" style="margin-top:-1.5%;">
 
                                 <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']+1) ?>" id="numSolicitud" disabled></div>
                                 <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" disabled> </div>
@@ -145,7 +144,7 @@
                             <thead class="thead-dark" style="">
                                 <tr>
                                     <th style="text-align:center;width: 15%;" >Articulo</th>
-                                    <th style="text-align:center;width: 25%;" >Descripcion</th>
+                                    <th style="text-align:center;width: 15%;" >Descripcion</th>
                                     <th style="text-align:center;width: 7%;" >Precio</th>
                                     <th style="text-align:center;width: 7%;">Cantidad</th>
                                     <th style="text-align:center;width: 30%;" >Descripcion Falla</th>
