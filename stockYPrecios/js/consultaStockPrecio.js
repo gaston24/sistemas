@@ -1,11 +1,14 @@
-const traerArticulo = (div) => {
+const traerArticulo = (div, usuarioUy = null) => {
 
   codArticulo =  div.value
 
   $.ajax({
       url: "Controller/StockPrecioController.php?accion=traerArticulos",
       type: "POST",
-      data: {codArticulo: codArticulo},
+      data: {
+        codArticulo: codArticulo,
+        usuarioUy: usuarioUy
+      },
       success: function (response) {
           data = JSON.parse(response);
   

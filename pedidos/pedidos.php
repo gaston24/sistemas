@@ -22,7 +22,7 @@ if (!isset($_SESSION['username'])) {
 
 	if($esUsuarioUy == 1){
 
-		// $db = 'uy';
+		$db = 'uy';
 		
 	}
 
@@ -202,8 +202,8 @@ if (!isset($_SESSION['username'])) {
 							<td id="precio">
 								<?php
 
-								if ($suc > 100) {
-
+								if ($suc > 100 && $suc != 201 && $suc != 202 ) {
+									
 									if ($_GET['tipo'] == 3) {
 
 										echo (int)($v['PRECIO_MAYO']);

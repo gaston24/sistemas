@@ -22,9 +22,9 @@ require_once __DIR__.'/../class/pedido.php';
 $suc = $_GET['suc'];
 $nroPedido = $_GET['pedido'];
 $tipo = $_GET['tipo'];
-
+$usuarioUy = $_SESSION['usuarioUy'];
 $pedido = new Pedido();
-$pedidos = $pedido->traerDetallePedido($nroPedido, $suc);
+$pedidos = $pedido->traerDetallePedido($nroPedido, $suc, $usuarioUy);
 
 ?>
 
