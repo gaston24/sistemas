@@ -155,7 +155,7 @@
                             <tbody>
                                 <?php 
                                     if(isset($borradorDet)){
-
+                                               
                                         foreach ($borradorDet as $key => $detalle) {
                                   
                                             echo '
@@ -194,6 +194,11 @@
 
                                                     <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
 
+                                                </td>
+                                                <td style="text-align:center">
+                                                    <button class="btn btn-danger" title="Eliminar fila" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarFila(this)" >
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             ';
