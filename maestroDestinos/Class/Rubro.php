@@ -20,9 +20,8 @@ class Rubro
                  echo $e->getMessage();
          }
 
-        $sql = "
-        SELECT REPLACE(DESCRIP, '_', '') DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_][ZD]%' AND DESCRIP NOT LIKE 'Todos' 
-        AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT IN ('ALHAJEROS','PACKAGING','_KITS')
+        $sql = "SELECT DISTINCT(RUBRO) RUBRO FROM SOF_RUBROS_TANGO 
+                WHERE RUBRO NOT LIKE '[_]%' AND RUBRO NOT LIKE '%OUTLET' AND RUBRO NOT IN ('ALHAJEROS','PACKAGING')
         ";
         $stmt = sqlsrv_query( $cid_central, $sql );
 
