@@ -49,14 +49,14 @@ $maestroArticulos = new Articulo();
   <form>
         <div class="form-row mb-3 contenedor">
 
-        <div class="col-sm-2 mt-2">
+        <div class="col- mt-2">
             <label for="inputCity">Rubro</label>
             <select id="inputRubro" class="form-control form-control-sm" name="rubro">
                 <option selected></option>
                     <?php
                         foreach($todosLosRubros as $rubro => $key){
                     ?>
-                <option value="<?= $key['DESCRIP'] ?>"><?= $key['DESCRIP'] ?></option>
+                <option value="<?= $key['RUBRO'] ?>"><?= $key['RUBRO'] ?></option>
                     <?php
                     }
                     ?>
@@ -65,7 +65,7 @@ $maestroArticulos = new Articulo();
             </select>
         </div>  
         
-            <div class="col-sm-2 mt-2" id="contTemp">
+            <div class="col- mt-2" id="contTemp">
                     <label for="inputState2">Temporada</label>
                     <select id="inputTemp" class="form-control form-control-sm" name="temporada">
                         <option selected></option>
@@ -79,17 +79,16 @@ $maestroArticulos = new Articulo();
                     </select>
             </div>
 
-            <div>
-                <button type="submit" class="btn btn-primary mt-4 ml-4" id="btn_filtro">Filtrar<i class="fa fa-filter"></i></button>
+            <div class="from-group">
+                <button type="submit" class="btn btn-primary ml-2" style="margin-top:2.2rem" id="btn_filtro">Filtrar<i class="fa fa-filter"></i></button>
+                <button class="btn btn-success" id="btnExport" style="margin-top:2.2rem; margin-left: 1rem"><i class="fa fa-file-excel-o"></i> Exportar</button>
+                <button class="btn btn-secondary" id="btnExport" style="margin-top:2.2rem; margin-left: 1rem"><i class="fa fa-file-excel-o"></i> Novedades</button>
             </div>
 
             <div class="mt-2" id="busqRapida">
                 <label id="textBusqueda">Busqueda rapida:</label>
                 <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
             </div> 
-            <div class="col-2">
-				<button class="btn btn-success" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
-			</div>  
         </div>
 
     </form>

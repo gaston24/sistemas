@@ -14,11 +14,10 @@ class Temporada
                  echo $e->getMessage();
          }
 
-        $sql = "
-
-        SELECT DISTINCT(TEMPORADA) TEMPORADA FROM MAESTRO_DESTINOS WHERE TEMPORADA NOT IN ('SIN','ELIMINAR/DESHABILITA') AND TEMPORADA IS NOT NULL
-        ORDER BY 1 DESC 
-        
+        $sql = "SELECT DISTINCT(NOMBRE_TEMP) TEMPORADA FROM MAESTRO_TEMPORADAS
+                WHERE EXCLUIR IS NULL
+                ORDER BY 1 DESC 
+                
         ";
         $stmt = sqlsrv_query( $cid_central, $sql );
 

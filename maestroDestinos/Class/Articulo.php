@@ -25,11 +25,9 @@ class Articulo
 
     public function traerArticulos($rubro, $temporada){
 
-        $sql = " 
-        
-        SELECT A.COD_ARTICU, DESCRIPCION, DESTINO, TEMPORADA, B.RUBRO FROM MAESTRO_DESTINOS A
-        LEFT JOIN SOF_RUBROS_TANGO B ON A.COD_ARTICU = B.COD_ARTICU
-        WHERE TEMPORADA LIKE '$temporada' AND RUBRO LIKE '$rubro'
+        $sql = "SELECT A.* FROM MAESTRO_DESTINOS A
+                LEFT JOIN MAESTRO_TEMPORADAS B ON A.TEMPORADA = B.NOMBRE_TEMP
+                WHERE EXCLUIR IS NULL AND TEMPORADA LIKE '$temporada' AND RUBRO LIKE '$rubro'
 
         ";
 
