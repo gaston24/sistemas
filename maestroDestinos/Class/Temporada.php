@@ -3,16 +3,20 @@
 class Temporada
 {
 
-    public function traerTemporadas(){
-        try {
+    private $cid;
+    private $cid_central;
 
-            $servidor_central = 'servidor';
-            $conexion_central = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-            $cid_central = sqlsrv_connect($servidor_central, $conexion_central);
-             
-         } catch (PDOException $e){
-                 echo $e->getMessage();
-         }
+    
+    function __construct()
+    {
+
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        $this->cid = new Conexion();
+        $this->cid_central = $this->cid->conectar('central');
+
+    } 
+
+    public function traerTemporadas(){
 
         $sql = "
 
@@ -20,7 +24,7 @@ class Temporada
         ORDER BY 1 DESC 
         
         ";
-        $stmt = sqlsrv_query( $cid_central, $sql );
+        $stmt = sqlsrv_query(  $this->cid_central, $sql );
 
         $rows = array();
 
