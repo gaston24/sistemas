@@ -88,6 +88,7 @@ $maestroArticulos = new Articulo();
                     <div class="col">
                             <button type="submit" class="btn btn-primary mt-4 ml-4" type="button" id="btn_filtro" onclick="filtrar()">Filtrar<i class="fa fa-filter"></i></button>
                             <button class="btn btn-success mt-4 ml-4" type="button" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+                            <button class="btn btn-secondary mt-4 ml-4"  onclick="exportNovedades()" ><i class="fa fa-file-excel-o"></i> Novedades</button>
 
                     </div>
                     

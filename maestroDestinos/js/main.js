@@ -112,6 +112,18 @@ const filtrar = () => {
 
           var codArticuCell = document.createElement("td");
           codArticuCell.textContent = v["COD_ARTICU"];
+         
+
+          if(v["FECHA_MOD"] != null){
+
+            var fechaOriginal = v["FECHA_MOD"].date; // Extraer la cadena de fecha
+            
+            var fechaObjeto = new Date(fechaOriginal);
+            var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            var fechaFormateada = fechaObjeto.toLocaleDateString('es-ES', options);
+
+          }
+          codArticuCell.setAttribute("fecha", fechaFormateada);
           row.appendChild(codArticuCell);
 
           var descripcionCell = document.createElement("td");
@@ -132,7 +144,7 @@ const filtrar = () => {
 
           tableBody.appendChild(row);
       });
-
+      
       activarDatatable();
     
       let spinner = document.querySelector('.boxLoading')
@@ -175,4 +187,74 @@ const activarDatatable = () => {
 
     },
   });
+}
+
+const exportNovedades = () => {
+
+  $('#tableMaestro').DataTable().destroy();
+
+  allTr = document.querySelectorAll('#tableBody tr');
+  let fechaMasCercana;
+  let trFechaMasCercana;
+  
+
+  allTr.forEach((tr) => {
+    // Obtener el campo de fecha de cada fila
+    let fechaCell = tr.querySelectorAll('td')[1].getAttribute("fecha"); // Reemplaza 'fecha-class' con la clase real de tu campo de fecha
+
+    // Verificar si la celda de fecha existe y tiene un valor
+    if (fechaCell && fechaCell !== '' && fechaCell !== ' ' && fechaCell !== null && fechaCell !== "undefined") {
+
+      // Convertir la fecha al formato "YYYY/MM/DD" a un objeto Date
+     // Convertir la fecha al formato "YYYY/MM/DD" a un objeto Date
+     let fechaParts = fechaCell.split('/');
+     let fechaFila = new Date(`${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}`);
+
+     let fechaActual = new Date(); // Obtener la fecha actual
+
+
+      // Comparar las fechas
+      if (!fechaMasCercana || Math.abs(fechaFila - fechaActual) < Math.abs(fechaMasCercana - fechaActual)) {
+        fechaMasCercana = fechaFila;
+        trFechaMasCercana = tr;
+      }
+    }
+  });
+
+  allTr.forEach((tr) => {
+
+    let fecha = tr.querySelectorAll('td')[1].getAttribute("fecha");
+    if(fecha != "undefined"){
+
+      let fechaParts = fecha.split('/');
+
+      let fechaFila = new Date(`${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}`);
+
+   
+
+      if(fechaFila.getTime() != fechaMasCercana.getTime()){
+
+          tr.classList.add('imagen');
+
+      }
+
+    }else{
+      tr.classList.add('imagen');
+    }
+
+  });
+
+  $("#tableMaestro").table2excel({
+    // exclude CSS class
+    exclude: ".imagen",
+    name: "Detalle pedidos",
+    filename: "Detalle notas de pedido", // do not include extension
+    fileext: ".xls", // file extension
+  });
+
+  allTr.forEach((tr) => {
+    tr.classList.remove('imagen');
+  });
+  
+  activarDatatable();
 }
