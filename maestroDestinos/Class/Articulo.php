@@ -47,6 +47,7 @@ class Articulo
 
         return $rows;
 
-    }    
+    }  
+      
 
 }    

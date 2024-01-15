@@ -34,5 +34,22 @@ class Temporada
 
         return $rows;
     }
+    
+    public function traerTemporadasDestinos (){
+
+        $sql ="SELECT DISTINCT(NOMBRE_TEMP) TEMPORADA FROM MAESTRO_TEMPORADAS
+        ORDER BY 1 DESC";
+
+        $stmt = sqlsrv_query(  $this->cid_central, $sql );
+
+        $rows = array();
+
+        while( $v = sqlsrv_fetch_array( $stmt) ) {
+            $rows[] = $v;
+        }
+
+        return $rows;
+
+    }
 
 }  

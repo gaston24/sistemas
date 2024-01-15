@@ -33,5 +33,20 @@ class Rubro
 
         return $rows;
     }
+    public function traerRubrosDestinos(){
+
+        $sql="SELECT DISTINCT(RUBRO) RUBRO FROM SOF_RUBROS_TANGO
+        WHERE RUBRO NOT LIKE '[_]%' AND RUBRO NOT LIKE '%OUTLET' AND RUBRO NOT IN ('ALHAJEROS','PACKAGING')";
+        
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
+
+        $rows = array();
+
+        while( $v = sqlsrv_fetch_array( $stmt) ) {
+            $rows[] = $v;
+        }
+
+        return $rows;
+    }
 
 }  
