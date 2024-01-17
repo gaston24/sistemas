@@ -82,35 +82,30 @@ const filtrar = () => {
           var row = document.createElement("tr");
 
         
-           // Crear celda para la imagen
+  
           var imgCell = document.createElement("td");
           imgCell.classList.add("imagen");
 
-                  // Crear enlace 'a'
           var imgLink = document.createElement("a");
           imgLink.setAttribute("data-toggle", "modal");
           imgLink.setAttribute("data-target", "#modalImageDiv");
 
-          // Crear imagen 'img'
           var imgElement = document.createElement("img");
           imgElement.setAttribute("src", "../../../Imagenes/" + v["COD_ARTICU"].substring(0, 13) + ".jpg");
           imgElement.setAttribute("alt", "Sin imagen");
           imgElement.setAttribute("height", "50");
           imgElement.setAttribute("width", "50");
 
-          // Agregar la imagen al enlace
           imgLink.appendChild(imgElement);
 
-          // Agregar el enlace a la celda de la imagen
+
           imgCell.appendChild(imgLink);
 
-          // En tu bucle forEach después de crear el enlace y la imagen
           imgLink.addEventListener("click", function() {
             var modalImage = document.getElementById("modalImage");
             modalImage.setAttribute("src", "../../../Imagenes/" + v["COD_ARTICU"].substring(0, 13) + ".jpg");
             $("#exampleModala").modal("toggle");
           });
-          // Agregar la celda de la imagen a la fila
           row.appendChild(imgCell);
 
 
@@ -120,7 +115,7 @@ const filtrar = () => {
 
           if(v["FECHA_MOD"] != null){
 
-            var fechaOriginal = v["FECHA_MOD"].date; // Extraer la cadena de fecha
+            var fechaOriginal = v["FECHA_MOD"].date; 
             
             var fechaObjeto = new Date(fechaOriginal);
             var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
