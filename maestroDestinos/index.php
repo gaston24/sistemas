@@ -166,7 +166,7 @@ $maestroArticulos = new Articulo();
             // exclude CSS class
             exclude: ".imagen",
             name: "Maestro Destinos",
-            filename: "Maestro Destinos", // do not include extension
+            filename: "maestro de destinos", // do not include extension
             fileext: ".xls", // file extension
         });
 
