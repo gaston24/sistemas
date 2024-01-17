@@ -160,7 +160,7 @@ try {
 	</div>
 	</div>
 
-		<?php include_once __DIR__ . '\assets\css\fontawesome\js.php'; ?>
+		<?php include_once __DIR__ . '/assets/css/fontawesome/js.php'; ?>
 		<script>
 			
 			let codClient = '<?= $codClient; ?>'
