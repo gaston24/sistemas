@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once __DIR__.'/../Class/extralarge.php';
+ob_start(); 
+require_once __DIR__.'/../class/extralarge.php';
 
 $user = $_POST['user'];
 $pass = $_POST['pass'];
@@ -99,10 +100,10 @@ if( count($loginRes) == 0 ){
 		header("Location: ../index.php");		
 	}elseif( in_array($_SESSION['tipo'], ['LOCAL_PROPIO', 'FRANQUICIA']) ){
 		header("Location: eliminaPedido.php");
+		ob_end_flush(); 
 	}else{
 		header('Location:../login.php');
 	}
 	
 }
-
 ?>

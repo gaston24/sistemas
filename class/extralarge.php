@@ -12,6 +12,11 @@ class Extralarge {
     public function login($user, $pass){
 
         $cid = $this->conn->conectar('central');
+
+        if (!$cid) {
+            echo "Error de conexión.";
+            return;
+        }
         
 
         $sql = "EXEC SJ_APP_LOGIN '$user', '$pass'";

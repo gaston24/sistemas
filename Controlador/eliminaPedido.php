@@ -1,20 +1,17 @@
 <?php
 	session_start(); 
-
+	ob_start(); 
 	if(!isset($_SESSION['username'])){
 		header("Location:../login.php");
 	}else{	
 ?>
-
 <head>
 	<title>Pedidos</title>
 	<meta charset="UTF-8"></meta>
 	<link rel="shortcut icon" href="../css/icono.jpg" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-
 <?php
-
 		require_once __DIR__."/../class/extralarge.php";
 		$suc = $_SESSION['numsuc'];
 
@@ -24,12 +21,9 @@
 			header('Location: ../index.php');
 			die();
 		}
-
 		$xl->deletePedidos($suc);
-
 	}
 ?>
-
 <div class="container-fluid">
 	<div class="d-flex justify-content-center mt-1">
 		<div>
@@ -44,8 +38,8 @@
 	<div class="d-flex justify-content-center mt-1">
 		<img src="cargando.gif" >
 	</div>
-	
 </div>	
 <?php
 	header('Location: cargaPedido.php');
+	ob_end_flush(); 
 ?>

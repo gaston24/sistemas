@@ -1,4 +1,3 @@
-
 <?php
 
 $codClient = $_SESSION['codClient'];
@@ -9,7 +8,7 @@ class Fecha
     private function retornarArray($sqlEnviado)
     {
 
-        require_once 'Conexion.php';
+        require_once 'conexion.php';
 
         $cid = new Conexion();
         $cid_central = $cid->conectar('central');

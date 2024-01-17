@@ -1,4 +1,3 @@
-
 <?php
 
 class Conexion{
@@ -56,14 +55,17 @@ class Conexion{
 
             $cid = sqlsrv_connect($serverDB[0], $params);
 
-            if(!$cid) return false;
+            if (!$cid) {
+                throw new Exception("Error de conexión: " . print_r(sqlsrv_errors(), true));
+            }
 
             // este cid va a cambiar mil veces
             $_SESSION['cid'] = $cid;
             return $cid;
             
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
+            return false;
         }
     }
 
