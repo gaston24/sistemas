@@ -86,12 +86,10 @@ const filtrar = () => {
           var imgCell = document.createElement("td");
           imgCell.classList.add("imagen");
 
-          // Crear enlace 'a'
+                  // Crear enlace 'a'
           var imgLink = document.createElement("a");
-          imgLink.setAttribute("target", "_blank");
           imgLink.setAttribute("data-toggle", "modal");
-          imgLink.setAttribute("data-target", "#exampleModal" + v["COD_ARTICU"]);
-          imgLink.setAttribute("href", "../../../Imagenes/" + v["COD_ARTICU"].substring(0, 13) + ".jpg");
+          imgLink.setAttribute("data-target", "#modalImageDiv");
 
           // Crear imagen 'img'
           var imgElement = document.createElement("img");
@@ -106,6 +104,12 @@ const filtrar = () => {
           // Agregar el enlace a la celda de la imagen
           imgCell.appendChild(imgLink);
 
+          // En tu bucle forEach después de crear el enlace y la imagen
+          imgLink.addEventListener("click", function() {
+            var modalImage = document.getElementById("modalImage");
+            modalImage.setAttribute("src", "../../../Imagenes/" + v["COD_ARTICU"].substring(0, 13) + ".jpg");
+            $("#exampleModala").modal("toggle");
+          });
           // Agregar la celda de la imagen a la fila
           row.appendChild(imgCell);
 
