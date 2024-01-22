@@ -110,7 +110,19 @@ const filtrar = () => {
             row.appendChild(liquidacionoCell);
 
             var ultimaModCell = document.createElement("td");
-            ultimaModCell.textContent = v["FECHA_MOD"];
+            if(v["FECHA_MOD"] == null){
+
+              ultimaModCell.textContent = "";
+              
+            }else{
+
+              var fechaParseada = new Date(v["FECHA_MOD"].date);
+              var año = fechaParseada.getFullYear();
+              var mes = ('0' + (fechaParseada.getMonth() + 1)).slice(-2);  // Agregar 1 ya que los meses van de 0 a 11
+              var dia = ('0' + fechaParseada.getDate()).slice(-2);
+              var fechaFormateada = año + '-' + mes + '-' + dia;
+              ultimaModCell.textContent = fechaFormateada;
+            }
             row.appendChild(ultimaModCell);
   
             tableBody.appendChild(row);
@@ -344,5 +356,46 @@ const cambiarEntorno = (t) =>{
   }
 
   const mostrarModalImport = () => {
+    resetearImport();
     $("#modalCA").modal("toggle");
   }
+
+  const resetearImport = () => {
+
+    document.querySelector("#modalCA").innerHTML = `
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="modalDoc">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel"><span id="titleModal"><i class="bi bi-file-earmark-excel" aria-hidden="true" style="font-size: 25px;"></i>Importar archivo excel </h4></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+            </div>
+            <div class="modal-body" id="modalImportBody">
+                <div class="mb-3">
+                        <div class="input-group">
+                                <input type="text" class="form-control" id="nombreInput" placeholder="Selecciona un archivo" readonly>
+                                <label class="input-group-text" id="Examinar" for="formFile" style="width: 50%; background-color: #044f8e; color: white; cursor: pointer;">
+                                    <i class="bi bi-folder2-open" style="margin-right:5px;margin-left:30%"></i> Examinar
+                                    <input class="form-control" type="file" id="formFile" style="position: absolute; clip: rect(0, 0, 0, 0); width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; border: 0;" onchange="displayFileName(this)">
+                                </label>
+                          
+                        </div>
+                </div>
+
+
+            </div>
+                
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+    `
+
+            
+  }
+  const mostrarModalTemp = () =>{
+    $("#modalTemporadas").modal("toggle")
+}

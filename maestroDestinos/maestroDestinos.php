@@ -24,7 +24,7 @@ $maestroArticulos = new Articulo();
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pedidos Ecommerce Uruguay</title>
+        <title>Maestro de destinos</title>
 
  
         
@@ -146,7 +146,7 @@ $maestroArticulos = new Articulo();
                                                 <button class="btn btn-primary" style="width:120px;background-color:#4caf50" id="btnExport">Exportar <i class="bi bi-box-arrow-down"></i></button>
                                             </div>
                                             <div class="btn-group mt-4 ml-4" role="group" aria-label="Importar y Exportar">
-                                                <button class="btn btn-primary" style="width:170px">Temporadas <i class="bi bi-calendar3" style="color:white"></i></button>
+                                                <button class="btn btn-primary" style="width:170px" onclick="mostrarModalTemp()">Temporadas <i class="bi bi-calendar3" style="color:white"></i></button>
                                                 <button class="btn btn-danger" style="width:170px" onclick="liquidar()">Fin liquidacion <i class="bi bi-clock"></i></button>
                                             </div>
                                         </div>
@@ -188,6 +188,7 @@ $maestroArticulos = new Articulo();
 </html>
 <?php 
     include_once 'importarMaestro.php';
+    include_once 'maestroTemporadas.php';
 ?>
 <script>
     

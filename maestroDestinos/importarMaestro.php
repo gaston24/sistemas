@@ -8,8 +8,7 @@
   <title>Coeficiente De Ajuste</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-  <!-- <link rel="icon" type="image/jpg" href="images/LOGO XL 2018.jpg"> -->
-  <!-- <link rel="stylesheet" href="css/style.css"> -->
+  
 
 <style>
 
@@ -19,41 +18,15 @@
 <body>
 
     <div class="modal fade" id="modalCA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" id="modalDoc">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><span id="titleModal"><i class="bi bi-file-earmark-excel" aria-hidden="true" style="font-size: 25px;"></i>Importar archivo excel </h4></span>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> 
-                </div>
-                <div class="modal-body" id="modalImportBody">
-                    <div class="mb-3">
-                            <div class="input-group">
-                                    <input type="text" class="form-control" id="nombreInput" placeholder="Selecciona un archivo" readonly>
-                                    <label class="input-group-text" id="Examinar" for="formFile" style="width: 50%; background-color: #044f8e; color: white; cursor: pointer;">
-                                        <i class="bi bi-folder2-open" style="margin-right:5px;margin-left:30%"></i> Examinar
-                                        <input class="form-control" type="file" id="formFile" style="position: absolute; clip: rect(0, 0, 0, 0); width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; border: 0;" onchange="displayFileName(this)">
-                                    </label>
-                               
-                            </div>
-                    </div>
-    
-
-                </div>
-                    
-                <div class="modal-footer">
-                    
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
-                </div>
-            </div>
-        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
+
+
 </body>    
 <script>
+           
          const displayFileName = (input) => {
             var fileName = input.files[0].name;
             input.parentNode.parentNode.querySelector('input[type="text"]').value = fileName;
@@ -89,29 +62,64 @@
                         <th>Descripcion</th>
                         <th>Destino</th>
                         <th>Liquidacion</th>
+                        <th></th>
+
                     </tr>
                 </thead>
                 <tbody>`;
 
+                $.ajax ({
 
-                // Ahora jsonData contiene los datos del archivo Excel
-                jsonData.forEach((element,x) => {
-                    if(x > 0){
-                        tableHtml += `
-                        <tr>
-                            <td>${element[0]}</td>
-                            <td>${element[1]}</td>
-                            <td>${element[2]}</td>
-                            <td>${element[3]}</td>
-                        </tr>`;
+                    type: "POST",
+                    url: "Controller/maestroDestinosController.php?accion=traerDescripcion",
+                    data: {
+                        data : jsonData
+                    },
+                    success: function(res){
+                       
+                        res = JSON.parse(res);
+
+                        jsonData.forEach((element,x) => {
+
+                                element[0] = element[0] || '';
+
+                                let descripcion = '';
+
+                                res.forEach((element2, y) => {
+                                    if(element[0] == element2[0]){
+                                        descripcion = element2[1];
+                                    }
+                                });
+
+                                element[1] = element[1] || '';
+                                element[2] = element[2] || '';
+
+                                if(x > 0){
+                                    tableHtml += `
+                                    <tr>
+                                        <td>${element[0]}</td>
+                                        <td>${descripcion}</td>
+                                        <td>${element[1]}</td>
+                                        <td>${element[2]}</td>
+                                        <td></td>
+                                    </tr>`;
+                                }
+                                
+                            });
+
+                            tableHtml += `</tbody></table>`;
+                            document.querySelector('#modalImportBody').innerHTML = tableHtml;
+                            document.querySelector(".modal-footer").innerHTML = `
+                            <button type="button" class="btn btn-success" onclick="actualizar()">Actualizar <i class='bi bi-arrow-repeat'></i></button>
+                        `;
+
+
                     }
-                    
-                });
-                tableHtml += `</tbody></table>`;
-                document.querySelector('#modalImportBody').innerHTML = tableHtml;
-                document.querySelector(".modal-footer").innerHTML = `
-                <button type="button" class="btn btn-success" onclick="actualizar()">Actualizar <i class='bi bi-arrow-repeat'></i></button>
-            `;
+                })
+
+                return 1;
+                // Ahora jsonData contiene los datos del archivo Excel
+              
 
                
             };
@@ -120,13 +128,128 @@
          
           
         }
-        function clearFileInput() {
+
+        const clearFileInput = () => {
             var fileInput = document.querySelector('#formFile');
             fileInput.value = ''; // Esto limpia el valor del input de archivo
             document.querySelector('#Examinar').hidden = false;
             document.querySelector('#nombreInput').value = ""
         }
+
         const actualizar = () => {
-          
+
+            let allRows = document.querySelectorAll('#tableImportExcel tbody tr');
+            let newArray = [];
+
+            allRows.forEach(element => {
+                let articulo = element.querySelectorAll('td')[0].textContent;
+                let descripcion = element.querySelectorAll('td')[1].textContent;
+                let destino = element.querySelectorAll('td')[2].textContent;
+                let liquidacion = element.querySelectorAll('td')[3].textContent;
+
+                newArray.push([articulo, descripcion, destino, liquidacion]);
+            });
+         
+            $.ajax ({
+                type: "POST",
+                url: "Controller/maestroDestinosController.php?accion=comprobarArticulos",
+                data: {
+                    data : newArray
+                },
+                success: function(data){
+                    data = JSON.parse(data);
+                    let puedeContinuar = true;
+                    allRows.forEach(element => {
+                        let errores = '';
+                        if(element.querySelectorAll('td')[0].textContent == ''){
+                            errores += 'Articulo (Requerido) <br>';
+                            puedeContinuar = false;
+                        }
+
+                        if(element.querySelectorAll('td')[2].textContent == ''){
+                            errores += 'Destino (Requerido) <br>';
+                            puedeContinuar = false;
+                        }
+
+                        data.forEach(articulo => {
+                            if(element.querySelectorAll('td')[0].textContent == articulo[0]){
+                                console.log(element.querySelectorAll('td')[4]);
+                                if(articulo[1] == 1){
+                                    // element.querySelectorAll('td')[4].style.backgroundColor = "red";
+                                }else{
+                                    errores += 'Articulo no existe En el Maestro <br>';
+                                    puedeContinuar = false;
+                                    // element.querySelectorAll('td')[4].style.backgroundColor = "green";
+                                }
+                             
+                            }
+                        });
+                        if(errores != ''){
+
+                            element.querySelectorAll('td')[4].innerHTML = `<i class="bi bi-exclamation-circle-fill" style="color:red;width" title="${errores.replace(/<br>/g, '\n')}" data-toggle="tooltip" ></i>`;
+                        }
+
+                    });
+                    if(puedeContinuar){
+                        
+                        console.log('puede continuar')
+
+                         $.ajax ({
+                            type: "POST",
+                            url: "Controller/maestroDestinosController.php?accion=actualizarMaestro",
+                            data: {
+                                data : newArray
+                            },
+                            success: function(data){
+
+                                if(data == "success"){
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Actualizado correctamente',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then((result) => {
+                                        location.reload();
+                                    })
+                                }else{
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error al actualizar',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                }
+                            }
+                        });
+
+                    }else{
+                        console.log('no puede continuar')
+
+                    }
+                    // if(data == "success"){
+                    //     Swal.fire({
+                    //         icon: 'success',
+                    //         title: 'Actualizado correctamente',
+                    //         showConfirmButton: false,
+                    //         timer: 1500
+                    //     }).then((result) => {
+                    //         location.reload();
+                    //     })
+                    // }else{
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Error al actualizar',
+                    //         showConfirmButton: false,
+                    //         timer: 1500
+                    //     })
+                    // }
+                }
+
+            })
+
+           
+            $('[data-toggle="tooltip"]').tooltip();
         }
+
+       
     </script>

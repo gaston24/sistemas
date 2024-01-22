@@ -22,6 +22,31 @@ switch ($accion) {
         cambiarLiquidacion();
         break;
     
+    
+    case 'comprobarArticulos':
+        comprobarArticulos();
+        break;
+
+    case 'actualizarMaestro':
+        actualizarMaestro();
+        break;
+    
+    case 'traerDescripcion':
+        traerDescripcion();
+        break;
+    
+    case 'traerTemporadas':
+        traerTemporadas();
+        break;
+    
+    case 'excluirTemporada':
+        excluirTemporada();
+        break;
+    
+    case 'guardarTemporada':
+        guardarTemporada();
+        break;
+    
     default:
         # code...
         break;
@@ -111,5 +136,103 @@ switch ($accion) {
 
         echo true;
 
+    }
+
+    function comprobarArticulos () {
+
+        require_once "../Class/Destino.php";
+
+        $maestroArticulos = new Destino();
+
+        $data = $_POST['data'];
+        $arrayResponse = [];
+        foreach ($data as $key => $articulo) {
+            $existe = $maestroArticulos->comprobarArticulo($articulo[0], $articulo[1], $articulo[2], $articulo[3]);
+        
+            $arrayResponse [] = [$articulo[0], $existe];
+        }
+
+        echo json_encode($arrayResponse);
+    
+    }
+
+    function actualizarMaestro () {
+
+        require_once "../Class/Destino.php";
+
+        $maestroDestinos = new Destino();
+
+        $data = $_POST['data'];
+
+        foreach ($data as $key => $articulo) {
+            $maestroDestinos->actualizarMaestro($articulo[0], $articulo[1], $articulo[2], $articulo[3]);
+        }
+
+        return true;
+
+    }
+
+    function traerDescripcion () {
+
+        require_once "../Class/Destino.php";
+
+        $maestroDestinos = new Destino();
+
+        $data = $_POST['data'];
+        $response = [];
+
+        foreach ($data as $key => $value) {
+            // var_dump($key, $value);
+            if($key == 0){
+                continue;
+            }
+
+            $descripcion = $maestroDestinos->traerDescripcion($value[0]);
+            
+            $response [] = [$value[0], $descripcion];
+            
+        }
+
+        echo json_encode($response);
+
+    }
+
+    function traerTemporadas () {
+            
+        require_once "../Class/Destino.php";
+
+        $maestroDestinos = new Destino();
+
+        $temporadas = $maestroDestinos->traerTemporadas();
+
+        echo json_encode($temporadas);
+    }
+    
+    function excluirTemporada () {
+                
+            require_once "../Class/Destino.php";
+    
+            $maestroDestinos = new Destino();
+    
+            $nombreTemp = $_POST['nombreTemp'];
+            $val = $_POST['excluir'];
+    
+            $maestroDestinos->excluirTemporada($nombreTemp, $val);
+    
+            echo true;
+    }
+
+    function guardarTemporada () {
+                        
+            require_once "../Class/Destino.php";
+    
+            $maestroDestinos = new Destino();
+    
+            $stringParaSql = $_POST['stringParaSql'];
+    
+            $maestroDestinos->guardarTemporada($stringParaSql);
+    
+            echo true;
+            
     }
 ?>

@@ -78,6 +78,88 @@ class Destino
         return true;;
 
     }
-      
 
+    public function actualizarMaestro ($articulo, $descripcion, $destino, $liquidacion ){
+
+        $sql = " UPDATE MAESTRO_DESTINOS  SET DESCRIPCION = '$descripcion', DESTINO = '$destino', LIQUIDACION = '$liquidacion' WHERE COD_ARTICU = '$articulo'";
+
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
+
+        return true;
+
+    }
+
+    public function comprobarArticulo($articulo) {
+
+        $sql = 'SELECT CASE WHEN EXISTS (SELECT 1 FROM STA11 WHERE COD_ARTICU = \''.$articulo.'\') THEN 1 ELSE 0 END AS resultado';
+        
+ 
+    
+    
+        $stmt = sqlsrv_query($this->cid_central, $sql);
+    
+        // Verificar el resultado de la consulta
+        if ($stmt !== false) {
+            $result = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+            
+            return $result['resultado'];
+           
+        } else {
+            // Error en la consulta
+            return false;
+        }
+    }
+    
+    public function traerDescripcion ($codArticulo) {
+
+        $sql = "SELECT DESCRIPCION FROM MAESTRO_DESTINOS WHERE COD_ARTICU = '$codArticulo'";
+
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
+
+        $result = '';
+
+        while( $v = sqlsrv_fetch_array( $stmt) ) {
+            $result = $v['DESCRIPCION'];
+        }
+
+        return $result;
+    }
+
+    public function traerTemporadas () {
+
+        $sql = 'SELECT NOMBRE_TEMP, COD_TEMP, EXCLUIR FROM MAESTRO_TEMPORADAS
+        WHERE EXCLUIR IS NULL';
+
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
+
+        $rows = array();
+
+        while( $v = sqlsrv_fetch_array( $stmt) ) {
+            $rows[] = $v;
+        }
+
+        return $rows;
+
+    }
+      
+    public function excluirTemporada ($nombreTemp, $val) {
+
+    
+        $sql = "UPDATE MAESTRO_TEMPORADAS SET EXCLUIR = $val WHERE NOMBRE_TEMP = '$nombreTemp'";
+   
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
+
+        return true;
+
+    }
+
+    public function guardarTemporada ($string) {
+            
+        $sql = "INSERT INTO MAESTRO_TEMPORADAS (NOMBRE_TEMP, COD_TEMP, EXCLUIR) VALUES $string";
+
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
+
+        return true;
+        
+    }
 }    
