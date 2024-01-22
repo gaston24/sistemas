@@ -1,6 +1,10 @@
 <?php 
     session_start();
-   require_once 'class/Egreso.php';
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
+    require_once 'class/Egreso.php';
 
    $egreso = new Egreso();
    $nroSucurs = $_SESSION['numsuc'];

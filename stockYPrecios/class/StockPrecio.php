@@ -26,7 +26,6 @@ class StockPrecio
         AND INHABILITA = 0 
         AND A.COD_ARTICU LIKE '[XO]%' 
         AND A.COD_ARTICU = '$codArticulo'";
-    
 
         try {
 

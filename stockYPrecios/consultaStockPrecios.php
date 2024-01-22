@@ -1,6 +1,5 @@
 <?php 
     session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +56,7 @@
                             <div class="contInputs">
 
                                 <div class="form-inline" style="margin-left: 0.5rem;">
-                                    <input name="selectArticulo" id="selectArticulo" class = "form-control selectArticulo" type="text" style="width: 13rem;" onchange="traerArticulo(this)">
+                                    <input name="selectArticulo" id="selectArticulo" class = "form-control selectArticulo" type="text" style="width: 13rem;" onchange="traerArticulo(this,<?= $_SESSION['usuarioUy'] ?>)">
                                     <button class="btn btn-danger btn-sm" onclick="borrar()">Borrar <i class="bi bi-x-circle"></i></button>
                                 </div>
                                <div id="cont">

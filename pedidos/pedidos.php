@@ -17,9 +17,18 @@ if (!isset($_SESSION['username'])) {
 	$codClient = $_SESSION['username'];
 	$tipo_cli = $_SESSION['tipo'];
 	$esOutlet = $_SESSION['esOutlet'];
+	$esUsuarioUy = $_SESSION['usuarioUy'];
+	$db = 'central';
+
+	if($esUsuarioUy == 1){
+
+		$db = 'uy';
+		
+	}
+
 
 	$pedido = new Pedido();
-	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient, $esOutlet);
+	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient, $esOutlet,	$db);
 	
 ?>
 	<!doctype html>
@@ -193,8 +202,8 @@ if (!isset($_SESSION['username'])) {
 							<td id="precio">
 								<?php
 
-								if ($suc > 100) {
-
+								if ($suc > 100 && $suc != 201 && $suc != 202 ) {
+									
 									if ($_GET['tipo'] == 3) {
 
 										echo (int)($v['PRECIO_MAYO']);

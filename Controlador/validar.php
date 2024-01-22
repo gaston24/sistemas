@@ -6,7 +6,13 @@ $user = $_POST['user'];
 $pass = $_POST['pass'];
 
 $login = new Extralarge();
-$loginRes = $login->login($user, $pass);
+$usuarioUy = $login->esUsuarioUy($user);
+
+if($usuarioUy == 1){
+	$loginRes = $login->login($user, $pass, 'uy');
+}else{
+	$loginRes = $login->login($user, $pass);
+}
 
 
 if( count($loginRes) == 0 ){
@@ -15,6 +21,7 @@ if( count($loginRes) == 0 ){
 
 }else{
 
+	$_SESSION['usuarioUy'] = $usuarioUy;
 	$_SESSION['username'] = $loginRes['NOMBRE'];
 	$_SESSION['permisos'] = $loginRes['PERMISOS'];
 	$_SESSION['dsn'] = $loginRes['DSN'];

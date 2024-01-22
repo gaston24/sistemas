@@ -62,7 +62,9 @@ class Remito{
 
         ";
 
-    
+
+       
+
         $stmt = sqlsrv_query( $this->cidLocal, $sql );
 
 

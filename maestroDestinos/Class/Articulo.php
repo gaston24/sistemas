@@ -3,15 +3,25 @@
 class Articulo
 {
     
+    private $cid;
+    private $cid_central;
+
+    
+    function __construct()
+    {
+
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        $this->cid = new Conexion();
+        $this->cid_central = $this->cid->conectar('central');
+
+    } 
+
+
     private function retornarArray($sqlEnviado){
 
-        require_once 'Conexion.php';
-
-        $cid = new Conexion();
-        $cid_central = $cid->conectar();  
         $sql = $sqlEnviado;
 
-        $stmt = sqlsrv_query( $cid_central, $sql );
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
 
         $rows = array();
 
@@ -25,10 +35,11 @@ class Articulo
 
     public function traerArticulos($rubro, $temporada){
 
-        $sql = "SELECT A.* FROM MAESTRO_DESTINOS A
-                LEFT JOIN MAESTRO_TEMPORADAS B ON A.TEMPORADA = B.NOMBRE_TEMP
-                WHERE EXCLUIR IS NULL AND TEMPORADA LIKE '$temporada' AND RUBRO LIKE '$rubro'
 
+        $sql = " 
+        SELECT A.COD_ARTICU, DESCRIPCION, DESTINO, TEMPORADA, B.RUBRO,A.FECHA_MOD FROM MAESTRO_DESTINOS A
+        LEFT JOIN SOF_RUBROS_TANGO B ON A.COD_ARTICU = B.COD_ARTICU
+        WHERE TEMPORADA LIKE '$temporada' AND RUBRO LIKE '$rubro'
         ";
 
         $rows = $this->retornarArray($sql);

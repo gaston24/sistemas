@@ -1,8 +1,8 @@
 <?php
 
 session_start(); 
-if(!isset($_SESSION['username'])){
-	header("Location:login.php");
+if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+    header("Location:login.php");
 }else{
 $suc = $_SESSION['numsuc'];
 $codClient = $_SESSION['codClient'];

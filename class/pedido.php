@@ -9,9 +9,9 @@ class Pedido {
         
     }
 
-    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null){
+    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null, $db = 'central'){
 
-        $cid = $this->conn->conectar('central');
+        $cid = $this->conn->conectar($db);
 
             switch ($tipoPedido) {
                 case 1:
@@ -40,12 +40,13 @@ class Pedido {
 
             }
 
-
             ini_set('max_execution_time', 300);
 
             $stmt = sqlsrv_query($cid, $sql);
 
             $next_result = sqlsrv_next_result($stmt);
+
+            $v = [];
 
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
 
@@ -61,9 +62,23 @@ class Pedido {
         };
     }
 
-    public function traerHistorial($codClient){
-        
-        $cid = $this->conn->conectar('central');
+    public function traerHistorial($codClient, $usuarioUy = 0){
+
+
+
+        if($usuarioUy == 1){
+
+            $cid = $this->conn->conectar('uy');
+            $codClient = '000000';
+            $talonarios = '98';
+
+        }else{
+
+            $cid = $this->conn->conectar('central');
+            $talonarios = '96, 97';
+        }
+
+    
         
         $sql=
         "
@@ -72,18 +87,18 @@ class Pedido {
         SELECT CAST(FECHA_PEDI AS DATE)FECHA, A.NRO_PEDIDO, LEYENDA_1, B.CANT FROM GVA21 A
         INNER JOIN
         (
-            SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 WHERE TALON_PED IN (96, 97) GROUP BY NRO_PEDIDO
+            SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 WHERE TALON_PED IN ($talonarios) GROUP BY NRO_PEDIDO
         )B
         ON A.NRO_PEDIDO = B.NRO_PEDIDO
-        WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-60) AND A.TALON_PED IN (96, 97)
+        WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-60) AND A.TALON_PED IN ($talonarios)
         ORDER BY 1 desc, 2 desc
 
         ";
             
-        
+   
         try {
             $stmt = sqlsrv_query($cid, $sql);
-            
+            $v = [];
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
 
                 $v[] = $row;
@@ -101,9 +116,23 @@ class Pedido {
         
     }
 
-    public function traerDetallePedido($pedido, $suc){
+    public function traerDetallePedido($pedido, $suc, $usuarioUy = 0){
 
-        $cid = $this->conn->conectar('central');
+        
+       
+
+        if($usuarioUy == 1){
+
+            $cid = $this->conn->conectar('uy');
+            $suc = '000000';
+            $talonarios = '98';
+
+        }else{
+
+            $cid = $this->conn->conectar('central');
+            $talonarios = '96, 97';
+        }
+
         
         $sql=
         "
@@ -114,9 +143,10 @@ class Pedido {
         ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
         INNER JOIN STA11 C
         ON B.COD_ARTICU = C.COD_ARTICU
-        WHERE A.TALON_PED IN (96, 97) AND A.NRO_PEDIDO = '$pedido'
+        WHERE A.TALON_PED IN ($talonarios) AND A.NRO_PEDIDO = '$pedido'
         AND A.COD_CLIENT = '$suc'
         ";
+
 
         try{
 
