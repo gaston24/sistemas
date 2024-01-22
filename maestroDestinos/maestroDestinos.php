@@ -12,8 +12,17 @@ $todasLasTemporadas = $temporada->traerTemporadasDestinos();
 
 
 $maestroArticulos = new Articulo();
-
-
+if(isset($_SESSION['entorno']) && $_SESSION['entorno'] == 'central'){
+    $checked = 'checked';
+}else{
+    $checked = '';
+}
+    
+$checkedValue = isset($_SESSION['entorno']) ? $_SESSION['entorno'] : 'central';
+$dataOnValue = ($checkedValue === 'uy') ? 'UY' : 'ARG';
+$dataOffValue = ($checkedValue === 'uy') ? 'ARG' : 'UY';
+$imageOn = ($checkedValue === 'central') ? 'css/bandera_con_sol__55757_std.jpg' : 'css/UY.png';
+$imageOff = ($checkedValue === 'central') ? 'css/UY.png' : 'css/bandera_con_sol__55757_std.jpg';
 
 ?>
 
@@ -37,23 +46,21 @@ $maestroArticulos = new Articulo();
    
 
     <style>
-        /* Estilo personalizado para el interruptor con imágenes de banderas */
         .toggle-on {
-            background-image: url('css/bandera_con_sol__55757_std.jpg'); /* Ruta de la imagen para el estado encendido (ARG) */
-            background-size: contain; /* Ajusta el tamaño de la imagen para que se ajuste al contenedor */
-            background-repeat: no-repeat; /* Evita la repetición de la imagen */
-            height: 60px; /* Establece la altura del botón */
-            width: 60px; /* Establece el ancho del botón */
+            background-image: url('<?= $imageOn ?>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 60px;
+            width: 60px;
         }
 
         .toggle-off {
-            background-image: url('css/UY.png'); /* Ruta de la imagen para el estado apagado (UY) */
-            background-size: contain; /* Ajusta el tamaño de la imagen para que se ajuste al contenedor */
-            background-repeat: no-repeat; /* Evita la repetición de la imagen */
-            height: 60px; /* Establece la altura del botón */
-            width: 60px; /* Establece el ancho del botón */
+            background-image: url('<?= $imageOff ?>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 60px;
+            width: 60px;
         }
-    
     </style>
     </head>
 
@@ -78,8 +85,8 @@ $maestroArticulos = new Articulo();
                                 <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Administrar maestro de destinos </strong></h3>
                             </div>
                             <div class="col-1">
-                                <input type="checkbox" checked data-toggle="toggle" data-on="ARG" data-off="UY" class="custom-toggle" style="color:black; font-size: 0;" onchange="cambiarEntorno(this)" id="checkEntorno">
-
+                                <!-- <input type="checkbox" checked data-toggle="toggle" data-on="ARG" data-off="UY" class="custom-toggle" style="color:black; font-size: 0;" onchange="cambiarEntorno(this)" id="checkEntorno" <?= $_SESSION['CHECKED']  ?>> -->
+                                <input type="checkbox" checked data-toggle="toggle" data-on="<?= $dataOnValue ?>" data-off="<?= $dataOffValue ?>" class="custom-toggle" style="color:black; font-size: 0;" onchange="cambiarEntorno(this)" id="checkEntorno" >
                             </div>
                             </div>
                           
@@ -121,10 +128,9 @@ $maestroArticulos = new Articulo();
                                                 <div class="row">
                                                     <div class="col">
                                                     <label for="inputState2">Novedades</label>
-                                                    <select id="inputTemp" class="form-control form-control-sm"  name="temporada">
-                                                        <option selected disabled></option>
+                                                    <select id="inputNovedades" class="form-control form-control-sm"  name="temporada">
+                                                        <option selected value=''></option>
                                                         <option value="1">SI</option>
-                                                        <option value="0">NO</option>
                                                     </select>
                                                     </div>
                                                     <div class="col mt-4">

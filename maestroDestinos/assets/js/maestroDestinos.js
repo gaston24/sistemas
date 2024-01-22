@@ -7,6 +7,7 @@ const filtrar = () => {
     mostrarSpinner();
     let rubro = document.querySelector('#inputRubro').value
     let temporada = document.querySelector('#inputTemp').value
+    let novedades = document.querySelector('#inputNovedades').value
   
     if(rubro == ''){
       rubro = '%'
@@ -15,14 +16,15 @@ const filtrar = () => {
     if(temporada == ''){
       temporada = '%'
     }
-  
+ 
   
     $.ajax({
       url: 'Controller/maestroDestinosController.php?accion=filtrarDestinos',
       method: 'POST',
       data: {
         rubro: rubro,
-        temporada: temporada
+        temporada: temporada,
+        novedades: novedades
       },
       success: function (response) {
         data = JSON.parse(response)
@@ -175,93 +177,29 @@ const filtrar = () => {
 
   
 const cambiarEntorno = (t) =>{
+  
     let spinner = document.querySelector("#boxLoading");
   
     spinner.classList.add("loading");
-  console.log(t.checked)
-  return 1
-    if(t.checked == false){
+
+    let entorno = 0;
   
-      document.querySelector("#btn_active").setAttribute("data-target","#modalActiveUruguay")
-  
-      document.querySelector("#btn_edit").setAttribute("data-target","#modalParametersUy")
-  
-      $.ajax({
-        url: "Controller/stockDeSeguridadController.php?accion=cambiarEntornoUy",
-        method: "GET",
-        success: function (data) {
-          data = JSON.parse(data);
-          let tabla = document.getElementById('table');
-          tabla.innerHTML = '';
-  
-          data.forEach((row) => {
-            tabla.innerHTML += `
-            <tr>
-            <td style="display:none;">${row['ID']}</td>
-            <td style="display:none;">${row['WAREHOUSE_ID']}</td>
-            <td>${row['VTEX_CUENTA']}</td>
-            <td>${row['DESC_SUCURSAL']}</td>
-            <td><input type="number" class="inputNumber" name="BILLETERAS_DE_CUERO" value="${row['BILLETERAS_DE_CUERO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="BILLETERAS_DE_VINILICO" value="${row['BILLETERAS_DE_VINILICO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CALZADOS" value="${row['CALZADOS']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CAMPERAS" value="${row['CAMPERAS']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CARTERAS_DE_CUERO" value="${row['CARTERAS_DE_CUERO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CARTERAS_DE_VINILICO" value="${row['CARTERAS_DE_VINILICO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CHALINAS" value="${row['CHALINAS']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CINTOS_DE_CUERO" value="${row['CINTOS_DE_CUERO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CINTOS_DE_VINILICO" value="${row['CINTOS_DE_VINILICO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="INDUMENTARIA" value="${row['INDUMENTARIA']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="LENTES" value="${row['LENTES']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="RELOJES" value="${row['RELOJES']}" disabled></td>
-            </tr>
-            `;
-          });
-          spinner.classList.remove("loading")
-        }
-  
-  
-      });
+    if(t.getAttribute("data-off") == "ARG" ){
+      entorno = 0;
     }else{
-  
-      document.querySelector("#btn_active").setAttribute("data-target","#modalActive")
-  
-      $.ajax({
-        url: "Controller/stockDeSeguridadController.php?accion=cambiarEntornoArg",
-        method: "GET",
-        success: function (data) {
-          data = JSON.parse(data);
-          let tabla = document.getElementById('table');
-          tabla.innerHTML = '';
-  
-          data.forEach((row) => {
-            tabla.innerHTML += `
-            <tr>
-            <td style="display:none;">${row['ID']}</td>
-            <td style="display:none;">${row['WAREHOUSE_ID']}</td>
-            <td>${row['VTEX_CUENTA']}</td>
-            <td>${row['DESC_SUCURSAL']}</td>
-            <td><input type="number" class="inputNumber" name="BILLETERAS_DE_CUERO" value="${row['BILLETERAS_DE_CUERO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="BILLETERAS_DE_VINILICO" value="${row['BILLETERAS_DE_VINILICO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CALZADOS" value="${row['CALZADOS']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CAMPERAS" value="${row['CAMPERAS']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CARTERAS_DE_CUERO" value="${row['CARTERAS_DE_CUERO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CARTERAS_DE_VINILICO" value="${row['CARTERAS_DE_VINILICO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CHALINAS" value="${row['CHALINAS']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CINTOS_DE_CUERO" value="${row['CINTOS_DE_CUERO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="CINTOS_DE_VINILICO" value="${row['CINTOS_DE_VINILICO']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="INDUMENTARIA" value="${row['INDUMENTARIA']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="LENTES" value="${row['LENTES']}" disabled></td>
-            <td><input type="number" class="inputNumber" name="RELOJES" value="${row['RELOJES']}" disabled></td>
-            </tr>
-            `;
-          });
-          spinner.classList.remove("loading")
-        }
-  
-  
-      });
-  
+      entorno = 1;
     }
+
+
+    $.ajax({
+      url: "Controller/maestroDestinosController.php?accion=cambiarEntorno",
+      method: "POST",
+      data : {entorno: entorno},
+      success: function (data) {
+        location.reload();
+      }
+    });
+
   }
   
 

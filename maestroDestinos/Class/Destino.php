@@ -12,7 +12,9 @@ class Destino
 
         require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
         $this->cid = new Conexion();
-        $this->cid_central = $this->cid->conectar('central');
+        session_start();
+        $db = isset($_SESSION['entorno']) ? $_SESSION['entorno'] : 'central';
+        $this->cid_central = $this->cid->conectar($db);
 
     } 
 
@@ -20,7 +22,7 @@ class Destino
     private function retornarArray($sqlEnviado){
 
         $sql = $sqlEnviado;
-
+     
         $stmt = sqlsrv_query( $this->cid_central, $sql );
 
         $rows = array();
@@ -33,7 +35,7 @@ class Destino
 
     }
 
-    public function traerArticulos($rubro, $temporada){
+    public function traerArticulos($rubro, $temporada, $novedades){
 
         $sql = " 
             SELECT A.* FROM MAESTRO_DESTINOS A
@@ -42,6 +44,15 @@ class Destino
             AND TEMPORADA LIKE '$temporada' AND FAMILIA LIKE '$rubro'
 
         ";
+
+        if($novedades == 1){
+
+            $sql .= " AND FECHA_MOD = (
+                SELECT  MAX(FECHA_MOD) AS FECHA_MOD
+                FROM MAESTRO_DESTINOS)
+            ;";
+
+        }
 
         $rows = $this->retornarArray($sql);
 

@@ -47,6 +47,11 @@ switch ($accion) {
         guardarTemporada();
         break;
     
+    
+    case 'cambiarEntorno':
+        cambiarEntorno();
+        break;
+    
     default:
         # code...
         break;
@@ -78,9 +83,9 @@ switch ($accion) {
 
         $rubro = $_POST['rubro'];
         $temporada = $_POST['temporada'];
-
+        $novedades = $_POST['novedades'];
     
-        $todosLosArticulos = $maestroArticulos->traerArticulos($rubro, $temporada);
+        $todosLosArticulos = $maestroArticulos->traerArticulos($rubro, $temporada, $novedades);
 
         echo json_encode($todosLosArticulos);
 
@@ -234,5 +239,20 @@ switch ($accion) {
     
             echo true;
             
+    }
+    function cambiarEntorno () {
+
+        session_start();
+  
+        if($_POST['entorno'] == 0){
+     
+            $_SESSION['entorno'] = 'central';
+
+        }else{
+      
+            $_SESSION['entorno'] = 'uy';
+
+        }
+        echo true;
     }
 ?>

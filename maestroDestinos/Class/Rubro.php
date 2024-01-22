@@ -9,10 +9,12 @@ class Rubro
     
     function __construct()
     {
-
         require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
         $this->cid = new Conexion();
-        $this->cid_central = $this->cid->conectar('central');
+        session_start();
+        $db = isset($_SESSION['entorno']) ? $_SESSION['entorno'] : 'central';
+     
+        $this->cid_central = $this->cid->conectar($db);
 
     } 
 

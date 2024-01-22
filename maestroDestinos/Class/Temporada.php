@@ -12,7 +12,8 @@ class Temporada
 
         require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
         $this->cid = new Conexion();
-        $this->cid_central = $this->cid->conectar('central');
+        $db = isset($_SESSION['entorno']) ? $_SESSION['entorno'] : 'central';
+        $this->cid_central = $this->cid->conectar($db);
 
     } 
 
