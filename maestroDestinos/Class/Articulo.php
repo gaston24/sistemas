@@ -35,12 +35,11 @@ class Articulo
 
     public function traerArticulos($rubro, $temporada){
 
+
         $sql = " 
-        
         SELECT A.COD_ARTICU, DESCRIPCION, DESTINO, TEMPORADA, B.RUBRO,A.FECHA_MOD FROM MAESTRO_DESTINOS A
         LEFT JOIN SOF_RUBROS_TANGO B ON A.COD_ARTICU = B.COD_ARTICU
         WHERE TEMPORADA LIKE '$temporada' AND RUBRO LIKE '$rubro'
-
         ";
 
         $rows = $this->retornarArray($sql);

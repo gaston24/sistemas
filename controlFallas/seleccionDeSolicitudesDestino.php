@@ -60,7 +60,7 @@
 
         }else{
 
-            if($estado == 5){
+            if($estado == 5 && $value['ESTADO'] != 5){
 
                 unset($result[$key]);
 

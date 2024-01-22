@@ -4,6 +4,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $root = $_SERVER["DOCUMENT_ROOT"];
     $targetDir = 'assets/uploads/';
 
+
     // Crear el directorio si no existe
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -12,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $maxFiles = 3;
     $totalFiles = count($_FILES['archivos']['name']);
     $uploadedFiles = 0;
+
     $maxFileSize = 6 * 1024 * 1024; // 6 MB en bytes
+
 
     for ($i = 0; $i < $totalFiles; $i++) {
         // Verificar el tamaño del archivo
@@ -27,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
    
             if (in_array($fileType, $allowedTypes)) {
+                var_dump("aca");
                 if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $targetFile)) {
                     // var_dump($_FILES['archivos']['tmp_name'][$i], $targetFile);
                     $exif = exif_read_data($targetFile);

@@ -51,7 +51,7 @@ const elegirImagen = (e) => {
 const cargarArchivos = (input,codArticulo) => {
 
 
-  eliminarArchivo(input,false,codArticulo); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
+  // eliminarArchivo(input,false,codArticulo); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
 
   const file = document.getElementById('archivos').files[0];
 
@@ -115,30 +115,43 @@ const enviarImagenes = (codArticulo) => {
     }
 
     $.ajax({
-
-      url: 'upload_image.php',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) { 
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Carga exitosa',
-          text: `Se subieron ${files.length} archivos correctamente!`
-        })
-
-        quitarErrorImagen()
-
+      url: "Controller/RecodificacionController.php?accion=eliminarArchivo",
+      type: "POST",
+      data: {
+        codArticulo: codArticulo,
+        numSolicitud: numSolicitud
       },
-      error: function() {
+      success: function (response) {
+        $.ajax({
 
-        alert('Error al enviar las imágenes al servidor.');
-
+          url: 'upload_image.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) { 
+    
+            Swal.fire({
+              icon: 'success',
+              title: 'Carga exitosa',
+              text: `Se subieron ${files.length} archivos correctamente!`
+            })
+    
+            quitarErrorImagen()
+    
+          },
+          error: function() {
+    
+            alert('Error al enviar las imágenes al servidor.');
+    
+          }
+    
+        });
+        
       }
-
     });
+  
+   
     
 }
 
@@ -345,13 +358,8 @@ const copiarFila = (div) => {
   <option value="" selected disabled>Seleccione un artículo</option>
   `; 
 
-  JSON.parse(data).forEach((e, x) => {
-    
-      opciones += `
-        <option value="${e.COD_ARTICU}?${e.DESCRIPCIO}?${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
-      `;
 
-  });
+
 
   opciones += `</select>`;
 
@@ -363,24 +371,52 @@ filaClonada.querySelectorAll("td")[0].innerHTML = opciones;
 
 filaOriginal.after(filaClonada);
 
+$('.selectArticulo:last').select2({
+  placeholder: 'Buscar artículo...',
+  minimumInputLength: 3,
+  ajax: {
+   
+     transport: function (params, success, failure) {
+      const term = params.data.q;
+      const results = filtrarArticulosLocalStorage(term);
+      success({ results: results });
+      },
+    processResults: function (data, params) {
+      params.page = params.page || 1;
+  
+      return {
+        results: data['results']['items'],
+        pagination: {
+          more: (params.page * 30) < 3 
+        }
+      };
+    },
+    cache: true
+  },
+});
+}
 
-  $('.selectArticulo').select2({
-    placeholder: 'Buscar artículo...',
-    minimumInputLength: 3,
-    data: function(params) {
-        // Obtener los datos del Local Storage
-        const storedData = JSON.parse(localStorage.getItem('articulos'));
-        // console.log(storedData)
-        // Filtrar los datos para que coincidan con el término de búsqueda
-        const filteredData = storedData.filter(item => item.text.includes(params.term));
+function filtrarArticulosLocalStorage(term) {
+  term = convertirAMayusculas(term);
+  const articulos = JSON.parse(localStorage.getItem('articulos')) || [];
+  contadorId = 1; // Restablecer el contador al principio de cada búsqueda
+  const results = articulos.filter(item => {
+    const codigoArticulo = convertirAMayusculas(item.COD_ARTICU);
+    const descripcion = convertirAMayusculas(item.DESCRIPCIO);
 
-        // Devolver los datos filtrados para que Select2 los utilice
-        return {
-        results: filteredData
-        };
-    }
+    // Buscar en el código de artículo o en la descripción
+    return codigoArticulo.includes(term) || descripcion.includes(term);
+  }).map(item => ({ id: item.COD_ARTICU+"?"+item.DESCRIPCIO+"?"+item.PRECIO, text: item.COD_ARTICU+" | "+item.DESCRIPCIO }));
+  
+  return  { items: results };
+}
+
+function convertirAMayusculas(inputString) {
+  return inputString.replace(/[a-z]/g, function(letra) {
+      return letra.toUpperCase();
   });
 }
+
 
 const traerArticulos = () => {
 
@@ -485,6 +521,14 @@ const solicitar = async (esBorrador = false) => {
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
   let codArticulos = [];
+  if(usuario == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      text: 'Debe ingresar un usuario',
+    })
+    return 1;
+  }
   allTr.forEach(e => {
     
     codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]);
@@ -638,6 +682,20 @@ const solicitar = async (esBorrador = false) => {
                   esBorrador: esBorrador
                 },
                 success: function (response) {
+                  
+            
+                  $.ajax({
+                    url: "Controller/RecodificacionController.php?accion=realizarMovimientoOu",
+                    type : "POST",
+                    data: {
+                      dataArticulos:dataArticulos
+                    },
+                    success: function (response) {
+                      console.log(response)
+                    }
+                  });
+     
+               
                    
                   Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
                       $.ajax({

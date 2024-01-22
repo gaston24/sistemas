@@ -51,7 +51,7 @@ $maestroArticulos = new Articulo();
 
         <div class="form-row mb-3 contenedor">
 
-        <div class="col-sm-2 mt-2">
+        <div class="col- mt-2">
             <label for="inputCity">Rubro</label>
             <select id="inputRubro" class="form-control form-control-sm" name="rubro">
                 <option ></option>
@@ -60,7 +60,9 @@ $maestroArticulos = new Articulo();
                         foreach($todosLosRubros as $rubro => $key){
                     
                     ?>
+
                         <option value="<?= $key['DESCRIP'] ?>"  <?= (isset($_GET['rubro']) && ($key['DESCRIP'] == $_GET['rubro'])) ? 'selected' : '' ?>><?= $key['DESCRIP'] ?></option>
+
                     <?php
                     }
                     ?>
@@ -69,7 +71,7 @@ $maestroArticulos = new Articulo();
             </select>
         </div>  
         
-            <div class="col-sm-2 mt-2" id="contTemp">
+            <div class="col- mt-2" id="contTemp">
                     <label for="inputState2">Temporada</label>
                     <select id="inputTemp" class="form-control form-control-sm" name="temporada">
                         <option selected></option>
@@ -82,6 +84,7 @@ $maestroArticulos = new Articulo();
                         ?>
                     </select>
             </div>
+
 
             <div class="col mt-2">
                 <div class="row">
@@ -98,6 +101,7 @@ $maestroArticulos = new Articulo();
 
             <div class="col-2">
 			</div>  
+
         </div>
 
    

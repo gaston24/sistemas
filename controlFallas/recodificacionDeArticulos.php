@@ -14,11 +14,13 @@
         $numSolicitud = $_GET['numSolicitud'];
     }
 
+    $remitos = [];
 
-    $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud);
-
+    $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud,$nroSucurs);
+    $recodificacionPropia = false;
 
     $arrayRemitos = [];
+
     foreach ($data as $key => $value) {
 
         if($value['N_COMP'] != null && !in_array($value['N_COMP'], $arrayRemitos)){
@@ -26,17 +28,19 @@
                 $arrayRemitos[] = $value['N_COMP'];
 
         }
+
+        if($value['NUM_SUC'] == $value['DESTINO']){
+           $recodificacionPropia = true;
+        }
         
     }
+
     if(count($arrayRemitos) > 0){
      
         $remitos = $recodificacion->traerRemitosEnElLocal($arrayRemitos);
         
-    }else{
-
-        $remitos = [];
     }
-   
+  
    
 ?>
 
@@ -114,7 +118,7 @@
                             <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Recodificacion de Articulos </strong></h3>
                         </div>
                         <div class="right-div">
-                            <button class="btn btn-success"  onclick="ajustar()">Ajustar <i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-success"  onclick="<?= ($recodificacionPropia == true) ? 'ajustePropio()' : 'ajustar()' ?>">Ajustar <i class="bi bi-pencil-square"></i></button>
                         </div>
             
                         <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
@@ -132,22 +136,44 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    foreach ($data as $key => $remito) {
-                                        if(in_array($remito['N_COMP'], $remitos)){
-                              
-                                ?>
-                                    <tr>
-                                        <td  style="text-align:center;"><?= $remito['FECHA']->format("Y-m-d") ?></td>
-                                        <td  style="text-align:center;"><?= $remito['N_COMP'] ?></td>
-                                        <td  style="text-align:center;"><?= $remito['COD_ARTICU'] ?></td>
-                                        <td  style="text-align:center;"><?= $remito['DESCRIPCION'] ?></td>
-                                        <td  style="text-align:center;"><?= $remito['CANTIDAD'] ?></td>
-                                        <td  style="text-align:center;"><?= $remito['NUEVO_CODIGO'] ?></td>
-                                        <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;" checked hidden></td>
-                                        <td hidden><?= $remito['ID_ENC'] ?></td>
-                                    </tr>
+
+
+                                foreach ($data as $key => $remito) {
+
                                     
-                                <?php 
+                                    if($recodificacionPropia){
+                                    ?>
+                                        
+                                        <tr>
+                                            <td  style="text-align:center;"><?= $remito['FECHA']->format("Y-m-d") ?></td>
+                                            <td  style="text-align:center;"><?= $remito['N_COMP'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['COD_ARTICU'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['DESCRIPCION'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['CANTIDAD'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['NUEVO_CODIGO'] ?></td>
+                                            <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;" checked hidden></td>
+                                            <td hidden><?= $remito['ID_ENC'] ?></td>
+                                        </tr>
+
+                                    <?php
+
+                                    }else{
+                                            if(in_array($remito['N_COMP'], $remitos)){
+                                
+                                    ?>
+                                        <tr>
+                                            <td  style="text-align:center;"><?= $remito['FECHA']->format("Y-m-d") ?></td>
+                                            <td  style="text-align:center;"><?= $remito['N_COMP'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['COD_ARTICU'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['DESCRIPCION'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['CANTIDAD'] ?></td>
+                                            <td  style="text-align:center;"><?= $remito['NUEVO_CODIGO'] ?></td>
+                                            <td  style="text-align:center;"><input type="checkbox" style="height: 16px;width: 16px;" checked hidden></td>
+                                            <td hidden><?= $remito['ID_ENC'] ?></td>
+                                        </tr>
+                                        
+                                    <?php 
+                                        }
                                     }
                                 }
                                 ?>
