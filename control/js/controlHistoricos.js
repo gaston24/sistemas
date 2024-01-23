@@ -23,7 +23,7 @@ const actualizarAjusar = (div) => {
                 nroRemito: nroRemito,
             },
             success: function(data){
-                console.log(data);
+                div.parentElement.parentElement.querySelectorAll("td")[5].textContent = 'RECHAZADO';
             }
         })
     }
