@@ -88,16 +88,22 @@ const formatoFecha = (fechaOriginal) => {
     return fechaConvertida;
 
 }
+
+
 const exportar = () => {
 
- 
-        $("#tablaReporte").table2excel({
-    
-            // exclude CSS class
-            exclude: ".noExl",
-            name: "Worksheet Name",
-            filename: "Remitos", //do not include extension
-            fileext: ".xls", // file extension
-        });
-   
-}
+    const tabla = document.getElementById('tablaReporte');
+    if(tabla.querySelector("#detalleBody").querySelector("tr") == null){
+        Swal.fire({
+
+            icon: 'error',
+            title: 'error',
+            text: 'No hay datos para exportar',
+        
+        })
+        return 1;
+    }
+    const workbook = XLSX.utils.table_to_book(tabla);
+    XLSX.writeFile(workbook, 'ReporteDeFichadas.xlsx');
+
+  };
