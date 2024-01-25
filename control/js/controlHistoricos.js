@@ -26,6 +26,7 @@ const actualizarAjustar = (div) => {
             },
             success: function(data){
                 div.parentElement.parentElement.querySelectorAll("td")[5].textContent = 'RECHAZADO';
+                location.reload();
             }
         })
     }
