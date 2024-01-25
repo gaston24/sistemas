@@ -128,7 +128,7 @@ if(isset($_GET['fechaDesde'])){
 				<td ><?php if($data['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){
 					
 					echo '
-						<select id="inputAjustar" name="inputAjustar" onchange="actualizarAjusar(this)" class="form-select" aria-label="Default select example" style="text-align:center;width: 62.22222px;height: 32.22222px;"';
+						<select id="inputAjustar" name="inputAjustar" onchange="actualizarAjustar(this)" class="form-select" aria-label="Default select example" style="text-align:center;width: 62.22222px;height: 32.22222px;"';
 							if($data['NRO_AJUSTE'] != NULL)echo 'disabled';
 						echo '>' ;
 						echo'

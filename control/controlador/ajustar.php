@@ -6,7 +6,7 @@ $value = $_POST['value'];
 
 $remito = new Remito();
 
-$remito->actualizarAjusar($value, $nroRemito);
+$remito->actualizarAjustar($value, $nroRemito);
 
 return true;
 

@@ -1,6 +1,7 @@
-const actualizarAjusar = (div) => {
+const actualizarAjustar = (div) => {
     let  nroRemito = div.parentElement.parentElement.querySelectorAll("td")[2].textContent;
     let  value = div.value;
+
     $.ajax ({
         url: 'controlador/ajustar.php',
         type: 'POST',
@@ -12,6 +13,7 @@ const actualizarAjusar = (div) => {
             console.log(data);
         }
     });
+
     if(div.value == 'NO'){
 
         div.disabled = true;

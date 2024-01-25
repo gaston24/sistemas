@@ -667,7 +667,7 @@ class Remito {
 
     }
 
-    public function actualizarAjusar ($value, $remito) {
+    public function actualizarAjustar ($value, $remito) {
 
         $cid = $this->conn->conectar('central');
         $remito = trim($remito);
