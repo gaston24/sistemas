@@ -56,13 +56,13 @@ const buscar = () => {
                 <tr>
                     <td>${response.FECHA_REG}</td>
                     <td>${response.SUCURSAL}</td>
-                    <td>${response.LEGAJO}</td>
+                    <td>${response.NRO_LEGAJO}</td>
                     <td>${response.APELLIDO_Y_NOMBRE}</td>
                     <td>${response.ENTRADA}</td>
                     <td>${response.SALIDA}</td>
                     <td>${response.AUSENTE}</td>
                     <td>${response.LLEGA_TARDE}</td>
-                    <td>${response['TOTAL TRABAJADO']}</td>
+                    <td>${response.TOTAL_TRABAJADO}</td>
                     
                 </tr>
                 `;
