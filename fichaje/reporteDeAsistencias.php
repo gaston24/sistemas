@@ -24,6 +24,22 @@ $locales = $fichaje->traerLocales();
             
         ?>
     <style>
+ 
+
+        #tableOne {
+            border-collapse: collapse;
+            margin: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
 
     </style>
 
@@ -49,20 +65,19 @@ $locales = $fichaje->traerLocales();
                                     <div class="col-12">
                                         <div class="table-responsive" id="tableIndex" style="overflow-y: auto;max-height:700px">
                                         
-                                        <table class="table table-hover table-condensed table-striped text-center" style="width: 70%;border: solid 1px;margin-left:10%" cellspacing="0" data-page-length="100">
+                                            <table class="table table-hover  text-center" style="width: 90%;border: solid 1px;" id="tableOne" cellspacing="0" data-page-length="100">
                                                 <thead class="thead-dark" style="font-size: small;">
-                                                    <th scope="col" style="width: 6%">Reporte De Asistencias </th>
-                                                    
+                                                    <th scope="col" style="width: 6%">Reporte De Asistencias </th>                                       
                                                 </thead>
-                                                <tbody id="tableVb" >
+                                                <tbody>
                                                     <tr>
-                                                        <td style="white-space: nowrap;">
+                                                        <td >
                                                             Desde:
-                                                            <input type="date" id="desde" name="desde" style="margin-right:20px" value="<?=  date("Y-m-d", strtotime( '-1 days' ) ) ?>">
+                                                            <input type="date" id="desde" name="desde" style="margin-right:20px;width:10%" value="<?=  date("Y-m-d", strtotime( '-1 days' ) ) ?>">
                                                             Hasta:
-                                                            <input type="date" id="hasta" name="hasta" style="margin-right:20px" value="<?= date("Y-m-d") ?>">
+                                                            <input type="date" id="hasta" name="hasta" style="margin-right:20px;width:10%" value="<?= date("Y-m-d") ?>">
                                                             Usuario:
-                                        
+
                                                             <select name="usuario" id="usuario" class="usuario">
                                                                 <option value="%">TODOS</option>
                                                                 <?php 
@@ -73,7 +88,7 @@ $locales = $fichaje->traerLocales();
                                                                 ?>
                                                             </select>
                                                             Sucursal:
-                                            
+
                                                             <select name="sucursal" id="sucursal" class="sucursal">
                                                                 <option value="%">TODOS</option>
                                                                 <?php 
@@ -83,15 +98,15 @@ $locales = $fichaje->traerLocales();
 
                                                                 ?>
                                                             </select>
-
-                                                            <button class="btn btn-primary" type="button" onclick="buscar()">Buscar <i class="bi bi-search"></i></button>
-                                                            <button class="btn btn-secondary" type="button" onclick="exportar()">Exportar <i class="bi bi-file-earmark-excel"></i></button>
-                                                            
+                                                         
+                                                            <button class="btn btn-primary" type="button" onclick="buscar()" id="btn-buscar">Buscar <i class="bi bi-search"></i></button>
+                                                            <button class="btn btn-secondary" type="button" onclick="exportar()" id="btn-export">Exportar <i class="bi bi-file-earmark-excel"></i></button>
+                                                          
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <table id="tablaReporte"  >
+                                                            <table id="tablaReporte" style="width: 100%;" >
                                                                 <thead style="font-size:13px">
                                                                     <tr>
                                                                         <th style="width:10%">FECHA.REG</th>
@@ -139,6 +154,38 @@ $locales = $fichaje->traerLocales();
          <script>
             $('.usuario').select2({});
             $('.sucursal').select2({});
+      
+     
+                
+                document.querySelectorAll('.select2-container')[0].style.width = '20%'; 
+                document.querySelectorAll('.select2-container')[1].style.width = '10%'; 
+              
+                function applyStylesBasedOnScreenWidth() {
+                    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+                    if (screenWidth < 1200) {
+                    
+
+                
+                        document.querySelector("#hasta").style.marginRight = '0px';
+                        document.querySelector("#desde").style.marginRight = '0px';
+                        document.querySelector("#btn-buscar").style.fontSize = '10px';
+                        document.querySelector("#btn-export").style.fontSize = '10px'; 
+
+                    
+                    } else {
+                        
+                       
+                        document.querySelector("#hasta").style.marginRight = '20px';
+                        document.querySelector("#desde").style.marginRight = '20px';
+                        document.querySelector("#btn-buscar").style.fontSize = '14px';
+                        document.querySelector("#btn-export").style.fontSize = '14px'; 
+                      
+                    }
+                }
+                applyStylesBasedOnScreenWidth();
+               
+                window.addEventListener('resize', applyStylesBasedOnScreenWidth())
          </script>                                           
 
         
