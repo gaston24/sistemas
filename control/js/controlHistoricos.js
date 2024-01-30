@@ -1,6 +1,7 @@
-const actualizarAjusar = (div) => {
+const actualizarAjustar = (div) => {
     let  nroRemito = div.parentElement.parentElement.querySelectorAll("td")[2].textContent;
     let  value = div.value;
+
     $.ajax ({
         url: 'controlador/ajustar.php',
         type: 'POST',
@@ -12,4 +13,21 @@ const actualizarAjusar = (div) => {
             console.log(data);
         }
     });
+
+    if(div.value == 'NO'){
+
+        div.disabled = true;
+
+        $.ajax ({
+            url: 'controlador/rechazarRemito.php',
+            type: 'POST',
+            data: {
+                nroRemito: nroRemito,
+            },
+            success: function(data){
+                div.parentElement.parentElement.querySelectorAll("td")[5].textContent = 'RECHAZADO';
+                location.reload();
+            }
+        })
+    }
 }
