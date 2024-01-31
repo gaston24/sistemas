@@ -29,7 +29,8 @@ class Pedido {
 
           
             $sql = "EXEC SJ_TIPO_PEDIDO_".$tipoPedido." $suc, '$codClient'";
-            
+           
+
             if($esOutlet != null){
 
                 if($tipoPedido == 1){
@@ -44,10 +45,24 @@ class Pedido {
 
             $stmt = sqlsrv_query($cid, $sql);
 
-            $next_result = sqlsrv_next_result($stmt);
+            if($db == 'uy'){
 
+                if($tipoPedido != '2'){
+
+                    $next_result = sqlsrv_next_result($stmt);
+
+                }
+
+            }else{
+
+                $next_result = sqlsrv_next_result($stmt);
+                
+            }
+
+            
             $v = [];
-
+            
+       
             while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
 
                 $v[] = $row;

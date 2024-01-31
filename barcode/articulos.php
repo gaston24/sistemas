@@ -4,10 +4,20 @@ class Codigos
 {
 
     public function traerArticulo($codigo){
+
+        session_start();
+        
         try {
 
             $servidor_central = 'servidor';
-            $conexion_central = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
+
+            $db = 'LAKER_SA';
+
+            if($_SESSION['usuarioUy'] == 1){
+                $db = "TASKY_SA";
+            }
+            
+            $conexion_central = array( "Database"=>$db, "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
             $cid_central = sqlsrv_connect($servidor_central, $conexion_central);
              
          } catch (PDOException $e){

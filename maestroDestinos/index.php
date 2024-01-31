@@ -3,9 +3,10 @@
 require 'Class/temporada.php';
 require 'Class/Articulo.php';
 require 'Class/Rubro.php';
-
 $rubro = new Rubro();
 $todosLosRubros = $rubro->traerRubros();
+var_dump("aca");
+die();
 
 $temporada = new Temporada();
 $todasLasTemporadas = $temporada->traerTemporadas();
