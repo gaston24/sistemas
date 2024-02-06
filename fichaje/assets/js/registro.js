@@ -101,14 +101,14 @@ const login = (numeroLegajo, password) =>{
                                     </div>
 
                                 `,
-                                showConfirmButton: false, 
+                                showConfirmButton: true, 
                                 allowOutsideClick: false, 
-                                timer: 2000, 
+                                timer: 5000, 
                             });
 
                             setTimeout(function () {
                                 location.reload();
-                            }, 2000); 
+                            }, 5000); 
 
                             document.querySelector("#swal2-html-container").style.height = '190px'
 
@@ -179,9 +179,9 @@ const login = (numeroLegajo, password) =>{
                                                     </div>
                 
                                                 `,
-                                                showConfirmButton: false, 
+                                                showConfirmButton: true, 
                                                 allowOutsideClick: false, 
-                                                timer: 3000, 
+                                                timer: 5000, 
                                                 
                                             });
                                             setTimeout(function () {
