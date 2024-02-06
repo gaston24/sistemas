@@ -3,28 +3,28 @@
 class Rubro
 {
 
+    private $cid;
+    private $cid_central;
+
+    
+    function __construct()
+    {
+
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        $this->cid = new Conexion();
+        
+        $db = ($_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+
+        $this->cid_central = $this->cid->conectar($db);
+    } 
+
+
     public function traerRubros(){
-        try {
 
-            include_once __DIR__.'/../class/conexion.php';
-            $conn = new Conexion;
-            
-            $cid_central = $conn->conectar('central');
-
-
-            // $servidor_central = 'servidor';
-            // $conexion_central = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-            // $cid_central = sqlsrv_connect($servidor_central, $conexion_central);
-             
-         } catch (PDOException $e){
-                 echo $e->getMessage();
-         }
-
-        $sql = "
-        SELECT REPLACE(DESCRIP, '_', '') DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_][ZD]%' AND DESCRIP NOT LIKE 'Todos' 
-        AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT IN ('ALHAJEROS','PACKAGING','_KITS')
+        $sql = "SELECT DISTINCT(RUBRO) RUBRO FROM SOF_RUBROS_TANGO 
+        WHERE RUBRO NOT LIKE '[_]%' AND RUBRO NOT LIKE '%OUTLET' AND RUBRO NOT IN ('ALHAJEROS','PACKAGING')
         ";
-        $stmt = sqlsrv_query( $cid_central, $sql );
+        $stmt = sqlsrv_query( $this->cid_central, $sql );
 
         $rows = array();
 

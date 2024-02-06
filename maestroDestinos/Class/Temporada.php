@@ -3,24 +3,28 @@
 class Temporada
 {
 
-    public function traerTemporadas(){
-        try {
+    private $cid;
+    private $cid_central;
 
-            $servidor_central = 'servidor';
-            $conexion_central = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-            $cid_central = sqlsrv_connect($servidor_central, $conexion_central);
-             
-         } catch (PDOException $e){
-                 echo $e->getMessage();
-         }
+    
+    function __construct()
+    {
 
-        $sql = "
-
-        SELECT DISTINCT(TEMPORADA) TEMPORADA FROM MAESTRO_DESTINOS WHERE TEMPORADA NOT IN ('SIN','ELIMINAR/DESHABILITA') AND TEMPORADA IS NOT NULL
-        ORDER BY 1 DESC 
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        $this->cid = new Conexion();
         
+        $db = 'central';
+        $this->cid_central = $this->cid->conectar($db);
+    } 
+
+    public function traerTemporadas(){
+
+        $sql = "SELECT DISTINCT(NOMBRE_TEMP) TEMPORADA FROM MAESTRO_TEMPORADAS
+                WHERE EXCLUIR IS NULL
+                ORDER BY 1 DESC 
+                
         ";
-        $stmt = sqlsrv_query( $cid_central, $sql );
+        $stmt = sqlsrv_query(  $this->cid_central, $sql );
 
         $rows = array();
 
