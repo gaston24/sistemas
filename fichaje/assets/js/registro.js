@@ -102,13 +102,19 @@ const login = (numeroLegajo, password) =>{
 
                                 `,
                                 showConfirmButton: true, 
+                                confirmButtonText: 'Cerrar',
                                 allowOutsideClick: false, 
-                                timer: 5000, 
+                                timer: 15000, 
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Si se hace clic en el botón Cerrar, recargar la página
+                                    location.reload();
+                                }
                             });
 
                             setTimeout(function () {
                                 location.reload();
-                            }, 5000); 
+                            }, 15000); 
 
                             document.querySelector("#swal2-html-container").style.height = '190px'
 
@@ -179,14 +185,20 @@ const login = (numeroLegajo, password) =>{
                                                     </div>
                 
                                                 `,
-                                                showConfirmButton: true, 
+                                                showConfirmButton: true,
+                                                confirmButtonText: 'Cerrar', 
                                                 allowOutsideClick: false, 
-                                                timer: 5000, 
+                                                timer: 15000, 
                                                 
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // Si se hace clic en el botón Cerrar, recargar la página
+                                                    location.reload();
+                                                }
                                             });
                                             setTimeout(function () {
                                                 location.reload();
-                                            }, 2000); 
+                                            }, 15000); 
                                             document.querySelector("#swal2-html-container").style.height = '190px'
                                         },
 
