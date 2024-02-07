@@ -28,7 +28,7 @@ class Egreso
         LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN AND a.cod_cta = b.COD_CTA  AND  b.NRO_SUCURSAL = '$nroSucursal'
         WHERE FECHA BETWEEN '$desde' AND '$hasta'
         AND a.NRO_SUCURS = '$nroSucursal'";
-    var_dump($sql);
+
         $stmt = sqlsrv_query($this->cid_central, $sql);
 
         try{
