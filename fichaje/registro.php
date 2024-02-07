@@ -12,6 +12,8 @@
             session_start();
       
         ?>
+     <style>
+     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -39,11 +41,14 @@
                     <div><h3 style="font-style: italic">¡ Te damos la bienvenida !</h3></div>
                     <div>Por favor</div>
                     <div>Indicanos tu legajo y clave</div>
-                    <input type="text" id="campo" class="swal2-input" placeholder="Usuario" onchange="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px">
-                    <div class="password-input">
-                        <input type="password" id="password" class="swal2-input" placeholder="Contraseña">
+                    <input type="text" id="campo" class="swal2-input" onKeyup="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px" autocomplete="off" >
+                    <div id="suggestions"></div>
+                    <div class="password-input" autocomplete="off">
+                        <input type="password" id="password" class="swal2-input" placeholder="Contraseña"  autocomplete="off">
                         <i class="bi bi-eye-slash toggle-password"></i>
                     </div>
+                  
+
                 `,
                 allowOutsideClick: false, // Evita que se cierre al hacer clic fuera
                 confirmButtonText: 'Cargar',

@@ -20,32 +20,78 @@ $(document).ready(function() {
         }
     });
 
+    
+  
 });
 
-const buscarPorCampo = (div) =>{
-    let valor = div.value
-    
+const buscarPorCampo = (div) => {
+    // Obtiene el valor actual del campo de usuario
+    let inputValue = div.value;
+
+
+
     $.ajax({
         url : 'controller/FichajeController.php?action=buscarPorCampo',
         type : 'POST',
-        data : {campo:valor},
+        data : {campo:inputValue},
         success : function(response){
-            data = JSON.parse(response)[0]
+            let data = JSON.parse(response);
 
-            if(data){
+            // Filtra las sugerencias que coinciden con el valor ingresado
+            let sugerenciasFiltradas = data.filter(function(obj) {
+                // Filtra por APELLIDO_Y_NOMBRE o NRO_LEGAJO, ajusta según lo que desees
+                return obj.APELLIDO_Y_NOMBRE.toLowerCase().includes(inputValue.toLowerCase()) ||
+                       obj.NRO_LEGAJO.toString().includes(inputValue);
+            });
 
-                numero = data['NRO_LEGAJO']
-                nombre = data['APELLIDO_Y_NOMBRE']
+            // Muestra las sugerencias en el div correspondiente
+            let suggestionsDiv = document.querySelector('#suggestions');
+            suggestionsDiv.innerHTML = '';
 
-                document.querySelector("#campo").value = numero + ' - ' + nombre
-                document.querySelector("#campo").style.color = '#00C3D8'
+            if (inputValue.trim() !== '') {
+                suggestionsDiv.style.display = 'block';
+
+                // Agrega cada sugerencia como un elemento de lista al div
+                sugerenciasFiltradas.forEach(function(obj) {
+                    let suggestionItem = document.createElement('div');
+                    suggestionItem.textContent = `${obj.NRO_LEGAJO} - ${obj.APELLIDO_Y_NOMBRE}`;
+                    suggestionItem.style.borderBottom = '1px solid #ccc';
+                    suggestionItem.style.padding = '8px';
+                    suggestionItem.style.cursor = 'pointer';
+        
+
+                    suggestionItem.addEventListener('mouseenter', function() {
+                        suggestionItem.style.backgroundColor = '#00C3D8';
+                    });
+
+                    // Restaura el color original cuando el mouse sale de la sugerencia
+                    suggestionItem.addEventListener('mouseleave', function() {
+                        suggestionItem.style.backgroundColor = '';
+                    });
+
+
+
+                    suggestionItem.addEventListener('click', function() {
+                        // Cuando se hace clic en una sugerencia, completa el campo de usuario con la sugerencia
+                        document.querySelector('#campo').value = `${obj.NRO_LEGAJO} - ${obj.APELLIDO_Y_NOMBRE}`
+                        document.querySelector('#campo').style.color = '#00C3D8'
+                        // Oculta las sugerencias
+                        suggestionsDiv.style.display = 'none';
+                    });
+                    suggestionsDiv.appendChild(suggestionItem);
+                });
+            } else {
+                // Si el campo está vacío, oculta el div de sugerencias
+                suggestionsDiv.style.display = 'none';
             }
-
 
         }
 
     })
+    
+
 }
+
 const login = (numeroLegajo, password) =>{
 
     $.ajax ({
@@ -227,7 +273,8 @@ const login = (numeroLegajo, password) =>{
                         <br>
                         <div><h3 style="font-style: italic">¡ Usuario No habilitado !</h3></div>
                         <div>Por favor Comuniquese con Recursos Humanos</div>
-                        <input type="text" id="campo" class="swal2-input" placeholder="Usuario" onchange="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px">
+                        <input type="text" id="campo" class="swal2-input" placeholder="Usuario" onkeyup="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px" autocomplete="off">
+                        <div id="suggestions"></div>
                         <div class="password-input">
                             <input type="password" id="password" class="swal2-input" placeholder="Contraseña">
                             <i class="bi bi-eye-slash toggle-password"></i>
@@ -272,7 +319,8 @@ const login = (numeroLegajo, password) =>{
                         <br>
                         <div><h3 style="font-style: italic">¡ No hemos podido identificarte correctamente !</h3></div>
                         <div>Vuelve a intentarlo</div>
-                        <input type="text" id="campo" class="swal2-input" placeholder="Usuario" onchange="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px">
+                        <input type="text" id="campo" class="swal2-input" placeholder="Usuario" onkeyup="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px" autocomplete="off">
+                        <div id="suggestions"></div>
                         <div class="password-input">
                             <input type="password" id="password" class="swal2-input" placeholder="Contraseña">
                             <i class="bi bi-eye-slash toggle-password"></i>
