@@ -3,21 +3,26 @@
 class Articulo
 {
     
+
     private $cid;
     private $cid_central;
 
-    
+
     function __construct()
     {
 
         require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
         $this->cid = new Conexion();
-        $this->cid_central = $this->cid->conectar('central');
+
+        $db = ($_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+
+        $this->cid_central = $this->cid->conectar($db);
 
     } 
 
-
     private function retornarArray($sqlEnviado){
+
+
 
         $sql = $sqlEnviado;
 

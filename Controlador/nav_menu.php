@@ -79,7 +79,7 @@ include('estado_cuenta.php');
             ?>
 
             <?php
-            if ($_SESSION['tipo'] != 'MAYORISTA' && $_SESSION['usuarioUy'] != 1) {
+            if ($_SESSION['tipo'] != 'MAYORISTA' ) {
             ?>
 
                 <li class="nav-item dropdown">
@@ -87,16 +87,22 @@ include('estado_cuenta.php');
                         Reportes
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item spinner" href="#" onclick="<?= (substr($codClient, 0, 2) == 'FR') ?  "location.href='guiasf/index.php'" : "location.href='guia/index.php'"; ?>">Guia de Transporte</a>
+                        <?php 
+                            if($_SESSION['usuarioUy'] != 1){
+                                
+                        ?>
+                            <a class="dropdown-item spinner" href="#" onclick="<?= (substr($codClient, 0, 2) == 'FR') ?  "location.href='guiasf/index.php'" : "location.href='guia/index.php'"; ?>">Guia de Transporte</a>
 
                         <?php
+                        }
+
                         if ($dashboard != 'SIN_URL') {
                         ?>
                             <a class="dropdown-item spinner" href="#" onclick="window.open('<?php echo $dashboard; ?>');">Dashboard</a>
                         <?php
                         }
                         ?>
-                        <?php if ($_SESSION['numsuc'] > 100) { ?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php } ?>
+                        <?php if ($_SESSION['numsuc'] > 100 && $_SESSION['usuarioUy'] != 1) { ?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php } ?>
                         <a class="dropdown-item spinner" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
                     </div>
                 </li>
@@ -107,7 +113,7 @@ include('estado_cuenta.php');
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                            <?php if ($_SESSION['numsuc'] < 100) { ?>
+                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Administración</a>
                                 <ul class="dropdown-menu">
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='egresosDeCaja/egresosDeCaja.php'">Egresos de caja <span class="badge badge-warning">Testing</span></a>
@@ -147,7 +153,7 @@ include('estado_cuenta.php');
 
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Stock</a>
                                 <ul class="dropdown-menu">
-                                <?php if($_SESSION['connection_db'] != false) {?>      
+                                <?php if($_SESSION['connection_db'] != false ) {?>      
                                     <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
                                 <?php } ?>
                                 <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
@@ -155,7 +161,7 @@ include('estado_cuenta.php');
                                 </ul>
                             </li>
                             
-                            <?php if ($_SESSION['numsuc'] < 100) { ?>
+                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
                             
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
                                 <ul class="dropdown-menu">
@@ -192,7 +198,7 @@ include('estado_cuenta.php');
                 <?php } ?>
 
                 <?php
-                if ($_SESSION['numsuc'] > 100 && $_SESSION['habPedidos'] == 1) {
+                if ($_SESSION['numsuc'] > 100 && $_SESSION['habPedidos'] == 1 && $_SESSION['usuarioUy'] != 1) {
                 ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1,11 +1,11 @@
 <?php
-
+session_start();
 require 'Class/temporada.php';
 require 'Class/Articulo.php';
 require 'Class/Rubro.php';
-
 $rubro = new Rubro();
 $todosLosRubros = $rubro->traerRubros();
+
 
 $temporada = new Temporada();
 $todasLasTemporadas = $temporada->traerTemporadas();
@@ -61,7 +61,7 @@ $maestroArticulos = new Articulo();
                     
                     ?>
 
-                        <option value="<?= $key['DESCRIP'] ?>"  <?= (isset($_GET['rubro']) && ($key['DESCRIP'] == $_GET['rubro'])) ? 'selected' : '' ?>><?= $key['DESCRIP'] ?></option>
+                <option value="<?= $key['RUBRO'] ?>"><?= $key['RUBRO'] ?></option>
 
                     <?php
                     }

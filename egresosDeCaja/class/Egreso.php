@@ -12,7 +12,11 @@ class Egreso
 
         require_once __DIR__.'/../../class/conexion.php';
         $this->cid = new Conexion();
-        $this->cid_central = $this->cid->conectar('central');
+        $db= 'central';
+        if($_SESSION['usuarioUy'] == 1){
+            $db = 'uy';
+        }
+        $this->cid_central = $this->cid->conectar($db);
 
     } 
 
@@ -24,8 +28,6 @@ class Egreso
         LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN AND a.cod_cta = b.COD_CTA  AND  b.NRO_SUCURSAL = '$nroSucursal'
         WHERE FECHA BETWEEN '$desde' AND '$hasta'
         AND a.NRO_SUCURS = '$nroSucursal'";
-  
-
 
         $stmt = sqlsrv_query($this->cid_central, $sql);
 

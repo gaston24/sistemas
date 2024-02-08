@@ -39,7 +39,7 @@ class Articulo
     }
 
 
-    public function traerMaestroArticulo($codArticulo = null, $usuarioUy = 0) 
+    public function traerMaestroArticulo($codArticulo = null) 
     {
         $codArt = $codArticulo ? $codArticulo : '%';
 
@@ -47,7 +47,7 @@ class Articulo
         inner join GVA17 b on a.COD_ARTICU = b.COD_ARTICU
         WHERE a.COD_ARTICU LIKE '%$codArt%' AND B.NRO_DE_LIS = '20'";
 
-        $rows = $this->retornarArray($sqlArt, $usuarioUy);
+        $rows = $this->retornarArray($sqlArt);
 
         return $rows;
     }

@@ -6,12 +6,15 @@ class Fichaje {
 
         require_once __DIR__.'/../../class/conexion.php';
         $this->conn = new Conexion;
+        session_start();
+        $db = ($_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+
+        $this->cid = $this->conn->conectar($db);
         
     }
 
     public function buscarPorCampo($campo){
 
-        $cid = $this->conn->conectar('central');
 
         $sql = "SELECT NRO_LEGAJO, APELLIDO_Y_NOMBRE FROM RO_T_LEGAJOS_PERSONAL 
         WHERE NRO_LEGAJO LIKE  '%$campo%'
@@ -19,7 +22,7 @@ class Fichaje {
         OR NOMBRE LIKE '%$campo%'
         ";
 
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         if($result === false){
             die( print_r( sqlsrv_errors(), true));
@@ -39,12 +42,9 @@ class Fichaje {
     public function login ($numeroLegajo, $password){
 
 
-        $cid = $this->conn->conectar('central');
-
         $sql = "SELECT NRO_LEGAJO, CONTRASEÑA FROM RO_T_LEGAJOS_PERSONAL WHERE NRO_LEGAJO = '$numeroLegajo'";
-
-       
-        $result = sqlsrv_query($cid, $sql);
+    
+        $result = sqlsrv_query($this->cid, $sql);
 
         if ($result === false) {
             die(print_r(sqlsrv_errors(), true));
@@ -74,12 +74,11 @@ class Fichaje {
 
     public function comprobarHabilitado ($numeroLegajo) {
 
-        $cid = $this->conn->conectar('central');
-
+    
         $sql = "SELECT HABILITADO AS H FROM RO_T_LEGAJOS_PERSONAL WHERE NRO_LEGAJO = '$numeroLegajo'";
 
        
-        $stmt = sqlsrv_query($cid, $sql);
+        $stmt = sqlsrv_query($this->cid, $sql);
 
         if ($stmt === false) {
             die(print_r(sqlsrv_errors(), true));
@@ -105,12 +104,11 @@ class Fichaje {
 
     public function verificarFichaje ($numeroLegajo) {
 
-        $cid = $this->conn->conectar('central');
 
         $sql = "set dateformat ymd
         SELECT COUNT(*) AS ExisteRegistro FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND CAST(FECHA_REG AS DATE) = CAST(GETDATE() AS DATE)  AND SALIDA IS NULL";
     
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
     
         if ($result === false) {
             die(print_r(sqlsrv_errors(), true));
@@ -127,12 +125,11 @@ class Fichaje {
 
     public function fichar ($numeroLegajo, $sucursal){
 
-        $cid = $this->conn->conectar('central');
     
         $sql = "SET DATEFORMAT YMD
         INSERT INTO SJ_FICHADAS (FECHA_REG, LEGAJO, ENTRADA, SUCURSAL) VALUES ( GETDATE(), '$numeroLegajo', GETDATE(), '$sucursal')";
        
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         return true ;
 
@@ -141,7 +138,6 @@ class Fichaje {
 
     public function cerrarTurno ($numeroLegajo) {
 
-        $cid = $this->conn->conectar('central');
 
         $fechaHoy = date('Y-m-d');
 
@@ -153,7 +149,7 @@ class Fichaje {
         WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL
         AND ENTRADA = (SELECT MAX(ENTRADA) FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND SALIDA IS NULL);";
        
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         return true;
 
@@ -162,7 +158,6 @@ class Fichaje {
 
     public function traerReporteDeAsistencias ($desde, $hasta, $usuario, $sucursal) {
 
-        $cid = $this->conn->conectar('central');
 
         $sql = "SELECT * 
         FROM Reporte_Fichadas_CALENDAR 
@@ -174,7 +169,7 @@ class Fichaje {
         ";
       
   
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         if($result === false){
             die( print_r( sqlsrv_errors(), true));
@@ -193,9 +188,8 @@ class Fichaje {
 
         $sql ="SELECT NRO_LEGAJO, APELLIDO_Y_NOMBRE FROM RO_T_LEGAJOS_PERSONAL WHERE HABILITADO = 'S' ORDER BY APELLIDO_Y_NOMBRE ASC";
 
-        $cid = $this->conn->conectar('central');
 
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         if($result === false){
             die( print_r( sqlsrv_errors(), true));
@@ -215,9 +209,7 @@ class Fichaje {
 
         $sql ="SELECT  * FROM SOF_USUARIOS WHERE TIPO = 'LOCAL_PROPIO' ORDER BY NRO_SUCURS ASC";
 
-        $cid = $this->conn->conectar('central');
-
-        $result = sqlsrv_query($cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         if($result === false){
             die( print_r( sqlsrv_errors(), true));

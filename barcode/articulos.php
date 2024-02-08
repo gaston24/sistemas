@@ -3,20 +3,28 @@
 class Codigos
 {
 
-    public function traerArticulo($codigo){
-        try {
+      
+    function __construct()
+    {   
 
-            $servidor_central = 'servidor';
-            $conexion_central = array( "Database"=>"LAKER_SA", "UID"=>"sa", "PWD"=>"Axoft1988", "CharacterSet" => "UTF-8");
-            $cid_central = sqlsrv_connect($servidor_central, $conexion_central);
-             
-         } catch (PDOException $e){
-                 echo $e->getMessage();
-         }
+
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        $this->cid = new Conexion();
+        $db= 'central';
+        session_start();
+        if($_SESSION['usuarioUy'] == 1){
+            $db = 'uy';
+        }
+        $this->cid_central = $this->cid->conectar($db);
+
+    } 
+
+    public function traerArticulo($codigo){
+    
         $sql ="
         SELECT COD_ARTICU, DESCRIPCIO FROM STA11 WHERE (COD_ARTICU LIKE '[XO]%' AND COD_ARTICU LIKE '$codigo') AND USA_ESC!='B'
         ";
-        $stmt = sqlsrv_query( $cid_central, $sql);
+        $stmt = sqlsrv_query( $this->cid_central, $sql);
 
        
        if($row=sqlsrv_fetch_array($stmt))
