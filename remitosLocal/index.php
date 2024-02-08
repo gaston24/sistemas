@@ -9,6 +9,7 @@ $codClient = $_SESSION['codClient'];
 include 'class/remito.php';
 $remitos = new Remito();
 $list = $remitos->traerRemitos($suc);
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +89,9 @@ $list = $remitos->traerRemitos($suc);
 
     <?php
     if(isset($_GET['nroRemito'])){
+        // echo $_GET['nroRemito'];
         $remitos = $remitos->traerRemito($suc, $_GET['nroRemito']);
+      
         foreach($remitos as $remito){
     ?>
 

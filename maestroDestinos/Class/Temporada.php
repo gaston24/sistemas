@@ -6,6 +6,7 @@ class Temporada
     private $cid;
     private $cid_central;
 
+
     
     function __construct()
     {
@@ -18,6 +19,7 @@ class Temporada
     } 
 
     public function traerTemporadas(){
+
 
         $sql = "SELECT DISTINCT(NOMBRE_TEMP) TEMPORADA FROM MAESTRO_TEMPORADAS
                 WHERE EXCLUIR IS NULL

@@ -10,6 +10,7 @@ $todosLosRubros = $rubro->traerRubros();
 $temporada = new Temporada();
 $todasLasTemporadas = $temporada->traerTemporadas();
 
+
 $maestroArticulos = new Articulo();
 
 ?> 
@@ -40,23 +41,28 @@ $maestroArticulos = new Articulo();
         <div>   
             <a type="button" class="btn btn-primary" id="btn_back" onClick="window.location.href='../index.php'"><i class="fa fa-arrow-left"></i>  Volver</a>
         </div>
+        <div id="boxLoading" class="boxLoading"></div>
         <div id="titleIndex">
             <h3><i class="fa fa-archive ml-4"></i>  Maestro de Destinos</h3>
         </div>
             
     </div>
 
-  <form>
+
         <div class="form-row mb-3 contenedor">
 
-        <div class="col-sm-2 mt-2">
+        <div class="col- mt-2">
             <label for="inputCity">Rubro</label>
             <select id="inputRubro" class="form-control form-control-sm" name="rubro">
-                <option selected></option>
+                <option ></option>
                     <?php
+                  
                         foreach($todosLosRubros as $rubro => $key){
+                    
                     ?>
+
                 <option value="<?= $key['RUBRO'] ?>"><?= $key['RUBRO'] ?></option>
+
                     <?php
                     }
                     ?>
@@ -65,54 +71,39 @@ $maestroArticulos = new Articulo();
             </select>
         </div>  
         
-            <div class="col-sm-2 mt-2" id="contTemp">
+            <div class="col- mt-2" id="contTemp">
                     <label for="inputState2">Temporada</label>
                     <select id="inputTemp" class="form-control form-control-sm" name="temporada">
                         <option selected></option>
                         <?php
-                    foreach($todasLasTemporadas as $temporada => $key){
-                    ?>
-                    <option value="<?= $key['TEMPORADA'] ?>"><?= $key['TEMPORADA'] ?></option>
-                    <?php   
-                    }
-                    ?>
+                        foreach($todasLasTemporadas as $temporada => $key){
+                        ?>
+                            <option value="<?= $key['TEMPORADA'] ?>"><?= $key['TEMPORADA'] ?></option>
+                        <?php   
+                        }
+                        ?>
                     </select>
             </div>
 
-            <div>
-                <button type="submit" class="btn btn-primary mt-4 ml-4" id="btn_filtro">Filtrar<i class="fa fa-filter"></i></button>
+
+            <div class="col mt-2">
+                <div class="row">
+                    <div class="col">
+                            <button type="submit" class="btn btn-primary mt-4 ml-4" type="button" id="btn_filtro" onclick="filtrar()">Filtrar<i class="fa fa-filter"></i></button>
+                            <button class="btn btn-success mt-4 ml-4" type="button" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
+                            <button class="btn btn-secondary mt-4 ml-4"  onclick="exportNovedades()" ><i class="fa fa-file-excel-o"></i> Novedades</button>
+
+                    </div>
+                    
+                </div>
+
             </div>
 
-            <div class="mt-2" id="busqRapida">
-                <label id="textBusqueda">Busqueda rapida:</label>
-                <input type="text" id="textBox"  placeholder="Sobre cualquier campo..." onkeyup="myFunction()"  class="form-control form-control-sm"></input>  
-            </div> 
             <div class="col-2">
-				<button class="btn btn-success" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
 			</div>  
+
         </div>
 
-    </form>
-
-    <?php
-
-    if (isset($_GET['rubro'])){ 
-    
-    if ($_GET['rubro']!= ''){
-        $rubro = $_GET['rubro'];}
-        else {
-        $rubro = '%';
-        }
-      
-    if ($_GET['temporada']!= ''){
-      $temporada = $_GET['temporada'];}
-    else {
-      $temporada = '%';
-    }
-
-    $todosLosArticulos = $maestroArticulos->traerArticulos($rubro, $temporada);
-
-    ?>
    
    <div class="table-responsive">
         <table class="table table-hover table-condensed table-striped text-center" id="tableMaestro">
@@ -126,80 +117,65 @@ $maestroArticulos = new Articulo();
                     <th scope="col" style="width: 40%">Rubro</th>                
             </thead>
 
-            <tbody id="table">
+            <tbody id="tableBody">
 
-            <?php
-            foreach($todosLosArticulos as $valor => $key){
-            ?>
-            
-
-                <tr>
-                <td class="imagen"><a target="_blank" data-toggle="modal" data-target="#exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" href="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg"><img src="../../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="Sin imagen" height="50" width="50"></a></td>
-                    <td><?=  $key['COD_ARTICU']?></td>
-                    <td><?=  $key['DESCRIPCION']?></td>
-                    <td><?=  $key['DESTINO']?></td>
-                    <td><?=  $key['TEMPORADA']?></td>
-                    <td><?=  $key['RUBRO']?></td>
-                    <div class="modal fade" id="exampleModal<?= substr($key['COD_ARTICU'], 0, 13); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-body" align="center">
-											<img src="../../Imagenes/<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg" alt="<?= substr($key['COD_ARTICU'], 0, 13); ?>.jpg - imagen no encontrada" height="400" width="400">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-										</div>
-									</div>
-								</div>
-							</div>                    
-                </tr>   
-            
-            <?php
-            }   
-            ?>
 
             </tbody>
         
         </table>
-
-        <?php
-        }
-        ?>
        
     </div>
+
+    <div class="modal fade" id="modalImageDiv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" alt="Sin imagen" id="modalImage" class="img-fluid">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+    </div>
         
-    <script src="main.js" charset="utf-8"></script>
+    <script src="js/main.js" charset="utf-8"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Plugin to export Excel -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"  crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
 <script>
 
-    // $(document).ready(() => {
-    //             $("#btnExport").click(function(){
-    //     $("#tableMaestro").table2excel({
-    //         // exclude CSS class
-    //         exclude: ".noExl",
-    //         name: "Detalle pedidos",
-    //         filename: "Detalle notas de pedido", //do not include extension
-    //         fileext: ".xls", // file extension
-    //     }); 
-    //     });
-    //     e.preventDefault();
-    // });
 
     const buttonExportar = document.querySelector("#btnExport")
+
     buttonExportar.addEventListener("click", function(e){
         e.preventDefault();
+
+        $('#tableMaestro').DataTable().destroy();
+
         $("#tableMaestro").table2excel({
             // exclude CSS class
             exclude: ".imagen",
-            name: "Detalle pedidos",
-            filename: "Detalle notas de pedido", //do not include extension
+            name: "Maestro Destinos",
+            filename: "maestro de destinos", // do not include extension
             fileext: ".xls", // file extension
-        }); 
+        });
+
+        activarDatatable();
+
     })
 
 </script>

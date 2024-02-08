@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $totalFiles = count($_FILES['archivos']['name']);
 
     $uploadedFiles = 0;
-    $maxFileSize = 4 * 1024 * 1024; // 4 MB en bytes
+    $maxFileSize = 6 * 1024 * 1024; // 6 MB en bytes
 
     for ($i = 0; $i < $totalFiles; $i++) {
 
@@ -72,7 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
             }
 
         } else {
-            echo "Error: El archivo excede el tamaño máximo permitido ( 4 MB ).";
+            $tamaño = ((int)$_FILES['archivos']['size'][$i] / (1024 * 1024));
+            echo "Error: El archivo excede el tamaño máximo permitido ( 6 MB ) . Tamaño del archivo : ".(int)$tamaño." MB .";
         }
     }
 

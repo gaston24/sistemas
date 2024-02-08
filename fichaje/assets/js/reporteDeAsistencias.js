@@ -56,13 +56,13 @@ const buscar = () => {
                 <tr>
                     <td>${response.FECHA_REG}</td>
                     <td>${response.SUCURSAL}</td>
-                    <td>${response.LEGAJO}</td>
+                    <td>${response.NRO_LEGAJO}</td>
                     <td>${response.APELLIDO_Y_NOMBRE}</td>
                     <td>${response.ENTRADA}</td>
                     <td>${response.SALIDA}</td>
                     <td>${response.AUSENTE}</td>
                     <td>${response.LLEGA_TARDE}</td>
-                    <td>${response['TOTAL TRABAJADO']}</td>
+                    <td>${response.TOTAL_TRABAJADO}</td>
                     
                 </tr>
                 `;
@@ -88,16 +88,22 @@ const formatoFecha = (fechaOriginal) => {
     return fechaConvertida;
 
 }
+
+
 const exportar = () => {
 
- 
-        $("#tablaReporte").table2excel({
-    
-            // exclude CSS class
-            exclude: ".noExl",
-            name: "Worksheet Name",
-            filename: "Remitos", //do not include extension
-            fileext: ".xls", // file extension
-        });
-   
-}
+    const tabla = document.getElementById('tablaReporte');
+    if(tabla.querySelector("#detalleBody").querySelector("tr") == null){
+        Swal.fire({
+
+            icon: 'error',
+            title: 'error',
+            text: 'No hay datos para exportar',
+        
+        })
+        return 1;
+    }
+    const workbook = XLSX.utils.table_to_book(tabla);
+    XLSX.writeFile(workbook, 'ReporteDeFichadas.xlsx');
+
+  };

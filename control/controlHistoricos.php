@@ -93,6 +93,7 @@ if(isset($_GET['fechaDesde'])){
 				<th >USUARIO</th>
 				<!-- <th >DIF</th> -->
 				<th >ESTADO</th>
+				<th >AJUSTAR</th>
 				<th >NRO AJUSTE</th>
 				<th >CHAT</th>
 			</tr>
@@ -114,7 +115,7 @@ if(isset($_GET['fechaDesde'])){
 		?>
 
 		
-		
+	
         <tr class="fila-base" style="font-size:smaller" >
 
 				<td ><?= $data['FECHA_REM']->format('d/m/Y');?></td>
@@ -124,6 +125,28 @@ if(isset($_GET['fechaDesde'])){
 				<td ><?= $data['NOMBRE_VEN'] ;?></td>
 				<!-- <td ><?= $diferencia ;?> </td> -->
 				<td ><?= $data['OBSERVAC_LOGISTICA'] ;?> </td>
+				<td ><?php if($data['OBSERVAC_LOGISTICA'] == 'PENDIENTE'){
+					
+					echo '
+						<select id="inputAjustar" name="inputAjustar" onchange="actualizarAjustar(this)" class="form-select" aria-label="Default select example" style="text-align:center;width: 62.22222px;height: 32.22222px;"';
+							if($data['NRO_AJUSTE'] != NULL)echo 'disabled';
+						echo '>' ;
+						echo'
+							<option '; 
+								if ($data['AJUSTAR'] == NULL)  echo "selected";
+						echo ' value="" disabled></option>
+
+							<option  value="SI"';
+							if ($data['AJUSTAR'] == 'SI')  echo "selected"; 	
+						echo'>Si</option>
+							<option value="NO"';
+							if ($data['AJUSTAR'] == 'NO')  echo "selected";
+						echo'>No</option>
+						</select>';
+
+				}else{
+					echo $data['AJUSTAR'];
+				} ;?> </td>
 				<td ><?= $data['NRO_AJUSTE'] ;?> </td>
 				<td >
 					<button data-toggle="modal" data-target="#chatModal" class="btn btn-<?=$colorChat?> btn-sm" type="button" onClick="getChat('<?= $data['NRO_REMITO'] ;?>'), actuaNumRemito('<?= $data['NRO_REMITO'] ;?>')">
@@ -160,7 +183,10 @@ if(isset($_GET['fechaDesde'])){
 </div>
 <script src="main.js"></script>
 <script src="js/chat.js"></script>
+<script src="js/controlHistoricos.js"></script>
+<script>
 
+</script>
 <!-- MODAL CHAT -->
 
 <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -160,9 +160,9 @@ class Fichaje {
 
 
         $sql = "SELECT * 
-        FROM Reporte_Fichadas 
+        FROM Reporte_Fichadas_CALENDAR 
         WHERE CONVERT(DATE, FECHA_REG, 103) BETWEEN '$desde' AND '$hasta'
-          AND (LEGAJO LIKE '%$usuario%' OR APELLIDO_Y_NOMBRE LIKE '%$usuario%')
+          AND (NRO_LEGAJO LIKE '%$usuario%' OR APELLIDO_Y_NOMBRE LIKE '%$usuario%')
           AND SUCURSAL LIKE '%$sucursal%'
         ORDER BY CONVERT(DATE, FECHA_REG, 103) DESC;
         

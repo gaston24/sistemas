@@ -24,7 +24,23 @@ $locales = $fichaje->traerLocales();
             
         ?>
     <style>
-        
+ 
+
+        #tableOne {
+            border-collapse: collapse;
+            margin: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
     </style>
 
     </head>
@@ -44,76 +60,83 @@ $locales = $fichaje->traerLocales();
 
 
                         <div class="row" style="margin-left:65px;margin-top:20px"  >
-                            <div class="table-responsive" id="tableIndex" style="max-height: 500px; overflow-y: auto;">
-                              
-                                    <table class="table table-hover table-condensed table-striped text-center" style="width: 70%;border: solid 1px;margin-left:10%" cellspacing="0" data-page-length="100">
-                                        <thead class="thead-dark" style="font-size: small;">
-                                            <th scope="col" style="width: 6%">Reporte De Asistencias </th>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="table-responsive" id="tableIndex" style="overflow-y: auto;max-height:700px">
                                         
-                                        </thead>
-                                        <tbody id="tableVb" >
-                                            <tr>
-                                                <td style="white-space: nowrap;">
-                                                    Desde:
-                                                    <input type="date" id="desde" name="desde" style="margin-right:20px" value="<?=  date("Y-m-d", strtotime( '-1 days' ) ) ?>">
-                                                    Hasta:
-                                                    <input type="date" id="hasta" name="hasta" style="margin-right:20px" value="<?= date("Y-m-d") ?>">
-                                                    Usuario:
-                                 
-                                                    <select name="usuario" id="usuario" class="usuario">
-                                                        <option value="%">TODOS</option>
-                                                        <?php 
-                                                            foreach ($usuarios as $usuario) {
-                                                                echo "<option value='$usuario[NRO_LEGAJO]'>$usuario[NRO_LEGAJO] - $usuario[APELLIDO_Y_NOMBRE]</option>";
-                                                            }
+                                            <table class="table table-hover  text-center" style="width: 90%;border: solid 1px;" id="tableOne" cellspacing="0" data-page-length="100">
+                                                <thead class="thead-dark" style="font-size: small;">
+                                                    <th scope="col" style="width: 6%">Reporte De Asistencias </th>                                       
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td >
+                                                            Desde:
+                                                            <input type="date" id="desde" name="desde" style="margin-right:20px;width:10%" value="<?=  date("Y-m-d", strtotime( '-1 days' ) ) ?>">
+                                                            Hasta:
+                                                            <input type="date" id="hasta" name="hasta" style="margin-right:20px;width:10%" value="<?= date("Y-m-d") ?>">
+                                                            Usuario:
 
-                                                        ?>
-                                                    </select>
-                                                    Sucursal:
-                                    
-                                                    <select name="sucursal" id="sucursal" class="sucursal">
-                                                        <option value="%">TODOS</option>
-                                                        <?php 
-                                                            foreach ($locales as $local) {
-                                                                echo "<option value='$local[NRO_SUCURS]'>$local[NRO_SUCURS] - $local[DESCRIPCION]</option>";
-                                                            }
+                                                            <select name="usuario" id="usuario" class="usuario">
+                                                                <option value="%">TODOS</option>
+                                                                <?php 
+                                                                    foreach ($usuarios as $usuario) {
+                                                                        echo "<option value='$usuario[NRO_LEGAJO]'>$usuario[NRO_LEGAJO] - $usuario[APELLIDO_Y_NOMBRE]</option>";
+                                                                    }
 
-                                                        ?>
-                                                    </select>
+                                                                ?>
+                                                            </select>
+                                                            Sucursal:
 
-                                                    <button class="btn btn-primary" type="button" onclick="buscar()">Buscar <i class="bi bi-search"></i></button>
-                                                    <button class="btn btn-secondary" type="button" onclick="exportar()">Exportar <i class="bi bi-file-earmark-excel"></i></button>
-                                                    
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <table id="tablaReporte" >
-                                                        <thead style="font-size:13px">
-                                                            <tr>
-                                                                <th style="width:10%">FECHA.REG</th>
-                                                                <th style="width:10%">SUCURSAL</th>
-                                                                <th style="width:5%" >LEGAJO</th>
-                                                                <th style="width:15%">APELLIDO/NOMBRE</th>
-                                                                <th style="width:5%">ENTRADA</th>
-                                                                <th style="width:5%">SALIDA</th>
-                                                                <th style="width:5%">AUSENTE</th>
-                                                                <th style="width:15%">LLEGA TARDE</th>
-                                                                <th style="width:15%">TOTAL TRABAJADO</th>
-                                                    
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="detalleBody" style="font-size:13px">
+                                                            <select name="sucursal" id="sucursal" class="sucursal">
+                                                                <option value="%">TODOS</option>
+                                                                <?php 
+                                                                    foreach ($locales as $local) {
+                                                                        echo "<option value='$local[NRO_SUCURS]'>$local[NRO_SUCURS] - $local[DESCRIPCION]</option>";
+                                                                    }
+
+                                                                ?>
+                                                            </select>
+                                                         
+                                                            <button class="btn btn-primary" type="button" onclick="buscar()" id="btn-buscar">Buscar <i class="bi bi-search"></i></button>
+                                                            <button class="btn btn-secondary" type="button" onclick="exportar()" id="btn-export">Exportar <i class="bi bi-file-earmark-excel"></i></button>
                                                           
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                        
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table id="tablaReporte" style="width: 100%;" >
+                                                                <thead style="font-size:13px">
+                                                                    <tr>
+                                                                        <th style="width:10%">FECHA.REG</th>
+                                                                        <th style="width:10%">SUCURSAL</th>
+                                                                        <th style="width:5%" >LEGAJO</th>
+                                                                        <th style="width:15%">APELLIDO/NOMBRE</th>
+                                                                        <th style="width:5%">ENTRADA</th>
+                                                                        <th style="width:5%">SALIDA</th>
+                                                                        <th style="width:5%">AUSENTE</th>
+                                                                        <th style="width:15%">LLEGA TARDE</th>
+                                                                        <th style="width:15%">TOTAL TRABAJADO</th>
+                                                            
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="detalleBody" style="font-size:13px">
+                                                                
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                    
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                                                <!-- Contenido principal -->
                         </div>
+
 
                     </div>
                 </div>
@@ -131,6 +154,38 @@ $locales = $fichaje->traerLocales();
          <script>
             $('.usuario').select2({});
             $('.sucursal').select2({});
+      
+     
+                
+                document.querySelectorAll('.select2-container')[0].style.width = '20%'; 
+                document.querySelectorAll('.select2-container')[1].style.width = '10%'; 
+              
+                function applyStylesBasedOnScreenWidth() {
+                    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+                    if (screenWidth < 1200) {
+                    
+
+                
+                        document.querySelector("#hasta").style.marginRight = '0px';
+                        document.querySelector("#desde").style.marginRight = '0px';
+                        document.querySelector("#btn-buscar").style.fontSize = '10px';
+                        document.querySelector("#btn-export").style.fontSize = '10px'; 
+
+                    
+                    } else {
+                        
+                       
+                        document.querySelector("#hasta").style.marginRight = '20px';
+                        document.querySelector("#desde").style.marginRight = '20px';
+                        document.querySelector("#btn-buscar").style.fontSize = '14px';
+                        document.querySelector("#btn-export").style.fontSize = '14px'; 
+                      
+                    }
+                }
+                applyStylesBasedOnScreenWidth();
+               
+                window.addEventListener('resize', applyStylesBasedOnScreenWidth())
          </script>                                           
 
         

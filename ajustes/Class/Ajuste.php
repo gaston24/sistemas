@@ -215,15 +215,15 @@ class Ajuste
     public function insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno, $esNuevoAjuste = null) 
     {
 
-        if($esNuevoAjuste == true){
+        // if($esNuevoAjuste == true){
 
-            $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+        //     $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
 
-        }else{
+        // }else{
 
-            $codDeposito = '\'OU\'';
+        $codDeposito = '\'OU\'';
 
-        }
+        // }
 
         $sqlDetSalida = "
         INSERT INTO STA20
@@ -256,15 +256,8 @@ class Ajuste
 
     public function restarCantidad($cant, $codigo, $esNuevoAjuste = null) 
     {
-        if($esNuevoAjuste == true){
-
-            $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
-
-        }else{
-
-            $codDeposito = '\'OU\'';
-
-        }
+    
+        $codDeposito = '\'OU\'';
 
         $sqlResta = "UPDATE STA19 SET CANT_STOCK = (CANT_STOCK - $cant) WHERE COD_ARTICU = '$codigo' AND COD_DEPOSI = $codDeposito";
 
