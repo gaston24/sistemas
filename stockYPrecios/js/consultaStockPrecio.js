@@ -50,10 +50,7 @@ const parseNumber = (number) => {
 
 const borrar = () => {
 
-
-
-
-  document.querySelector("#select2-selectArticulo-container").textContent = "";
+  document.querySelector("#selectArticulo").value = "";
 
   document.querySelector("#articulo"). value = "" ;
   document.querySelector("#descripcion").value = "";
