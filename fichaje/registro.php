@@ -43,8 +43,8 @@
                     <div>Indicanos tu legajo y clave</div>
                     <input type="text" id="campo" class="swal2-input" onKeyup="buscarPorCampo(this)" style="width: 261.193182px;height: 52.818182px;font-size:13px" autocomplete="off" >
                     <div id="suggestions"></div>
-                    <div class="password-input" autocomplete="off">
-                        <input type="password" id="password" class="swal2-input" placeholder="Contraseña"  autocomplete="off">
+                    <div class="password-input" >
+                        <input type="password" id="password" class="swal2-input" placeholder="Contraseña"  autocomplete="new-password">
                         <i class="bi bi-eye-slash toggle-password"></i>
                     </div>
                   
