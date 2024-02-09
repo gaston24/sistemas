@@ -12,10 +12,11 @@ class Articulo
     {
 
         require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+        
         $this->cid = new Conexion();
-
-        $db = ($_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
-
+       
+        $db = (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+        
         $this->cid_central = $this->cid->conectar($db);
 
     } 
