@@ -41,7 +41,7 @@ const buscar = () => {
        
             response.forEach(response => {
        
-                if(response.SUCURSAL.split(" ")[0] != sucursal){
+                if(response.SUCURSAL.split(" ")[0] != sucursal && sucursal != '%'){
                     return 1;
                 }
 
