@@ -35,11 +35,16 @@ const buscar = () => {
         success: function (response) {
 
             spinner.classList.remove('loading')
-            // response = JSON.parse(response);
+         
          
             let template = '';
        
             response.forEach(response => {
+       
+                if(response.SUCURSAL.split(" ")[0] != sucursal && sucursal != '%'){
+                    return 1;
+                }
+
                 if(response.ENTRADA == null){
                     response.ENTRADA = '';
                 }
@@ -54,7 +59,7 @@ const buscar = () => {
                 }
                 template += `
                 <tr>
-                    <td>${response.FECHA_REG}</td>
+                    <td id="tdFecha">${response.FECHA_REG}</td>
                     <td>${response.SUCURSAL}</td>
                     <td>${response.NRO_LEGAJO}</td>
                     <td>${response.APELLIDO_Y_NOMBRE}</td>
@@ -103,7 +108,35 @@ const exportar = () => {
         })
         return 1;
     }
+    document.querySelectorAll("#tdFecha").forEach(element => {
+        let arrayFecha = element.textContent.split("/")
+        let fecha = arrayFecha[1] + "/" + (parseInt(arrayFecha[0]) + 1) + "/" + arrayFecha[2]
+        element.textContent = fecha
+    });
+    
     const workbook = XLSX.utils.table_to_book(tabla);
     XLSX.writeFile(workbook, 'ReporteDeFichadas.xlsx');
 
+    document.querySelectorAll("#tdFecha").forEach(element => {
+        let arrayFecha = element.textContent.split("/")
+        let fecha = (agregarCero(parseInt(arrayFecha[1]) - 1)) + "/" + agregarCero(arrayFecha[0]) + "/" + arrayFecha[2]
+        element.textContent = fecha
+    });
+
+    
   };
+
+  const agregarCero = (numero) => {
+    // Convertir el número a cadena para verificar su longitud
+    const numeroStr = numero.toString();
+
+    // Verificar si la longitud es de una sola cifra
+    if (numeroStr.length === 1) {
+        // Agregar un cero adelante y devolver la cadena resultante
+        return '0' + numeroStr;
+    } else {
+        // Devolver el número como cadena sin cambios
+        return numeroStr;
+    }
+    
+};
