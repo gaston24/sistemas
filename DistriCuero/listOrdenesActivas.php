@@ -100,7 +100,7 @@ if (!isset($_SESSION['username'])) {
                 <td><?= $key['ARTICULOS'] ?></td>
                 <td id="novedadPed"><a>ACTIVA!</a></td>
                 <?php 
-                  if($key['LANZAMIENTO'] =! 1){
+                  if($key['LANZAMIENTO'] != 1){
 
                     echo '<td><input type="checkbox" name="checkTd" onclick="contarGestion()"></input></td>';
 
