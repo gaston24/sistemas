@@ -6,13 +6,8 @@ $user = $_POST['user'];
 $pass = $_POST['pass'];
 
 $login = new Extralarge();
-$usuarioUy = $login->esUsuarioUy($user);
 
-if($usuarioUy == 1){
-	$loginRes = $login->login($user, $pass, 'uy');
-}else{
-	$loginRes = $login->login($user, $pass);
-}
+$loginRes = $login->login($user, $pass);
 
 
 if( count($loginRes) == 0 ){
@@ -20,8 +15,8 @@ if( count($loginRes) == 0 ){
 	header('Location:../login.php');
 
 }else{
-
-	$_SESSION['usuarioUy'] = $usuarioUy;
+	
+	$_SESSION['usuarioUy'] = $loginRes['IS_USER_UY'];
 	$_SESSION['username'] = $loginRes['NOMBRE'];
 	$_SESSION['permisos'] = $loginRes['PERMISOS'];
 	$_SESSION['dsn'] = $loginRes['DSN'];

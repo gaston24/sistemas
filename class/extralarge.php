@@ -9,26 +9,6 @@ class Extralarge {
         
     }
 
-    public function esUsuarioUy ($user) {
-
-        $sql = "SELECT
-        CASE
-          WHEN EXISTS (SELECT 1 FROM SOF_USUARIOS_UY WHERE COD_CLIENT = '$user')
-          THEN '1'
-          ELSE '0'
-        END as result;";
-
-        $cid = $this->conn->conectar('uy');
-        
-        $stmt = sqlsrv_query($cid, $sql);
-        
-        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-
-        return $row['result'];
-
-
-    }
-
     
     public function login($user, $pass, $db = 'central'){
 
