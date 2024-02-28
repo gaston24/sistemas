@@ -343,7 +343,7 @@ class RemitoEquis {
     }
 
     public function rendirCobro ($id, $userName = null){
-        var_dump($id,$userName);
+        
         $cid = $this->conn->conectar('central');
         
         $sql = "UPDATE sj_administracion_cobros SET rendido = 1,user_rinde = '$userName' ,fecha_cobro = getdate() where id = '$id'";

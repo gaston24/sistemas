@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
    
             if (in_array($fileType, $allowedTypes)) {
-                var_dump("aca");
+             
                 if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $targetFile)) {
                     // var_dump($_FILES['archivos']['tmp_name'][$i], $targetFile);
                     $exif = exif_read_data($targetFile);
