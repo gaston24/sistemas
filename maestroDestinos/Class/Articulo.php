@@ -20,9 +20,9 @@ class Articulo
             session_start();
 
         }
-        
-        $db = (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1) ? '' : 'central';
 
+        $db = (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+        
         $this->cid_central = $this->cid->conectar($db);
 
     } 
