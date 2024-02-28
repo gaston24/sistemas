@@ -40,20 +40,13 @@ class Pedido {
 
 
             }
-
+      
             ini_set('max_execution_time', 300);
 
             $stmt = sqlsrv_query($cid, $sql);
 
-            if($db == 'uy'){
+            if($db != 'uy'){
 
-                if($tipoPedido != '2'){
-
-                    $next_result = sqlsrv_next_result($stmt);
-
-                }
-
-            }else{
 
                 $next_result = sqlsrv_next_result($stmt);
                 
@@ -68,7 +61,7 @@ class Pedido {
                 $v[] = $row;
 
             }
-
+            
             return $v;
 
         }
