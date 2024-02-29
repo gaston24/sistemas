@@ -170,6 +170,11 @@ include('estado_cuenta.php');
                                             <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Fichada por legajo <span class="badge badge-warning">Testing</span></button>
                                         </form>
                                     </li>
+                                    <li>
+                                        <form action="fichaje/reporteDeAsistencias.php" method="get" >
+                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Reporte de asistencias <span class="badge badge-warning">Testing</span></button>
+                                        </form>
+                                    </li>
                                     <!-- Otros elementos de menú si los tienes -->
                                 </ul>
                             </li>
