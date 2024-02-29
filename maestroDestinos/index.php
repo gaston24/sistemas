@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
 require 'Class/temporada.php';
 require 'Class/Articulo.php';
 require 'Class/Rubro.php';

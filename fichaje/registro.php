@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -9,6 +10,9 @@
        
         <?php 
             require_once "assets/css/css.php";
+            require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
+
+            
             session_start();
       
         ?>

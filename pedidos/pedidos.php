@@ -9,6 +9,7 @@ if (!isset($_SESSION['username'])) {
 	header("Location:../index.php");
 } else {
 	include_once __DIR__.'/../class/pedido.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
 
 	// CONSULTAS EL DEPO
 	$_SESSION['depo'] = '01';
