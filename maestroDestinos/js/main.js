@@ -190,70 +190,77 @@ const activarDatatable = () => {
 
 const exportNovedades = () => {
 
-  $('#tableMaestro').DataTable().destroy();
-
-  allTr = document.querySelectorAll('#tableBody tr');
-  let fechaMasCercana;
-  let trFechaMasCercana;
   
+  $.ajax({
+    url: 'Controller/maestroDestinosController.php?accion=traerNovedades',
+    method: 'GET',
 
-  allTr.forEach((tr) => {
-    // Obtener el campo de fecha de cada fila
-    let fechaCell = tr.querySelectorAll('td')[1].getAttribute("fecha"); // Reemplaza 'fecha-class' con la clase real de tu campo de fecha
-
-    // Verificar si la celda de fecha existe y tiene un valor
-    if (fechaCell && fechaCell !== '' && fechaCell !== ' ' && fechaCell !== null && fechaCell !== "undefined") {
-
-      // Convertir la fecha al formato "YYYY/MM/DD" a un objeto Date
-     // Convertir la fecha al formato "YYYY/MM/DD" a un objeto Date
-     let fechaParts = fechaCell.split('/');
-     let fechaFila = new Date(`${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}`);
-
-     let fechaActual = new Date(); // Obtener la fecha actual
+    success: function (response) {
 
 
-      // Comparar las fechas
-      if (!fechaMasCercana || Math.abs(fechaFila - fechaActual) < Math.abs(fechaMasCercana - fechaActual)) {
-        fechaMasCercana = fechaFila;
-        trFechaMasCercana = tr;
-      }
-    }
-  });
+      data = JSON.parse(response)
 
-  allTr.forEach((tr) => {
+      var tableBody = document.querySelector("#tableNovedadesBody");
 
-    let fecha = tr.querySelectorAll('td')[1].getAttribute("fecha");
-    if(fecha != "undefined"){
+      tableBody.innerHTML = ''; 
 
-      let fechaParts = fecha.split('/');
+      data.forEach(function (v) {
 
-      let fechaFila = new Date(`${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}`);
 
-   
+          var row = document.createElement("tr");
 
-      if(fechaFila.getTime() != fechaMasCercana.getTime()){
+          var codArticuCell = document.createElement("td");
+          codArticuCell.textContent = v["COD_ARTICU"];
+         
 
-          tr.classList.add('imagen');
+          if(v["FECHA_MOD"] != null){
 
-      }
+            var fechaOriginal = v["FECHA_MOD"].date; 
+            
+            var fechaObjeto = new Date(fechaOriginal);
+            var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            var fechaFormateada = fechaObjeto.toLocaleDateString('es-ES', options);
 
-    }else{
-      tr.classList.add('imagen');
-    }
+          }
+          
+          codArticuCell.setAttribute("fecha", fechaFormateada);
+          row.appendChild(codArticuCell);
 
-  });
+          var descripcionCell = document.createElement("td");
+          descripcionCell.textContent = v["DESCRIPCION"];
+          row.appendChild(descripcionCell);
 
-  $("#tableMaestro").table2excel({
-    // exclude CSS class
-    exclude: ".imagen",
-    name: "Detalle pedidos",
-    filename: "Detalle notas de pedido", // do not include extension
-    fileext: ".xls", // file extension
-  });
+          var destinoCell = document.createElement("td");
+          destinoCell.textContent = v["DESTINO"];
+          row.appendChild(destinoCell);
 
-  allTr.forEach((tr) => {
-    tr.classList.remove('imagen');
-  });
+          var temporadaCell = document.createElement("td");
+          temporadaCell.textContent = v["TEMPORADA"];
+          row.appendChild(temporadaCell);
+
+          var rubroCell = document.createElement("td");
+          rubroCell.textContent = v["RUBRO"];
+          row.appendChild(rubroCell);
+
+          tableBody.appendChild(row);
+
+      });
+
+
+
+      $("#tablaNovedades").table2excel({
+ 
+        exclude: ".imagen",
+        name: "Novedades",
+        filename: "Novedades", 
+        fileext: ".xls", 
+      });
+
+
+
+    } 
   
-  activarDatatable();
+  })
+
+
 }

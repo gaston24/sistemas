@@ -123,6 +123,25 @@ $maestroArticulos = new Articulo();
             </tbody>
         
         </table>
+        
+        <table hidden id="tablaNovedades">
+        
+        <thead class="thead-dark">
+                
+                <th scope="col" style="width: 15%">Articulo</th>
+                <th scope="col" style="width: 25%">Descripción</th>
+                <th scope="col" style="width: 20%">Destino</th>
+                <th scope="col" style="width: 15%">Temporada</th>
+                <th scope="col" style="width: 40%">Rubro</th>     
+                            
+        </thead>
+
+        <tbody id="tableNovedadesBody">
+
+
+        </tbody>
+
+    </table>
        
     </div>
 
