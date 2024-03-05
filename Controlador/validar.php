@@ -53,24 +53,9 @@ if( count($loginRes) == 0 ){
 	$_SESSION['pantallas'] = true;
 
 	
-	if($loginRes['NRO_SUCURS'] == 202){
-            
-		$_SESSION['conexion_dns'] = 'DESKTOP-K8EK5EV\AXSQLEXPRESS';
-		$_SESSION['base_nombre'] = 'XL__NUEVOCENTRO';
+	if($loginRes['NRO_SUCURS'] == 201 || $loginRes['NRO_SUCURS'] == 202){     
 		header("Location: eliminaPedido.php");
-
-	}
-	
-	if($loginRes['NRO_SUCURS'] == 201){
-	
-		$_SESSION['conexion_dns'] = 'DESKTOP-L6VOQPJ\AXSQLEXPRESS_1';
-		$_SESSION['base_nombre'] = 'TRES_CRUCES';
-		header("Location: eliminaPedido.php");
-
-		
-	}
-	
-	if($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
+	}elseif($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../mayoristas/index.php");
