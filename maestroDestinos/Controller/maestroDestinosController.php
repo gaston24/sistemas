@@ -23,8 +23,9 @@ function filtrar () {
 
     $rubro = $_POST['rubro'];
     $temporada = $_POST['temporada'];
+    $liquidacion = $_POST['liquidacion'];
 
-    $todosLosArticulos = $maestroArticulos->traerArticulos($rubro, $temporada);
+    $todosLosArticulos = $maestroArticulos->traerArticulos($rubro, $temporada, $liquidacion);
 
     echo json_encode($todosLosArticulos);
 

@@ -85,6 +85,14 @@ $maestroArticulos = new Articulo();
                     </select>
             </div>
 
+            <div class="col- mt-2" id="contTemp">
+                    <label for="inputState2">Liquidación</label>
+                    <select id="inputLiq" class="form-control form-control-sm" name="liquidacion">
+                        <option selected></option>
+                        <option value="SI">SI</option>
+                    </select>
+            </div>
+
 
             <div class="col mt-2">
                 <div class="row">
@@ -114,7 +122,8 @@ $maestroArticulos = new Articulo();
                     <th scope="col" style="width: 25%">Descripción</th>
                     <th scope="col" style="width: 20%">Destino</th>
                     <th scope="col" style="width: 15%">Temporada</th>
-                    <th scope="col" style="width: 40%">Rubro</th>                
+                    <th scope="col" style="width: 40%">Rubro</th>  
+                    <th scope="col" style="width: 40%">Liquidación</th>                
             </thead>
 
             <tbody id="tableBody">
@@ -133,7 +142,8 @@ $maestroArticulos = new Articulo();
                 <th scope="col" style="width: 20%">Destino</th>
                 <th scope="col" style="width: 15%">Temporada</th>
                 <th scope="col" style="width: 40%">Rubro</th>     
-                            
+                <th scope="col" style="width: 40%">Liquidación</th>              
+
         </thead>
 
         <tbody id="tableNovedadesBody">

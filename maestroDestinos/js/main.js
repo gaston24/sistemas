@@ -46,6 +46,7 @@ const filtrar = () => {
   mostrarSpinner();
   let rubro = document.querySelector('#inputRubro').value
   let temporada = document.querySelector('#inputTemp').value
+  let liquidacion = document.querySelector('#inputLiq').value;
 
   if(rubro == ''){
     rubro = '%'
@@ -55,13 +56,17 @@ const filtrar = () => {
     temporada = '%'
   }
 
+  if(liquidacion == ''){
+    liquidacion = '%'
+  }
 
   $.ajax({
     url: 'Controller/maestroDestinosController.php?accion=filtrar',
     method: 'POST',
     data: {
       rubro: rubro,
-      temporada: temporada
+      temporada: temporada,
+      liquidacion: liquidacion
     },
     success: function (response) {
       data = JSON.parse(response)
@@ -140,6 +145,10 @@ const filtrar = () => {
           var rubroCell = document.createElement("td");
           rubroCell.textContent = v["RUBRO"];
           row.appendChild(rubroCell);
+
+          var liquidacionCell = document.createElement("td");
+          liquidacionCell.textContent = v["LIQUIDACION"];
+          row.appendChild(liquidacionCell);
 
           tableBody.appendChild(row);
       });
@@ -241,6 +250,10 @@ const exportNovedades = () => {
           var rubroCell = document.createElement("td");
           rubroCell.textContent = v["RUBRO"];
           row.appendChild(rubroCell);
+
+          var liquidacionCell = document.createElement("td");
+          liquidacionCell.textContent = v["LIQUIDACION"];
+          row.appendChild(liquidacionCell);
 
           tableBody.appendChild(row);
 
