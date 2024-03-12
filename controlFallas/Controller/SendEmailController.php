@@ -130,7 +130,7 @@ function notificarCodigosOulet ($data, $numSolicitud, $nombreSuc) {
    
     $recodificacion = new Recodificacion();
 
-    $usuarios = ["daiana.gerez@xl.com.ar","valeria.villarreal@xl.com.ar"];
+    $usuarios = ["tamara.lavorgna@xl.com.ar","valeria.villarreal@xl.com.ar"];
 
     $arrayData = [
 

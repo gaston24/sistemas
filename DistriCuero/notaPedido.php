@@ -10,15 +10,19 @@ $numeroOrden = $_GET['orden'];
 
 require_once 'Class/Orden.php';
 require_once 'Class/PPP.php';
-
 $orden = new Orden();
 $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
 
+
 $credito = new PPP();
 $creditoDisp = $credito->detalleCuenta($codClient);
-
 $creditoDisp = json_decode($creditoDisp);
-$creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
+if(count($creditoDisp) > 0){
+
+    $creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
+}else{
+    $creditoDisp = 0;
+}
 
 ?> 
 
