@@ -114,8 +114,9 @@ const login = (numeroLegajo, password) =>{
                     },
                     success : function(response){
                      
-
-                        if(response == 1){
+                        response = JSON.parse(response)
+                   
+                        if(response['id_fichada']){
                             
                             var parts = numeroLegajo.split(',');
 
@@ -143,7 +144,7 @@ const login = (numeroLegajo, password) =>{
                                             <i class="fa-solid fa-circle-check" style="color: #06c4f4; font-size: 60px; position: absolute; top: 110px; left: 60px;"></i>
                                     
                                     Has fichado tu ingreso correctamente
-                                    
+                                    <div>Numero de registro : ${response['id_fichada']}</div>
                                     </div>
 
                                 `,

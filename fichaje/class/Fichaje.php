@@ -131,7 +131,20 @@ class Fichaje {
        
         $result = sqlsrv_query($this->cid, $sql);
 
-        return true ;
+        $sql = "SELECT MAX(id_fichada) AS max_id_fichada FROM SJ_FICHADAS;";
+
+        $result = sqlsrv_query($this->cid, $sql);
+
+        if ($result === false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
+
+        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+
+        $id_fichada = ['id_fichada' => $row['max_id_fichada']];
+        
+
+        return $id_fichada ;
 
     }
 
