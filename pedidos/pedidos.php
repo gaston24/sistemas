@@ -57,7 +57,7 @@ if (!isset($_SESSION['username'])) {
 			</h1>
 		</div>
 
-		<div style="width:98%; height:50%; padding-bottom:1%; padding-top:1%; margin-left:10px" id="pantalla">
+		<div style="width:98%; height:10%; padding-bottom:1%; padding-top:1%; margin-left:10px" id="pantalla">
 			<div id="menu" class="row mt-3 mb-2" >
 				<div class="col-4">
 					<div class="row">
@@ -91,13 +91,14 @@ if (!isset($_SESSION['username'])) {
 			
 				<div class="col">
 					<div class="row">
-						<div class="col">
+						<div class="col-3">
 							<div class="btn-group" role="group" aria-label="Basic example">
 								<button type="button" class="btn btn-secondary" id="btnGrabarPedido">Grabar</button>
 								<button type="button" class="btn btn-secondary" id="btnCargarPedido">Cargar</button>
 								<a id="sinConexion" >SIN CONEXIÓN</a>
 							</div>
 						</div>
+
 						<div>
 							<button class="btn btn-success btn_exportar" id="btnExport"><i class="fa fa-file-excel-o"></i> Exportar</button>
 						</div>

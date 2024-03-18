@@ -12,6 +12,9 @@ class Egreso
 
         require_once __DIR__.'/../../class/conexion.php';
         $this->cid = new Conexion();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $db= 'central';
         if($_SESSION['usuarioUy'] == 1){
             $db = 'uy';
@@ -23,12 +26,21 @@ class Egreso
     public function traerGastos($desde, $hasta, $nroSucursal)
     {
   
+        if($_SESSION['usuarioUy'] == 1){
+ 
+            $prefix = "[Lakerbis].SUCURSALES_URUGUAY.dbo";
+         
+        }else{
+            $prefix = ' [Lakerbis].locales_lakers.dbo';
+        }
+ 
         $sql = "SELECT a.*, (case when b.FECHA_GUARDADO is not null then 1 else 0 end) guardado
-        FROM [Lakerbis].locales_lakers.dbo.RO_V_GASTOS_CAJA_SUCURSALES  a
+        FROM $prefix.RO_V_GASTOS_CAJA_SUCURSALES  a
         LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN AND a.cod_cta = b.COD_CTA  AND  b.NRO_SUCURSAL = '$nroSucursal'
         WHERE FECHA BETWEEN '$desde' AND '$hasta'
         AND a.NRO_SUCURS = '$nroSucursal'";
 
+    
         $stmt = sqlsrv_query($this->cid_central, $sql);
 
         try{
