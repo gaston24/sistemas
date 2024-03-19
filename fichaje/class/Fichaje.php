@@ -129,7 +129,7 @@ class Fichaje {
         $sql = "SET DATEFORMAT YMD
         INSERT INTO SJ_FICHADAS (FECHA_REG, LEGAJO, ENTRADA, SUCURSAL) VALUES ( GETDATE(), '$numeroLegajo', GETDATE(), '$sucursal')";
        
-        // $result = sqlsrv_query($this->cid, $sql);
+        $result = sqlsrv_query($this->cid, $sql);
 
         $sql = "select id_fichada, ENTRADA FROM SJ_FICHADAS WHERE ID_FICHADA = ( SELECT MAX(id_fichada) AS max_id_fichada FROM SJ_FICHADAS);";
 

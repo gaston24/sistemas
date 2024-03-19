@@ -73,14 +73,15 @@ function verificarFichaje($fichaje){
     $sucursal = $_POST['sucursal'];
  
     $result = $fichaje->verificarFichaje($numeroLegajo);
- 
+
+    
     if($result == 0){
 
         $result = $fichaje->fichar($numeroLegajo, $sucursal);
         echo json_encode($result);
         
     }else{
-        echo false;
+        echo json_encode('');
     }
     
 }

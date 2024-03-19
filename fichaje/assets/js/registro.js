@@ -118,9 +118,9 @@ const login = (numeroLegajo, password) =>{
                         sucursal:sucursal
                     },
                     success : function(response){
-                     
+                        
                         response = JSON.parse(response)
-                   
+                  
                         if(response['id_fichada']){
                   
                             const fecha = new Date(response['entrada'].date);
