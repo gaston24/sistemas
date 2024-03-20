@@ -92,6 +92,11 @@ const buscarPorCampo = (div) => {
 
 }
 
+const agregarCero = (numero) => {
+    return numero < 10 ? '0' + numero : numero;
+};
+
+
 const login = (numeroLegajo, password) =>{
 
     $.ajax ({
@@ -113,9 +118,24 @@ const login = (numeroLegajo, password) =>{
                         sucursal:sucursal
                     },
                     success : function(response){
-                     
+                        
+                        response = JSON.parse(response)
+                  
+                        if(response['id_fichada']){
+                  
+                            const fecha = new Date(response['entrada'].date);
 
-                        if(response == 1){
+                            const dia = fecha.getDate();
+                            const mes = fecha.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
+                            const año = fecha.getFullYear();
+                            const horas = agregarCero(fecha.getHours());
+                            const minutos = agregarCero(fecha.getMinutes());
+                            const segundos = agregarCero(fecha.getSeconds());
+                            
+                            
+                            // Formatear los componentes como una cadena en el formato d-m-y h:m:s
+                            const fechaHoraFormateada = `${horas}:${minutos}:${segundos}  ${dia}/${mes}/${año} `;
+                           
                             
                             var parts = numeroLegajo.split(',');
 
@@ -143,7 +163,8 @@ const login = (numeroLegajo, password) =>{
                                             <i class="fa-solid fa-circle-check" style="color: #06c4f4; font-size: 60px; position: absolute; top: 110px; left: 60px;"></i>
                                     
                                     Has fichado tu ingreso correctamente
-                                    
+                                    <div>Numero de registro : ${response['id_fichada']}</div>
+                                    <div>Horario de ingreso : ${fechaHoraFormateada}</div>
                                     </div>
 
                                 `,
