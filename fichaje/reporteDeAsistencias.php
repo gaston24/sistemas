@@ -90,15 +90,15 @@ $locales = $fichaje->traerLocales();
                                                             Sucursal:
                                                             <?php 
                                                                 $disabled = '';
-                                                                if($_SESSION['numsuc'] != 0){
+                                                                if((isset($_SESSION['numsuc'])) && $_SESSION['numsuc'] != 0){
                                                                     $disabled = 'disabled';
                                                                 }
                                                             ?>
-                                                            <select name="sucursal" id="sucursal" class="sucursal" <?= $disabled ?>>
+                                                            <select name="sucursal" id="sucursal" class="sucursal" <?= (isset($_SESSION['numsuc'])) ? $disabled : '' ?>>
                                                                 <option value="%">TODOS</option>
                                                                 <?php 
                                                                     foreach ($locales as $local) {
-                                                                        $selected = ($_SESSION['numsuc'] == $local['NRO_SUCURS']) ? 'selected' : '';
+                                                                        $selected = (isset($_SESSION['numsuc']) && $_SESSION['numsuc'] == $local['NRO_SUCURS']) ? 'selected' : '';
 
                                                                         echo "<option value='$local[NRO_SUCURS]' ".$selected.">$local[NRO_SUCURS] - $local[DESCRIPCION]</option>";
                                                                     }
