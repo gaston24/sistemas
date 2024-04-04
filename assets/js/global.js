@@ -1,6 +1,7 @@
 $(document).ready(function() {
     console.log('global.js')
     setTimeout(function() {
+        
         Swal.fire({
             // title: 'Iniciar Sesión',
             html: `
@@ -8,6 +9,7 @@ $(document).ready(function() {
                  
                 </div>
                 <br>
+                <button id="miBoton" onclick="reproducirSonido()" hidden></button>
                 <div><h3 style="font-style: italic">Tu sesion expirará en <span id='contador'></span></br>min</h3></div>
                 <div>¿Quieres extender la sesion?</div>
 
@@ -19,6 +21,7 @@ $(document).ready(function() {
             cancelButtonText: 'NO',
             confirmButtonText: 'SI',
         }).then((result) => {
+            
             if (result.dismiss === Swal.DismissReason.cancel) {
 
                 window.location.href = `${window.location.origin}/sistemas/login.php`;
@@ -31,9 +34,11 @@ $(document).ready(function() {
             
 
         });
+     
+        
         actualizarContador();
         setInterval(actualizarContador, 1000);
-    }, 1800000);
+    }, 1500000);
 })
 
 
@@ -75,3 +80,25 @@ function actualizarContador() {
 
 
 
+
+function reproducirSonido() {
+    // Crear un contexto de audio
+    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // Crear un oscilador
+    var oscilador = audioContext.createOscillator();
+    // Conectar el oscilador al contexto de audio
+    oscilador.connect(audioContext.destination);
+    // Establecer el tipo de onda del oscilador (en este caso, un tono)
+    oscilador.type = 'sine';
+    // Establecer la frecuencia del tono (puedes ajustarla según tus preferencias)
+    oscilador.frequency.value = 1000; // 1000 Hz
+
+    // Iniciar el oscilador
+    oscilador.start();
+    // Detener el oscilador después de un breve período (en este caso, 0.5 segundos)
+    setTimeout(function() {
+        oscilador.stop();
+    }, 500); // 0.5 segundos
+}
+
+// Luego, puedes llamar a esta función en el lugar adecuado de tu código cuando quieras reproducir el sonido.
