@@ -221,7 +221,7 @@ class Fichaje {
 
     public function traerLocales (){
 
-        $sql ="SELECT  * FROM SOF_USUARIOS WHERE TIPO = 'LOCAL_PROPIO' ORDER BY NRO_SUCURS ASC";
+        $sql ="SELECT  * FROM SOF_USUARIOS WHERE TIPO = 'LOCAL_PROPIO' AND NRO_SUCURS NOT IN ('111', '702')  ORDER BY NRO_SUCURS ASC";
 
         $result = sqlsrv_query($this->cid, $sql);
 
