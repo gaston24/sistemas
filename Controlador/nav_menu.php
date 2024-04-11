@@ -62,7 +62,7 @@ include('estado_cuenta.php');
        
             <!-- ECOMMERCE -->
             <?php
-            if ($_SESSION['tipo'] != 'MAYORISTA' && $_SESSION['usuarioUy'] != 1) {
+            if ($_SESSION['tipo'] != 'MAYORISTA') {
             ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
