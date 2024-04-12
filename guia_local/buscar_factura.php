@@ -102,6 +102,9 @@ if(isset($_GET['comprobante'])){
 
 	$cid = $conn->conectar('central');
 
+	if($_SESSION['usuarioUy'] == 1){
+		$cid = $conn->conectar('uy');
+	}
 
 	$sql=
 		"
