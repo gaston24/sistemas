@@ -8,8 +8,11 @@ class Remito{
         $cid = new Conexion();
         $cid_central = $cid->conectar('central');  
 
-        
-
+            
+        if($_SESSION['usuarioUy'] == 1){
+            $cid_central = $cid->conectar('uy');
+        }
+  
         $sql = "
         SET DATEFORMAT YMD
 
