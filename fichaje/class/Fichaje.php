@@ -178,6 +178,7 @@ class Fichaje {
         WHERE CONVERT(DATE, FECHA_REG, 103) BETWEEN '$desde' AND '$hasta'
           AND (NRO_LEGAJO LIKE '%$usuario%' OR APELLIDO_Y_NOMBRE LIKE '%$usuario%')
           AND SUCURSAL LIKE '%$sucursal%'
+          AND SUCURSAL != ''
         ORDER BY CONVERT(DATE, FECHA_REG, 103) DESC;
         
         ";
