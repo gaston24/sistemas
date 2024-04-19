@@ -120,7 +120,31 @@ const login = (numeroLegajo, password) =>{
                     success : function(response){
                         
                         response = JSON.parse(response)
-                  
+                       
+                        if(response == 'errorFichar'){
+
+                            Swal.fire({
+                                html: ` 
+                                    <div class="circle-icon">
+                                        <i class="bi bi-exclamation-triangle" style="font-size: 40px; color: orange;"></i>
+                                    </div>
+                                    <br>
+                                    <div>¡ Error al fichar!</div>
+                                    <div>Por favor Vuelva a intentarlo</div>
+                                `,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Cerrar',
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                  
+                                    location.reload();
+                                }
+                            });
+                            return 1;
+
+                        }
+
                         if(response['id_fichada']){
                   
                             const fecha = new Date(response['entrada'].date);
