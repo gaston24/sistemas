@@ -2,7 +2,7 @@
 session_start(); 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
 
-if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+if(!isset($_SESSION['username'])){
 	header("Location:login.php");
 }else{
 $permiso = $_SESSION['permisos'];
@@ -81,7 +81,7 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 				<td ><?= $key['GC_GDT_NUM_GUIA'] ;?></td>
 				<td ><?php if(isset($key['FECHA'])){echo $key['FECHA']->format('Y-m-d');} ?></td>
 				<td > <a href="remitoEntrega/?nComp=<?= $key['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" id="iconPrint"></i></a></td>
-				<td  type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden()" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
+				<td  type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden(this)" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
 			</tr>
 
 			<?php
@@ -99,14 +99,15 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 	}
 ?>
 
-  <script src="main.js"></script>
-  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="main.js"></script>
    
 	<script>
 
