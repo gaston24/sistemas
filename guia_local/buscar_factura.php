@@ -154,7 +154,6 @@ if(isset($_GET['comprobante'])){
 		
 		ini_set('max_execution_time', 300);
 $result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
-
 ?>
 
 <div class="container-fluid">
@@ -207,22 +206,25 @@ $result=sqlsrv_query($cid,$sql)or die(exit("Error en odbc_exec"));
 		<td class="col-" style="font-size: 11px;"><?= $v['TIENDA'] ;?></td>
 		<td width="1%"> <a href="remitoEntrega/?nComp=<?= $v['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" title="Print" id="iconPrint"></i></a></td>
 		<td width="1%">
-				<?php if($v['FACTURADO']== 1){ ?>
+				<?php if($v['FACTURADO'] == 1){ ?>
 					<i class="bi bi-file-earmark-text-fill" data-toggle="tooltip" data-placement="left" title="Facturado" id="iconFacturado"></i>
 						<?php }else if($v['FACTURADO']== 0){?>
 						<?php } ?>
 		</td>
 		<td width="1%">
-				<?php if($v['CONTROLADO']== 1){ ?>
+				<?php if($v['CONTROLADO'] == 1){ ?>
 					<i class="bi bi-clipboard2-check-fill" data-toggle="tooltip" data-placement="left" title="Controlado" id="iconControlado"></i>
-						<?php }else if($v['CONTROLADO']== 0){?>
-						<?php } ?>
+				<?php }else if($v['CONTROLADO'] == 0){?>
+				<?php } ?>
 		</td>
 		<td width="1%">
-				<?php if($v['ENTREGADO']== 1){ ?>
-					<i class="bi bi-box-seam-fill" data-toggle="tooltip" data-placement="left" title="Entregado <?php echo $v['FECHA_ENTREGADO'] ?>" id="iconEntregado"></i>
-						<?php }else if($v['ENTREGADO']== 0){?>
-						<?php } ?>
+
+				<?php if($v['ENTREGADO'] == 1){ ?>
+					
+					<i class="bi bi-box-seam-fill" data-toggle="tooltip" data-placement="left" title="Entregado <?= $v['FECHA_ENTREGADO']->format('d/m/Y'); ?>" id="iconEntregado"></i>
+
+				<?php }else if($v['ENTREGADO'] == 0){?>
+				<?php } ?>
 		</td>
 
 		</tr>
