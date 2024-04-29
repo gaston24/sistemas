@@ -14,6 +14,9 @@ class Remito{
 
         $this->cidLocal = $conn->conectar('local');
         
+        if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+            $this->cidLocal = $conn->conectar('suc_uy');
+        }
 
     }
     

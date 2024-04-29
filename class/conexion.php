@@ -14,6 +14,7 @@ class Conexion{
         $this->database_uy = $this->envVars['DATABASE_UY'];
         $this->host_locales = $this->envVars['HOST_LOCALES'];
         $this->database_locales = $this->envVars['DATABASE_LOCALES'];
+        $this->database_sucUy = $this->envVars['DATABASE_SUC_UY'];
         $this->user = $this->envVars['USER'];
         $this->pass = $this->envVars['PASS'];
         $this->pass_locales = $this->envVars['PASS_LOCALES'];
@@ -30,6 +31,8 @@ class Conexion{
             return array($this->host_locales, $this->database_locales);
         }elseif($nameServer == 'uy'){
             return array($this->host_central, $this->database_uy);
+        }elseif($nameServer == 'suc_uy'){
+            return array($this->host_locales, $this->database_sucUy);
         }else{
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
