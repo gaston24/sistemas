@@ -54,6 +54,7 @@ class DotEnv
             'DATABASE_CENTRAL' => getenv('DATABASE_CENTRAL'),
             'DATABASE_LOCALES' => getenv('DATABASE_LOCALES'),
             'DATABASE_UY' => getenv('DATABASE_UY'),
+            'DATABASE_SUC_UY' => getenv('DATABASE_SUC_UY'),
             'USER' => getenv('USER'),
             'PASS' => getenv('PASS'),
             'PASS_LOCALES' => getenv('PASS_LOCALES'),

@@ -8,27 +8,32 @@ class Remito{
         require_once $_SERVER['DOCUMENT_ROOT'] .'/sistemas/class/conexion.php';
         
         $conn = new Conexion();
-        $this->cid = $conn->conectar('central');
-
-        $this->cidLakerbis = $conn->conectar('locales');
-
+        
         $this->cidLocal = $conn->conectar('local');
         
+        if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+            $this->cidLocal = $conn->conectar('uy');
+        }
 
     }
     
    
     public function traerRemitos($suc){
 
-        
+        $codProCl= 'GT%';
+
+        if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+            $codProCl = 'UR%';
+        }
+
         $sql = "
         SET DATEFORMAT YMD
         SELECT N_COMP, NCOMP_IN_S, COD_PRO_CL
         FROM STA14 WHERE FECHA_MOV >= GETDATE()-30 AND N_COMP LIKE 'R%'
-        AND COD_PRO_CL LIKE 'GT%'
+        AND COD_PRO_CL LIKE  '$codProCl'
         ORDER BY N_COMP DESC
         ";
-        
+       
         $stmt = sqlsrv_query( $this->cidLocal, $sql );
 
         $rows = array();
