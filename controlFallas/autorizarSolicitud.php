@@ -105,6 +105,7 @@
                                     <th style="text-align:center;" >DESCRIPCION</th>
                                     <th style="text-align:center;" >PRECIO</th>
                                     <th style="text-align:center;" >DESC. FALLA</th>
+                                    <th style="text-align:center;" >IMAGEN</th>
                                     <th style="text-align:center;" >RECODIFICA</th>
                                     <th style="text-align:center;" >UNICO</th>
                                     <th style="text-align:center;" >- 10%</th>
@@ -127,7 +128,8 @@
                                             <td style="text-align:center;width:7%"><?= $detalle['COD_ARTICU'] ?></td>
                                             <td style="text-align:center;width:12%"><?= $detalle['DESCRIPCION'] ?></td>
                                             <td style="text-align:center;width:7%" attr-realvalue="<?= $detalle['PRECIO'] ?>">$ <?= number_format($detalle['PRECIO'], 0, ",",".") ?></td>
-                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> <button class="btn btn-warning" onclick= "mostrarImagen(this)"><i class="bi bi-eye"></i></button></td>
+                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> </td>
+                                            <td style="text-align:center;width:5%"><button class="btn btn-warning" onclick= "mostrarImagen(this)"><i class="bi bi-eye"></i></button></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="activarRecodificacion(this)"></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="unico" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.9" disabled ></td>

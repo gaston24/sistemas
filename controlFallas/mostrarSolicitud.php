@@ -103,6 +103,7 @@
 
                                 <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']) ?>" id="numSolicitud" disabled></div>
                                <?php 
+                
                                     switch ($solicitudEncabezado[0]['ESTADO']) {
                                         case '1':
                                             $estado = "Solicitada";
@@ -115,6 +116,12 @@
                                             break;
                                         case '4':
                                             $estado = "Borrador";
+                                            break;
+                                        case '5':
+                                            $estado = "Ingresada";
+                                            break;
+                                        case '6':
+                                            $estado = "Ajustada";
                                             break;
                                         default:
                                             # code...
