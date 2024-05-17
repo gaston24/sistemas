@@ -217,8 +217,17 @@
                                                 <option value="" selected disabled>Buscar artículo...</option>
                                                 <?php 
                                                 foreach ($todosLosArticulos as $key => $value) {
+                                                   
+                                                    $descripcion = $value['DESCRIPCIO'];
+    
+                                                  
+                                                    if (strpos($descripcion, '"') !== false) {
+                                                        $descripcion = htmlspecialchars($descripcion);
+                                                    }
+                                                
+                                                    
                                             
-                                                    echo '<option value="'.$value["COD_ARTICU"].'?'.$value["DESCRIPCIO"].'?'.$value['PRECIO'].'">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                    echo '<option value="'.$value["COD_ARTICU"].'?'.$descripcion.'?'.$value['PRECIO'].'">'.$value['COD_ARTICU'].' | '.$descripcion.'</option>';
                                                 }
                                                 ?>
                                                 </select>
