@@ -7,18 +7,18 @@ const activarRecodificacion  = (div) => {
                 e.disabled = false;
             }
         });
-        div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select").disabled = false;
-        div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select").options[0].remove();
+        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = false;
+        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").options[0].remove();
 
     }else{
 
-        div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select").disabled = true;
+        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = true;
         const nuevaOpcion = new Option("CENTRAL", "1");
 
         nuevaOpcion.setAttribute("selected", "selected");
 
         // Obtener el elemento select
-        const select = div.parentElement.parentElement.querySelectorAll("td")[11].querySelector("select");
+        const select = div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select");
       
         // Insertar la nueva opción al principio del select
         select.insertBefore(nuevaOpcion, select.firstChild);
@@ -27,7 +27,7 @@ const activarRecodificacion  = (div) => {
             if(y != 0){
                 e.disabled = true;
                 e.checked = false;
-                e.parentElement.parentElement.querySelectorAll("td")[10].textContent = "";
+                e.parentElement.parentElement.querySelectorAll("td")[11].textContent = "";
             }
         });
     }
@@ -67,7 +67,8 @@ const comprobarCheckbox = (div) => {
 
                 let data = JSON.parse(response)
 
-                div.parentElement.parentElement.querySelectorAll("td")[10].textContent = data[0]['COD_OUTLET'];
+
+                div.parentElement.parentElement.querySelectorAll("td")[11].textContent = data[0]['COD_OUTLET'];
                 // div.parentElement.parentElement.querySelectorAll("td")[2].textContent ="$"+ parseNumber(data[0]['PRECIO_DESC_RED']);
             }   
         });
@@ -78,7 +79,7 @@ const comprobarCheckbox = (div) => {
 
         let newStr = codArticulo.slice(1)
         newStr = "O" + newStr;
-        div.parentElement.parentElement.querySelectorAll("td")[10].textContent =newStr
+        div.parentElement.parentElement.querySelectorAll("td")[11].textContent =newStr
         
     
     }
@@ -100,15 +101,15 @@ const autorizar = () => {
 
     allTr.forEach((element,y) => {
         data.push({
-            ID: element.querySelectorAll("td")[13].textContent,
+            ID: element.querySelectorAll("td")[14].textContent,
             COD_ARTICULO: element.querySelectorAll("td")[0].textContent,
             PRECIO: element.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
-            NUEVO_CODIGO: element.querySelectorAll("td")[10].textContent,
-            DESTINO: element.querySelectorAll("td")[11].querySelector("select").value,
-            OBSERVACIONES: element.querySelectorAll("td")[12].querySelector("input").value
+            NUEVO_CODIGO: element.querySelectorAll("td")[11].textContent,
+            DESTINO: element.querySelectorAll("td")[12].querySelector("select").value,
+            OBSERVACIONES: element.querySelectorAll("td")[13].querySelector("input").value
         });
 
-        codigosOulet.push(element.querySelectorAll("td")[10].textContent);
+        codigosOulet.push(element.querySelectorAll("td")[11].textContent);
 
     })
     
