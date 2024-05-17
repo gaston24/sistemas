@@ -136,6 +136,7 @@
                                     <th style="text-align:center;width: 200px;" >Precio</th>
                                     <th style="text-align:center;width: 200px;">Cantidad</th>
                                     <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
+                                    <th style="text-align:center;width: 100px;" >Imagen</th>
                                     <?php 
                                     if($tipoU == 2){
                                         echo '<th style="text-align:center;width: 600px;" >Nuevo Codigo</th>';                              
@@ -157,10 +158,11 @@
                                             echo '
                                             <tr id="bodyArticulos"> 
                                                 <td style="text-align:center">'.$detalle['COD_ARTICU'].'</td>
-                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].' <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button> </td>
+                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].'</td>
                                                 <td style="text-align:center">$'.number_format($detalle['PRECIO'], 0, ",",".").'</td>
                                                 <td style="text-align:center">'.$detalle['CANTIDAD'].'</td>
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'" disabled></td>
+                                                <td style="text-align:center"> <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button></td>
                                                 ';
                                             if($tipoU == 2){
                                                 
