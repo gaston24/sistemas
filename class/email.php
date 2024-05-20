@@ -38,18 +38,20 @@ class Email{
             $this->mail = new PHPMailer(true);
 
             $this->mail->isSMTP();
-            $this->mail->Host = $this->envVars['HOST_EMAIL'];
+            $this->mail->Host = 'smtp.gmail.com'; 
             $this->mail->SMTPAuth = true;
             $this->mail->Username = $this->envVars['USER_EMAIL'];
             $this->mail->Password = $this->envVars['PASS_EMAIL'];
-            $this->mail->SMTPSecure = false;
-            $this->mail->Port = 26;
+            $this->mail->SMTPSecure = 'tls'; 
+            $this->mail->Port = 587; 
             $this->mail->setFrom($this->envVars['USER_EMAIL'], 'XL Extralarge');
 
         } catch (Exception $e) {
             echo "Error al instanciar la clase Email: {$this->mail->ErrorInfo}";
         }
+        
     }
+
 
     
     public function enviarEmail($email, $asunto, $arrayData){
