@@ -170,16 +170,18 @@
                                 <?php 
                                 
                                 foreach ($result as $key => $encabezado) {
-                 
+                                    if($encabezado['ESTADO'] == '4'){
+                                        continue;
+                                    }
                                     switch ($encabezado['ESTADO']) {
                                         case '1':
                                             $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-box-arrow-in-up'></i></button>";
-                                            $accion = "<a href='autorizarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-primary' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1&destino=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";                       
                                             break;
 
                                         case '2':
                                             $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-check2-square'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1&destino=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         case '3':
@@ -187,11 +189,6 @@
                                             $accion = "<a href='mostrarSolicitudDestino.php?numSolicitud=$encabezado[ID]&estado=Enviada' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
-                                        case '4':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
-                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;'' ><i class='fa-solid fa-eraser'></i></button>";
-                                            $accion = "<a href='mostrarSolicitudDestino.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
-                                            break;
                                         
                                         case '5':
                                             $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";

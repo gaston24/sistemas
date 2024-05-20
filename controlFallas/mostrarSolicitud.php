@@ -28,6 +28,8 @@
   
     $tipoU = $_GET['tipoU'] ;
 
+    $esDestino = (isset($_GET['destino'])) ? $_GET['destino'] : 0;
+
     $locales = $recodificacion->traerLocales();
 ?>
 
@@ -89,7 +91,12 @@
                                 <div style="margin-left:30%"> 
                                 <?php 
                                 if($tipoU == 1){
-                                    echo '<a href="seleccionDeSolicitudes.php" class="btn btn-secondary">Volver Al Listado</a>';
+                                    if($esDestino == 1){
+                                        echo '<a href="seleccionDeSolicitudesDestino.php" class="btn btn-secondary">Volver Al Listado</a>';
+
+                                    }else{
+                                        echo '<a href="seleccionDeSolicitudes.php" class="btn btn-secondary">Volver Al Listado</a>';
+                                    }
                                 } else if ($tipoU == 2){
                                     echo '<a href="seleccionDeSolicitudesSup.php" class="btn btn-secondary">Volver Al Listado</a>';
                                 }
