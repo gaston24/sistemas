@@ -247,14 +247,17 @@ function solicitar () {
     $dataArticulos = $_POST['dataArticulos'];
     $esBorrador = $_POST['esBorrador'];
     $valores = "";
-    foreach ($dataArticulos as $key => $articulo) {
-        $valores .= "('$numSolicitud', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
-    }
 
-    $valores = substr_replace($valores, ";", -1, 1);
-
+    
     $recodificacion = new Recodificacion();
     $encabezado = $recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
+    
+    
+    foreach ($dataArticulos as $key => $articulo) {
+        $valores .= "('$encabezado', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
+    }
+    
+    $valores = substr_replace($valores, ";", -1, 1);
 
     if($encabezado == true && $esBorrador == "false"){
         $recodificacion->insertarDetalle($valores);
