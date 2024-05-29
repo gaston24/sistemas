@@ -186,8 +186,7 @@ class Recodificacion
         enc.NUM_SUC,
         enc.UPDATED_AT,
         SUM(det.cantidad) AS cantidad_total_articulos,
-        det.N_COMP,
-        det.DESTINO 
+        det.N_COMP
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
         WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'";
@@ -215,7 +214,7 @@ class Recodificacion
             $sql .= "AND enc.ESTADO != '4'";
         }
         $sql .= "
-        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP, det.DESTINO 
+        GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
         ORDER BY enc.ID DESC";
   
       
