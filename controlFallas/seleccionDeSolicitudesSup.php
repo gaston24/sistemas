@@ -25,11 +25,18 @@
         if(in_array($value['ID'], $array)){
             unset($result[$key]);
         }else{
-            if($value['DESTINO'] != '1'){
+            if(isset($value['DESTINO'])){
 
-                array_push($array, $value['ID']);
+            
+                if($value['DESTINO'] != '1'){
+
+                    array_push($array, $value['ID']);
+                }else{
+                    unset($result[$key]);
+                }
+                
             }else{
-                unset($result[$key]);
+                array_push($array, $value['ID']);
             }
         }
     }
