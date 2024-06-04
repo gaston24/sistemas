@@ -113,11 +113,15 @@ include('estado_cuenta.php');
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
+                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { 
+                                $lista = 'facturaManual/listado.php?suc=' . $_SESSION['numsuc'];
+                                $carga = 'facturaManual/carga.php?suc=' . $_SESSION['numsuc'];
+                                ?>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Administración</a>
                                 <ul class="dropdown-menu">
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='egresosDeCaja/egresosDeCaja.php'">Egresos de caja <span class="badge badge-warning">Testing</span></a>
-
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'">Factura manual <span class="badge badge-warning">Testing</span></a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $carga; ?>'">Cargar Factura manual <span class="badge badge-warning">Testing</span></a>
                                 <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">First subsubmenu</a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
