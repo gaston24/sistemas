@@ -99,7 +99,22 @@ const autorizar = () => {
     let codigosOulet = []; 
     let outlet = document.querySelector("#outlet").textContent;
 
+    let error = false;
+    let errorDestino = false;
     allTr.forEach((element,y) => {
+        if (element.querySelectorAll("td")[5].querySelector("input").checked){
+            if(element.querySelectorAll("td")[6].querySelector("input").checked == false && 
+                element.querySelectorAll("td")[7].querySelector("input").checked == false  &&
+                element.querySelectorAll("td")[8].querySelector("input").checked == false  &&
+                element.querySelectorAll("td")[9].querySelector("input").checked == false &&
+                element.querySelectorAll("td")[10].querySelector("input").checked == false 
+            ){
+                error = true;
+            }
+        }
+        if( element.querySelectorAll("td")[12].querySelector("select").value == "" || element.querySelectorAll("td")[12].querySelector("select").value == "0"){
+            errorDestino = true;
+        }
         data.push({
             ID: element.querySelectorAll("td")[14].textContent,
             COD_ARTICULO: element.querySelectorAll("td")[0].textContent,
@@ -109,10 +124,21 @@ const autorizar = () => {
             OBSERVACIONES: element.querySelectorAll("td")[13].querySelector("input").value
         });
 
+
+
         codigosOulet.push(element.querySelectorAll("td")[11].textContent);
 
     })
+    if(error){
+        Swal.fire('Debe seleccionar al menos una opción de recodificación', '', 'error')
+        return;
+    }
     
+    if(errorDestino){
+        Swal.fire('Debe seleccionar un destino', '', 'error')
+        return;
+    }
+   
     Swal.fire({
         icon: 'info',
         title: 'Desea autorizar la solicitud?',
