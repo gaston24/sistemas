@@ -83,20 +83,15 @@ function mostrarResultados() {
   if (conexion.readyState == 4) {
     let resultado = conexion.responseText;
     console.log(resultado);
-    if (resultado != "error" ||  document
+    if (resultado == "error" ||  document
     .getElementById("barcodeValue").value == '') {
+      msj_error.style.display="inline-block";
+    } else {
       console.log('hola');
       b = 1;
       msj_error.style.display="none";
       document.getElementById("descripcion").value=resultado;
      console.log(resultado)
-  /*    alert(resultado);
-     console.log(typeof(resultado)); */
-    
-    } else {
-    /*  msj_error.classList.add("error"); */
-      /* escribirInput.value = ""; */
-      msj_error.style.display="inline-block";
     }
   }
 }
