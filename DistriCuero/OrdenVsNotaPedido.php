@@ -142,13 +142,13 @@ $todasLasNotas = $nota->traerOrdenesConNotaPedido($orden);
                       <?php if($key['ESTADO']== 'RECHAZADA'){ ?>
                         <td style="color: #dc3545;"><?=  $key['ESTADO']?></td>
 					            <?php } else { ?> 
-                        <td><?=  $key['ESTADO']?></td>
-                      <?php } ?>  
-                    <?php if(isset($key['NRO_NOTA_PEDIDO'])) {?>
+                    <td><?=  $key['ESTADO']?></td>
+                        <?php } ?>  
+                      <?php if(isset($key['NRO_NOTA_PEDIDO'])) {?>
                     <td><i class="bi bi-trash-fill" aria-hidden="true" title="Eliminar"></i></td>
-                    <?php } elseif ($key['ESTADO']== 'RECHAZADA'){ ?>
+                      <?php } elseif ($key['ESTADO']== 'RECHAZADA'){ ?>
                     <td><i class="bi bi-check-circle-fill" aria-hidden="true" title="Activar"></i></td> 
-                    <?php } else { ?> 
+                      <?php } else { ?> 
                     <td></td>
                     <?php } ?>  
                 </tr>   

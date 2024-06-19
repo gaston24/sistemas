@@ -83,9 +83,10 @@ function mostrarResultados() {
   if (conexion.readyState == 4) {
     let resultado = conexion.responseText;
     console.log(resultado);
-    if (resultado == "error" ||  document
-    .getElementById("barcodeValue").value == '') {
+    if ((resultado == "error") ||  (document
+    .getElementById("barcodeValue").value == '')) {
       msj_error.style.display="inline-block";
+      console.log('wwwwwwwwwwww');
     } else {
       console.log('hola');
       b = 1;
