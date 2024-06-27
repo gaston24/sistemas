@@ -28,6 +28,11 @@ switch ($accion) {
 
         break;
 
+    case 'mostrarFotos':
+        mostrarFotos();
+
+        break;
+
     case 'solicitar':
         solicitar();
 
@@ -126,9 +131,11 @@ function eliminarArchivo () {
 
     $codArticulo = $_POST['codArticulo'];
 
-    $numSolicitud = $_POST['numSolicitud'];
+    $numImg = $_POST['numImg'];
 
-    $fileName = $numSolicitud.$codArticulo;
+    $numSucursal = $_POST['nroSucursal'];
+
+    $fileName = $numSucursal.$numImg.$codArticulo;
 
     if ($gestor = opendir("../assets/uploads")) {
     
@@ -165,36 +172,39 @@ function contarFotosEnCarpeta() {
 
     }
 
-    $numSolicitud = $_POST['numSolicitud'];
- 
+    $nroSucursal = $_POST['nroSucursal'];
+
+    $numImg = $_POST['numImg'];
+
+
     if(isset($arrayArticulos)){
         
         $contadorFotos = 0;
         $datosDeLosArchivos = [];
         $datosDeLosArchivos['cantidad'] = 0;
         foreach ($arrayArticulos as $key => $codigo) {
-            $fileName = $numSolicitud.$codigo;
-            // Abre el directorio
+            $fileName = $nroSucursal.$numImg.$codigo;
+           
             if ($gestor = opendir("../assets/uploads")) {
-                // Recorre los archivos en el directorio
+                
                 while (($archivo = readdir($gestor)) !== false) {
-                    // Ignora las carpetas "." y ".."
+                   
                     if ($archivo != "." && $archivo != "..") {
         
                         if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
-                            // $contadorFotos++;
+                            
                             $datosDeLosArchivos['cantidad'] ++;
         
                             $datosDeLosArchivos['nombre'][] = $codigo;
         
-                            // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
+                           
                         } 
          
                      
                     }
                 }
         
-                // Cierra el directorio
+                
                 closedir($gestor);
             }
 
@@ -203,36 +213,82 @@ function contarFotosEnCarpeta() {
     }else{
 
   
-        $fileName = $numSolicitud.$codArticulo;
+        $fileName = $nroSucursal.$numImg.$codArticulo;
         $contadorFotos = 0;
         $datosDeLosArchivos = [];
         $datosDeLosArchivos['cantidad'] = 0;
-        // Abre el directorio
+        
         if ($gestor = opendir("../assets/uploads")) {
-            // Recorre los archivos en el directorio
+            
             while (($archivo = readdir($gestor)) !== false) {
-                // Ignora las carpetas "." y ".."
+                
                 if ($archivo != "." && $archivo != "..") {
 
                     if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
-                        // $contadorFotos++;
+                       
                         $datosDeLosArchivos['cantidad'] ++;
 
                         $datosDeLosArchivos['nombre'][] = pathinfo($archivo, PATHINFO_FILENAME);
 
-                        // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
+                       
                     } 
     
                 
                 }
             }
 
-            // Cierra el directorio
+            
             closedir($gestor);
         }
     }
 
     echo json_encode($datosDeLosArchivos);
+}
+
+function mostrarFotos () {
+    
+    $codArticulo = (isset($_POST['codArticulo'])) ? $_POST['codArticulo'] : "";
+    
+    if($codArticulo == ""){
+
+        $arrayArticulos = $_POST['codArticulos'];
+
+    }
+
+    $numSolicitud = $_POST['numSolicitud'];
+
+
+    $fileName = $numSolicitud.$codArticulo;
+    $contadorFotos = 0;
+    $datosDeLosArchivos = [];
+    $datosDeLosArchivos['cantidad'] = 0;
+    
+    if ($gestor = opendir("../assets/uploads")) {
+        
+        while (($archivo = readdir($gestor)) !== false) {
+           
+            if ($archivo != "." && $archivo != "..") {
+
+                if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
+                   
+                    $datosDeLosArchivos['cantidad'] ++;
+
+                    $datosDeLosArchivos['nombre'][] = pathinfo($archivo, PATHINFO_FILENAME);
+
+                    
+                } 
+
+            
+            }
+        }
+
+       
+        closedir($gestor);
+    }
+ 
+
+    echo json_encode($datosDeLosArchivos);
+
 }
 
 function solicitar () {
@@ -244,26 +300,66 @@ function solicitar () {
     $usuario = $_POST['usuario'];
     $estado = $_POST['estado'];
     $numSolicitud = $_POST['numSolicitud'];
+    $numImg = $_POST['numImg'];
     $dataArticulos = $_POST['dataArticulos'];
     $esBorrador = $_POST['esBorrador'];
     $valores = "";
 
     
     $recodificacion = new Recodificacion();
-    $encabezado = $recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
-    
+
+    if ($esBorrador == 1){
+
+        $solicitud = $numSolicitud;
+    }else{
+
+        $solicitud = $numImg;
+    }
+
+    $encabezado = $recodificacion->insertarEncabezado($solicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
     
     foreach ($dataArticulos as $key => $articulo) {
         $valores .= "('$encabezado', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
-    }
+
+
+     
+        $directorio = '../assets/uploads/';
+        $extensionesValidas = array('.jpg', '.jpeg', '.png', '.gif');
+
     
+        $nombreArchivoBusqueda = $nroSucursal . $numImg . $articulo['codArticulo'];
+      
+
+        if ($handle = opendir($directorio)) {
+     
+            while (false !== ($archivo = readdir($handle))) {
+                if ($archivo != "." && $archivo != "..") {
+    
+                    $nombreArchivo = pathinfo($archivo, PATHINFO_FILENAME);
+                    $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+      
+
+                    if (strpos($nombreArchivo, $nombreArchivoBusqueda) !== false ) {
+
+                        $nuevoNombre = trim($encabezado).trim(substr($nombreArchivo, strpos($nombreArchivo, $numImg) + strlen($numImg)));
+                        $nuevoPath = $directorio . $nuevoNombre . ".$extension";
+                        rename($directorio . $archivo, $nuevoPath);
+                    }
+                }
+            }
+            closedir($handle);
+        }
+    }
+
     $valores = substr_replace($valores, ";", -1, 1);
 
-    if($encabezado == true && $esBorrador == "false"){
-        $recodificacion->insertarDetalle($valores);
+    if($encabezado != '' && $esBorrador != "false"){
+        $recodificacion->borrarDetalle($encabezado);
     }
+    
+    $recodificacion->insertarDetalle($valores);
 
-    return true;
+    echo $encabezado;
 
 }
 
@@ -271,16 +367,14 @@ function borrador () {
    
     $nroSucursal = $_POST['nroSucursal'];
 
-
     $fecha = $_POST['fecha'];
 
     $usuario = $_POST['usuario'];
     $estado = $_POST['estado'];
-    $numSolicitud = $_POST['numSolicitud'];
-    $dataArticulos = $_POST['dataArticulos'];
     $valores = "";
-
-    
+    $numSolicitud = $_POST['numSolicitud'];
+    $numImg = $_POST['numImg'];
+    $dataArticulos = $_POST['dataArticulos'];
     
     $recodificacion = new Recodificacion();
 
@@ -294,15 +388,15 @@ function borrador () {
 
     }else{
 
-        $encabezado = $recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 4, "false" );
+        $encabezado = $recodificacion->insertarEncabezado($numImg, $nroSucursal, $fecha, $usuario, 4, "false" );
     }
-
     
     foreach ($dataArticulos as $key => $articulo) {
 
         $valores .= "('$encabezado', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
         
     }
+     
     $valores = substr_replace($valores, ";", -1, 1);
     
     if($encabezado == true){

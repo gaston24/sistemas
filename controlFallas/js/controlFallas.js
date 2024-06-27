@@ -1,3 +1,4 @@
+let timestap = new Date().getTime();
 
 
 const mostrarDescripcion = (div) => {
@@ -87,8 +88,11 @@ const enviarImagenes = (codArticulo) => {
   
     const input = document.getElementById('archivos');
     let files = input.files;
-    let numSolicitud = document.querySelector("#numSolicitud").value; 
-    nameFile = numSolicitud+codArticulo ;
+    let numImg = timestap;
+    let nroSucursal = document.querySelector("#nroSucursal").textContent;
+
+    nameFile = nroSucursal+numImg+codArticulo ;
+    
     const formData = new FormData();
     const maxFiles = 3;
 
@@ -119,7 +123,8 @@ const enviarImagenes = (codArticulo) => {
       type: "POST",
       data: {
         codArticulo: codArticulo,
-        numSolicitud: numSolicitud
+        numImg: numImg,
+        nroSucursal: nroSucursal
       },
       success: function (response) {
         $.ajax({
@@ -172,18 +177,22 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
   
     let codigoArticulo = divImagen.parentElement.parentElement.querySelectorAll("td")[0].querySelector("select").value;
 
-    let numSolicitud = document.querySelector("#numSolicitud").value;
+    let numImg = timestap;
+
+    let nroSucursal = document.querySelector("#nroSucursal").textContent;
+
     let carouselElement = document.querySelector('#carruselImagenes'); 
   
     carouselElement.innerHTML = ''; 
-    console.log(codigoArticulo.split("?")[0],numSolicitud)
+
     $.ajax({
 
       url: "Controller/RecodificacionController.php?accion=contarImagenes",
       type: "POST",
       data: {
         codArticulo:codigoArticulo.split("?")[0],
-        numSolicitud:numSolicitud
+        numImg:numImg,
+        nroSucursal:nroSucursal
 
       },
 
@@ -462,14 +471,17 @@ const eliminarArchivo = (div,alerta = true,articulo = null) => {
 
   codArticulo = codArticulo.split("?")[0];
   
-  let numSolicitud = document.querySelector("#numSolicitud").value;
+  let numImg = timestap;
+
+  let nroSucursal = document.querySelector("#nroSucursal").textContent;
 
   $.ajax({
     url: "Controller/RecodificacionController.php?accion=eliminarArchivo",
     type: "POST",
     data: {
       codArticulo: codArticulo,
-      numSolicitud: numSolicitud
+      numImg: numImg,
+      nroSucursal: nroSucursal
     },
     success: function (response) {
         if(alerta != false){
@@ -517,7 +529,10 @@ const solicitar = async (esBorrador = false) => {
   let fecha = document.querySelector("#fecha").value;
   let usuario = document.querySelector("#usuario").value;
   let estado = document.querySelector("#estado").value;
-  let numSolicitud = document.querySelector("#numSolicitud").value;
+  let numImg = timestap;
+  let numSolicitud = document.querySelector("#nroSolicitud").textContent;
+
+  
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
   let codArticulos = [];
@@ -549,6 +564,9 @@ const solicitar = async (esBorrador = false) => {
   if(stock == false ){
     return 1  
   }
+
+  console.log(numImg)
+
   
 
   $.ajax({
@@ -557,7 +575,8 @@ const solicitar = async (esBorrador = false) => {
     type: "POST",
     data: {
       codArticulos: codArticulos,
-      numSolicitud: numSolicitud
+      numImg: numImg,
+      nroSucursal: nroSucursal
 
     },
     success: function (response) {
@@ -677,11 +696,12 @@ const solicitar = async (esBorrador = false) => {
                   fecha: fecha,
                   usuario: usuario,
                   estado: estado,
+                  numImg: numImg,
                   numSolicitud: numSolicitud,
                   dataArticulos: dataArticulos,
                   esBorrador: esBorrador
                 },
-                success: function (response) {
+                success: function (responseSolicitud) {
                   
             
                   $.ajax({
@@ -694,23 +714,27 @@ const solicitar = async (esBorrador = false) => {
                       console.log(response)
                     }
                   });
-     
-               
-                   
-                  Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
-                      $.ajax({
-                        url: "Controller/SendEmailController.php?accion=confirmarSolicitud",
-                        type: "POST",
-                        data: {
-                          numSolicitud:numSolicitud
-                        },
-                        success: function (response) {
-                          console.log(response)
-                          location.href = "seleccionDeSolicitudes.php";
-                        }
+              
+                  $.ajax({
+                    url: "Controller/SendEmailController.php?accion=confirmarSolicitud",
+                    type: "POST",
+                    data: {
+                      numSolicitud:responseSolicitud
+                    },
+                    success: function (response) {
+                      console.log(response)
+
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'Solicitud Creada Correctamente',
+                        text: 'Nro de Solicitud : '+responseSolicitud,
+                        showConfirmButton: false,
+                        timer: 2500
+                      }).then ((result) => {
+                        location.href = "seleccionDeSolicitudes.php";
                       });
+                    }
                   });
-          
             
                 }
     
@@ -738,15 +762,14 @@ const borrador = () => {
   let fecha = document.querySelector("#fecha").value;
   let usuario = document.querySelector("#usuario").value;
   let estado = document.querySelector("#estado").value;
-  let numSolicitud = document.querySelector("#numSolicitud").value;
+  let numSolicitud = document.querySelector("#nroSolicitud").textContent;
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
 
 
   allTr.forEach(e => {
 
-    if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
-
+    if (e.querySelectorAll("td")[0].querySelector("select").value != ""){
       dataArticulos.push({
         codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0],
         descripcion: e.querySelectorAll("td")[1].textContent,
@@ -778,8 +801,9 @@ const borrador = () => {
       fecha: fecha,
       usuario: usuario,
       estado: estado,
-      numSolicitud: numSolicitud,
-      dataArticulos: dataArticulos
+      numSolicitud : numSolicitud,
+      dataArticulos: dataArticulos,
+      numImg: timestap
     },
     success: function (response) {
         Swal.fire({

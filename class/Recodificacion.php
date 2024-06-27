@@ -52,32 +52,44 @@ class Recodificacion
 
             $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '$estado', UPDATED_AT = GETDATE() WHERE ID = '$numSolicitud' AND ESTADO = '4';";
 
+            try {
+
+                $result = sqlsrv_query($this->cid, $sql); 
+
+                return $numSolicitud;
+
+            } catch (\Throwable $th) {
+
+                print_r($th);
+
+            }   
+
         }else{
 
-            $sql = "SET DATEFORMAT YMD INSERT INTO sj_reco_locales_enc (NUM_SUC, FECHA, USUARIO_EMISOR, ESTADO) VALUES ('$nroSucursal', '$fecha', '$usuario', '$estado' )";
+            $sql = "EXEC FU_INSERT_ENC_FALLAS '$nroSucursal', '$fecha', '$usuario', '$estado', '$numSolicitud' ";
             
+   
+            try {
+
+                $result = sqlsrv_query($this->cid, $sql); 
+                $next_result = sqlsrv_next_result($result);
+                $v = [];
+                
+                while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                    $v[] = $row;
+
+                }
+                return $v[0]['ID'];
+
+
+            } catch (\Throwable $th) {
+
+                print_r($th);
+
+            }
+
         }
- 
-        try {
-
-            $result = sqlsrv_query($this->cid, $sql); 
-
-            $sql = "SELECT SCOPE_IDENTITY() AS ultimo_id;";
-
-            $result = sqlsrv_query($this->cid, $sql);
-
-            $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-
-            $ultimo_id = $row['ultimo_id'];
-
-            return $ultimo_id;
-
-        } catch (\Throwable $th) {
-
-            print_r($th);
-
-        }
-        
 
     }
 

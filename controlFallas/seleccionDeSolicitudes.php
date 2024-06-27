@@ -203,7 +203,7 @@
                                             break;
 
                                         case '4':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
+                                            $valorIdBorrador =$encabezado['ID'];
                                             $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
                                             $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;

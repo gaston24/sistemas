@@ -16,24 +16,24 @@
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();
-   $numSolicitud = $recodificacion->traerNumSolicitud();
 
    $data = new Remito();
    $usuarios = $data->listarUsuarios($nroSucurs);
-    
 
+
+   $numSolicitud = [['ultimo_id' => 0]];
 
    $maestroArticulos = new Articulo();
    $todosLosArticulos = $maestroArticulos->traerMaestroArticulo();
    if(isset($_GET['numSolicitud'])){
-        $numSolicitud = [];
+
         $numSolicitud[0]['ultimo_id'] = $_GET['numSolicitud'];
     }
     
-   $borradorEnc = $recodificacion->buscarBorradorEnc($numSolicitud[0]['ultimo_id']+1,4);
+   $borradorEnc = $recodificacion->buscarBorradorEnc($numSolicitud[0]['ultimo_id'],4);
    if(count($borradorEnc) > 0){
-       $borradorDet = $recodificacion->buscarBorradorDet($numSolicitud[0]['ultimo_id']+1);
-       
+       $borradorDet = $recodificacion->buscarBorradorDet($numSolicitud[0]['ultimo_id']);
+
    }
    $esBorrador = false;
    if(count($borradorEnc) > 0){
@@ -91,6 +91,7 @@
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
                         <div id="outlet" hidden><?= $outlet ?></div>
+                        <div id="nroSolicitud" hidden><?= $numSolicitud[0]['ultimo_id'] ?> </div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
 
                         
@@ -135,9 +136,8 @@
 
                             </div>
 
-                            <div class="row" style="margin-top:-1.5%;">
+                            <div class="row" style="margin-top:1%;">
 
-                                <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']+1) ?>" id="numSolicitud" disabled></div>
                                 <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" disabled> </div>
 
                             </div>

@@ -13,7 +13,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
 
     $.ajax({
 
-      url: "Controller/RecodificacionController.php?accion=contarImagenes",
+      url: "Controller/RecodificacionController.php?accion=mostrarFotos",
       type: "POST",
       data: {
         codArticulo:codigoArticulo,
