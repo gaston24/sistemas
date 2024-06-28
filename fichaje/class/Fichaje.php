@@ -125,32 +125,27 @@ class Fichaje {
 
     public function fichar ($numeroLegajo, $sucursal){
    
+        $sql ="EXEC FU_SP_FICHAR '$numeroLegajo', '$sucursal'";
+        
         try {
 
-            $sql = "SET DATEFORMAT YMD
-            INSERT INTO SJ_FICHADAS (FECHA_REG, LEGAJO, ENTRADA, SUCURSAL) VALUES ( GETDATE(), '$numeroLegajo', GETDATE(), '$sucursal')";
-           
-            $result = sqlsrv_query($this->cid, $sql);
+            $result = sqlsrv_query($this->cid, $sql); 
+            $next_result = sqlsrv_next_result($result);
+            $v = [];
+            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+            return $v[0];
+
 
         } catch (\Throwable $th) {
-            return 'errorFichar';
-            die();
+
+            print_r($th);
+
         }
-      
-
-        $sql = "SET DATEFORMAT YMD  select id_fichada, ENTRADA FROM SJ_FICHADAS WHERE ID_FICHADA = (SELECT MAX(id_fichada) AS max_id_fichada FROM SJ_FICHADAS WHERE LEGAJO = '$numeroLegajo' AND FECHA_REG > GETDATE() -1);";
-
-        $result = sqlsrv_query($this->cid, $sql);
-
-        if ($result === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-
-        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-
-        $result = ['id_fichada' => $row['id_fichada'], 'entrada' => $row['ENTRADA']];
-
-        return $result ;
 
     }
 

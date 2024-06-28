@@ -120,7 +120,8 @@ const login = (numeroLegajo, password) =>{
                     success : function(response){
                         
                         response = JSON.parse(response)
-                       
+            
+
                         if(response == 'errorFichar'){
 
                             Swal.fire({
@@ -145,9 +146,10 @@ const login = (numeroLegajo, password) =>{
 
                         }
 
-                        if(response['id_fichada']){
+                        if(response['ID_INSERTADO']){
+
                   
-                            const fecha = new Date(response['entrada'].date);
+                            const fecha = new Date(response['FECHA_ENTRADA'].date);
 
                             const dia = fecha.getDate();
                             const mes = fecha.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
@@ -187,7 +189,7 @@ const login = (numeroLegajo, password) =>{
                                             <i class="fa-solid fa-circle-check" style="color: #06c4f4; font-size: 60px; position: absolute; top: 110px; left: 60px;"></i>
                                     
                                     Has fichado tu ingreso correctamente
-                                    <div>Numero de registro : ${response['id_fichada']}</div>
+                                    <div>Numero de registro : ${response['ID_INSERTADO']}</div>
                                     <div>Horario de ingreso : ${fechaHoraFormateada}</div>
                                     </div>
 
