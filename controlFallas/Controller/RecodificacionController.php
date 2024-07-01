@@ -420,6 +420,7 @@ function validarCodigosOulet () {
             if($result == false){
 
                 $arrayResult[] = $articulo;
+                altaArticulo($articulo);
             
             }
 
@@ -427,7 +428,7 @@ function validarCodigosOulet () {
 
     
     }
-    notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
+    // notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
     echo true;
 }
 
