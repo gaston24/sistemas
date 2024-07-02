@@ -8,20 +8,41 @@ const activarRecodificacion  = (div) => {
             }
         });
         div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = false;
-        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").options[0].remove();
+        let nroSucursal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
+
+        let options = div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").options;
+
+        for(let i = 0; i < options.length; i++){
+            if(options[i].value != nroSucursal){
+                options[i].remove();
+            }
+        }
+
 
     }else{
+       
 
-        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = true;
+        // div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = true;
         const nuevaOpcion = new Option("CENTRAL", "1");
+        let sucursal = document.querySelector("#nombreSuc").value;
+        let sucursalReal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
+
+        const nuevaOpcion2 = new Option(sucursal, sucursalReal);
+
+
 
         nuevaOpcion.setAttribute("selected", "selected");
 
+
         // Obtener el elemento select
         const select = div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select");
+
+        select.options.length = 0;
       
         // Insertar la nueva opción al principio del select
         select.insertBefore(nuevaOpcion, select.firstChild);
+
+        select.insertBefore(nuevaOpcion2, select.firstChild);
 
         allCheck.forEach((e ,y)=> {
             if(y != 0){

@@ -138,7 +138,7 @@
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.6" disabled ></td>
                                             <td style="text-align:center;width:10%"></td>
                                             <td style="text-align:center">
-                                                <select style="width: 178px;height: 28px;" class="sucursal" disabled>
+                                                <select style="width: 178px;height: 28px;" class="sucursal" >
                                                     <option value="1" selected>CENTRAL</option>
                                                     <?php
                                                         foreach ($locales as $key => $local) {
