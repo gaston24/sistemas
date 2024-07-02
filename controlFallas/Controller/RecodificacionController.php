@@ -420,7 +420,7 @@ function validarCodigosOulet () {
             if($result == false){
 
                 $arrayResult[] = $articulo;
-                altaArticulo($articulo);
+                $recodificacion->altaArticulo($articulo);
             
             }
 
