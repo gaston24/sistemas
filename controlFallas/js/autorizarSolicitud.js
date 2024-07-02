@@ -139,71 +139,87 @@ const autorizar = () => {
         return;
     }
    
-    Swal.fire({
-        icon: 'info',
-        title: 'Desea autorizar la solicitud?',
-        showDenyButton: true,
-        confirmButtonText: 'Autorizar',
-        denyButtonText: 'No autorizar',
-        }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
+ 
 
-    
-            $.ajax({
-                url: "Controller/RecodificacionController.php?accion=validarCodigosOulet",
-                type: "POST",
-                data: {
-                    codigosOulet: codigosOulet,
-                    numSolicitud: numSolicitud,
-                    nombreSuc: nombreSuc
 
-                },
-                success: function (response) {
-          
+    $.ajax({
+        url: "Controller/RecodificacionController.php?accion=validarCodigosOulet",
+        type: "POST",
+        data: {
+            codigosOulet: codigosOulet,
+            numSolicitud: numSolicitud,
+            nombreSuc: nombreSuc
+
+        },
+        success: function (response) {
+            let arrayResponse = JSON.parse(response);
+
+            let textArticulos = "";
+
+            arrayResponse.forEach((element,y) => {
+                if(textArticulos == ""){
+
+                    textArticulos += "Se darán de alta los siguientes artículos: "+ element + ", ";
+                }else{
+                    textArticulos += element + ", ";
                 }
-            });
-    
-            $.ajax({
-                url: "Controller/RecodificacionController.php?accion=autorizar",
-                type: "POST",
-                data: {
-                    data: data,
-                    numSolicitud: numSolicitud,
-                    outlet: outlet
-                },
-                success: function (response) {
 
-               
+            })
+    
+    
+            Swal.fire({
+                icon: 'info',
+                title: 'Desea autorizar la solicitud?',
+                text: textArticulos,
+                showDenyButton: true,
+                confirmButtonText: 'Autorizar',
+                denyButtonText: 'No autorizar',
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
                     $.ajax({
-                        url: "Controller/SendEmailController.php?accion=autorizarSolicitud",
+                        url: "Controller/RecodificacionController.php?accion=autorizar",
                         type: "POST",
                         data: {
+                            data: data,
                             numSolicitud: numSolicitud,
-                            numSuc: document.querySelector("#nombreSuc").getAttribute("attr-realvalue"),
-                            nombreSuc: document.querySelector("#nombreSuc").value,
+                            outlet: outlet,
+                            arrayArticulosAlta: arrayResponse
                         },
                         success: function (response) {
-                            Swal.fire('La solicitud fue autorizada!', '', 'success').then((result) => {    
-                            }).then((result) => {
-                                location.href = "seleccionDeSolicitudesSup.php";
-                            } )
+
+                    
+                            $.ajax({
+                                url: "Controller/SendEmailController.php?accion=autorizarSolicitud",
+                                type: "POST",
+                                data: {
+                                    numSolicitud: numSolicitud,
+                                    numSuc: document.querySelector("#nombreSuc").getAttribute("attr-realvalue"),
+                                    nombreSuc: document.querySelector("#nombreSuc").value,
+                                },
+                                success: function (response) {
+                                    Swal.fire('La solicitud fue autorizada!', '', 'success').then((result) => {    
+                                    }).then((result) => {
+                                        location.href = "seleccionDeSolicitudesSup.php";
+                                    } )
+
+                                }
+                            });
+
 
                         }
                     });
 
+            
 
+                } else if (result.isDenied) {
+                Swal.fire('No se realizaron cambios!', '', 'info')
                 }
-            });
-
-       
-
-        } else if (result.isDenied) {
-        Swal.fire('No se realizaron cambios!', '', 'info')
+            })
+        
         }
-        })
-   
-
+    });
 
 
 }
