@@ -29,8 +29,13 @@
     $tipoU = $_GET['tipoU'] ;
 
     $esDestino = (isset($_GET['destino'])) ? $_GET['destino'] : 0;
-
+    $outlet = false;
     $locales = $recodificacion->traerLocales();
+    foreach($locales as $key => $local){
+        if($local['NRO_SUCURSAL'] == $solicitudEncabezado[0]['NUM_SUC'] && $local['OUTLET'] == 1){
+            $outlet = true;
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +157,7 @@
                                     <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
                                     <th style="text-align:center;width: 100px;" >Imagen</th>
                                     <?php 
-                                    if($tipoU == 2){
+                                    if($tipoU == 2 || ($solicitudEncabezado[0]['ESTADO'] >= 2 && $outlet == true )){
                                         echo '<th style="text-align:center;width: 600px;" >Nuevo Codigo</th>';                              
                                         echo '<th style="text-align:center;width: 600px;" >Destino</th>';                              
                                         echo '<th style="text-align:center;width: 600px;" >Observaciones</th>';                              
@@ -178,7 +183,7 @@
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'" disabled></td>
                                                 <td style="text-align:center"> <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button></td>
                                                 ';
-                                            if($tipoU == 2){
+                                            if($tipoU == 2 || ($solicitudEncabezado[0]['ESTADO'] >= 2 && $outlet == true)){
                                                 
                                                 $destino = "";
                                                 foreach ($locales as $key => $local) {
