@@ -424,8 +424,14 @@ function autorizar () {
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
     $outlet = $_POST['outlet'];
+    $arrayArticulosAlta = $_POST['arrayArticulosAlta'];
 
     $recodificacion = new Recodificacion();
+    
+    foreach ($arrayArticulosAlta as $key => $value) {
+  
+        $result = $recodificacion->altaArticulo($value);
+    }    
  
     if($outlet == "1"){
 
@@ -521,8 +527,8 @@ function validarCodigosOulet () {
 
     
     }
-    notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
-    echo true;
+    // notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
+    echo json_encode($arrayResult);
 }
 
 
