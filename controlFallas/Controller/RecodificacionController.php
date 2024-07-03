@@ -350,10 +350,11 @@ function solicitar () {
             closedir($handle);
         }
     }
-
     $valores = substr_replace($valores, ";", -1, 1);
 
+
     if($encabezado != '' && $esBorrador != "false"){
+    
         $recodificacion->borrarDetalle($encabezado);
     }
     

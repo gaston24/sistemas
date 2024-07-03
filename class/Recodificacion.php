@@ -97,7 +97,14 @@ class Recodificacion
     public function insertarDetalle($valores) 
     {   
 
-        $sql = "INSERT INTO sj_reco_locales_det (ID_ENC, COD_ARTICU, DESCRIPCION, PRECIO, CANTIDAD, DESC_FALLA) VALUES $valores";
+        
+        $valores = str_replace("'", "''", $valores);
+
+        
+        $sql = "EXEC FU_INSERT_DET_FALLAS N'$valores'";
+    
+ 
+        
         try {
 
             $result = sqlsrv_query($this->cid, $sql); 
