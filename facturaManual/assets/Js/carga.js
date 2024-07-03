@@ -1,4 +1,24 @@
 const form = document.querySelector('form');
+window.onload = async function() {
+
+    // const configResponse = await fetch('midata.php');
+    //     if (!configResponse.ok) {
+    //         throw new Error(`Error al obtener la configuración: ${configResponse.statusText}`);
+    //     }        
+    //     const configData = await configResponse.text();
+    //     if (!configData) {
+    //         throw new Error('La respuesta de config.php está vacía');
+    //     }        
+    //     const config = JSON.parse(configData);
+
+        const urlCarga = "../facturaManual/listado.php?suc=";
+            // const numSuc = 201;
+            const nuevoHref = urlCarga + numSuc;
+            const enlace = document.getElementById('cerrar');
+            if (enlace) {
+                enlace.href = nuevoHref;
+            }
+};
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
@@ -12,7 +32,8 @@ form.addEventListener('submit', async (event) => {
             throw new Error('La respuesta de config.php está vacía');
         }        
         const config = JSON.parse(configData);
-        const tokenResponse = await fetch('http://127.0.0.1:8000/Api/gettoken', {
+        const urlToken = config.urlPath +"/Api/gettoken";
+        const tokenResponse = await fetch(urlToken, {
             method: 'GET',
             headers: {
                 'USERNAME': config.username,
@@ -58,7 +79,9 @@ form.addEventListener('submit', async (event) => {
         "Authorization": token
         }
 
-        let postResponse = await fetch('http://127.0.0.1:8000/Api/postFactura', { 
+        const urlPost = config.urlPath + '/Api/postFactura';
+        console.log(urlPost);
+        let postResponse = await fetch(urlPost, { 
         method: "POST",
         body: formData,
         headers: headersList
@@ -79,6 +102,7 @@ form.addEventListener('submit', async (event) => {
                 }
             }
         }
+        
 
     } catch (error) {
         if (error.message.includes('Failed to fetch')) {

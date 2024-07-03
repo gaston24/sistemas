@@ -2,8 +2,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Crear Factura Manual</title>
+    <!-- Spiner -->
+    <link rel="stylesheet" href="../facturaManual/assets/css/spiner.css">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="../facturaManual/assets/css/bootstrap/bootstrap.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../facturaManual/assets/plugins/fontawesome-free/css/all.min.css">
 </head>
 <body>
 <div class="content-wrapper">
@@ -14,7 +18,7 @@
                     <div class="col-6 align-self-start">
                         <div class="alert alert-info alert-dismissible" role="alert">
                         <strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">¡Aviso!</font></font></strong>
-                        Una alerta de información sencilla: ¡compruébala!
+                        Se debe cargar el numero de factura completo.
                         </div>
                     </div>
                     <div class="col-3 align-self-start"></div>
@@ -26,10 +30,13 @@
                     <div class="col-6 align-self-center">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">CARGAR FACTURA MANUAL</h3>
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="card-title">CARGAR FACTURA MANUAL</h3>
+                                    <a id="cerrar" href="" class="btn"><i class="fa fa-times"></i></a>
+                                </div>
                             </div>
                             <div class="card-body">
-                                <form method="POST" enctype="multipart/form-data" action="http://localhost/sistemas/facturaManual/carga.php">
+                                <form method="POST" enctype="multipart/form-data" action="../sistemas/facturaManual/carga.php">
                                     <!-- {% csrf_token %} -->
                                     <div class="mb-3">
                                         <div class="form-group">
@@ -44,7 +51,7 @@
                                         </select>
                                         <div class="form-group">
                                             <label for="numeroFactura" class="form-label">Número de Factura:</label>
-                                            <input type="number" id="numeroFactura" name="numeroFactura" class="form-control" required>
+                                            <input type="text" id="numeroFactura" name="numeroFactura" class="form-control" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="imgFactura" class="form-label">Imagen de Factura:</label>
@@ -53,7 +60,7 @@
                                     </div>
                                     
                                     <div class="card-footer">
-                                        <button class="btn btn-primary" type="submit">Enviar Factura</button>
+                                        <button class="btn btn-primary ladda-button expand-right" type="submit">Cargar</span> <span class="spinner"></span></button>
                                     </div>
                                 </form>
                             </div>
@@ -65,9 +72,12 @@
             </div>
         </section>
     </div>
+<script src="../facturaManual/assets/js/spiner.js"></script>
 <script src="../facturaManual/assets/css/bootstrap/jquery-3.5.1.slim.min.js"></script>
 <script src="../facturaManual/assets/css/bootstrap//popper.min.js"></script>
 <script src="../facturaManual/assets/css/bootstrap/bootstrap.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.5/jquery.inputmask.min.js"></script>
+
 <script>
     function getParameterByName(name) {
         name = name.replace(/[\\[]/, "\\\\[").replace(/[\\]]/, "\\\\]");
@@ -80,6 +90,13 @@
 
     let inputElement = document.getElementById('numeroSucursal');
     inputElement.value = numSuc;
+
+    $(document).ready(function() {
+        $('#numeroFactura').inputmask({
+            mask: '99999-99999999',
+            placeholder: 'X'
+        });
+    });
 </script>    
 <script src="../facturaManual/assets/Js/carga.js"></script>
 </body>

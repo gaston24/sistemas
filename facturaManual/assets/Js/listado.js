@@ -11,7 +11,9 @@ window.onload = async function() {
             throw new Error('La respuesta de config.php está vacía');
         }        
         const config = JSON.parse(configData);
-        const tokenResponse = await fetch('http://127.0.0.1:8000/Api/gettoken', {
+        const urlToken = config.urlPath +"/Api/gettoken";
+        const tokenResponse = await fetch(urlToken, {
+        
             method: 'GET',
             headers: {
                 'USERNAME': config.username,
@@ -31,7 +33,7 @@ window.onload = async function() {
         if (tokenResponse.ok) {
             const result = JSON.parse(data);
             token = "token " + result["token"];
-            console.log(token);
+            // console.log(token);
 
         } else {
             throw new Error(`Error al obtener el token: ${tokenResponse.statusText}`);
@@ -41,8 +43,10 @@ window.onload = async function() {
         let headersList = {
             "Authorization": token
             }
-        let url = "http://127.0.0.1:8000/Api/getFacturas/"+numSuc;
-        let response = await fetch(url, { 
+        console.log(token);
+        const url = config.urlPath +"/Api/getFacturas/"+numSuc;
+        console.log(url);
+        const response = await fetch(url, { 
             method: "GET",
             headers: headersList
             });
@@ -57,42 +61,78 @@ window.onload = async function() {
                 
                 var idCell = document.createElement('td');
                 idCell.textContent = registro.id;
-      
-                
+            
                 var sucursalCell = document.createElement('td');
                 sucursalCell.textContent = registro.numeroSucursal;
-                
+            
                 var tipoCell = document.createElement('td');
-                tipoCell.textContent = registro.tipoFactura;
-                
+                // tipoCell.textContent = registro.tipoFactura;
+                // console.log(registro.tipoFactura);
+            
                 var numeroCell = document.createElement('td');
                 numeroCell.textContent = registro.numeroFactura;
-                
+            
                 var imgCell = document.createElement('td');
+                var a = document.createElement('a');
+                a.href = config.urlPath + registro.imgFactura;
+                a.target = "_blank";
                 var img = document.createElement('img');
-                img.src = registro.imgFactura;
-                img.alt = "Imagen cargada";
-                imgCell.appendChild(img);
-                
+                if(registro.tipoFactura == 0){
+                    img.src = "../facturaManual/assets/img/Factura-A.png";
+                    tipoCell.textContent = "Factura A";
+                }else{
+                    img.src = "../facturaManual/assets/img/Factura-B.png";
+                    tipoCell.textContent = "Factura B";
+                }
+                img.alt = registro.imgFactura.substring(registro.imgFactura.lastIndexOf('/') + 1);
+                // img.width = 100;
+                // img.height = 'auto';
+                a.appendChild(img);
+                imgCell.appendChild(a);
+            
                 var fechaCell = document.createElement('td');
-                fechaCell.textContent = registro.fechaRegistro;
-      
-                row.appendChild(idCell);
-                row.appendChild(sucursalCell);
+                const fecha = new Date(registro.fechaRegistro);
+                const dia = String(fecha.getDate()).padStart(2, '0');
+                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                const año = fecha.getFullYear();
+                const hora = String(fecha.getHours()).padStart(2, '0');
+                const minuto = String(fecha.getMinutes()).padStart(2, '0');
+                const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minuto}`;
+                
+                fechaCell.textContent = fechaFormateada;
+            
+                // row.appendChild(idCell);
+                // row.appendChild(sucursalCell);
+                row.appendChild(imgCell);
                 row.appendChild(tipoCell);
                 row.appendChild(numeroCell);
-                row.appendChild(imgCell);
                 row.appendChild(fechaCell);
-      
+            
                 tableBody.appendChild(row);
-              });
+            });            
+            
+            const urlCarga = "../facturaManual/carga.php?suc=";
+            // const numSuc = 201;
+            const nuevoHref = urlCarga + numSuc;
+            const enlace = document.getElementById('carga');
+            if (enlace) {
+                enlace.href = nuevoHref;
+            }
+            document.getElementById("spiner").style.display = "none";
+
         } else {
             throw new Error(`Error al obtener los registros: ${response.statusText}`);
         }
 
     } catch (error) {
-        console.error(error);
-        alert(error);
-        location.reload();
+        if (error.message.includes('Failed to fetch')) {
+            alert('Error de conexión. Por favor, revise su configuración de red y vuelva a intentarlo.');
+            location.reload();
+        } else {
+            alert(error);
+            console.error(error);
+            location.reload();
+            
+        }
     }
 };
