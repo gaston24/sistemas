@@ -17,9 +17,9 @@
               </div>
               <div class="row">
                 <!-- left column -->
-                <div class="col-3 align-self-start">
+                <div class="col-3 align-self-start" id="col-1">
                   </div>
-                  <div class="col-6 align-self-center">
+                  <div class="col-6 align-self-center" id="col-2">
                     <div class="card text-bg-light">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
@@ -51,7 +51,7 @@
                     <div class="overlay-wrapper">
                       <div class="overlay dark" id="spiner"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
                     </div>
-                    <div class="col-3 align-self-end">
+                    <div class="col-3 align-self-end" id="col-3">
                   </div>
                 </div>
               </div>
@@ -71,5 +71,29 @@
   
   var parametro = getParameterByName('suc'); // Obtén el valor del parámetro desde la URL
   var numSuc = parseInt(parametro); // Convierte a entero
+
+  // Detecta si el dispositivo es un dispositivo móvil
+  function esDispositivoMovil() {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    return mediaQuery.matches;
+  }
+  
+  // Función para realizar las acciones necesarias
+  function cambiarEstructuraHTML() {
+    if (esDispositivoMovil()) {
+      // Borrar los div con id col-1 y col-3
+      document.getElementById("col-1").remove();
+      document.getElementById("col-3").remove();
+  
+      // Cambiar el valor de class="col-8" por "col12" en el div con id col-2
+      const col2 = document.getElementById("col-2");
+      col2.classList.remove("col-8");
+      col2.classList.add("col-12");
+    }
+  }
+  
+  // Llama a la función cambiarEstructuraHTML cuando se carga la página
+  window.addEventListener("load", cambiarEstructuraHTML);
+
 </script>
 <script src="../facturaManual/assets/Js/listado.js"></script>
