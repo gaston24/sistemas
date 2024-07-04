@@ -1,6 +1,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Factura Manual</title>
     <!-- Spiner -->
     <link rel="stylesheet" href="../facturaManual/assets/css/spiner.css">
@@ -25,9 +26,9 @@
                 </div>
                 <div class="row">
                     <!-- left column -->
-                    <div class="col-3 align-self-start">
+                    <div class="col-3 align-self-start" id="col-1">
                     </div>
-                    <div class="col-6 align-self-center">
+                    <div class="col-6 align-self-center" id="col-2">
                         <div class="card card-primary">
                             <div class="card-header">
                                 <div class="d-flex justify-content-between">
@@ -66,7 +67,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 align-self-end">
+                    <div class="col-3 align-self-end" id="col-3">
                     </div>
                 </div>
             </div>
@@ -77,7 +78,20 @@
 <script src="../facturaManual/assets/css/bootstrap//popper.min.js"></script>
 <script src="../facturaManual/assets/css/bootstrap/bootstrap.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.5/jquery.inputmask.min.js"></script>
-
+<script>
+        if (window.innerWidth < 768) {
+            // El ancho de la ventana es menor que 768 píxeles (posiblemente un dispositivo móvil)
+            // Eliminamos los div con id igual a "col-1" y "col-3"
+            const col1 = document.getElementById('col-1');
+            const col3 = document.getElementById('col-3');
+            col1.remove();
+            col3.remove();
+            // Cambiamos el ancho del div con id "col-2" a 12 columnas
+            const col2 = document.getElementById('col-2');
+            col2.classList.remove('col-6'); // Eliminamos la clase "col-8"
+            col2.classList.add('col-12'); // Agregamos la clase "col-12"
+        }
+</script>
 <script>
     function getParameterByName(name) {
         name = name.replace(/[\\[]/, "\\\\[").replace(/[\\]]/, "\\\\]");

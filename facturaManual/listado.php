@@ -1,6 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Crear Factura Manual</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="../facturaManual/assets/css/bootstrap/bootstrap.css">
     <!-- Font Awesome Icons -->
@@ -58,6 +59,20 @@
           </section>
   </div>
 </body>
+<script>
+        if (window.innerWidth < 768) {
+            // El ancho de la ventana es menor que 768 píxeles (posiblemente un dispositivo móvil)
+            // Eliminamos los div con id igual a "col-1" y "col-3"
+            const col1 = document.getElementById('col-1');
+            const col3 = document.getElementById('col-3');
+            col1.remove();
+            col3.remove();
+            // Cambiamos el ancho del div con id "col-2" a 12 columnas
+            const col2 = document.getElementById('col-2');
+            col2.classList.remove('col-8'); // Eliminamos la clase "col-8"
+            col2.classList.add('col-12'); // Agregamos la clase "col-12"
+        }
+</script>
 <script src="../facturaManual/assets/css/bootstrap/jquery-3.5.1.slim.min.js"></script>
 <script src="../facturaManual/assets/css/bootstrap//popper.min.js"></script>
 <script src="../facturaManual/assets/css/bootstrap/bootstrap.bundle.js"></script>
