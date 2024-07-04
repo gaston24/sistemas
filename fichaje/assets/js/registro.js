@@ -233,13 +233,13 @@ const login = (numeroLegajo, password) =>{
                                 confirmButtonText: 'no', // Cambiamos el texto del botón confirmar
                                 allowOutsideClick: false,
 
-                            }).then((result) => {
+                            }).then((resultadoCerrar) => {
 
-                                if (result.isConfirmed) {
+                                if (resultadoCerrar.isConfirmed) {
 
                                     location.reload();
                                    
-                                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                } else if (resultadoCerrar.dismiss === Swal.DismissReason.cancel) {
 
                                     $.ajax({
                                         url : 'controller/FichajeController.php?action=cerrarTurno',
@@ -283,8 +283,8 @@ const login = (numeroLegajo, password) =>{
                                                 allowOutsideClick: false, 
                                                 timer: 15000, 
                                                 
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
+                                            }).then((resultadoSalida) => {
+                                                if (resultadoSalida.isConfirmed) {
                                                     // Si se hace clic en el botón Cerrar, recargar la página
                                                     location.reload();
                                                 }
