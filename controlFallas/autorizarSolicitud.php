@@ -142,7 +142,7 @@
                                                     <option value="1" selected>CENTRAL</option>
                                                     <?php
                                                         foreach ($locales as $key => $local) {
-                                                            if( $outlet == true && $solicitudEncabezado[0]['NUM_SUC'] != $local['NRO_SUCURSAL']){
+                                                            if( $solicitudEncabezado[0]['NUM_SUC'] != $local['NRO_SUCURSAL']){
                                                                 continue;
                                                             }
                                                             echo '<option value="'.$local['NRO_SUCURSAL'].'">'.$local['DESC_SUCURSAL'].'</option>';

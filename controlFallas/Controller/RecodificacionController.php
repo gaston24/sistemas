@@ -86,6 +86,11 @@ switch ($accion) {
 
         break;
 
+    case 'traerLocales':
+        traerLocales();
+
+        break;
+
     
     default:
         # code...
@@ -567,6 +572,15 @@ function realizarMovimientoOu () {
     }
 
     echo true;
+
+}
+
+
+function traerLocales () {
+
+    $recodificacion = new Recodificacion();
+    $result = $recodificacion->traerLocales(0);
+    echo json_encode($result);
 
 }
 
