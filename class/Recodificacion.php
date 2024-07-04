@@ -1045,5 +1045,35 @@ class Recodificacion
         }
 
     }
+
+
+    public function realizarMovimientoOu($cadena){
+        $sql = "EXEC SJ_SP_TRANSFERENCIA_ARTICULOS '$cadena'";
+      
+        try {
+            $result = sqlsrv_query($this->cidLocal, $sql);
+    
+            if ($result === false) {
+                // Capturar detalles del error
+                $errors = sqlsrv_errors();
+                if (!empty($errors)) {
+                    foreach ($errors as $error) {
+                        // Aquí puedes registrar o manejar el error como desees
+                        echo "SQLSTATE: ".$error['SQLSTATE']."<br />";
+                        echo "Code: ".$error['code']."<br />";
+                        echo "Message: ".$error['message']."<br />";
+                    }
+                }
+                return false;
+            }
+    
+            return true;
+        } catch (\Throwable $th) {
+            // Manejo de excepciones generales de PHP
+            echo "Error en la ejecución del procedimiento almacenado: ".$th->getMessage();
+            return false;
+        }
+    }
+    
     
 }

@@ -711,30 +711,45 @@ const solicitar = async (esBorrador = false) => {
                       dataArticulos:dataArticulos
                     },
                     success: function (response) {
-                      console.log(response)
+                      
+                      if(response == false){
+
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error...',
+                          text: 'No se pudo realizar el movimiento de stock'
+                        })
+                        return;
+
+                      }else{
+
+                        $.ajax({
+                          url: "Controller/SendEmailController.php?accion=confirmarSolicitud",
+                          type: "POST",
+                          data: {
+                            numSolicitud:responseSolicitud
+                          },
+                          success: function (response) {
+                            console.log(response)
+      
+                            Swal.fire({
+                              icon: 'success',
+                              title: 'Solicitud Creada Correctamente',
+                              text: 'Nro de Solicitud : '+responseSolicitud,
+                              showConfirmButton: false,
+                              timer: 2500
+                            }).then ((result) => {
+                              location.href = "seleccionDeSolicitudes.php";
+                            });
+                          }
+                        });
+
+                      }
+
                     }
                   });
               
-                  $.ajax({
-                    url: "Controller/SendEmailController.php?accion=confirmarSolicitud",
-                    type: "POST",
-                    data: {
-                      numSolicitud:responseSolicitud
-                    },
-                    success: function (response) {
-                      console.log(response)
-
-                      Swal.fire({
-                        icon: 'success',
-                        title: 'Solicitud Creada Correctamente',
-                        text: 'Nro de Solicitud : '+responseSolicitud,
-                        showConfirmButton: false,
-                        timer: 2500
-                      }).then ((result) => {
-                        location.href = "seleccionDeSolicitudes.php";
-                      });
-                    }
-                  });
+                 
             
                 }
     

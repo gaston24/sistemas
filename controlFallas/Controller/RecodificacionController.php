@@ -633,35 +633,17 @@ function realizarMovimientoOu () {
 
     $recodificacion = new Recodificacion();
 
-    $fecha = date("Y") . "/" . date("m") . "/" . date("d");
-    
-    $hora = (date("H")-5).date("i").date("s");
 
+    $valores = "";
+    foreach ($dataArticulos as $key => $articulo) {
 
-    foreach ($dataArticulos as $key => $value) {
-
-        $proximo = $ajuste->setearProximoRemito();
-
-        $ajuste->updateRemitoEnTalonario();
-  
-        $proxInterno = $ajuste->traerProximoInterno();
- 
-        $recodificacion->insertarEncabezadoTango($fecha, $proximo, $proxInterno, $hora);
-
-        $result = $recodificacion->darBajaArticuloOriginal($value['codArticulo'], $value['cantidad']);
-        
-        $recodificacion->insertarDetalleSalidaOu($value['cantidad'], $value['codArticulo'], $fecha, $proxInterno);
-  
-        
-        $result = $recodificacion->darAltaEnDepositoOu($value['codArticulo'], $value['cantidad']);
-
-        
-        $recodificacion->insertarDetalleEntradaOu($value['cantidad'], $value['codArticulo'], $fecha, $proxInterno);
- 
-
+        $valores .= "(''$articulo[codArticulo]'', ''$articulo[cantidad]''),";
     }
+    $cadena = rtrim($valores, ',') ;
 
-    echo true;
+    $result = $recodificacion->realizarMovimientoOu($cadena);
+    
+    echo $result;
 
 }
 
