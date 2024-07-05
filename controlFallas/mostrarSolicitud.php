@@ -147,11 +147,11 @@
 
                         </div>
             
-                        <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
+                        <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px; font-size: 13px;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" style="">
                                 <tr>
                                     <th style="text-align:center;width: 400pxx;" >Articulo</th>
-                                    <th style="text-align:center;width: 600px;" >Descripcion</th>
+                                    <th style="text-align:center;width: 1200px;" >Descripcion</th>
                                     <th style="text-align:center;width: 200px;" >Precio</th>
                                     <th style="text-align:center;width: 200px;">Cantidad</th>
                                     <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
