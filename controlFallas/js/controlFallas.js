@@ -687,6 +687,8 @@ const solicitar = async (esBorrador = false) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
 
+              document.querySelector("#boxLoading").classList.add('loading')
+
               $.ajax({
         
                 url: "Controller/RecodificacionController.php?accion=solicitar",
@@ -711,6 +713,8 @@ const solicitar = async (esBorrador = false) => {
                       dataArticulos:dataArticulos
                     },
                     success: function (response) {
+
+                      document.querySelector("#boxLoading").classList.remove('loading')
                       
                       if(response == false){
 
