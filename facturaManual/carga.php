@@ -15,14 +15,14 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-3 align-self-start"></div>
-                    <div class="col-6 align-self-start">
+                    <div class="col-3 align-self-start" id="aviso-1"></div>
+                    <div class="col-6 align-self-start" id="aviso-2">
                         <div class="alert alert-info alert-dismissible" role="alert">
                         <strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">¡Aviso!</font></font></strong>
                         Se debe cargar el numero de factura completo.
                         </div>
                     </div>
-                    <div class="col-3 align-self-start"></div>
+                    <div class="col-3 align-self-start" id="aviso-3"></div>
                 </div>
                 <div class="row">
                     <!-- left column -->
@@ -81,15 +81,25 @@
 <script>
         if (window.innerWidth < 768) {
             // El ancho de la ventana es menor que 768 píxeles (posiblemente un dispositivo móvil)
-            // Eliminamos los div con id igual a "col-1" y "col-3"
+            // Eliminamos los div
             const col1 = document.getElementById('col-1');
             const col3 = document.getElementById('col-3');
+            const col4 = document.getElementById('aviso-3');
             col1.remove();
             col3.remove();
+            col4.remove();
             // Cambiamos el ancho del div con id "col-2" a 12 columnas
             const col2 = document.getElementById('col-2');
             col2.classList.remove('col-6'); // Eliminamos la clase "col-8"
             col2.classList.add('col-12'); // Agregamos la clase "col-12"
+            // Cambiamos el ancho del div con id "aviso-1" a 2 columnas
+            const aviso1 = document.getElementById('aviso-1');
+            aviso1.classList.remove('col-3'); 
+            aviso1.classList.add('col-1');
+            // Cambiamos el ancho del div con id "aviso-2" a 12 columnas
+            const aviso2 = document.getElementById('aviso-2');
+            aviso2.classList.remove('col-6'); 
+            aviso2.classList.add('col-10'); 
         }
 </script>
 <script>
