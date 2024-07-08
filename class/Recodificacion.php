@@ -705,16 +705,11 @@ class Recodificacion
     public function validarCodigosOulet ($articulo)
     {
 
-        $sql="SELECT CASE WHEN EXISTS (
-            SELECT 1
-            FROM STA19 A
-            INNER JOIN (
-                SELECT COD_SUCURS
-                FROM STA22
-                WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0
-            ) B ON A.COD_DEPOSI = B.COD_SUCURS
-            WHERE CANT_STOCK > 0 AND COD_ARTICU LIKE 'O%' and COD_ARTICU = '$articulo'
-        ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
+        $sql="SELECT CASE WHEN EXISTS(
+            SELECT TOP 1 COD_ARTICU 
+            FROM STA11 
+            WHERE COD_ARTICU = '$articulo') 
+        THEN 'true' ELSE 'false' END AS ArticuloExiste;";
 
 
         $stmt = sqlsrv_query($this->cid, $sql);
@@ -1047,6 +1042,7 @@ class Recodificacion
     }
 
 
+
     public function realizarMovimientoOu($cadena){
         $sql = "EXEC SJ_SP_TRANSFERENCIA_ARTICULOS '$cadena'";
       
@@ -1075,5 +1071,26 @@ class Recodificacion
         }
     }
     
+
+ 
+    public function altaArticulo ($articulo) {
+       
+        sqlsrv_configure("QueryTimeout", 60); 
     
+        $sql = "EXEC EB_altaCodigoOutlet '$articulo'";
+
+    
+        try {
+            $result = sqlsrv_query($this->cid, $sql); 
+       
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            print_r($th);
+        }
+
+    }
 }

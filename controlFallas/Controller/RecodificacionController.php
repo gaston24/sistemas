@@ -91,6 +91,11 @@ switch ($accion) {
 
         break;
 
+    case 'traerLocales':
+        traerLocales();
+
+        break;
+
     
     default:
         # code...
@@ -425,8 +430,14 @@ function autorizar () {
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
     $outlet = $_POST['outlet'];
+    $arrayArticulosAlta = $_POST['arrayArticulosAlta'];
 
     $recodificacion = new Recodificacion();
+    
+    foreach ($arrayArticulosAlta as $key => $value) {
+  
+        $result = $recodificacion->altaArticulo($value);
+    }    
  
     if($outlet == "1"){
 
@@ -522,8 +533,8 @@ function validarCodigosOulet () {
 
     
     }
-    notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
-    echo true;
+    // notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
+    echo json_encode($arrayResult);
 }
 
 
@@ -644,6 +655,15 @@ function realizarMovimientoOu () {
     $result = $recodificacion->realizarMovimientoOu($cadena);
     
     echo $result;
+
+}
+
+
+function traerLocales () {
+
+    $recodificacion = new Recodificacion();
+    $result = $recodificacion->traerLocales(0);
+    echo json_encode($result);
 
 }
 
