@@ -121,7 +121,7 @@
                             <button class="btn btn-success"  onclick="<?= ($recodificacionPropia == true) ? 'ajustePropio()' : 'ajustar()' ?>">Ajustar <i class="bi bi-pencil-square"></i></button>
                         </div>
             
-                        <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
+                        <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px; font-size: 13px;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" style="">
                                 <tr>
                                     <th style="text-align:center;width:10%" >FECHA SOLICITUD</th>
