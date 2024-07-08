@@ -74,6 +74,18 @@
 
                 width:300px;
             }
+
+            .loading {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url('images/g0R9.gif') 50% 50% no-repeat rgb(0, 0, 0);
+                opacity: .8;
+            }
+
         </style>
 
     </head>
@@ -90,6 +102,7 @@
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Solicitud De Recodificacion</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
+						<div id="boxLoading"></div>
                         <div id="outlet" hidden><?= $outlet ?></div>
                         <div id="nroSolicitud" hidden><?= $numSolicitud[0]['ultimo_id'] ?> </div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
