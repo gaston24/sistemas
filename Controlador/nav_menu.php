@@ -141,12 +141,12 @@ include('estado_cuenta.php');
                             <?php if ($_SESSION['numsuc'] < 100) { ?>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Calidad</a>
                                 <ul class="dropdown-menu">
-                                    <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas <span class="badge badge-warning">Testing</span</a>
+                                    <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas</a>
                                     <?php
                                     if ($_SESSION['esOutlet'] == 1) {
                                     ?>
                                         <!-- OUTLET -->
-                                        <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudesDestino.php'">Gestionar recodificaciones <span class="badge badge-warning">Testing</span</a>
+                                        <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudesDestino.php'">Gestionar recodificaciones</a>
                                     <?php
                                     } 
                                     ?>

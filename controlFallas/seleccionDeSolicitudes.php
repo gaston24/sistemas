@@ -154,7 +154,7 @@
 
                                     <button class="btn btn-primary btn-submit ml-2" style="margin-top: -0.15em; margin-right: 5rem; height: 38px">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                     <a href='cargaSolicitudFallas.php' class='btn btn-success' style="margin-top: -0.15em;">Nueva Solicitud <i class="bi bi-pencil-square"></i></a>
-
+                                    <a href="http://192.168.0.143:8080/sistemas/index.php" class="btn btn-secondary" style="height:35px; width:170px; margin-left: 2rem;">Volver Al Menú <i class="bi bi-arrow-counterclockwise"></i></a>
 
                                 </div>
 
@@ -196,27 +196,27 @@
                                             break;
 
                                         case '3':
-                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
+                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .5rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
 
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
 
                                             break;
 
                                         case '4':
                                             $valorIdBorrador =$encabezado['ID'];
-                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
-                                            $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
+                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .5rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
+                                            $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
 
                                         case '5':
-                                            $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-save'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                             
                                         
                                         case '6':
-                                            $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
                                         default:

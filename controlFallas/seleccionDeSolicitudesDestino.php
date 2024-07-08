@@ -146,6 +146,7 @@
                                         </select>
                                     </div>
                                     <button class="btn btn-primary btn-submit ml-2" style="margin-top: -0.15em;">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
+                                    <a href="http://192.168.0.143:8080/sistemas/index.php" class="btn btn-secondary" style="height:38px; width:170px; margin-left: 2rem;">Volver Al Menú <i class="bi bi-arrow-counterclockwise"></i></a>
                                 </div>
 
                             </div>

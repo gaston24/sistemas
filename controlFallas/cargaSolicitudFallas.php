@@ -63,9 +63,8 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
 
         <!-- Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
         </link>
         <style>
@@ -102,7 +101,7 @@
 
                         <div style="margin-bottom:20px">
 
-                            <div class="row" style="margin-top:10px">
+                            <div class="row" style="padding-top:0px">
 
                                 <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-m-d") : date("Y-m-d") ?> id="fecha"  disabled ></div>
                                 <div style="margin-left:90px">Usuario Emisor:
@@ -125,18 +124,22 @@
                                 </div>
 
                                 <div class="form-group">   
-                                    <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
-                                    <button class="btn btn-secondary" style="height:35px;margin-left:10%;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
+                                    <div class="row d-flex align-items-center" style="flex-wrap: nowrap;">
+                                        <!-- Eliminar comentario para usar el botón de Borrador -->
+                                        <!-- <button class="btn btn-secondary" type="button" style="height:35px; width:100px; margin-left: 200px;">Borrador <i class="bi bi-pencil-square"></i></button> -->
 
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+                                        <button class="btn btn-secondary" style="height:35px; width:110px; margin-left: 10%;" onclick="borrador()">Guardar <i class="bi bi-save"></i></button>
 
-                                    <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="margin-top: -16.5%; margin-left: 80%; width:150px">Volver Al Listado</a>
+                                        <button class="btn btn-primary btn-submit" style="height:35px; width:110px; margin-left: 5px;" onclick="solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
 
+                                        <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="height:35px; width:220px; margin-left: 10rem;">Volver Al Listado</a>
+                                    </div>
                                 </div>
+
 
                             </div>
 
-                            <div class="row" style="margin-top:1%;">
+                            <div class="row">
 
                                 <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" disabled> </div>
 
