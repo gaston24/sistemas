@@ -1,27 +1,71 @@
 const activarRecodificacion  = (div) => {
 
     let allCheck = div.parentElement.parentElement.querySelectorAll("input[type='checkbox']")
+
     if(div.checked){
+
+            
+        $.ajax({
+            url: "Controller/RecodificacionController.php?accion=traerLocales",
+            type: "POST",
+            
+            success: function (response) {
+                let data = JSON.parse(response)
+                let select = div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select");
+                select.options.length = 0;
+                let outlet = document.querySelector("#outlet").textContent;
+                let numSucursal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
+                data.forEach((element,y) => {
+                    if(outlet == true && element['NRO_SUCURSAL'] != numSucursal){
+                        return;
+                    }
+                    let option = new Option(element['DESC_SUCURSAL'], element['NRO_SUCURSAL']);
+                    select.appendChild(option);
+                })
+            }
+        })
+
         allCheck.forEach((e,y)=> {
             if(y != 0){
                 e.disabled = false;
             }
         });
         div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = false;
-        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").options[0].remove();
+        // let nroSucursal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
+
+        // let options = div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").options;
+
+        // for(let i = 0; i < options.length; i++){
+        //     if(options[i].value != nroSucursal){
+        //         options[i].remove();
+        //     }
+        // }
+
 
     }else{
+       
 
-        div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = true;
+        // div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select").disabled = true;
         const nuevaOpcion = new Option("CENTRAL", "1");
+        let sucursal = document.querySelector("#nombreSuc").value;
+        let sucursalReal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
+
+        const nuevaOpcion2 = new Option(sucursal, sucursalReal);
+
+
 
         nuevaOpcion.setAttribute("selected", "selected");
 
+
         // Obtener el elemento select
         const select = div.parentElement.parentElement.querySelectorAll("td")[12].querySelector("select");
+
+        select.options.length = 0;
       
         // Insertar la nueva opción al principio del select
         select.insertBefore(nuevaOpcion, select.firstChild);
+
+        select.insertBefore(nuevaOpcion2, select.firstChild);
 
         allCheck.forEach((e ,y)=> {
             if(y != 0){
