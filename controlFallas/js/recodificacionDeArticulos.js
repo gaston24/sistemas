@@ -26,6 +26,7 @@ const ajustar = () =>{
             arrayRemitos: arrayRemitos
         },
         success: function (response) {
+            console.log(response)
 
             let result = JSON.parse(response)
             let error = false;
@@ -166,7 +167,8 @@ const ajustar = () =>{
                                                     success:function(data){
                                                         document.querySelector("#boxLoading").classList.remove('loading')
                                                         Swal.fire('Artículos ajustados!', '', 'success').then((result) => {
-                                                            location.reload();
+                                                            
+                                                            window.location.href = "seleccionDeSolicitudesDestino.php";
                                                         })
                                                     
                                                     }

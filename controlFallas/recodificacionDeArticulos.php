@@ -21,6 +21,8 @@
 
     $arrayRemitos = [];
 
+    $agrupados = [];
+
     foreach ($data as $key => $value) {
 
         if($value['N_COMP'] != null && !in_array($value['N_COMP'], $arrayRemitos)){
@@ -28,6 +30,18 @@
                 $arrayRemitos[] = $value['N_COMP'];
 
         }
+
+        $clave = $value['COD_ARTICU'] . '-' . $value['N_COMP'];
+
+        
+        if (array_key_exists($clave, $agrupados)) {
+            // Si existe, sumamos la cantidad al elemento existente
+            $agrupados[$clave]['CANTIDAD'] += $value['CANTIDAD'];
+        } else {
+            // Si no existe, añadimos el elemento completo al array de agrupados
+            $agrupados[$clave] = $value;
+        }
+
 
         if($value['NUM_SUC'] == $value['DESTINO']){
            $recodificacionPropia = true;
@@ -40,6 +54,7 @@
         $remitos = $recodificacion->traerRemitosEnElLocal($arrayRemitos);
         
     }
+
   
    
 ?>
@@ -138,7 +153,7 @@
                                 <?php 
 
 
-                                foreach ($data as $key => $remito) {
+                                foreach ($agrupados as $key => $remito) {
 
                                     
                                     if($recodificacionPropia){
