@@ -778,7 +778,7 @@ class Recodificacion
             INNER JOIN STA20 B ON A.ID_STA14 = B.ID_STA14
             WHERE A.NCOMP_ORIG ='$nComp'
             AND B.COD_ARTICU ='$articulo'
-            AND B.CANTIDAD = '$cantidad'
+            AND B.CANTIDAD >= '$cantidad'
         ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
     
          
