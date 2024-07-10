@@ -1,7 +1,9 @@
-<?php session_start();
-if (!isset($_SESSION['username'])) {
-	header("Location:../login.php");
-} else {
+<?php 
+	session_start();
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    } else {
 
 	if($_SESSION['connection_db'] == false){
 		header('Location:../index.php');
@@ -54,7 +56,7 @@ if (!isset($_SESSION['username'])) {
 	$usuarios = $data->listarUsuarios($nroSucurs);
 
 	foreach ($usuarios as $v) {
-		echo '<option value="'.$v['APELLIDO'].'_'.$v['NOMBRE'].'++'.$v['BLOQUE'].'">'.$v['APELLIDO'].' '.$v['NOMBRE'].'</option>';
+		echo '<option value="'.$v['NOMBRE_VEN'].'++'.$v['BLOQUE'].'">'.$v['NOMBRE_VEN'].'</option>';
 	}
 ?>
 	       

@@ -1,26 +1,89 @@
 <?php 
     session_start();
-    require_once 'class/Recodificacion.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
+    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();
     $nroSucurs = $_SESSION['numsuc'];
     
-    // $desdeFormat = date('Y-m-d', strtotime($desde));
-
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $desde);
-    $desdeFormat = $fecha_objeto->format('Y-m-d');
-
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $hasta);
-    $hastaFormat = $fecha_objeto->format('Y-m-d');
-
-
-    $result = $recodificacion->traerSolicitudes($nroSucurs, $desdeFormat, $hastaFormat, $estado);
-
+    $result = $recodificacion->traerSolicitudes($nroSucurs, $desde, $hasta, $estado);
     
+    $array = array();
+
+    foreach ($result as $key => $value) {
+        if(in_array($value['ID'], $array)){
+            $cant = $value['cantidad_total_articulos'];
+
+            unset($result[$key]);
+
+            foreach ($result as &$solicitudEnc) {
+                if($solicitudEnc['ID'] == $value['ID']){
+                    $solicitudEnc['cantidad_total_articulos'] = $solicitudEnc['cantidad_total_articulos'] + $cant;
+
+                }
+            }
+        }else{
+            array_push($array, $value['ID']);
+        }
+    }
+    
+    foreach ($result as $key => &$value) {
+
+        if($value['ESTADO'] == 6){
+
+            if($estado == 5){
+
+                unset($result[$key]);
+
+            }
+
+            if($estado == 3){
+                    
+                unset($result[$key]);
+
+            }
+
+            continue;
+
+        }
+
+        $existe = 0;
+
+        if($value['N_COMP'] != null){
+
+            $existe = $recodificacion->comprobarIngresada($value['N_COMP']);
+        }
+        
+        if($existe == 1){
+          
+         
+            $value['ESTADO'] = 5;
+
+            if($estado == 3){
+                    
+                unset($result[$key]);
+
+            }
+
+        }else{
+
+            if($estado == 5 && $value['ESTADO'] != 5){
+
+                unset($result[$key]);
+
+            }
+
+
+        }
+    }
    
 ?>
 
@@ -87,18 +150,20 @@
                                     <div style="margin-left:30px">Estado: 
                                         <select name="estado" id="estado" class="form-control form-control-sm">
 
-                                            <option value="%">Todos</option>
-                                            <option value="1">Solicitada</option>
-                                            <option value="2">Autorizada</option>
-                                            <option value="3">Enviada</option>
-                                            <option value="4">Borrador</option>
+                                            <option value="%" <?= (isset($_GET['estado']) && $_GET['estado'] == '%') ? 'selected' : '' ?>>Todos</option>
+                                            <option value="1" <?= (isset($_GET['estado']) && $_GET['estado'] == '1') ? 'selected' : '' ?>>Solicitada</option>
+                                            <option value="2" <?= (isset($_GET['estado']) && $_GET['estado'] == '2') ? 'selected' : '' ?>>Autorizada</option>
+                                            <option value="3" <?= (isset($_GET['estado']) && $_GET['estado'] == '3') ? 'selected' : '' ?>>Enviada</option>
+                                            <option value="4" <?= (isset($_GET['estado']) && $_GET['estado'] == '4') ? 'selected' : '' ?>>Borrador</option>
+                                            <option value="5" <?= (isset($_GET['estado']) && $_GET['estado'] == '5') ? 'selected' : '' ?>>Ingresada</option>
+                                            <option value="6" <?= (isset($_GET['estado']) && $_GET['estado'] == '6') ? 'selected' : '' ?>>Ajustada</option>
                                     
                                         </select>
                                     </div>
 
                                     <button class="btn btn-primary btn-submit ml-2" style="margin-top: -0.15em; margin-right: 5rem; height: 38px">Filtrar <i class="bi bi-funnel-fill" style="color:white"></i></button>
                                     <a href='cargaSolicitudFallas.php' class='btn btn-success' style="margin-top: -0.15em;">Nueva Solicitud <i class="bi bi-pencil-square"></i></a>
-
+                                    <a href="http://192.168.0.143:8080/sistemas/index.php" class="btn btn-secondary" style="height:35px; width:170px; margin-left: 2rem;">Volver Al Menú <i class="bi bi-arrow-counterclockwise"></i></a>
 
                                 </div>
 
@@ -140,20 +205,29 @@
                                             break;
 
                                         case '3':
-                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .3rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
+                                            $estado = "Enviada  <button class='btn btn-primary' style='margin-left:30px; border-style:none; padding: .5rem .6rem;' ><i class='fa fa-paper-plane'></i></button>";
 
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
 
                                             break;
 
                                         case '4':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
-                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
-
-                                            $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
-
+                                            $valorIdBorrador =$encabezado['ID'];
+                                            $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .5rem .6rem;' ><i class='fa-solid fa-eraser'></i></button>";
+                                            $accion = "<a href='cargaSolicitudFallas.php?numSolicitud=$valorIdBorrador&tipoU=1' class='href'><button class='btn btn-danger' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
                                             break;
+
+                                        case '5':
+                                            $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-save'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                            
                                         
+                                        case '6':
+                                            $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+
                                         default:
                                             break;
                                     }

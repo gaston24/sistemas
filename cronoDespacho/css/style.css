@@ -26,7 +26,7 @@ body
 {
     display: flex;
     text-align: right;
-    color:#ffc107;
+    color:#dc3545;
     font-size: 1.5em;
 }
 
@@ -35,6 +35,22 @@ body
     display: flex;
     text-align: right;
     color:#28a745;
+    font-size: 1.5em;
+}
+
+#estado2 i
+{
+    display: flex;
+    text-align: right;
+    color:#007bff;
+    font-size: 1.5em;
+}
+
+#estado3 i
+{
+    display: flex;
+    text-align: right;
+    color:#17a2b8;
     font-size: 1.5em;
 }
 

@@ -22,18 +22,10 @@ function traerArticulos () {
     $articulo = new StockPrecio();
     
     $codArticulo = $_POST['codArticulo'];
+    $usuarioUy = $_POST['usuarioUy'];
 
-
-    if($codArticulo != null ){
-
-
-        $result = $articulo->traerMaestroArticulo($codArticulo);
+    $result = $articulo->traerMaestroArticulo($codArticulo, $usuarioUy);
      
-    }else{
-
-        $result = $articulo->traerMaestroArticulo();
-    }
-
 
     echo json_encode($result);
 

@@ -22,6 +22,8 @@ $ajuste->ejecutarSqlNuevos();
 
 $data = json_decode($_POST['data']);
 
+$esNuevoAjuste = (isset($_POST['ajusteNuevaRecodificacion'])) ? $_POST['ajusteNuevaRecodificacion'] : false;
+
 
 foreach ($data as $key => $value) {
 
@@ -54,9 +56,12 @@ foreach ($data as $key => $value) {
 				
 				
 				if($codConsulta != '***DESTRUCCION'){
-				
+					
 					//ACTUALIZAR CODIGO NUEVO
-					$ajuste->actualizarCodigoNuevo($nuevo, $codigo, $ncomp);
+					if($ncomp != ''){
+
+						$ajuste->actualizarCodigoNuevo($nuevo, $codigo, $ncomp);
+					}
 					
 					
 					//LLENAR LA VARIABLE DE PROXIMO NUMERO DE REMITO
@@ -75,10 +80,10 @@ foreach ($data as $key => $value) {
 					
 					
 					//INSERTA DETALLE SALIDA
-					$ajuste->insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno);
+					$ajuste->insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno, $esNuevoAjuste);
 						
 					//RESTA CANTIDAD
-					$ajuste->restarCantidad($cant, $codigo);
+					$ajuste->restarCantidad($cant, $codigo, $esNuevoAjuste);
 					
 					
 					//INSERTA DETALLE ENTRADA
@@ -90,10 +95,12 @@ foreach ($data as $key => $value) {
 
 					
 				}
-				
-				//ACTUALIZA REGISTROS PENDIENTES
-				$ajuste->actualizarRegistrosPendientes($ncomp, $codigo);
+				if($ncomp != ''){
 
+					//ACTUALIZA REGISTROS PENDIENTES
+					$ajuste->actualizarRegistrosPendientes($ncomp, $codigo);
+
+				}
 			}
 		}
 

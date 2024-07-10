@@ -1,27 +1,112 @@
 <?php 
     session_start();
-    require_once 'class/Recodificacion.php';
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
+    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
+ 
+
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();
     $nroSucurs = $_SESSION['numsuc'];
    
-    // $desdeFormat = date('Y-m-d', strtotime($desde));
 
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $desde);
-    $desdeFormat = $fecha_objeto->format('Y-m-d');
+    $result = $recodificacion->traerSolicitudes(null, $desde, $hasta, $estado, 1);
+    $tipo = $_SESSION['tipo'];
+    $array = array();
 
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $hasta);
-    $hastaFormat = $fecha_objeto->format('Y-m-d');
+    foreach ($result as $key => $value) {
+        
+        if(in_array($value['ID'], $array)){
+            $cant = $value['cantidad_total_articulos'];
+
+            unset($result[$key]);
+
+            foreach ($result as &$solicitudEnc) {
+                if($solicitudEnc['ID'] == $value['ID']){
+                    $solicitudEnc['cantidad_total_articulos'] = $solicitudEnc['cantidad_total_articulos'] + $cant;
+
+                }
+            }
+            
+        }else{
+            if(isset($value['DESTINO'])){
+
+            
+                if($value['DESTINO'] != '1'){
+
+                    array_push($array, $value['ID']);
+                }else{
+                    unset($result[$key]);
+                }
+                
+            }else{
+                array_push($array, $value['ID']);
+            }
+        }
+    }
 
 
-    $result = $recodificacion->traerSolicitudes($nroSucurs, $desdeFormat, $hastaFormat, $estado, 1);
-    $locales = $recodificacion->traerLocales();
 
+        foreach ($result as $key => &$value) {
     
+            
+            if($value['ESTADO'] == 6){
+    
+                if($estado == 5){
+    
+                    unset($result[$key]);
+    
+                }
+    
+                if($estado == 3){
+                        
+                    unset($result[$key]);
+    
+                }
+    
+                continue;
+    
+            }
+            $existe = 0;
+            if($value['N_COMP'] != null){
+
+                $existe = $recodificacion->comprobarIngresada($value['N_COMP'], true);
+            }
+            
+            if($existe == 1){
+              
+             
+                $value['ESTADO'] = 5;
+    
+                if($estado == 3){
+                        
+                    unset($result[$key]);
+    
+                }
+    
+            }else{
+    
+                if($estado == 5){
+    
+                    unset($result[$key]);
+    
+                }
+    
+    
+            }
+        }
+        
+
+
+    $locales = $recodificacion->traerLocales(0);
+
+
    
 ?>
 
@@ -88,10 +173,12 @@
                                     <div style="margin-left:30px">Estado: 
                                         <select name="estado" id="estado" class="form-control form-control-sm">
 
-                                            <option value="%">Todos</option>
-                                            <option value="1">Solicitada</option>
-                                            <option value="2">Autorizada</option>
-                                            <option value="3">Enviada</option>
+                                            <option value="%" <?= (isset($_GET['estado']) && $_GET['estado'] == '%') ? 'selected' : '' ?>>Todos</option>
+                                            <option value="1" <?= (isset($_GET['estado']) && $_GET['estado'] == '1') ? 'selected' : '' ?>>Solicitada</option>
+                                            <option value="2" <?= (isset($_GET['estado']) && $_GET['estado'] == '2') ? 'selected' : '' ?>>Autorizada</option>
+                                            <option value="3" <?= (isset($_GET['estado']) && $_GET['estado'] == '3') ? 'selected' : '' ?>>Enviada</option>
+                                            <option value="5" <?= (isset($_GET['estado']) && $_GET['estado'] == '5') ? 'selected' : '' ?>>ingresada</option>
+                                            <option value="6" <?= (isset($_GET['estado']) && $_GET['estado'] == '6') ? 'selected' : '' ?>>Ajustada</option>
 
                                         </select>
                                     </div>
@@ -107,7 +194,7 @@
                                 <tr>
                                     <th style="text-align:center;width:10%" >FECHA</th>
                                     <th style="text-align:center;width:10%" >NUMERO</th>
-                                    <th style="text-align:center;width:10%" >CLIENTE</th>
+                                    <th style="text-align:center;width:10%" >SUCURSAL</th>
                                     <th style="text-align:center;width:20%" >EMISOR</th>
                                     <th style="text-align:center;width:10%">UNIDADES</th>
                                     <th style="text-align:center;width:15%" >ESTADO</th>
@@ -138,20 +225,35 @@
                                             break;
 
                                         case '4':
-                                            $valorIdBorrador =$encabezado['ID'] - 1;
+               
                                             $estado = "Borrador  <button class='btn btn-danger' style='margin-left:25px; border-style:none; padding: .3rem .6rem;'' ><i class='fa-solid fa-eraser'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
                                         
+                                        case '5':
+                                
+                                            $estado = "Ingresada <button class='btn btn-success' style='background-color:#17a2b8;margin-left:18px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-save'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                            
+                                        
+                                        case '6':
+                     
+                                            $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                            
+                                        
                                         default:
                                             break;
                                     }
+
                                     $usuario = str_replace("_"," ",$encabezado['USUARIO_EMISOR']);
                                     echo "<tr>";
                                     echo "<td style='text-align:center;'>".$encabezado['FECHA']->format('d/m/Y')."</td>";
                                     echo "<td style='text-align:center;'>".$encabezado['ID']."</td>";
-
                                     foreach ($locales as $key => $local) {
+                                        
                                         if($local['NRO_SUCURSAL'] == $encabezado['NUM_SUC']){
                                             echo "<td style='text-align:center;'>".$local['DESC_SUCURSAL']."</td>";
                                         }
@@ -183,7 +285,7 @@
         <script src="assets/select2/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <!-- <script src="js/controlFallas.js"></script> -->
+        <script src="js/seleccionDeSolicitudesSup.js"></script>
     </body>
 
 </html>

@@ -192,6 +192,35 @@ class RemitoEquis {
         }
 
     }
+    public function buscarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total) {
+
+            
+            $cid = $this->conn->conectar('central');
+            
+            $sql = "SELECT * FROM sj_administracion_cobros 
+            WHERE cod_client = '$cod_client' 
+            AND importe_efectivo = '$importe_efectivo' 
+            AND importe_cheque = '$importe_cheque' 
+            AND importe_total = '$importe_total' 
+            AND CAST (fecha_cobro AS DATE) = CAST (getdate() AS DATE)";
+  
+            try {
+    
+                $stmt = sqlsrv_query($cid, $sql);
+
+                $hasRows = sqlsrv_has_rows($stmt);
+        
+                return $hasRows;
+               
+            }
+            catch (\Throwable $th) {
+    
+                die("Error en sqlsrv_exec");
+    
+            }
+
+
+    }
 
     public function guardarCobro ($cod_client, $importe_efectivo, $importe_cheque, $importe_total, $nombreCliente, $valorDescontado, $username ) {
         
@@ -314,7 +343,7 @@ class RemitoEquis {
     }
 
     public function rendirCobro ($id, $userName = null){
-        var_dump($id,$userName);
+        
         $cid = $this->conn->conectar('central');
         
         $sql = "UPDATE sj_administracion_cobros SET rendido = 1,user_rinde = '$userName' ,fecha_cobro = getdate() where id = '$id'";

@@ -99,7 +99,17 @@ if (!isset($_SESSION['username'])) {
                 <td><?= $key['NRO_ORDEN'] ?></td>
                 <td><?= $key['ARTICULOS'] ?></td>
                 <td id="novedadPed"><a>ACTIVA!</a></td>
-                <td><input type="checkbox" name="checkTd" onclick="contarGestion()"></input></td>
+                <?php 
+                  if($key['LANZAMIENTO'] != 1){
+
+                    echo '<td><input type="checkbox" name="checkTd" onclick="contarGestion()"></input></td>';
+
+                  }else{
+                      
+                      echo '<td></td>';
+                  }
+                ?>
+                
                 <td>
                   <a href="notaPedido.php?orden=<?= $key['NRO_ORDEN'] ?>"><i class="fa fa-search spinner" style="color: #ffc107; font-size: 20px;"></i></a>
                   <div id="boxLoading"></div>

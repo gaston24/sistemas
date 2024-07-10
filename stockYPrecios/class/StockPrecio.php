@@ -13,31 +13,27 @@ class StockPrecio
         
         $conn = new Conexion();
         $this->cid = $conn->conectar('local');
+        $this->cidUy = $conn->conectar('uy');
 
     }
     
-    public function traerMaestroArticulo($codArticulo  = null) 
+    public function traerMaestroArticulo($codArticulo, $usuarioUy = 0) 
     {   
-        $sql = "SELECT A.COD_ARTICU, D.DESCRIPCIO, A.CANT_STOCK, C.PRECIO FROM STA19 A
+        $sql = "SELECT A.COD_ARTICU, D.DESCRIPCIO,  CAST(A.CANT_STOCK AS INT) AS CANT_STOCK, C.PRECIO FROM STA19 A
         INNER JOIN STA22 B ON A.COD_DEPOSI = B.COD_SUCURS
         LEFT JOIN (SELECT * FROM GVA17 WHERE NRO_DE_LIS = 20) C ON A.COD_ARTICU = C.COD_ARTICU
         LEFT JOIN STA11 D ON A.COD_ARTICU = D.COD_ARTICU
         WHERE COD_SUCURS LIKE '[0-9]%' 
         AND INHABILITA = 0 
-        AND A.CANT_STOCK > 0
-        AND A.COD_ARTICU LIKE '[XO]%'";
-
-
-
-        if($codArticulo  != null){
-
-            $sql .= " AND A.COD_ARTICU = '$codArticulo '";
-
-        }
+        AND A.COD_ARTICU LIKE '[XO]%' 
+        AND A.COD_ARTICU = '$codArticulo'";
 
         try {
+        
 
-            $result = sqlsrv_query($this->cid, $sql); 
+            $cid = ($usuarioUy == 1 ) ? $this->cidUy : $this->cid;
+
+            $result = sqlsrv_query($cid, $sql); 
             
             $v = [];
             

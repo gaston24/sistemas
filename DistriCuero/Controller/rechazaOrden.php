@@ -10,12 +10,14 @@ $codClient = $_SESSION['codClient'];
 
 $matriz = $_POST['matriz'];
 
+require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+
+$cid = new Conexion();
+
+$cid_central = $cid->conectar('central');      
 
 foreach($matriz as $orden){
-  require_once '../Class/Conexion.php';
-
-    $cid = new Conexion();
-    $cid_central = $cid->conectar();      
+  
 
     $sql = "
 

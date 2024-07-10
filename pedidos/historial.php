@@ -1,5 +1,6 @@
 <?php 
 session_start(); 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
 
 if(!isset($_SESSION['username'])){
 
@@ -27,7 +28,8 @@ require_once __DIR__.'/../class/pedido.php';
 $pedido = new Pedido();
 $suc = $_SESSION['numsuc'];
 $codClient = $_SESSION['codClient'];
-$pedidos = $pedido->traerHistorial($codClient);
+$usuarioUy = $_SESSION['usuarioUy'];
+$pedidos = $pedido->traerHistorial($codClient, $usuarioUy);
 
 ?>
 <a onCLick="window.location='../index.php'" class="ml-5 mt-5"><i class="fad fa-home fa-2xl" title="INICIO"></i></a>

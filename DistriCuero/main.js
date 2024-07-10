@@ -352,7 +352,26 @@ function validarCredito(){
 
 //Suma el total de artículos del pedido//
 
-function total() {
+function total(div) {
+
+  let cant = div.value;
+  let max = div.getAttribute("max");
+
+  if(max != ""){
+    
+    if(cant > max){
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de carga',
+        text: 'La cantidad supera el stock disponible: '+max
+      });
+      div.value = 0;
+
+    }
+    
+  }
+
   var suma = 0;
   var x = document.querySelectorAll("#tablePed input[name='inputNum[]']");
 
@@ -528,7 +547,7 @@ function precioTotal() {
       var i;
 
       for (i = 0; i < p.length; i++) {
-          precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
+          precioTodos += parseInt(0+p[i].innerHTML.replace(/[$.]/g, "") * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
          }
 
       document.getElementById('totalPrecio').value = new Intl.NumberFormat("es-ar",{style: "currency", currency: "ARS", minimumFractionDigits: 0}).format(precioTodos);

@@ -1,5 +1,7 @@
 <?php 
 session_start(); 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
+
 if(!isset($_SESSION['username'])){
 	header("Location:login.php");
 }else{
@@ -48,18 +50,18 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 <div class="table-responsive">
 	<table class="table table-hover table-condensed table-striped text-center">
 		<thead class="thead-dark" style="font-size: 13px; font-weight: bold">
-				<td class="col-">CANAL</td>
-				<td class="col-">FECHA PED.</td>
-				<td class="col-">PEDIDO</td>
-				<td class="col-">ORDEN</td>
-				<td class="col-">FACTURA</td>
-				<td class="col-">CLIENTE</td>
-				<td class="col-">DEPOSITO</td>
-				<td class="col-">METODO ENTREGA</td>
-				<td class="col-">GUIA</td>
-				<td class="col-">FECHA GUIA</td>
-				<td class="col-">IMPRIMIR</td>
-				<td class="col-">RETIRO</td>
+				<td >CANAL</td>
+				<td style="width: 10%;">FECHA PED.</td>
+				<td >PEDIDO</td>
+				<td style="width: 15%;">ORDEN</td>
+				<td >FACTURA</td>
+				<td >CLIENTE</td>
+				<td >DEPOSITO</td>
+				<td >METODO ENTREGA</td>
+				<td >GUIA</td>
+				<td >FECHA GUIA</td>
+				<td >IMPRIMIR</td>
+				<td >RETIRO</td>
 		</thead>
 
 		<tbody id="table" class="text-center" style="font-size: 12px;">
@@ -68,18 +70,18 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
             ?>
 
 			<tr >
-				<td class="col-"><?= $key['ORIGEN'] ;?></td>
-				<td class="col-"><?= $key['FECHA_PEDIDO']->format('Y-m-d') ;?></td>
-				<td class="col-"><?= $key['PEDIDO'] ;?></td>
-				<td class="col-"><?= $key['NRO_ORDEN_ECOMMERCE'] ;?></td>
-				<td class="col-"><?= $key['N_COMP'] ;?></td>
-				<td class="col-"><?= $key['RAZON_SOCIAL'] ;?></td>
-				<td class="col-"><?= $key['DEPOSITO'] ;?></td>
-				<td class="col-"><?= $key['METODO_ENVIO'] ;?></td>
-				<td class="col-"><?= $key['GC_GDT_NUM_GUIA'] ;?></td>
-				<td class="col-"><?php if(isset($key['FECHA'])){echo $key['FECHA']->format('Y-m-d');} ?></td>
-				<td class="col-"> <a href="remitoEntrega/?nComp=<?= $key['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" id="iconPrint"></i></a></td>
-				<td class="col-" type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden()" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
+				<td ><?= $key['ORIGEN'] ;?></td>
+				<td ><?= $key['FECHA_PEDIDO']->format('Y-m-d') ;?></td>
+				<td ><?= $key['PEDIDO'] ;?></td>
+				<td ><?= $key['NRO_ORDEN_ECOMMERCE'] ;?></td>
+				<td ><?= $key['N_COMP'] ;?></td>
+				<td ><?= $key['RAZON_SOCIAL'] ;?></td>
+				<td ><?= $key['DEPOSITO'] ;?></td>
+				<td ><?= $key['METODO_ENVIO'] ;?></td>
+				<td ><?= $key['GC_GDT_NUM_GUIA'] ;?></td>
+				<td ><?php if(isset($key['FECHA'])){echo $key['FECHA']->format('Y-m-d');} ?></td>
+				<td > <a href="remitoEntrega/?nComp=<?= $key['N_COMP'] ;?>" target=”_blank”> <i class="bi bi-file-richtext-fill" data-toggle="tooltip" data-placement="left" id="iconPrint"></i></a></td>
+				<td  type="checkbox" ><i class="bi bi-check-circle-fill click" onclick="registrarOrden(this)" value=" <?= $key['NRO_ORDEN_ECOMMERCE'] ;?>"></i></td>
 			</tr>
 
 			<?php
@@ -97,14 +99,15 @@ $todosLosPedidos = $pedido->traerPedidosPendientes($numSuc);
 	}
 ?>
 
-  <script src="main.js"></script>
-  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="main.js"></script>
    
 	<script>
 

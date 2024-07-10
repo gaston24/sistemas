@@ -1,28 +1,14 @@
-const traerArticulos = () => {
+const traerArticulo = (div, usuarioUy = null) => {
 
-  $.ajax({
-    url: "Controller/StockPrecioController.php?accion=traerArticulos",
-    type: "GET",
-    success: function (response) {
-  
-      localStorage.setItem("articulos", response);
-    }
+  codArticulo =  div.value
 
-  });
-}
-
-document.addEventListener("DOMContentLoaded", traerArticulos);
-
-const traerArticulo = (div) => {
-
-  codArticulo =  div.value.split("-")[0] ;
-  
-
-  
   $.ajax({
       url: "Controller/StockPrecioController.php?accion=traerArticulos",
       type: "POST",
-      data: {codArticulo: codArticulo},
+      data: {
+        codArticulo: codArticulo,
+        usuarioUy: usuarioUy
+      },
       success: function (response) {
           data = JSON.parse(response);
   
@@ -64,13 +50,13 @@ const parseNumber = (number) => {
 
 const borrar = () => {
 
+  document.querySelector("#selectArticulo").value = "";
 
-  
-  document.querySelector("#select2-selectArticulo-container").textContent = "";
   document.querySelector("#articulo"). value = "" ;
   document.querySelector("#descripcion").value = "";
   document.querySelector("#stock").value =  "" ;
   document.querySelector("#precio").value = "";
 
+  document.querySelector("#selectArticulo").focus();
 
 }

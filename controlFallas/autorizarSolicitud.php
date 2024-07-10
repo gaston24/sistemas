@@ -1,10 +1,14 @@
 <?php 
 
     session_start();
-    require_once 'class/Recodificacion.php';
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
+    require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
  
-    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-d-m', strtotime('-1 month'));
-    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-d-m');
+    $desde = (isset($_GET['desde'])) ? $_GET['desde'] : date('Y-m-d', strtotime('-1 month'));
+    $hasta = (isset($_GET['hasta'])) ? $_GET['hasta'] : date('Y-m-d');
     $estado = (isset($_GET['estado'])) ? $_GET['estado'] : '%';
 
     $recodificacion = new Recodificacion();
@@ -16,14 +20,19 @@
         $solicitudDetalle = $recodificacion->traerDetalle($_GET['numSolicitud']);
        
     }
-    $locales = $recodificacion->traerLocales();
+    $locales = $recodificacion->traerLocales(0);
 
     $localSolicitud = "";
-
+    $outlet = false;
     foreach ($locales as $key => $local) {
         
         if($local['NRO_SUCURSAL'] == $solicitudEncabezado[0]['NUM_SUC']){
             $localSolicitud = $local['DESC_SUCURSAL'];
+            if($local['OUTLET'] == 1){
+
+                $outlet = true;
+
+            }
         }
     }
 
@@ -62,6 +71,7 @@
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Solicitud envio de fallas</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
+                        <div id="outlet" hidden ><?= $outlet ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
                             <h3><strong><i class="bi bi-pencil-square" style="margin-right:20px;font-size:40px"></i>Autorización de Solicitud</strong></h3>
                         </div>
@@ -72,7 +82,7 @@
                                 <div class="row" style="margin-top:10px">
 
                                     <div style="margin-left:90px">Fecha de Solicitud : <input type="date" style="width:160px; height:35px" id="desde" name="desde" value="<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?>" disabled></div>
-                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:35px;margin-left:16px" id="hasta"  name="hasta" value="<?=  $localSolicitud ?>" disabled></div>
+                                    <div style="margin-left:30px">Sucursal : <input type="" style="width:160px; height:35px;margin-left:16px" id="nombreSuc"  name="nombreSuc" attr-realvalue="<?= $solicitudEncabezado[0]['NUM_SUC'] ?>" value="<?=  $localSolicitud ?>" disabled></div>
                                     <div style="margin-left:30px">Usuario Emisor: <input type="" style="width:200px; height:35px" id="hasta"  name="hasta" value="<?=   str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>" disabled></div>
                                     
                                 </div>
@@ -95,6 +105,7 @@
                                     <th style="text-align:center;" >DESCRIPCION</th>
                                     <th style="text-align:center;" >PRECIO</th>
                                     <th style="text-align:center;" >DESC. FALLA</th>
+                                    <th style="text-align:center;" >IMAGEN</th>
                                     <th style="text-align:center;" >RECODIFICA</th>
                                     <th style="text-align:center;" >UNICO</th>
                                     <th style="text-align:center;" >- 10%</th>
@@ -117,7 +128,8 @@
                                             <td style="text-align:center;width:7%"><?= $detalle['COD_ARTICU'] ?></td>
                                             <td style="text-align:center;width:12%"><?= $detalle['DESCRIPCION'] ?></td>
                                             <td style="text-align:center;width:7%" attr-realvalue="<?= $detalle['PRECIO'] ?>">$ <?= number_format($detalle['PRECIO'], 0, ",",".") ?></td>
-                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> <button class="btn btn-warning" onclick= "mostrarImagen(this)"><i class="bi bi-eye"></i></button></td>
+                                            <td style="text-align:center;width:15%"><?= $detalle['DESC_FALLA'] ?> </td>
+                                            <td style="text-align:center;width:5%"><button class="btn btn-warning" onclick= "mostrarImagen(this)"><i class="bi bi-eye"></i></button></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="activarRecodificacion(this)"></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="unico" disabled ></td>
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.9" disabled ></td>
@@ -126,10 +138,13 @@
                                             <td style="text-align:center;width:5%"><input type="checkbox" onchange="comprobarCheckbox(this)" porcentaje="0.6" disabled ></td>
                                             <td style="text-align:center;width:10%"></td>
                                             <td style="text-align:center">
-                                                <select style="width: 178px;height: 28px;" class="sucursal" disabled>
+                                                <select style="width: 178px;height: 28px;" class="sucursal" >
                                                     <option value="1" selected>CENTRAL</option>
                                                     <?php
                                                         foreach ($locales as $key => $local) {
+                                                            if( $solicitudEncabezado[0]['NUM_SUC'] != $local['NRO_SUCURSAL']){
+                                                                continue;
+                                                            }
                                                             echo '<option value="'.$local['NRO_SUCURSAL'].'">'.$local['DESC_SUCURSAL'].'</option>';
                                                         }
                                                     

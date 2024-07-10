@@ -20,6 +20,13 @@ $remitoEquis = new RemitoEquis();
 
 $remitosParceados = "";
 
+$existeCobro = $remitoEquis->buscarCobro ($codClient, $cobroEfectivo, $cobroCheque, $importeTotal) ;
+
+if($existeCobro) {
+    echo 0;
+    die();
+}
+
 
 $idCobro = $remitoEquis->guardarCobro($codClient, $cobroEfectivo, $cobroCheque, $importeTotal,$nombreCliente, $valorDescontado, $username);
 
@@ -51,28 +58,19 @@ foreach ($remitosDetalle as $detalle) {
     if( (intval($montoTotal) + intval($valorDescontado)) >= intval($detalle['IMPORTE_TO'])){
 
 
-            $remitoEquis->cambiarEstado($detalle['N_COMP']);
+        $remitoEquis->cambiarEstado($detalle['N_COMP']);
 
-            $remitoEquis->guardarCobroRemito($idCobro, $detalle['N_COMP']);
+        $remitoEquis->guardarCobroRemito($idCobro, $detalle['N_COMP']);
 
-            $montoTotal = intval($montoTotal) - intval($detalle['IMPORTE_TO']);
+        $montoTotal = intval($montoTotal) - intval($detalle['IMPORTE_TO']);
             
-        }
-        
-        
     }
-    try {
-
-    return true;
-
-} catch (\Throwable $th) {
-    
-    echo $th;
+        
+        
 }
 
+echo 1;
 
-
- 
 
 
 ?>

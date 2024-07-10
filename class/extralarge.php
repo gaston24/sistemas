@@ -9,9 +9,10 @@ class Extralarge {
         
     }
 
-    public function login($user, $pass){
+    
+    public function login($user, $pass, $db = 'central'){
 
-        $cid = $this->conn->conectar('central');
+        $cid = $this->conn->conectar($db);
         
 
         $sql = "EXEC SJ_APP_LOGIN '$user', '$pass'";
@@ -39,6 +40,7 @@ class Extralarge {
 
 
     }
+    
     public function traerDatosDeConexionPorLocal($local){
 
         $cid = $this->conn->conectar('central');

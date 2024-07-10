@@ -6,6 +6,7 @@ $user = $_POST['user'];
 $pass = $_POST['pass'];
 
 $login = new Extralarge();
+
 $loginRes = $login->login($user, $pass);
 
 
@@ -14,7 +15,8 @@ if( count($loginRes) == 0 ){
 	header('Location:../login.php');
 
 }else{
-
+	
+	$_SESSION['usuarioUy'] = $loginRes['IS_USER_UY'];
 	$_SESSION['username'] = $loginRes['NOMBRE'];
 	$_SESSION['permisos'] = $loginRes['PERMISOS'];
 	$_SESSION['dsn'] = $loginRes['DSN'];
@@ -33,6 +35,7 @@ if( count($loginRes) == 0 ){
 	$_SESSION['tipo'] = $loginRes['TIPO'];
 	$_SESSION['habPedidos'] = $loginRes['EXCLUYE_PEDIDOS'];
 	$_SESSION['esOutlet'] = $loginRes['IS_OUTLET'];
+	// esto hay que revisarlo, esta mal
 	$_SESSION['connection_db'] = $_SESSION['cid'] != false ? true : false;
 	
 	// datos de credito del cliente
@@ -49,13 +52,10 @@ if( count($loginRes) == 0 ){
 
 	$_SESSION['pantallas'] = true;
 
-	// if($_SESSION['pantallas'] == true ){
-	// 	header("Location: ../indexPantalla.php");
-	// 	die();
-	// }
-
-
-	if($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
+	
+	if($loginRes['NRO_SUCURS'] == 201 || $loginRes['NRO_SUCURS'] == 202){     
+		header("Location: eliminaPedido.php");
+	}elseif($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
 		$_SESSION['nuevoPedido']=0; 
 		$_SESSION['cargaPedido']=1;
 		header("Location: ../mayoristas/index.php");

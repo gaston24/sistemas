@@ -8,10 +8,21 @@ class Pedido
 
     private function retornarArray($sqlEnviado){
     
-        require_once 'Conexion.php';
+        require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
 
         $cid = new Conexion();
-        $cid_central = $cid->conectar();  
+        $cid_central = $cid->conectar('central');
+          
+        if (session_status() == PHP_SESSION_NONE) {
+
+            session_start();
+
+        }
+        
+        if (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1){
+            $cid_central = $cid->conectar('uy');
+        }
+
         $sql = $sqlEnviado;
 
         $stmt = sqlsrv_query( $cid_central, $sql );

@@ -1,36 +1,49 @@
 <?php 
     session_start();
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
    require_once __DIR__.'/../class/remito.php';
    require_once '../ajustes/class/Articulo.php';
    require_once '../ajustes/class/Ajuste.php';
-   require_once 'class/Recodificacion.php';
+   require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
+   
+   if(!isset($_SESSION['numsuc'])){
+        header('Location: ../login.php');
+   }
+
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();
-   $numSolicitud = $recodificacion->traerNumSolicitud();
 
    $data = new Remito();
    $usuarios = $data->listarUsuarios($nroSucurs);
-    
 
+
+   $numSolicitud = [['ultimo_id' => 0]];
 
    $maestroArticulos = new Articulo();
    $todosLosArticulos = $maestroArticulos->traerMaestroArticulo();
    if(isset($_GET['numSolicitud'])){
-        $numSolicitud = [];
+
         $numSolicitud[0]['ultimo_id'] = $_GET['numSolicitud'];
     }
     
-   $borradorEnc = $recodificacion->buscarBorradorEnc($numSolicitud[0]['ultimo_id']+1,4);
+   $borradorEnc = $recodificacion->buscarBorradorEnc($numSolicitud[0]['ultimo_id'],4);
    if(count($borradorEnc) > 0){
-       $borradorDet = $recodificacion->buscarBorradorDet($numSolicitud[0]['ultimo_id']+1);
-       
+       $borradorDet = $recodificacion->buscarBorradorDet($numSolicitud[0]['ultimo_id']);
+
    }
    $esBorrador = false;
    if(count($borradorEnc) > 0){
        $esBorrador = true;
     }
-  
+    $outlet = 0;
+    if($_SESSION['esOutlet'] == 1)
+    {
+        $outlet = 1;
+    }
 
    
 ?>
@@ -50,9 +63,8 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
 
         <!-- Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
         </link>
         <style>
@@ -61,6 +73,18 @@
 
                 width:300px;
             }
+
+            .loading {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url('images/g0R9.gif') 50% 50% no-repeat rgb(0, 0, 0);
+                opacity: .8;
+            }
+
         </style>
 
     </head>
@@ -77,6 +101,9 @@
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Solicitud De Recodificacion</h6></div>
                     <div class="card card-1">
                         <div id="periodo" hidden><?= $periodo ?></div>
+						<div id="boxLoading"></div>
+                        <div id="outlet" hidden><?= $outlet ?></div>
+                        <div id="nroSolicitud" hidden><?= $numSolicitud[0]['ultimo_id'] ?> </div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
 
                         
@@ -87,41 +114,46 @@
 
                         <div style="margin-bottom:20px">
 
-                            <div class="row" style="margin-top:10px">
+                            <div class="row" style="padding-top:0px">
 
-                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-d-m") : date("Y-d-m"); ?> id="fecha"  disabled ></div>
-                                <div style="margin-left:90px">Usuario Emisor: 
+                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= ($borradorEnc) ? $borradorEnc[0]['FECHA']->format("Y-m-d") : date("Y-m-d") ?> id="fecha"  disabled ></div>
+                                <div style="margin-left:90px">Usuario Emisor:
+                                    <select name="usuario" id="usuario" style="width:15rem; height:35px;" class="usuario">
 
-                                        <select name="usuario" id="usuario" style="width:15rem; height:35px," class="usuario"> 
-
-                                    <?php
-                                        foreach($usuarios as $usuario => $key){
-
-                                        $usuario = $key['APELLIDO'].'_'.$key['NOMBRE'];
-                                 
-                                        $existeUsuarioEnDb = (isset($borradorEnc[0]['USUARIO_EMISOR'])) ? $borradorEnc[0]['USUARIO_EMISOR'] : "";
+                                        <option value="" <?php echo (empty($existeUsuarioEnDb)) ? "selected" : ""; ?>></option>
                                         
-                                    ?>
-                                       <option value="<?= $key['APELLIDO'] ?>_<?= $key['NOMBRE'] ?>" <?php (isset($borradorEnc) && $usuario == $existeUsuarioEnDb ) ? "selected" : ""  ?> ><?= $key['APELLIDO'] ?> <?= $key['NOMBRE'] ?></option>
-                                    <?php
-                                        }                            
-                                    ?>
+                                        <?php
+                                            foreach ($usuarios as $usuario => $key) {
+
+                                            $usuario = $key['NOMBRE_VEN'];
+
+                                            $existeUsuarioEnDb = (isset($borradorEnc[0]['USUARIO_EMISOR'])) ? $borradorEnc[0]['USUARIO_EMISOR'] : "";
+                                        ?>
+                                            <option value="<?= $key['NOMBRE_VEN'] ?>" <?php echo (isset($borradorEnc) && $usuario == $existeUsuarioEnDb) ? "selected" : ""; ?>> <?= $key['NOMBRE_VEN'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 
-                                <div>   
-                                    <!-- <button class="btn btn-secondary" type="button" value="" style="height:35px;margin-left:200px;width:100px">Borrador <i class="bi bi-pencil-square" style=""></i></button> -->
-                                    <button class="btn btn-secondary" style="height:35px;margin-left:200px;width:110px" onclick="borrador()">Guardar <i class="bi bi-save" style=""></i></button>
+                                <div class="form-group">   
+                                    <div class="row d-flex align-items-center" style="flex-wrap: nowrap;">
+                                        <!-- Eliminar comentario para usar el botón de Borrador -->
+                                        <!-- <button class="btn btn-secondary" type="button" style="height:35px; width:100px; margin-left: 200px;">Borrador <i class="bi bi-pencil-square"></i></button> -->
 
-                                    <button class="btn btn-primary btn-submit" style="height:35px;margin-left:5px;width:110px" onclick= "solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+                                        <button class="btn btn-secondary" style="height:35px; width:110px; margin-left: 10%;" onclick="borrador()">Guardar <i class="bi bi-save"></i></button>
 
+                                        <button class="btn btn-primary btn-submit" style="height:35px; width:110px; margin-left: 5px;" onclick="solicitar(<?= $esBorrador ?>)">Solicitar <i class="bi bi-cloud-upload" style="color:white"></i></button>
+
+                                        <a href="seleccionDeSolicitudes.php" class="btn btn-secondary" style="height:35px; width:220px; margin-left: 10rem;">Volver Al Listado</a>
+                                    </div>
                                 </div>
+
 
                             </div>
 
-                            <div class="row" style="margin-top:10px">
+                            <div class="row">
 
-                                <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']+1) ?>" id="numSolicitud" disabled></div>
                                 <div style="margin-left:90px">Estado: <input type="text" style="width:145px; height:35px; margin-left:55px" id="estado" disabled> </div>
 
                             </div>
@@ -132,17 +164,18 @@
                             <thead class="thead-dark" style="">
                                 <tr>
                                     <th style="text-align:center;width: 15%;" >Articulo</th>
-                                    <th style="text-align:center;width: 25%;" >Descripcion</th>
+                                    <th style="text-align:center;width: 15%;" >Descripcion</th>
                                     <th style="text-align:center;width: 7%;" >Precio</th>
                                     <th style="text-align:center;width: 7%;">Cantidad</th>
                                     <th style="text-align:center;width: 30%;" >Descripcion Falla</th>
-                                    <th style="text-align:center;width: 10%;" ></th>
+                                    <th style="text-align:center;width: 10%;" >Fotos</th>
+                                    <th style="text-align:center;width: 10%;" >Fila</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
                                     if(isset($borradorDet)){
-
+                                               
                                         foreach ($borradorDet as $key => $detalle) {
                                   
                                             echo '
@@ -154,10 +187,10 @@
                                                     foreach ($todosLosArticulos as $key => $value) {
                                                 
                                                         if($detalle['COD_ARTICU'] == $value['COD_ARTICU']){
-                                                            echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' " selected>'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                            echo '<option value="'.$value["COD_ARTICU"].'?'.$value["DESCRIPCIO"].'?'.$value['PRECIO'].' " selected>'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
                                                         }else{
 
-                                                            echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                            echo '<option value="'.$value["COD_ARTICU"].'?'.$value["DESCRIPCIO"].'?'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
                                                         }
                                                     }
 
@@ -182,6 +215,11 @@
                                                     <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
 
                                                 </td>
+                                                <td style="text-align:center">
+                                                    <button class="btn btn-danger" title="Eliminar fila" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarFila(this)" >
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             ';
                                         }
@@ -195,8 +233,17 @@
                                                 <option value="" selected disabled>Buscar artículo...</option>
                                                 <?php 
                                                 foreach ($todosLosArticulos as $key => $value) {
+                                                   
+                                                    $descripcion = $value['DESCRIPCIO'];
+    
+                                                  
+                                                    if (strpos($descripcion, '"') !== false) {
+                                                        $descripcion = htmlspecialchars($descripcion);
+                                                    }
+                                                
+                                                    
                                             
-                                                    echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].'">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
+                                                    echo '<option value="'.$value["COD_ARTICU"].'?'.$descripcion.'?'.$value['PRECIO'].'">'.$value['COD_ARTICU'].' | '.$descripcion.'</option>';
                                                 }
                                                 ?>
                                                 </select>
@@ -209,15 +256,20 @@
                                             <td style="text-align:center;">
 
 
-                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
+                                            <button class="btn btn-primary" title="Subir" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
                                                 <i class="bi bi-upload"></i> 
                                             </button>
 
-                                            <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
+                                            <button class="btn btn-warning" title="Ver" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
                                                 <i class="bi bi-eye" style="color:white"></i>
                                             </button>
 
-                                            <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button></td>
+                                            <button class="btn btn-danger" title="Eliminar" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button></td>
+                                            <td style="text-align:center">
+                                                <button class="btn btn-danger" title="Eliminar fila" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarFila(this)" >
+                                                    <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            </td>
                                           
                                         </tr>
                               <?php 

@@ -1,4 +1,19 @@
 
+$('#tablaFactura').DataTable({
+	searching: false, 
+	pageLength: 50,  
+})
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+const mostrarSpinner = () => {
+	let spinner = document.querySelector('.boxLoading')
+	spinner.classList.add('loading')
+
+}
+
 //Busqueda rápida//
 
 function myFunction() {
@@ -29,44 +44,41 @@ function myFunction() {
 
 //Registrar la orden como entregada//
 
-function registrarOrden(){
-    // var user = ""
-    document.querySelectorAll(".click").forEach(el => {
-    el.addEventListener("click", e => {
-        var orden = e.target.getAttribute('value');
-        Swal.fire({
-        title: "Desea registrar la orden"+orden+"?",
-        text: "La orden quedará registrada como entregada!",
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Cancelar",
-        confirmButtonText: "Aceptar",
-        }).then((result) => {
-        if (result.isConfirmed) {
-            let env = 1;
-            let url = env == 1 ? "registrarOrden.php" : "test.php";
-            console.log(orden);
-            $.ajax({
-            url: 'controller/' + url,
-            method: "POST",
-            data: {
-                orden: orden.replace(/ /g, ""),
-            },
-            success: function (data) {
-                Swal.fire({
-                icon: "success",
-                title: "Orden registrada correctamente!",
-                text: "Orden: " + data,
-                showConfirmButton: true,
-                }).then(function () {
-                window.location = "index.php";
-                        });
-                    },
-                });
-            }
-        });
-    },true);
-});
+function registrarOrden(e){
+  
+  var orden = e.getAttribute('value');
+  Swal.fire({
+  title: "Desea registrar la orden"+orden+"?",
+  text: "La orden quedará registrada como entregada!",
+  icon: "info",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  cancelButtonText: "Cancelar",
+  confirmButtonText: "Aceptar",
+  }).then((result) => {
+  if (result.isConfirmed) {
+      let env = 1;
+      let url = env == 1 ? "registrarOrden.php" : "test.php";
+      console.log(orden);
+      $.ajax({
+      url: 'controller/' + url,
+      method: "POST",
+      data: {
+          orden: orden.replace(/ /g, ""),
+      },
+      success: function (data) {
+          Swal.fire({
+          icon: "success",
+          title: "Orden registrada correctamente!",
+          text: "Orden: " + data,
+          showConfirmButton: true,
+          }).then(function () {
+          window.location = "index.php";
+                  });
+              },
+          });
+      }
+  });
+    
 }

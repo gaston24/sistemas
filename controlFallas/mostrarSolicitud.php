@@ -1,9 +1,13 @@
 <?php 
     session_start();
+    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+        header("Location:login.php");
+    }
+
    require_once __DIR__.'/../class/remito.php';
    require_once '../ajustes/class/Articulo.php';
    require_once '../ajustes/class/Ajuste.php';
-   require_once 'class/Recodificacion.php';
+   require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
    $nroSucurs = $_SESSION['numsuc'];
 
    $recodificacion = new Recodificacion();
@@ -12,16 +16,26 @@
 
     $numSolicitud = [];
     $numSolicitud[0]['ultimo_id'] = $_GET['numSolicitud'];
+   
 
     
     $solicitudEncabezado = $recodificacion->traerEncabezado($numSolicitud[0]['ultimo_id']);
+ 
     if(count($solicitudEncabezado) > 0){
         $solicitudDetalle = $recodificacion->traerDetalle($numSolicitud[0]['ultimo_id']);
        
     }
+  
     $tipoU = $_GET['tipoU'] ;
 
-   
+    $esDestino = (isset($_GET['destino'])) ? $_GET['destino'] : 0;
+    $outlet = false;
+    $locales = $recodificacion->traerLocales();
+    foreach($locales as $key => $local){
+        if($local['NRO_SUCURSAL'] == $solicitudEncabezado[0]['NUM_SUC'] && $local['OUTLET'] == 1){
+            $outlet = true;
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +88,7 @@
 
                             <div class="row" style="margin-top:10px">
                
-                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= $solicitudEncabezado[0]['FECHA']->format("Y-d-m") ?> id="fecha"  disabled ></div>
+                                <div style="margin-left:90px">Fecha Solicitud: <input type="date" style="width:145px; height:35px" value =<?= $solicitudEncabezado[0]['FECHA']->format("Y-m-d") ?> id="fecha"  disabled ></div>
                                 
                                 <div style="margin-left:90px">Usuario Emisor: 
                                    <input type="text" syle="width:145px; height:35px" disabled value="<?= str_replace("_"," ",$solicitudEncabezado[0]['USUARIO_EMISOR']) ?>">              
@@ -82,7 +96,12 @@
                                 <div style="margin-left:30%"> 
                                 <?php 
                                 if($tipoU == 1){
-                                    echo '<a href="seleccionDeSolicitudes.php" class="btn btn-secondary">Volver Al Listado</a>';
+                                    if($esDestino == 1){
+                                        echo '<a href="seleccionDeSolicitudesDestino.php" class="btn btn-secondary">Volver Al Listado</a>';
+
+                                    }else{
+                                        echo '<a href="seleccionDeSolicitudes.php" class="btn btn-secondary">Volver Al Listado</a>';
+                                    }
                                 } else if ($tipoU == 2){
                                     echo '<a href="seleccionDeSolicitudesSup.php" class="btn btn-secondary">Volver Al Listado</a>';
                                 }
@@ -96,6 +115,7 @@
 
                                 <div style="margin-left:90px">N° solicitud <input type="text" style="width:145px; height:35px; margin-left:30px" value="<?=  ($numSolicitud[0]['ultimo_id']) ?>" id="numSolicitud" disabled></div>
                                <?php 
+                
                                     switch ($solicitudEncabezado[0]['ESTADO']) {
                                         case '1':
                                             $estado = "Solicitada";
@@ -109,6 +129,12 @@
                                         case '4':
                                             $estado = "Borrador";
                                             break;
+                                        case '5':
+                                            $estado = "Ingresada";
+                                            break;
+                                        case '6':
+                                            $estado = "Ajustada";
+                                            break;
                                         default:
                                             # code...
                                             break;
@@ -121,14 +147,25 @@
 
                         </div>
             
-                        <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px" cellspacing="0" data-page-length="100">
+                        <table class="table table-striped table-bordered table-sm table-hover" id="tablaArticulos" style="width: 95%; height:100px; margin-left:50px; font-size: 13px;" cellspacing="0" data-page-length="100">
                             <thead class="thead-dark" style="">
                                 <tr>
                                     <th style="text-align:center;width: 400pxx;" >Articulo</th>
-                                    <th style="text-align:center;width: 600px;" >Descripcion</th>
+                                    <th style="text-align:center;width: 1200px;" >Descripcion</th>
                                     <th style="text-align:center;width: 200px;" >Precio</th>
                                     <th style="text-align:center;width: 200px;">Cantidad</th>
                                     <th style="text-align:center;width: 600px;" >Descripcion Falla</th>
+                                    <th style="text-align:center;width: 100px;" >Imagen</th>
+                                    <?php 
+                                    if($tipoU == 2 || ($solicitudEncabezado[0]['ESTADO'] >= 2 && $outlet == true )){
+                                        echo '<th style="text-align:center;width: 600px;" >Nuevo Codigo</th>';                              
+                                        echo '<th style="text-align:center;width: 600px;" >Destino</th>';                              
+                                        echo '<th style="text-align:center;width: 600px;" >Observaciones</th>';                              
+                                    }
+                                    
+                                    
+                                    ?>
+                                    <th  style="text-align:center;width: 200px;">REMITO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,16 +173,38 @@
                          
 
                                         foreach ($solicitudDetalle as $key => $detalle) {
-                                  
+                            
                                             echo '
                                             <tr id="bodyArticulos"> 
                                                 <td style="text-align:center">'.$detalle['COD_ARTICU'].'</td>
-                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].' <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button> </td>
+                                                <td style="text-align:center">'.$detalle['DESCRIPCION'].'</td>
                                                 <td style="text-align:center">$'.number_format($detalle['PRECIO'], 0, ",",".").'</td>
                                                 <td style="text-align:center">'.$detalle['CANTIDAD'].'</td>
                                                 <td style="text-align:center"><input type="text" style="width:400px" onchange="comprobarFila(this)" value="'.$detalle['DESC_FALLA'].'" disabled></td>
-                                              
-                                            </tr>
+                                                <td style="text-align:center"> <button class="btn btn-warning" onclick= "mostrarImagen(this)" style="margin-left:10px; border-style:none; padding: .3rem .6rem;"><i class="bi bi-eye"></i></button></td>
+                                                ';
+                                            if($tipoU == 2 || ($solicitudEncabezado[0]['ESTADO'] >= 2 && $outlet == true)){
+                                                
+                                                $destino = "";
+                                                foreach ($locales as $key => $local) {
+
+                                                    if($local['NRO_SUCURSAL'] == $detalle['DESTINO']){
+                                                        $destino = $local['DESC_SUCURSAL'];
+                                                    }
+
+                                                }
+
+                                                echo '
+                                                    <td style="text-align:center">'.$detalle['NUEVO_CODIGO'].'</td>
+                                                    <td style="text-align:center">'.$destino.'</td>
+                                                    <td style="text-align:center">'.$detalle['OBSERVACIONES'].'</td>
+                                               ';
+        
+                                            }
+                                                echo '<td style="text-align:center">'.$detalle['N_COMP'].'</td>';
+
+                                            echo '
+                                                </tr>
                                             ';
                                         }
 

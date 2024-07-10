@@ -1,3 +1,4 @@
+let timestap = new Date().getTime();
 
 
 const mostrarDescripcion = (div) => {
@@ -9,9 +10,10 @@ const mostrarDescripcion = (div) => {
     let cantidad = div.parentElement.parentElement.querySelectorAll("td")[3];
 
     cantidad.textContent = "1";
-    descripcion.textContent = value.split("-")[1];
-    console.log(value);
-    precio.textContent = "$"+ parseNumber(value.split("-")[2]);
+    console.log(value)
+    descripcion.textContent = value.split("?")[1];
+    // console.log(value);
+    precio.textContent = "$"+ parseNumber(value.split("?")[2]);
 
 
 }
@@ -22,12 +24,19 @@ const limitarArchivos = (input,codArticulo) => {
 
     if (input.files.length > maxFiles) {
 
-        alert(`Solo se pueden seleccionar un máximo de ${maxFiles} archivos.`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de carga',
+        text: `Sólo se pueden subir hasta ${maxFiles} fotos!`
+      })
+
 
         input.value = ''; 
+        return 1;
 
     }
 
+    
     cargarArchivos(input,codArticulo);
 
 }
@@ -43,7 +52,7 @@ const elegirImagen = (e) => {
 const cargarArchivos = (input,codArticulo) => {
 
 
-  eliminarArchivo(input,false,codArticulo); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
+  // eliminarArchivo(input,false,codArticulo); // Limpiamos Los Archivos cargados Para Ese Codigo de Articulo
 
   const file = document.getElementById('archivos').files[0];
 
@@ -75,12 +84,15 @@ const cargarArchivos = (input,codArticulo) => {
 
 const enviarImagenes = (codArticulo) => {
    
-    codArticulo = codArticulo.split("-")[0];
+    codArticulo = codArticulo.split("?")[0];
   
     const input = document.getElementById('archivos');
     let files = input.files;
-    let numSolicitud = document.querySelector("#numSolicitud").value; 
-    nameFile = numSolicitud+codArticulo ;
+    let numImg = timestap;
+    let nroSucursal = document.querySelector("#nroSucursal").textContent;
+
+    nameFile = nroSucursal+numImg+codArticulo ;
+    
     const formData = new FormData();
     const maxFiles = 3;
 
@@ -107,25 +119,55 @@ const enviarImagenes = (codArticulo) => {
     }
 
     $.ajax({
-
-      url: 'upload_image.php',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) { 
-
-        alert(response); 
-
+      url: "Controller/RecodificacionController.php?accion=eliminarArchivo",
+      type: "POST",
+      data: {
+        codArticulo: codArticulo,
+        numImg: numImg,
+        nroSucursal: nroSucursal
       },
-      error: function() {
+      success: function (response) {
+        $.ajax({
 
-        alert('Error al enviar las imágenes al servidor.');
-
-      }
-
-    });
+          url: 'upload_image.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) { 
     
+            Swal.fire({
+              icon: 'success',
+              title: 'Carga exitosa',
+              text: `Se subieron ${files.length} archivos correctamente!`
+            })
+    
+            quitarErrorImagen()
+    
+          },
+          error: function() {
+    
+            alert('Error al enviar las imágenes al servidor.');
+    
+          }
+    
+        });
+        
+      }
+    });
+  
+   
+    
+}
+
+const quitarErrorImagen = () => {
+  let divErrorImagen = document.querySelectorAll("#errorImagen");
+
+  divErrorImagen.forEach(e => {
+      e.remove();
+    }
+  );
+
 }
 
 const mostrarImagen = (divImagen, startIndex = 0) => {
@@ -135,7 +177,10 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
   
     let codigoArticulo = divImagen.parentElement.parentElement.querySelectorAll("td")[0].querySelector("select").value;
 
-    let numSolicitud = document.querySelector("#numSolicitud").value;
+    let numImg = timestap;
+
+    let nroSucursal = document.querySelector("#nroSucursal").textContent;
+
     let carouselElement = document.querySelector('#carruselImagenes'); 
   
     carouselElement.innerHTML = ''; 
@@ -145,8 +190,9 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
       url: "Controller/RecodificacionController.php?accion=contarImagenes",
       type: "POST",
       data: {
-        codArticulo:codigoArticulo.split("-")[0],
-        numSolicitud:numSolicitud
+        codArticulo:codigoArticulo.split("?")[0],
+        numImg:numImg,
+        nroSucursal:nroSucursal
 
       },
 
@@ -189,6 +235,7 @@ const mostrarImagen = (divImagen, startIndex = 0) => {
                 carouselItem.style = "text-align:center"
                 let imgElement = document.createElement('img');
                 imgElement.src = 'assets/uploads/' + imagen;
+                imgElement.classList.add('img-fluid');
 
                 carouselItem.appendChild(imgElement);
                 carouselInner.appendChild(carouselItem);
@@ -320,13 +367,8 @@ const copiarFila = (div) => {
   <option value="" selected disabled>Seleccione un artículo</option>
   `; 
 
-  JSON.parse(data).forEach((e, x) => {
-    
-      opciones += `
-        <option value="${e.COD_ARTICU}-${e.DESCRIPCIO}-${e.PRECIO}">${e.COD_ARTICU} | ${e.DESCRIPCIO}</option>
-      `;
 
-  });
+
 
   opciones += `</select>`;
 
@@ -338,24 +380,52 @@ filaClonada.querySelectorAll("td")[0].innerHTML = opciones;
 
 filaOriginal.after(filaClonada);
 
+$('.selectArticulo:last').select2({
+  placeholder: 'Buscar artículo...',
+  minimumInputLength: 3,
+  ajax: {
+   
+     transport: function (params, success, failure) {
+      const term = params.data.q;
+      const results = filtrarArticulosLocalStorage(term);
+      success({ results: results });
+      },
+    processResults: function (data, params) {
+      params.page = params.page || 1;
+  
+      return {
+        results: data['results']['items'],
+        pagination: {
+          more: (params.page * 30) < 3 
+        }
+      };
+    },
+    cache: true
+  },
+});
+}
 
-  $('.selectArticulo').select2({
-    placeholder: 'Buscar artículo...',
-    minimumInputLength: 3,
-    data: function(params) {
-        // Obtener los datos del Local Storage
-        const storedData = JSON.parse(localStorage.getItem('articulos'));
-        console.log(storedData)
-        // Filtrar los datos para que coincidan con el término de búsqueda
-        const filteredData = storedData.filter(item => item.text.includes(params.term));
+function filtrarArticulosLocalStorage(term) {
+  term = convertirAMayusculas(term);
+  const articulos = JSON.parse(localStorage.getItem('articulos')) || [];
+  contadorId = 1; // Restablecer el contador al principio de cada búsqueda
+  const results = articulos.filter(item => {
+    const codigoArticulo = convertirAMayusculas(item.COD_ARTICU);
+    const descripcion = convertirAMayusculas(item.DESCRIPCIO);
 
-        // Devolver los datos filtrados para que Select2 los utilice
-        return {
-        results: filteredData
-        };
-    }
+    // Buscar en el código de artículo o en la descripción
+    return codigoArticulo.includes(term) || descripcion.includes(term);
+  }).map(item => ({ id: item.COD_ARTICU+"?"+item.DESCRIPCIO+"?"+item.PRECIO, text: item.COD_ARTICU+" | "+item.DESCRIPCIO }));
+  
+  return  { items: results };
+}
+
+function convertirAMayusculas(inputString) {
+  return inputString.replace(/[a-z]/g, function(letra) {
+      return letra.toUpperCase();
   });
 }
+
 
 const traerArticulos = () => {
 
@@ -399,21 +469,28 @@ const eliminarArchivo = (div,alerta = true,articulo = null) => {
 
   }
 
-  codArticulo = codArticulo.split("-")[0];
+  codArticulo = codArticulo.split("?")[0];
   
-  let numSolicitud = document.querySelector("#numSolicitud").value;
+  let numImg = timestap;
+
+  let nroSucursal = document.querySelector("#nroSucursal").textContent;
 
   $.ajax({
     url: "Controller/RecodificacionController.php?accion=eliminarArchivo",
     type: "POST",
     data: {
       codArticulo: codArticulo,
-      numSolicitud: numSolicitud
+      numImg: numImg,
+      nroSucursal: nroSucursal
     },
     success: function (response) {
         if(alerta != false){
 
-          alert("Se eliminó el archivo correctamente");
+          Swal.fire({
+            icon: 'info',
+            title: 'Borrado confirmado',
+            text: 'Se eliminaron las fotos correctamente!'
+          })
 
         }
       
@@ -446,19 +523,30 @@ const parseNumber = (number) => {
   return newNumber;
 }
 
-const solicitar = (esBorrador = false) => {
+const solicitar = async (esBorrador = false) => {
 
   let nroSucursal = document.querySelector("#nroSucursal").textContent;
   let fecha = document.querySelector("#fecha").value;
   let usuario = document.querySelector("#usuario").value;
   let estado = document.querySelector("#estado").value;
-  let numSolicitud = document.querySelector("#numSolicitud").value;
+  let numImg = timestap;
+  let numSolicitud = document.querySelector("#nroSolicitud").textContent;
+
+  
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
   let codArticulos = [];
+  if(usuario == ""){
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      text: 'Debe ingresar un usuario',
+    })
+    return 1;
+  }
   allTr.forEach(e => {
     
-    codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]);
+    codArticulos.push(e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]);
   })
 
 
@@ -471,6 +559,15 @@ const solicitar = (esBorrador = false) => {
     return 1;
 
   }
+  let stock = await comprobarStock();
+
+  if(stock == false ){
+    return 1  
+  }
+
+  console.log(numImg)
+
+  
 
   $.ajax({
   
@@ -478,7 +575,8 @@ const solicitar = (esBorrador = false) => {
     type: "POST",
     data: {
       codArticulos: codArticulos,
-      numSolicitud:numSolicitud
+      numImg: numImg,
+      nroSucursal: nroSucursal
 
     },
     success: function (response) {
@@ -493,7 +591,7 @@ const solicitar = (esBorrador = false) => {
             if(response['nombre'].includes(element) == false){
               allTr.forEach(e => {
 
-                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]){
 
                   if( e.querySelectorAll("td")[5].querySelector("div") != null){
 
@@ -501,7 +599,7 @@ const solicitar = (esBorrador = false) => {
 
                   }
                  if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
-                  e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+                  e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div id="errorImagen" style="font-size:20px;color:red">* cargar imagen</div>`
                  }
                   error = true;
                 }
@@ -510,7 +608,7 @@ const solicitar = (esBorrador = false) => {
               
               allTr.forEach(e => {
 
-                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0]){
+                if(element == e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0]){
 
                   if( e.querySelectorAll("td")[5].querySelector("div") != null){
 
@@ -535,7 +633,7 @@ const solicitar = (esBorrador = false) => {
 
             }
             if(e.querySelectorAll("td")[0].querySelector("select").value != ""){
-              e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div style="font-size:20px;color:red">* cargar imagen</div>`
+              e.querySelectorAll("td")[5].innerHTML = e.querySelectorAll("td")[5].innerHTML + `<div id="errorImagen" style="font-size:20px;color:red">* cargar imagen</div>`
              }
 
             error =  true;
@@ -553,7 +651,7 @@ const solicitar = (esBorrador = false) => {
             if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
         
               dataArticulos.push({
-                codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
+                codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0],
                 descripcion: e.querySelectorAll("td")[1].textContent,
                 precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
                 cantidad: e.querySelectorAll("td")[3].textContent,
@@ -589,6 +687,8 @@ const solicitar = (esBorrador = false) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
 
+              document.querySelector("#boxLoading").classList.add('loading')
+
               $.ajax({
         
                 url: "Controller/RecodificacionController.php?accion=solicitar",
@@ -598,16 +698,62 @@ const solicitar = (esBorrador = false) => {
                   fecha: fecha,
                   usuario: usuario,
                   estado: estado,
+                  numImg: numImg,
                   numSolicitud: numSolicitud,
                   dataArticulos: dataArticulos,
                   esBorrador: esBorrador
                 },
-                success: function (response) {
-                   
-                  Swal.fire('La solicitud fue confirmada!', '', 'success').then((result) => {
-                      location.href = "seleccionDeSolicitudes.php";
+                success: function (responseSolicitud) {
+                  
+            
+                  $.ajax({
+                    url: "Controller/RecodificacionController.php?accion=realizarMovimientoOu",
+                    type : "POST",
+                    data: {
+                      dataArticulos:dataArticulos
+                    },
+                    success: function (response) {
+
+                      document.querySelector("#boxLoading").classList.remove('loading')
+                      
+                      if(response == false){
+
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error...',
+                          text: 'No se pudo realizar el movimiento de stock'
+                        })
+                        return;
+
+                      }else{
+
+                        $.ajax({
+                          url: "Controller/SendEmailController.php?accion=confirmarSolicitud",
+                          type: "POST",
+                          data: {
+                            numSolicitud:responseSolicitud
+                          },
+                          success: function (response) {
+                            console.log(response)
+      
+                            Swal.fire({
+                              icon: 'success',
+                              title: 'Solicitud Creada Correctamente',
+                              text: 'Nro de Solicitud : '+responseSolicitud,
+                              showConfirmButton: false,
+                              timer: 2500
+                            }).then ((result) => {
+                              location.href = "seleccionDeSolicitudes.php";
+                            });
+                          }
+                        });
+
+                      }
+
+                    }
                   });
-          
+              
+                 
             
                 }
     
@@ -635,17 +781,16 @@ const borrador = () => {
   let fecha = document.querySelector("#fecha").value;
   let usuario = document.querySelector("#usuario").value;
   let estado = document.querySelector("#estado").value;
-  let numSolicitud = document.querySelector("#numSolicitud").value;
+  let numSolicitud = document.querySelector("#nroSolicitud").textContent;
   let allTr = document.querySelectorAll("#bodyArticulos");
   let dataArticulos = [];
 
 
   allTr.forEach(e => {
 
-    if (e.querySelectorAll("td")[0].querySelector("select").value != "" && e.querySelectorAll("td")[4].querySelector("input").value != ""){
-
+    if (e.querySelectorAll("td")[0].querySelector("select").value != ""){
       dataArticulos.push({
-        codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("-")[0],
+        codArticulo: e.querySelectorAll("td")[0].querySelector("select").value.split("?")[0],
         descripcion: e.querySelectorAll("td")[1].textContent,
         precio: e.querySelectorAll("td")[2].textContent.replace(/[$.]/g, ""),
         cantidad: e.querySelectorAll("td")[3].textContent,
@@ -675,8 +820,9 @@ const borrador = () => {
       fecha: fecha,
       usuario: usuario,
       estado: estado,
-      numSolicitud: numSolicitud,
-      dataArticulos: dataArticulos
+      numSolicitud : numSolicitud,
+      dataArticulos: dataArticulos,
+      numImg: timestap
     },
     success: function (response) {
         Swal.fire({
@@ -711,5 +857,77 @@ const existeBorrador = () =>{
   });
   comprobarFila(bodyArticulos[bodyArticulos.length-1].querySelectorAll("td")[4].querySelector("input"));
   
+}
+
+
+const comprobarStock = async () => {
+
+  let articulos = document.querySelectorAll("#selectArticulo");
+  let codArticulos = [];
+
+
+  articulos.forEach(articulo => {
+    if(articulo.value != ""){
+
+      codArticulos.push({
+        articulo:articulo.value.split("?")[0],
+        cantidad:articulo.parentElement.parentElement.querySelectorAll("td")[3].textContent
+      });
+
+    }
+
+  });
+
+    let  response = await $.ajax({
+      url : "Controller/RecodificacionController.php?accion=comprobarStock",
+      type: "POST",
+      data: {
+        codArticulos:codArticulos
+      },
+    });
+
+    let result = ""
+
+    response = JSON.parse(response);
+    articulos.forEach(element => {
+        if(response.length > 0){
+          if(response.includes(element.value.split("?")[0])){
+
+            element.parentElement.parentElement.querySelectorAll("td")[3].style = "text-align:center;color:red";  
+
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de stock',
+            text: 'Hay artículos sin stock! Corregir y volver a solicitar'
+          })
+          result = false;
+
+        }else{
+
+          result = true;
+
+        }
+    });
+    return result;
+    
+}
+
+const eliminarFila = (div) => {
+
+  let allTr = document.querySelectorAll("#bodyArticulos");
+
+  if(allTr.length <= 1){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'La Solicitud Debe tener Al Menos Un Artículo',
+    })
+
+  }else{
+
+    div.parentElement.parentElement.remove();
+
+  }
 }
 

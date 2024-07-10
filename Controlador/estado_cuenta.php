@@ -1,3 +1,7 @@
+<?php
+// session_start();
+?>
+
 <div class="modal fade" id="dataFranquiciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -33,7 +37,7 @@
                 <p id="info" class="text-danger"><small>El importe disponible en $ es inferior al 10% del cupo de crédito!</small></p>
                 <?php }else if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) >= 0.10){ ?>
                 <span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-            <?php } ?>				
+            <?php } ?>			
         </li>
         </ul>	
       </div>

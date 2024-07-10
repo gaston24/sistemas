@@ -10,15 +10,19 @@ $numeroOrden = $_GET['orden'];
 
 require_once 'Class/Orden.php';
 require_once 'Class/PPP.php';
-
 $orden = new Orden();
 $todasLasOrdenes = $orden->traerDetalleOrden($numeroOrden);
 
+
 $credito = new PPP();
 $creditoDisp = $credito->detalleCuenta($codClient);
-
 $creditoDisp = json_decode($creditoDisp);
-$creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
+if(count($creditoDisp) > 0){
+
+    $creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
+}else{
+    $creditoDisp = 0;
+}
 
 ?> 
 
@@ -128,14 +132,14 @@ $creditoDisp = $creditoDisp[0]->IMPORTE_DISP;
                         <td id="articuloPed" name="articuloPed"><?=  $key['COD_ARTICU']?></td>
                         <td id="descripcioPed" name="descripcioPed"><?=  $key['DESCRIPCIO']?></td>
                         <td id="rubro" name="rubro"><?=  $key['RUBRO']?></td>
-                        <td id="precioPed" name="precioPed"><?= $key['PRECIO_ESTIMADO'] ?></td>
+                        <td id="precioPed" name="precioPed">$<?= number_format($key['PRECIO_ESTIMADO'], 0, ',', '.') ?></td>
                         <td id="temporadaPed" name="temporadaPed"><?=  $key['TEMPORADA'] ?></td>
                         <td id="novedadPed" name="novedadPed">
                             <?php if($key['LANZAMIENTO']== 1){ ?>
                             <a>LANZAMIENTO!</a>
                             <?php } else { ?> <?php } ?>
                         </td>
-                        <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" max="<?= $key['CANT_MAX'] ?>" title="Cantidad máxima a solicitar <?= $key['CANT_MAX'] ?>" id="inputNum" name="inputNum[]" onchange="total(); precioTotal()"></td>                
+                        <td><input type="number" tabindex="1" value="<?=$minimo?>" pattern="^[0-9]" min="<?=$minimo?>" max="<?= $key['CANT_MAX'] ?>" title="Cantidad máxima a solicitar <?= $key['CANT_MAX'] ?>" id="inputNum" name="inputNum[]" onchange="total(this); precioTotal()"></td>                
                         <?php if($key['RUBRO']== 'KITS'){ ?>
                         <td>
                             <a href="detalleKits.php?cod_kit=<?= $key['COD_ARTICU'] ?>"><button type="button" class="btn btn-sm btn-warning" style="width: 80px;"><i class="fa fa-search"></i>  Ver</button></a>

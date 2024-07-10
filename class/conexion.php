@@ -11,11 +11,16 @@ class Conexion{
         
         $this->host_central = $this->envVars['HOST_CENTRAL'];
         $this->database_central = $this->envVars['DATABASE_CENTRAL'];
+        $this->database_uy = $this->envVars['DATABASE_UY'];
         $this->host_locales = $this->envVars['HOST_LOCALES'];
         $this->database_locales = $this->envVars['DATABASE_LOCALES'];
+        $this->database_sucUy = $this->envVars['DATABASE_SUC_UY'];
         $this->user = $this->envVars['USER'];
         $this->pass = $this->envVars['PASS'];
+        $this->pass_locales = $this->envVars['PASS_LOCALES'];
         $this->character = $this->envVars['CHARACTER'];
+        $this->env = $this->envVars['ENV'];
+        $this->prefix = ($this->env == 'DEV') ? '[LAKERBIS].locales_lakers.dbo.' : '';
     }
 
     private function servidor($nameServer) {
@@ -24,8 +29,14 @@ class Conexion{
             return array($this->host_central, $this->database_central);
         }elseif($nameServer == 'locales'){
             return array($this->host_locales, $this->database_locales);
+        }elseif($nameServer == 'uy'){
+            return array($this->host_central, $this->database_uy);
+        }elseif($nameServer == 'suc_uy'){
+            return array($this->host_locales, $this->database_sucUy);
         }else{
-            session_start();
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
             return array($_SESSION['conexion_dns'], $_SESSION['base_nombre']);
         }
 
@@ -36,10 +47,16 @@ class Conexion{
 
             $serverDB = $this->servidor($nameServer);
 
+            if($this->env == 'PROD' && (strtolower($serverDB[0]) == strtolower('lakerbis'))){
+                $pass = $this->pass_locales;
+            } else {
+                $pass = $this->pass;
+            }
+
             $params = array( 
                 "Database" => $serverDB[1], 
                 "UID" => $this->user, 
-                "PWD" => $this->pass, 
+                "PWD" => $pass, 
                 "CharacterSet" => $this->character
             );
 
@@ -47,6 +64,7 @@ class Conexion{
 
             if(!$cid) return false;
 
+            // este cid va a cambiar mil veces
             $_SESSION['cid'] = $cid;
             return $cid;
             
@@ -57,7 +75,17 @@ class Conexion{
 
     private function buscarLocal($nameLocal){
 
-        $sql = "select * from [LAKERBIS].locales_lakers.dbo.sucursales_lakers where cod_client = '$nameLocal'";
+        $prefix = ($this->env == 'DEV') ? '[LAKERBIS].locales_lakers.dbo.' : '';
+
+        if($this->env == 'DEV'){
+            $database = $this->database_central;
+            $pass = $this->pass;
+        } else {
+            $database = $this->database_locales;
+            $pass = $this->pass_locales;
+        }
+
+        $sql = "select * from ".$prefix." sucursales_lakers where cod_client = '$nameLocal'";
 
         $params = array( 
             "Database" => $this->database_central, 

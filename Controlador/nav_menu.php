@@ -79,7 +79,7 @@ include('estado_cuenta.php');
             ?>
 
             <?php
-            if ($_SESSION['tipo'] != 'MAYORISTA') {
+            if ($_SESSION['tipo'] != 'MAYORISTA' ) {
             ?>
 
                 <li class="nav-item dropdown">
@@ -87,37 +87,110 @@ include('estado_cuenta.php');
                         Reportes
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item spinner" href="#" onclick="<?= (substr($codClient, 0, 2) == 'FR') ?  "location.href='guiasf/index.php'" : "location.href='guia/index.php'"; ?>">Guia de Transporte</a>
+                        <?php 
+                            if($_SESSION['usuarioUy'] != 1){
+                                
+                        ?>
+                            <a class="dropdown-item spinner" href="#" onclick="<?= (substr($codClient, 0, 2) == 'FR') ?  "location.href='guiasf/index.php'" : "location.href='guia/index.php'"; ?>">Guia de Transporte</a>
 
                         <?php
+                        }
+
                         if ($dashboard != 'SIN_URL') {
                         ?>
                             <a class="dropdown-item spinner" href="#" onclick="window.open('<?php echo $dashboard; ?>');">Dashboard</a>
                         <?php
                         }
                         ?>
-                        <?php if ($_SESSION['numsuc'] > 100) { ?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php } ?>
+                        <?php if ($_SESSION['numsuc'] > 100 && $_SESSION['usuarioUy'] != 1) { ?> <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer">Estado de cuenta</a> <?php } ?>
                         <a class="dropdown-item spinner" href="#" onclick="location.href='maestroDestinos/index.php'">Maestro Destinos</a>
                     </div>
                 </li>
 
+                    <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Operaciones
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Operaciones
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { 
+                                $lista = 'facturaManual/listado.php?suc=' . $_SESSION['numsuc'];
+                                $carga = 'facturaManual/carga.php?suc=' . $_SESSION['numsuc'];
+                                ?>
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Administración</a>
+                                <ul class="dropdown-menu">
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='egresosDeCaja/egresosDeCaja.php'">Egresos de caja</a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'">Factura manual <span class="badge badge-warning">Testing</span></a>
+                                
+                                <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">First subsubmenu</a>
+                                    <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Second subsubmenu</a>
+                                    <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
+                                    </ul>
+                                </li> -->
+                                </ul>
+                            </li>
+                            <?php } ?>
 
-                        <?php if($_SESSION['connection_db'] != false) {?>      
-                            <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
-                        <?php } ?>
+                            <?php if ($_SESSION['numsuc'] < 100) { ?>
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Calidad</a>
+                                <ul class="dropdown-menu">
+                                    <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas</a>
+                                    <?php
+                                    if ($_SESSION['esOutlet'] == 1) {
+                                    ?>
+                                        <!-- OUTLET -->
+                                        <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudesDestino.php'">Gestionar recodificaciones</a>
+                                    <?php
+                                    } 
+                                    ?>
+                                    <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a>
+                                </ul>
+                            </li>
+                            <?php } ?>
 
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a> <?php } ?>
-                        <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
-                        <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas</a> <?php } ?>
-                    </div>
-                </li>
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Stock</a>
+                                <ul class="dropdown-menu">
+                                <?php if($_SESSION['connection_db'] != false ) {?>      
+                                    <?php if ($_SESSION['numsuc'] < 100) { ?> <a class="dropdown-item" href="#" onclick="location.href='control/index.php'">Control de remitos</a> <?php } ?>
+                                <?php } ?>
+                                <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?> <a class="dropdown-item" href="#" onclick="location.href='remitosLocal/index.php'">Rotulo rotaciones</a> <?php } ?>
+                                <a class="dropdown-item" href="#" onclick="location.href='barcode/index.html'">Etiq. codigo de barras</a>
+                                </ul>
+                            </li>
+                            
+                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
+                            
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form action="fichaje/registro.php" method="get" target="_blank">
+                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Fichada por legajo <span class="badge badge-warning">Testing</span></button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="fichaje/reporteDeAsistencias.php" method="get" >
+                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Reporte de asistencias <span class="badge badge-warning">Testing</span></button>
+                                        </form>
+                                    </li>
+                                    <!-- Otros elementos de menú si los tienes -->
+                                </ul>
+                            </li>
+                            <?php } ?>
+
+
+
+                            </ul>
+                        </li>
+                       
+                           
+                
 
 
                 <?php if ($_SESSION['numsuc'] < 100) { ?>
@@ -134,7 +207,7 @@ include('estado_cuenta.php');
                 <?php } ?>
 
                 <?php
-                if ($_SESSION['numsuc'] > 100 && $_SESSION['habPedidos'] == 1) {
+                if ($_SESSION['numsuc'] > 100 && $_SESSION['habPedidos'] == 1 && $_SESSION['usuarioUy'] != 1) {
                 ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -181,4 +254,5 @@ include('estado_cuenta.php');
      el.addEventListener("click", ()=>{$("#boxLoading").addClass("loading")});
    })
 
+   document.querySelector("#FichadaPorLegajo").addEventListener("click", ()=>{$("#boxLoading").removeClass("loading")});
 </script>

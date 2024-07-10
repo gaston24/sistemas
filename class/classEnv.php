@@ -53,11 +53,17 @@ class DotEnv
             'HOST_LOCALES' => getenv('HOST_LOCALES'),
             'DATABASE_CENTRAL' => getenv('DATABASE_CENTRAL'),
             'DATABASE_LOCALES' => getenv('DATABASE_LOCALES'),
+            'DATABASE_UY' => getenv('DATABASE_UY'),
+            'DATABASE_SUC_UY' => getenv('DATABASE_SUC_UY'),
             'USER' => getenv('USER'),
             'PASS' => getenv('PASS'),
             'PASS_LOCALES' => getenv('PASS_LOCALES'),
             'CHARACTER' => getenv('CHARACTER'),
             'ENV' => getenv('ENV'),
+            'HOST_EMAIL' => getenv('HOST_EMAIL'),
+            'USER_EMAIL' => getenv('USER_EMAIL'),
+            'PASS_EMAIL' => getenv('PASS_EMAIL'),
+            
 
         );
 

@@ -212,8 +212,19 @@ class Ajuste
 
     }
 
-    public function insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno) 
+    public function insertarDetalleSalida($cant, $codigo, $fecha, $proxInterno, $esNuevoAjuste = null) 
     {
+
+        // if($esNuevoAjuste == true){
+
+        //     $codDeposito = "(SELECT COD_SUCURS FROM STA22 WHERE COD_SUCURS LIKE '[0-9]%' AND INHABILITA = 0)";
+
+        // }else{
+
+        $codDeposito = '\'OU\'';
+
+        // }
+
         $sqlDetSalida = "
         INSERT INTO STA20
         (
@@ -224,10 +235,11 @@ class Ajuste
         )
         VALUES
         (
-        1, 0, 0, 0, 0, '$cant', '$codigo', 'OU','', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 
+        1, 0, 0, 0, 0, '$cant', '$codigo', $codDeposito,'', 1, '$fecha', 0, 1, '$proxInterno', 0, 0, 0, 0, 0, 'AJ', 
         'S', 0, 0, 0, 0, 0, 0, 6, 'P', 0, 0, 0, 0, 0, 0
         );";
         
+
         try {
             
             $resultDetSalida = sqlsrv_query($this->cid, $sqlDetSalida);
@@ -242,9 +254,12 @@ class Ajuste
 
     }
 
-    public function restarCantidad($cant, $codigo) 
+    public function restarCantidad($cant, $codigo, $esNuevoAjuste = null) 
     {
-        $sqlResta = "UPDATE STA19 SET CANT_STOCK = (CANT_STOCK - $cant) WHERE COD_ARTICU = '$codigo' AND COD_DEPOSI = 'OU'";
+    
+        $codDeposito = '\'OU\'';
+
+        $sqlResta = "UPDATE STA19 SET CANT_STOCK = (CANT_STOCK - $cant) WHERE COD_ARTICU = '$codigo' AND COD_DEPOSI = $codDeposito";
 
         try {
             

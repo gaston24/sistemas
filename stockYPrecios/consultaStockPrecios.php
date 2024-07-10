@@ -1,9 +1,7 @@
 <?php 
     session_start();
-    require_once '../ajustes/Class/Articulo.php';
-    $maestroArticulos = new Articulo();
-    $todosLosArticulos = $maestroArticulos->traerMaestroArticulo();
 
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
 ?>
 
 <!DOCTYPE html>
@@ -60,30 +58,25 @@
                             <div class="contInputs">
 
                                 <div class="form-inline" style="margin-left: 0.5rem;">
-                                    <select name="selectArticulo" id="selectArticulo" class = "form-control selectArticulo" style="width: 13rem;" onchange="traerArticulo(this)">
-                                        <option value=""></option>
-                                        <?php foreach ($todosLosArticulos as $key => $value) { 
-                                            echo '<option value="'.$value["COD_ARTICU"].'-'.$value["DESCRIPCIO"].'-'.$value['PRECIO'].' ">'.$value['COD_ARTICU'].' | '.$value['DESCRIPCIO'].'</option>';
-                                        } ?>
-                                    </select> 
+                                    <input name="selectArticulo" id="selectArticulo" class = "form-control selectArticulo" type="text" style="width: 13rem;" onchange="traerArticulo(this,<?= $_SESSION['usuarioUy'] ?>)">
                                     <button class="btn btn-danger btn-sm" onclick="borrar()">Borrar <i class="bi bi-x-circle"></i></button>
                                 </div>
                                <div id="cont">
 
                                     <div>
-                                        Articulo : <input type="text" id="articulo" disabled>
+                                        Articulo : <input type="text" class="info" id="articulo" disabled>
                                         </select>
                                     </div>
                                     <div>
-                                        Descripcion : <input type="text" id="descripcion" disabled>
+                                        Descripcion : <input type="text" class="info" id="descripcion" disabled>
                                         </select>
                                     </div>
                                     <div >
-                                        Stock : <input type="text" id="stock" disabled>
+                                        Stock : <input type="text" class="info" id="stock" disabled>
                                         </select>
                                     </div>
                                     <div>
-                                        Precio : <input type="text" id="precio" disabled>
+                                        Precio : <input type="text" class="info" id="precio" disabled>
                                         </select>
                                     </div>
 
@@ -110,23 +103,6 @@
 
 </html>
 <script>
-
-$('.selectArticulo').select2({
-        placeholder: 'Ingresar artículo...',
-        minimumInputLength: 3,
-        data: function(params) {
-            // Obtener los datos del Local Storage
-            const storedData = JSON.parse(localStorage.getItem('articulos'));
-
-            // Filtrar los datos para que coincidan con el término de búsqueda
-            const filteredData = storedData.filter(item => item.text.includes(params.term));
-
-            // Devolver los datos filtrados para que Select2 los utilice
-            return {
-            results: filteredData
-            };
-        }
-});
 </script>
 <!-- <script src="js/gastosTesoreria.js"></script> -->
 

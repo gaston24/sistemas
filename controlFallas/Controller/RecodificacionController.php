@@ -1,12 +1,20 @@
 <?php
 
-require_once "../class/Recodificacion.php";
+require_once $_SERVER["DOCUMENT_ROOT"].'/sistemas/class/Recodificacion.php';
+require_once  $_SERVER["DOCUMENT_ROOT"]."/sistemas/controlFallas/Controller/SendEmailController.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/sistemas/ajustes/Class/Ajuste.php";
+
 $accion = $_GET['accion'];
 
 switch ($accion) {
 
     case 'traerArticulos':
         traerArticulos();
+
+        break;
+
+    case 'traerArticuloss':
+        traerArticuloss();
 
         break;
 
@@ -17,6 +25,11 @@ switch ($accion) {
     
     case 'contarImagenes':
         contarFotosEnCarpeta();
+
+        break;
+
+    case 'mostrarFotos':
+        mostrarFotos();
 
         break;
 
@@ -44,6 +57,45 @@ switch ($accion) {
         traerCodigoRecodificacion();
 
         break;
+
+    case 'comprobarStock':
+        comprobarStock();
+
+        break;
+
+
+    case 'validarCodigosOulet':
+        validarCodigosOulet();
+
+        break;
+
+
+    case 'comprobarStockArticulos':
+        comprobarStockArticulos();
+
+        break;
+
+
+    case 'comprobarArticuloEnRemito':
+        comprobarArticuloEnRemito();
+
+        break;
+
+    case 'ajustarArticulos':
+        ajustarArticulos();
+
+        break;
+
+    case 'realizarMovimientoOu':
+        realizarMovimientoOu();
+
+        break;
+
+    case 'traerLocales':
+        traerLocales();
+
+        break;
+
     
     default:
         # code...
@@ -60,14 +112,35 @@ function traerArticulos () {
     echo json_encode($result);
 
 }
+function traerArticuloss () {
+    $campo = $_GET['q'];
+    
+    require_once "../../ajustes/Class/Articulo.php";
+    $articulo = new Articulo();
+
+    $result = $articulo->traerMaestroArticulo($campo);
+    $data = [];
+    
+    foreach ($result as $key => &$value) {
+        $value['id'] = $key;
+        $value['text'] = $value['COD_ARTICU']." - ".$value['DESCRIPCIO'];
+        $data['items'][] = $value;
+
+    }
+    $data['total_count'] = 3;
+    echo json_encode($data);
+
+}
 
 function eliminarArchivo () {
 
     $codArticulo = $_POST['codArticulo'];
 
-    $numSolicitud = $_POST['numSolicitud'];
+    $numImg = $_POST['numImg'];
 
-    $fileName = $numSolicitud.$codArticulo;
+    $numSucursal = $_POST['nroSucursal'];
+
+    $fileName = $numSucursal.$numImg.$codArticulo;
 
     if ($gestor = opendir("../assets/uploads")) {
     
@@ -104,7 +177,10 @@ function contarFotosEnCarpeta() {
 
     }
 
-    $numSolicitud = $_POST['numSolicitud'];
+    $nroSucursal = $_POST['nroSucursal'];
+
+    $numImg = $_POST['numImg'];
+
 
     if(isset($arrayArticulos)){
         
@@ -112,28 +188,28 @@ function contarFotosEnCarpeta() {
         $datosDeLosArchivos = [];
         $datosDeLosArchivos['cantidad'] = 0;
         foreach ($arrayArticulos as $key => $codigo) {
-            $fileName = $numSolicitud.$codigo;
-            // Abre el directorio
+            $fileName = $nroSucursal.$numImg.$codigo;
+           
             if ($gestor = opendir("../assets/uploads")) {
-                // Recorre los archivos en el directorio
+                
                 while (($archivo = readdir($gestor)) !== false) {
-                    // Ignora las carpetas "." y ".."
+                   
                     if ($archivo != "." && $archivo != "..") {
         
                         if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
-                            // $contadorFotos++;
+                            
                             $datosDeLosArchivos['cantidad'] ++;
         
                             $datosDeLosArchivos['nombre'][] = $codigo;
         
-                            // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
+                           
                         } 
          
                      
                     }
                 }
         
-                // Cierra el directorio
+                
                 closedir($gestor);
             }
 
@@ -141,32 +217,32 @@ function contarFotosEnCarpeta() {
 
     }else{
 
-    
-        $fileName = $numSolicitud.$codArticulo;
+  
+        $fileName = $nroSucursal.$numImg.$codArticulo;
         $contadorFotos = 0;
         $datosDeLosArchivos = [];
         $datosDeLosArchivos['cantidad'] = 0;
-        // Abre el directorio
+        
         if ($gestor = opendir("../assets/uploads")) {
-            // Recorre los archivos en el directorio
+            
             while (($archivo = readdir($gestor)) !== false) {
-                // Ignora las carpetas "." y ".."
+                
                 if ($archivo != "." && $archivo != "..") {
 
                     if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
-                        // $contadorFotos++;
+                       
                         $datosDeLosArchivos['cantidad'] ++;
 
                         $datosDeLosArchivos['nombre'][] = pathinfo($archivo, PATHINFO_FILENAME);
 
-                        // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
+                       
                     } 
     
                 
                 }
             }
 
-            // Cierra el directorio
+            
             closedir($gestor);
         }
     }
@@ -174,31 +250,122 @@ function contarFotosEnCarpeta() {
     echo json_encode($datosDeLosArchivos);
 }
 
+function mostrarFotos () {
+    
+    $codArticulo = (isset($_POST['codArticulo'])) ? $_POST['codArticulo'] : "";
+    
+    if($codArticulo == ""){
+
+        $arrayArticulos = $_POST['codArticulos'];
+
+    }
+
+    $numSolicitud = $_POST['numSolicitud'];
+
+
+    $fileName = $numSolicitud.$codArticulo;
+    $contadorFotos = 0;
+    $datosDeLosArchivos = [];
+    $datosDeLosArchivos['cantidad'] = 0;
+    
+    if ($gestor = opendir("../assets/uploads")) {
+        
+        while (($archivo = readdir($gestor)) !== false) {
+           
+            if ($archivo != "." && $archivo != "..") {
+
+                if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
+                   
+                    $datosDeLosArchivos['cantidad'] ++;
+
+                    $datosDeLosArchivos['nombre'][] = pathinfo($archivo, PATHINFO_FILENAME);
+
+                    
+                } 
+
+            
+            }
+        }
+
+       
+        closedir($gestor);
+    }
+ 
+
+    echo json_encode($datosDeLosArchivos);
+
+}
+
 function solicitar () {
 
     $nroSucursal = $_POST['nroSucursal'];
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $_POST['fecha']);
-    $fecha = $fecha_objeto->format('Y-m-d');
+
+    $fecha = $_POST['fecha'];
+    
     $usuario = $_POST['usuario'];
     $estado = $_POST['estado'];
     $numSolicitud = $_POST['numSolicitud'];
+    $numImg = $_POST['numImg'];
     $dataArticulos = $_POST['dataArticulos'];
     $esBorrador = $_POST['esBorrador'];
     $valores = "";
-    foreach ($dataArticulos as $key => $articulo) {
-        $valores .= "('$numSolicitud', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
+
+    
+    $recodificacion = new Recodificacion();
+
+    if ($esBorrador == 1){
+
+        $solicitud = $numSolicitud;
+    }else{
+
+        $solicitud = $numImg;
     }
 
+    $encabezado = $recodificacion->insertarEncabezado($solicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
+    
+    foreach ($dataArticulos as $key => $articulo) {
+        $valores .= "('$encabezado', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
+
+
+     
+        $directorio = '../assets/uploads/';
+        $extensionesValidas = array('.jpg', '.jpeg', '.png', '.gif');
+
+    
+        $nombreArchivoBusqueda = $nroSucursal . $numImg . $articulo['codArticulo'];
+      
+
+        if ($handle = opendir($directorio)) {
+     
+            while (false !== ($archivo = readdir($handle))) {
+                if ($archivo != "." && $archivo != "..") {
+    
+                    $nombreArchivo = pathinfo($archivo, PATHINFO_FILENAME);
+                    $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+      
+
+                    if (strpos($nombreArchivo, $nombreArchivoBusqueda) !== false ) {
+
+                        $nuevoNombre = trim($encabezado).trim(substr($nombreArchivo, strpos($nombreArchivo, $numImg) + strlen($numImg)));
+                        $nuevoPath = $directorio . $nuevoNombre . ".$extension";
+                        rename($directorio . $archivo, $nuevoPath);
+                    }
+                }
+            }
+            closedir($handle);
+        }
+    }
     $valores = substr_replace($valores, ";", -1, 1);
 
-    $Recodificacion = new Recodificacion();
-    $encabezado = $Recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 1, $esBorrador );
 
-    if($encabezado == true && $esBorrador == "false"){
-        $Recodificacion->insertarDetalle($valores);
+    if($encabezado != '' && $esBorrador != "false"){
+    
+        $recodificacion->borrarDetalle($encabezado);
     }
+    
+    $recodificacion->insertarDetalle($valores);
 
-    return true;
+    echo $encabezado;
 
 }
 
@@ -206,16 +373,14 @@ function borrador () {
    
     $nroSucursal = $_POST['nroSucursal'];
 
-    $fecha_objeto = DateTime::createFromFormat('Y-d-m', $_POST['fecha']);
-    $fecha = $fecha_objeto->format('Y-m-d');
+    $fecha = $_POST['fecha'];
 
     $usuario = $_POST['usuario'];
     $estado = $_POST['estado'];
-    $numSolicitud = $_POST['numSolicitud'];
-    $dataArticulos = $_POST['dataArticulos'];
     $valores = "";
-
-    
+    $numSolicitud = $_POST['numSolicitud'];
+    $numImg = $_POST['numImg'];
+    $dataArticulos = $_POST['dataArticulos'];
     
     $recodificacion = new Recodificacion();
 
@@ -229,15 +394,15 @@ function borrador () {
 
     }else{
 
-        $encabezado = $recodificacion->insertarEncabezado($numSolicitud, $nroSucursal, $fecha, $usuario, 4, "false" );
+        $encabezado = $recodificacion->insertarEncabezado($numImg, $nroSucursal, $fecha, $usuario, 4, "false" );
     }
-
     
     foreach ($dataArticulos as $key => $articulo) {
 
         $valores .= "('$encabezado', '$articulo[codArticulo]', '$articulo[descripcion]', '$articulo[precio]', '$articulo[cantidad]', '$articulo[descFalla]'),";
         
     }
+     
     $valores = substr_replace($valores, ";", -1, 1);
     
     if($encabezado == true){
@@ -264,16 +429,31 @@ function autorizar () {
 
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
-    $Recodificacion = new Recodificacion();
+    $outlet = $_POST['outlet'];
+    $arrayArticulosAlta = $_POST['arrayArticulosAlta'];
 
+    $recodificacion = new Recodificacion();
+    
+    foreach ($arrayArticulosAlta as $key => $value) {
+  
+        $result = $recodificacion->altaArticulo($value);
+    }    
  
-    $result  = $Recodificacion->autorizar($numSolicitud);
+    if($outlet == "1"){
+
+        $result = $recodificacion->ingresar($numSolicitud);
+
+    }else{
+
+        $result  = $recodificacion->autorizar($numSolicitud);
+    }
+
     
     if ($result == true) {
 
         foreach ($data as $key => $value) {
 
-            $Recodificacion->actualizarDetalle($value['PRECIO'], $value['NUEVO_CODIGO'], $value['DESTINO'], $value['OBSERVACIONES'], $value['ID']);
+            $recodificacion->actualizarDetalle($value['PRECIO'], $value['NUEVO_CODIGO'], $value['DESTINO'], $value['OBSERVACIONES'], $value['ID']);
 
         }
 
@@ -284,22 +464,207 @@ function autorizar () {
 }
 
 function enviar () {
+
     $data = $_POST['data'];
     $numSolicitud = $_POST['numSolicitud'];
 
-    $Recodificacion = new Recodificacion();
+    $recodificacion = new Recodificacion();
 
-    $result = $Recodificacion->enviar($numSolicitud);
+    $result = $recodificacion->enviar($numSolicitud);
 
     if ($result == true) {
 
         foreach ($data as $key => $value) {
 
-            $Recodificacion->cargarRemito($value['id'], $value['remito']);
+            $recodificacion->cargarRemito($value['id'], $value['remito']);
 
         }
 
     }
     return true;
+
 }
+
+function comprobarStock () {
+
+    $codArticulos = $_POST['codArticulos'];
+
+
+    $recodificacion = new Recodificacion();
+    $arrayResult = [];
+
+    foreach ($codArticulos as $key => $articulo) {
+        $result = $recodificacion->comprobarStock($articulo);
+
+
+        if($result == false){
+
+            $arrayResult[] = $articulo['articulo'];
+            
+        }
+    }
+    
+    echo json_encode($arrayResult);
+}
+
+
+function validarCodigosOulet () {
+
+    $codigosOulet = $_POST['codigosOulet'];
+    $numSolicitud = $_POST['numSolicitud'];
+    $nombreSuc = $_POST['nombreSuc'];
+
+    $recodificacion = new Recodificacion();
+    $arrayResult = [];
+
+    foreach ($codigosOulet as $key => $articulo) {
+    
+        if($articulo != ""){
+
+            $result = $recodificacion->validarCodigosOulet($articulo);
+ 
+            if($result == false){
+
+                $arrayResult[] = $articulo;
+            
+            }
+
+        }
+
+    
+    }
+    // notificarCodigosOulet($arrayResult, $numSolicitud, $nombreSuc);
+    echo json_encode($arrayResult);
+}
+
+
+function comprobarArticuloEnRemito () {
+
+
+    if(isset($_POST['arrayRemitos'])){
+
+        $arrayRemitos = $_POST['arrayRemitos'];
+        
+    }else{
+        
+        $nComp = $_POST['nComp'];
+        $articulo = $_POST['articulo'];
+
+    }
+
+
+    $recodificacion = new Recodificacion();
+    
+    if(isset($arrayRemitos)){
+
+        $arrayResponse = [];
+
+        foreach ($arrayRemitos as $key => $remito) {
+            
+            $result = $recodificacion->comprobarArticuloRecodifica($remito['nComp'], $remito['articulo'], $remito['cantidad']);
+            $arrayResponse[] = ["remito"=>$remito['nComp'], "articulo"=>$remito['articulo'] , "respuesta"=>$result];
+        }
+        
+        echo json_encode($arrayResponse);
+
+    }else{
+
+        $result = $recodificacion->comprobarArticuloEnRemito($nComp, $articulo);
+    
+        echo $result;
+
+    }
+
+}
+
+function ajustarArticulos () {
+
+    $data = $_POST['arrayDeArticulos'];
+
+    foreach ($data as $key => $value) {
+
+        $recodificacion = new Recodificacion();
+        $result = $recodificacion->ajustarArticulos($value['id_enc'], $value['codigo']);
+
+    }
+
+    echo true;
+}
+
+function comprobarStockArticulos () {
+
+    $data = json_decode($_POST['data'],true);
+
+    $arrayDeArticulosSinStock = [];
+ 
+    foreach ($data as $key => $value) {
+   
+        $recodificacion = new Recodificacion();
+
+        $codAnterior = $recodificacion->comprobarStockMaestroDeArticulos($value['codigo']);
+
+        if($codAnterior == false){
+
+            $arrayDeArticulosSinStock[] = ['1',$value['codigo']];
+
+        }else{
+
+            $stockSuficiente = $recodificacion->comprobarStockDepositoLocal($value['codigo'], $value['cant']);
+
+            if($stockSuficiente == false){
+
+                $arrayDeArticulosSinStock[] = ['2',$value['codigo']];
+
+            }
+        }
+
+
+        $nuevoCodigo = $recodificacion->comprobarStockMaestroDeArticulos($value['articulo']);
+
+        if($nuevoCodigo == false){
+
+            $arrayDeArticulosSinStock[] = ['1',$value['articulo']];
+
+        }
+
+
+    }
+    
+    echo json_encode($arrayDeArticulosSinStock);
+
+}
+
+
+function realizarMovimientoOu () {
+
+
+    $dataArticulos = $_POST['dataArticulos'];
+
+    $ajuste = new Ajuste();
+
+    $recodificacion = new Recodificacion();
+
+
+    $valores = "";
+    foreach ($dataArticulos as $key => $articulo) {
+
+        $valores .= "(''$articulo[codArticulo]'', ''$articulo[cantidad]''),";
+    }
+    $cadena = rtrim($valores, ',') ;
+
+    $result = $recodificacion->realizarMovimientoOu($cadena);
+    
+    echo $result;
+
+}
+
+
+function traerLocales () {
+
+    $recodificacion = new Recodificacion();
+    $result = $recodificacion->traerLocales(0);
+    echo json_encode($result);
+
+}
+
 ?>
