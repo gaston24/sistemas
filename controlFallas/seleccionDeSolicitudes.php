@@ -20,7 +20,16 @@
 
     foreach ($result as $key => $value) {
         if(in_array($value['ID'], $array)){
+            $cant = $value['cantidad_total_articulos'];
+
             unset($result[$key]);
+
+            foreach ($result as &$solicitudEnc) {
+                if($solicitudEnc['ID'] == $value['ID']){
+                    $solicitudEnc['cantidad_total_articulos'] = $solicitudEnc['cantidad_total_articulos'] + $cant;
+
+                }
+            }
         }else{
             array_push($array, $value['ID']);
         }
