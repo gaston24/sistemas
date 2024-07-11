@@ -16,6 +16,7 @@
 
     $remitos = [];
 
+
     $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud,$nroSucurs);
     $recodificacionPropia = false;
 
@@ -107,7 +108,7 @@
         <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
-
+        <div id="nroSolicitud"><?= $numSolicitud ?> </div>
         <div class="alert alert-secondary">
             <div class="page-wrapper bg-secondary p-b-100 pt-1 font-robo">
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Recodificacion de Articulos</h6></div>
