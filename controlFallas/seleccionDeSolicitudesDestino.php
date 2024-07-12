@@ -333,7 +333,7 @@
                 }
 
                 articulos.forEach((articulo, index) => {
-                
+                    
                     let value = articulo['NUEVO_CODIGO'] ;
                     if(articulo['DESTINO'] != nroSucursal){
                         return;
@@ -367,18 +367,15 @@
                     $('#barcode'+index).barcode(value, 'code93', settings);
                     let lastChild = document.querySelector('#barcode'+index).querySelector(`div:last-child`);
                     let nuevoDivDescripcion = document.createElement('div');
-                    nuevoDivDescripcion.innerHTML = articulo['DESCRIPCION'];
+                    nuevoDivDescripcion.innerHTML = articulo['DESCSTA11'];
                     nuevoDivDescripcion.style.textAlign = 'center';
                     nuevoDivDescripcion.style.fontSize = '12px';
 
-                    let nuevoDivPrecio = document.createElement('div');
-                    nuevoDivPrecio.innerHTML = '$ ' + articulo['PRECIO'];
-                    nuevoDivPrecio.style.textAlign = 'center';
-                    nuevoDivPrecio.style.fontSize = '12px';
+                
 
                     document.querySelector('#barcode'+index).appendChild(nuevoDivDescripcion)
                     
-                    document.querySelector('#barcode'+index).appendChild(nuevoDivPrecio)
+        
                 });
 
                 document.querySelector('#barcode').hidden = false;
