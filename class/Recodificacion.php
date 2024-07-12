@@ -384,7 +384,9 @@ class Recodificacion
 
     public function traerDetalle ($numSolicitud, $numSucursal = null) {
             
-        $sql = "SELECT * FROM sj_reco_locales_det where ID_ENC = $numSolicitud";
+        $sql = "SELECT a.*, b.DESCRIPCIO as DESCSTA11 FROM sj_reco_locales_det as a
+        left join sta11 as b on a.NUEVO_CODIGO = b.COD_ARTICU collate Latin1_General_BIN
+        where a.ID_ENC = $numSolicitud";
 
         if($numSucursal != null){
 
@@ -1094,6 +1096,7 @@ class Recodificacion
 
     }
 
+
     public function setearAjustadoEnc ($idEnc) {
 
         $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '6' WHERE ID = $idEnc";
@@ -1110,4 +1113,5 @@ class Recodificacion
 
         }
     }
+
 }
