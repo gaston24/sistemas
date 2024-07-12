@@ -108,16 +108,25 @@
             #tablaArticulos_paginate{
                 margin-right:42px 
             }
-            
+            #barcode {
+                display: flex;
+                flex-wrap: wrap;
+             
+            }
+            #barcode > div {
+                margin-left: 15px;
+                margin-bottom: 10px; /* Espacio entre las filas */
+                text-align: center; /* Centra el contenido dentro de cada div */
+                box-sizing: border-box; /* Incluye el padding y border en el ancho y alto */
+            }
+
         </style>
     </head>
 
     <body>
-        <div id="divBarCode" hidden>
-                               
-                            
-        </div>
-      
+    <div id="barcode" style="" hidden>
+    </div>
+
         <div id="bodyCompleto">
             <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
             <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
@@ -255,7 +264,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
             <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
             <!-- <script src="js/controlFallas.js"></script> -->
-            <!-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode/dist/JsBarcode.all.min.js"></script> -->
+            <!-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script> -->
              <script src="js/jquery-barcode.js"></script>
             
     </body>
@@ -293,13 +302,17 @@
     
         },
     });
+   
+  
     function generateBarcode(div) {
+
+
         // Obtener el valor del código de barras desde el input
         let id = div.parentElement.parentElement.children[1].innerText;
         let nroSucursal = document.getElementById('nroSucursal').innerText;
 
-        let divBarCode = document.getElementById('divBarCode')
-        divBarCode.innerHTML = '';
+     
+
         
         $.ajax({
             type: "POST",
@@ -307,54 +320,70 @@
             data: {id: id},
             success: function (response) {
                 let articulos = JSON.parse(response);
-                
+
+                document.querySelector('#barcode').innerHTML = '';
+
+                if(articulos.length == 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No hay articulos en la solicitud!',
+                    })
+                    return;
+                }
+
                 articulos.forEach((articulo, index) => {
-                    let value = articulo['NUEVO_CODIGO'] +' '+ articulo['DESCRIPCION']+ ' ' + articulo['PRECIO'];
-                    // let value = articulo['NUEVO_CODIGO'] ;
+                
+                    let value = articulo['NUEVO_CODIGO'] ;
                     if(articulo['DESTINO'] != nroSucursal){
                         return;
                     }
 
-                    
+                        
+                    // Configuración del código de barras
                     var settings = {
-                    output:renderer,
-                    bgColor: $("#FFFFFF").val(),
-                    color: $("#000000").val(),
-                    barWidth: $("5").val(),
-                    barHeight: $("5").val(),
-                    moduleSize: $("3").val(),
-                    posX: $("10").val(),
-                    posY: $("20").val(),
-                    addQuietZone: $("#quietZoneSize").val()
-                    };
+                    format: 'CODE93',
+                    lineColor: '#000000',
+                    width: 4,   
+                    height: 150, 
+                    displayValue: true
+                };
 
-                    let divCanvas = document.createElement('div');
-                    
-                    
-                    
-                    let canvas = document.createElement('canvas');
-                    canvas.id = 'barcode_' + index; 
-                    canvas.style.margin = '10px'; 
-                    canvas.width = 100; 
-                    canvas.height = 200;
-                    
-                    divCanvas.appendChild(canvas);
-                    
-                    divBarCode.appendChild(divCanvas);
 
-                    // JsBarcode('#barcode_' + index, value, settings);
-                    $("#barcode_1").barcode(value, 'code93', settings);
+                    // Generar el código de barras en el elemento con id 'barcode'
+                    let divCodigo = document.createElement('div');
 
+                    divCodigo.id = 'barcode'+index;
+            
+                    
+                    document.getElementById('barcode').appendChild(divCodigo);
+                    
+                    
+                    $('#barcode'+index).barcode(value, 'code93', settings);
+                    let lastChild = document.querySelector('#barcode'+index).querySelector(`div:last-child`);
+                    let nuevoDivDescripcion = document.createElement('div');
+                    nuevoDivDescripcion.innerHTML = articulo['DESCRIPCION'];
+                    nuevoDivDescripcion.style.textAlign = 'center';
+                    nuevoDivDescripcion.style.fontSize = '12px';
+
+                    let nuevoDivPrecio = document.createElement('div');
+                    nuevoDivPrecio.innerHTML = '$ ' + articulo['PRECIO'];
+                    nuevoDivPrecio.style.textAlign = 'center';
+                    nuevoDivPrecio.style.fontSize = '12px';
+
+                    document.querySelector('#barcode'+index).appendChild(nuevoDivDescripcion)
+                    
+                    document.querySelector('#barcode'+index).appendChild(nuevoDivPrecio)
                 });
 
-                divBarCode.hidden = false;
+                document.querySelector('#barcode').hidden = false;
 
-                // document.getElementById('bodyCompleto').hidden = true;
-              return 1
-                // print();
+                document.getElementById('bodyCompleto').hidden = true;
+              
+                print();
 
     
-                divBarCode.hidden = true;
+                document.querySelector('#barcode').hidden = true;
 
     
                 document.getElementById('bodyCompleto').hidden = false ;
@@ -362,10 +391,9 @@
             }
         });
     
-    
-    }
+}
 
 
 </script>
-<!-- <script src="js/gastosTesoreria.js"></script> -->
+
 
