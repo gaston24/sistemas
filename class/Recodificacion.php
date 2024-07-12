@@ -236,7 +236,7 @@ class Recodificacion
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
         ORDER BY enc.ID DESC";
   
-      
+
 
         try {
 
@@ -787,7 +787,7 @@ class Recodificacion
             INNER JOIN STA20 B ON A.ID_STA14 = B.ID_STA14
             WHERE A.NCOMP_ORIG ='$nComp'
             AND B.COD_ARTICU ='$articulo'
-            AND B.CANTIDAD = '$cantidad'
+            AND B.CANTIDAD >= '$cantidad'
         ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
     
          
@@ -1094,6 +1094,24 @@ class Recodificacion
             print_r($th);
         }
 
+    }
+
+
+    public function setearAjustadoEnc ($idEnc) {
+
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '6' WHERE ID = $idEnc";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
     }
 
 }

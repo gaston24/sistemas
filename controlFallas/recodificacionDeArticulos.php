@@ -16,10 +16,13 @@
 
     $remitos = [];
 
+
     $data = $recodificacion->traerRecodificacionDeArticulos($numSolicitud,$nroSucurs);
     $recodificacionPropia = false;
 
     $arrayRemitos = [];
+
+    $agrupados = [];
 
     foreach ($data as $key => $value) {
 
@@ -28,6 +31,18 @@
                 $arrayRemitos[] = $value['N_COMP'];
 
         }
+
+        $clave = $value['COD_ARTICU'] . '-' . $value['N_COMP'];
+
+        
+        if (array_key_exists($clave, $agrupados)) {
+            // Si existe, sumamos la cantidad al elemento existente
+            $agrupados[$clave]['CANTIDAD'] += $value['CANTIDAD'];
+        } else {
+            // Si no existe, añadimos el elemento completo al array de agrupados
+            $agrupados[$clave] = $value;
+        }
+
 
         if($value['NUM_SUC'] == $value['DESTINO']){
            $recodificacionPropia = true;
@@ -40,6 +55,7 @@
         $remitos = $recodificacion->traerRemitosEnElLocal($arrayRemitos);
         
     }
+
   
    
 ?>
@@ -107,7 +123,7 @@
         <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
         <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
         <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
-
+        <div id="nroSolicitud" hidden><?= $numSolicitud ?> </div>
         <div class="alert alert-secondary">
             <div class="page-wrapper bg-secondary p-b-100 pt-1 font-robo">
                 <div class="wrapper wrapper--w880"><div style="color:white; text-align:center"><h6>Recodificacion de Articulos</h6></div>
@@ -138,7 +154,7 @@
                                 <?php 
 
 
-                                foreach ($data as $key => $remito) {
+                                foreach ($agrupados as $key => $remito) {
 
                                     
                                     if($recodificacionPropia){

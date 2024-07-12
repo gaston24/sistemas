@@ -3,6 +3,7 @@ const ajustar = () =>{
     let allTr = document.querySelectorAll("tbody tr")
     let arrayDeArticulos = []
     let arrayRemitos = []
+    let nroSolicitud = document.querySelector("#nroSolicitud").textContent
 
     allTr.forEach(tr => {
 
@@ -26,6 +27,7 @@ const ajustar = () =>{
             arrayRemitos: arrayRemitos
         },
         success: function (response) {
+            console.log(response)
 
             let result = JSON.parse(response)
             let error = false;
@@ -161,12 +163,14 @@ const ajustar = () =>{
                                                     url:"Controller/RecodificacionController.php?accion=ajustarArticulos",
                                                     type:"POST",
                                                     data:{
-                                                        arrayDeArticulos:arrayDeArticulos
+                                                        arrayDeArticulos:arrayDeArticulos,
+                                                        nroSolicitud:nroSolicitud
                                                     },
                                                     success:function(data){
                                                         document.querySelector("#boxLoading").classList.remove('loading')
                                                         Swal.fire('Artículos ajustados!', '', 'success').then((result) => {
-                                                            location.reload();
+                                                            
+                                                            window.location.href = "seleccionDeSolicitudesDestino.php";
                                                         })
                                                     
                                                     }

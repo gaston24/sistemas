@@ -561,13 +561,16 @@ function comprobarArticuloEnRemito () {
 function ajustarArticulos () {
 
     $data = $_POST['arrayDeArticulos'];
-
+    $nroSolicitud = $_POST['nroSolicitud'];
     foreach ($data as $key => $value) {
 
         $recodificacion = new Recodificacion();
         $result = $recodificacion->ajustarArticulos($value['id_enc'], $value['codigo']);
 
     }
+
+    //  estado encabezado 
+    $recodificacion->setearAjustadoEnc($nroSolicitud);
 
     echo true;
 }
