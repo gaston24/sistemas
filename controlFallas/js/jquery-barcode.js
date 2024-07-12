@@ -19,14 +19,14 @@
   var barcode = {
     settings:{
       barWidth: 1,
-      barHeight: 50,
+      barHeight: 60,
       moduleSize: 5,
       showHRI: true,
       addQuietZone: true,
       marginHRI: 5,
       bgColor: "#FFFFFF",
       color: "#000000",
-      fontSize: 10,
+      fontSize: 13,
       output: "css",
       posX: 0,
       posY: 0

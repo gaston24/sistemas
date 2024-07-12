@@ -369,7 +369,7 @@
                     let nuevoDivDescripcion = document.createElement('div');
                     nuevoDivDescripcion.innerHTML = articulo['DESCSTA11'];
                     nuevoDivDescripcion.style.textAlign = 'center';
-                    nuevoDivDescripcion.style.fontSize = '12px';
+                    nuevoDivDescripcion.style.fontSize = '13px';
 
                 
 
