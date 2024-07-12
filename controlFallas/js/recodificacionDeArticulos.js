@@ -3,6 +3,7 @@ const ajustar = () =>{
     let allTr = document.querySelectorAll("tbody tr")
     let arrayDeArticulos = []
     let arrayRemitos = []
+    let nroSolicitud = document.querySelector("#nroSolicitud").textContent
 
     allTr.forEach(tr => {
 
@@ -162,7 +163,8 @@ const ajustar = () =>{
                                                     url:"Controller/RecodificacionController.php?accion=ajustarArticulos",
                                                     type:"POST",
                                                     data:{
-                                                        arrayDeArticulos:arrayDeArticulos
+                                                        arrayDeArticulos:arrayDeArticulos,
+                                                        nroSolicitud:nroSolicitud
                                                     },
                                                     success:function(data){
                                                         document.querySelector("#boxLoading").classList.remove('loading')

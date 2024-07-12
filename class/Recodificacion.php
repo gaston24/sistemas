@@ -236,7 +236,7 @@ class Recodificacion
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
         ORDER BY enc.ID DESC";
   
-      
+
 
         try {
 
@@ -1092,5 +1092,22 @@ class Recodificacion
             print_r($th);
         }
 
+    }
+
+    public function setearAjustadoEnc ($idEnc) {
+
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '6' WHERE ID = $idEnc";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
     }
 }
