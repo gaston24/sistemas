@@ -338,6 +338,11 @@
                     if(articulo['DESTINO'] != nroSucursal){
                         return;
                     }
+                    if(articulo['NUEVO_CODIGO'] == null || articulo['NUEVO_CODIGO'] == ''){
+                        return;
+                    }
+
+
 
                         
                     // Configuración del código de barras
