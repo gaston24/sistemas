@@ -7,7 +7,7 @@ class Fichaje {
         require_once __DIR__.'/../../class/conexion.php';
         $this->conn = new Conexion;
         session_start();
-        $db = (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+        $db = 'central';
 
         $this->cid = $this->conn->conectar($db);
         
