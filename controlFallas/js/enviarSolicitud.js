@@ -3,7 +3,14 @@ const enviar = () => {
     let numSolicitud = document.querySelector("#numSolicitud").value;    
     let allTr = document.querySelectorAll("tbody tr");
     let data = []
+    let error = false ;
     allTr.forEach(element => {
+
+        if(element.querySelectorAll("td")[7].querySelector("select").value == '' 
+        || element.querySelectorAll("td")[7].querySelector("select").value == null){
+            error = true ;
+            return 
+        }
 
         data.push({
             id: element.querySelectorAll("td")[8].textContent,
@@ -11,6 +18,17 @@ const enviar = () => {
         })
 
     });
+
+    if(error){
+        Swal.fire({
+            icon: 'error',
+            title: 'Seleccione el remito para todos los articulos',
+            confirmButtonText: 'Enviar',
+            }).then((result) => {})
+
+
+        return
+    }
 
     Swal.fire({
         icon: 'info',
