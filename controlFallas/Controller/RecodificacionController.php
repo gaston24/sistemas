@@ -448,10 +448,21 @@ function enviar () {
 
     $data = $_POST['data'];
     $numSolicitud = $_POST['numSolicitud'];
+    $destinoCentral = $_POST['destinoCentral'];
+
 
     $recodificacion = new Recodificacion();
 
-    $result = $recodificacion->enviar($numSolicitud);
+
+    if($destinoCentral == "true"){
+
+        $result = $recodificacion->finalizar($numSolicitud);
+
+    }else{
+
+        $result = $recodificacion->enviar($numSolicitud);
+
+    }
 
     if ($result == true) {
 
