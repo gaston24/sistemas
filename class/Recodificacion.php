@@ -549,6 +549,22 @@ class Recodificacion
 
         }
     }
+    public function finalizar ($numSolicitud)
+    {
+        $sql = "UPDATE sj_reco_locales_enc SET ESTADO = '7' WHERE ID = $numSolicitud";
+
+        try {
+    
+            $result = sqlsrv_query($this->cid, $sql);
+
+            return true;
+
+        } catch (\Throwable $th) {
+
+            print_r($th); 
+
+        }
+    }
 
     public function cargarRemito ($id, $numRemito)
     {

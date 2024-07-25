@@ -4,6 +4,8 @@ const enviar = () => {
     let allTr = document.querySelectorAll("tbody tr");
     let data = []
     let error = false ;
+    let destinoCentral = true ;
+
     allTr.forEach(element => {
 
         if(element.querySelectorAll("td")[7].querySelector("select").value == '' 
@@ -17,6 +19,10 @@ const enviar = () => {
             remito : element.querySelectorAll("td")[7].querySelector("select").value,
         })
 
+        if( !element.querySelectorAll("td")[5].textContent.includes('CENTRAL')){
+
+            destinoCentral = false;
+        }
     });
 
     if(error){
@@ -59,7 +65,8 @@ const enviar = () => {
                 type: "POST",
                 data: {
                     data: data,
-                    numSolicitud: numSolicitud
+                    numSolicitud: numSolicitud,
+                    destinoCentral: destinoCentral
                 },
                 success: function (response) {
                     $.ajax({

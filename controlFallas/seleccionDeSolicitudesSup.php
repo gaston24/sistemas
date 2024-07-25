@@ -53,55 +53,7 @@
 
 
 
-        foreach ($result as $key => &$value) {
-    
-            
-            if($value['ESTADO'] == 6){
-    
-                if($estado == 5){
-    
-                    unset($result[$key]);
-    
-                }
-    
-                if($estado == 3){
-                        
-                    unset($result[$key]);
-    
-                }
-    
-                continue;
-    
-            }
-            $existe = 0;
-            if($value['N_COMP'] != null){
 
-                $existe = $recodificacion->comprobarIngresada($value['N_COMP'], true);
-            }
-            
-            if($existe == 1){
-              
-             
-                $value['ESTADO'] = 5;
-    
-                if($estado == 3){
-                        
-                    unset($result[$key]);
-    
-                }
-    
-            }else{
-    
-                if($estado == 5){
-    
-                    unset($result[$key]);
-    
-                }
-    
-    
-            }
-        }
-        
 
 
     $locales = $recodificacion->traerLocales(0);
@@ -242,6 +194,13 @@
                                             $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .3rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
+
+                                            
+                                        case '7':
+                                            $estado = "Finalizada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-check-circle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+
                                             
                                         
                                         default:
