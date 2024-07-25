@@ -135,6 +135,9 @@
                                         case '6':
                                             $estado = "Ajustada";
                                             break;
+                                        case '7':
+                                            $estado = "Finalizada";
+                                            break;
                                         default:
                                             # code...
                                             break;

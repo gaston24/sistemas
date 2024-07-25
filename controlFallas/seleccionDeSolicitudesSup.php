@@ -131,6 +131,7 @@
                                             <option value="3" <?= (isset($_GET['estado']) && $_GET['estado'] == '3') ? 'selected' : '' ?>>Enviada</option>
                                             <option value="5" <?= (isset($_GET['estado']) && $_GET['estado'] == '5') ? 'selected' : '' ?>>ingresada</option>
                                             <option value="6" <?= (isset($_GET['estado']) && $_GET['estado'] == '6') ? 'selected' : '' ?>>Ajustada</option>
+                                            <option value="7" <?= (isset($_GET['estado']) && $_GET['estado'] == '7') ? 'selected' : '' ?>>Finalizada</option>
 
                                         </select>
                                     </div>
@@ -195,13 +196,14 @@
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
+
                                             
+
                                         case '7':
                                             $estado = "Finalizada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-check-circle'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=2' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
-                                            
                                         
                                         default:
                                             break;

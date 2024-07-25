@@ -108,6 +108,7 @@
                                             <option value="4" <?= (isset($_GET['estado']) && $_GET['estado'] == '4') ? 'selected' : '' ?>>Borrador</option>
                                             <option value="5" <?= (isset($_GET['estado']) && $_GET['estado'] == '5') ? 'selected' : '' ?>>Ingresada</option>
                                             <option value="6" <?= (isset($_GET['estado']) && $_GET['estado'] == '6') ? 'selected' : '' ?>>Ajustada</option>
+                                            <option value="7" <?= (isset($_GET['estado']) && $_GET['estado'] == '7') ? 'selected' : '' ?>>Finalizada</option>
                                     
                                         </select>
                                     </div>
@@ -143,15 +144,15 @@
                                             
                                         case '1':
 
-                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px; border-style:none; padding: .3rem .6rem;' ><i class='bi bi-box-arrow-in-up'></i></button>";
-                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            $estado = "Solicitada  <button class='btn btn-success' style='background-color:purple;margin-left:20px; border-style:none; padding: .5rem .6rem;' ><i class='bi bi-box-arrow-in-up'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
 
                                             break;
 
                                         case '2':
-                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .3rem .6rem;'><i class='bi bi-check2-square'></i></button>";
+                                            $estado = "Autorizada  <button class='btn btn-success' style='margin-left:10px; border-style:none; padding: .5rem .6rem;'><i class='bi bi-check2-square'></i></button>";
 
-                                            $accion = "<a href='enviarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-primary' style='border-style:none; padding: .3rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
+                                            $accion = "<a href='enviarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-primary' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-pencil-square'></i></button></a>";
 
                                             break;
 
@@ -176,6 +177,11 @@
                                         
                                         case '6':
                                             $estado = "Ajustada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-recycle'></i></button>";
+                                            $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
+                                            break;
+                                        
+                                        case '7':
+                                            $estado = "Finalizada <button class='btn btn-success' style='background-color:#fd7e14;margin-left:24px; border-style:none; padding: .5rem .6rem;'' ><i class='bi bi-check-circle'></i></button>";
                                             $accion = "<a href='mostrarSolicitud.php?numSolicitud=$encabezado[ID]&tipoU=1' class='href'><button class='btn btn-warning' style='border-style:none; padding: .5rem .6rem;'><i class='bi bi-eye'></i></button></a>";
                                             break;
 
