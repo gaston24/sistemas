@@ -837,7 +837,7 @@ class Recodificacion
 
         $sql = "SELECT B.ID_ENC,A.NUM_SUC, CAST(A.FECHA AS DATE) FECHA, B.N_COMP, B.COD_ARTICU, B.DESCRIPCION, B.CANTIDAD, B.NUEVO_CODIGO, B.DESTINO FROM sj_reco_locales_enc A
         INNER JOIN sj_reco_locales_det B ON A.ID = B.ID_ENC
-        WHERE B.AJUSTADO IS NULL OR AJUSTADO = 0
+        WHERE B.AJUSTADO IS NULL OR AJUSTADO = 0 AND B.NUEVO_CODIGO != ''
         AND B.DESTINO = '$numSucursal'";
 
         if($numSolicitud != null){
