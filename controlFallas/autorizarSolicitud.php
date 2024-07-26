@@ -20,8 +20,11 @@
         $solicitudDetalle = $recodificacion->traerDetalle($_GET['numSolicitud']);
        
     }
+
     $locales = $recodificacion->traerLocales(0);
 
+    $recodificacion->conexionLocal($solicitudEncabezado[0]['NUM_SUC']);
+    
     $localSolicitud = "";
     $outlet = false;
     foreach ($locales as $key => $local) {
@@ -35,6 +38,8 @@
             }
         }
     }
+
+    
 
 ?>
 

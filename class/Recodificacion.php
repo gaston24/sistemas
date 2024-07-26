@@ -1089,6 +1089,36 @@ class Recodificacion
         }
     }
     
+    public function realizarMovimientoDepositoCentral($cadena){
+
+        $sql = "EXEC SJ_SP_TRANSFERENCIA_ARTICULOS_DC '$cadena'";
+      
+        try {
+            $result = sqlsrv_query($this->cidLocal, $sql);
+    
+            if ($result === false) {
+                // Capturar detalles del error
+                $errors = sqlsrv_errors();
+                if (!empty($errors)) {
+                    foreach ($errors as $error) {
+                        // Aquí puedes registrar o manejar el error como desees
+                        echo "SQLSTATE: ".$error['SQLSTATE']."<br />";
+                        echo "Code: ".$error['code']."<br />";
+                        echo "Message: ".$error['message']."<br />";
+                    }
+                }
+                return false;
+            }
+    
+            return true;
+        } catch (\Throwable $th) {
+            // Manejo de excepciones generales de PHP
+            echo "Error en la ejecución del procedimiento almacenado: ".$th->getMessage();
+            return false;
+        }
+
+    }
+    
 
  
     public function altaArticulo ($articulo) {
@@ -1128,6 +1158,41 @@ class Recodificacion
             print_r($th); 
 
         }
+    }
+
+    public function conexionLocal ($numSucursal) {
+
+        $sql = "SELECT CONEXION_DNS, BASE_NOMBRE from [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = $numSucursal";
+
+        $stmt = sqlsrv_query($this->cid, $sql);
+
+        if ($stmt === false) {
+            die("Error en la consulta: " . sqlsrv_errors());
+        }
+
+        $row = sqlsrv_fetch_array($stmt);
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+     
+        $result = [];
+    
+        
+        if(isset($row['CONEXION_DNS'])){
+
+          $_SESSION['conexion_dns'] = $row['CONEXION_DNS'];
+      
+        }
+
+        if(isset($row['BASE_NOMBRE'])){
+
+            $_SESSION['base_nombre'] = $row['BASE_NOMBRE'];
+
+        }
+
+
     }
 
 }
