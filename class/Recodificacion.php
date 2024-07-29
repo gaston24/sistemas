@@ -13,6 +13,8 @@ class Recodificacion
         
         $conn = new Conexion();
         $this->cid = $conn->conectar('central');
+
+        $this->cidUy = $conn->conectar('uy');
         
         $this->cidLocal = $conn->conectar('local');
         
@@ -422,8 +424,19 @@ class Recodificacion
         $sql = "EXEC RO_SP_RECODIFICAR_OUTLET '$codArticulo', $valor";
  
         try {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            
+            if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
 
-            $result = sqlsrv_query($this->cid, $sql); 
+                $result = sqlsrv_query($this->cidUy, $sql);
+
+            }else{
+
+                $result = sqlsrv_query($this->cid, $sql); 
+                
+            }
             
             $v = [];
             
@@ -1099,7 +1112,20 @@ class Recodificacion
 
     
         try {
-            $result = sqlsrv_query($this->cid, $sql); 
+
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            
+            if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+
+                $result = sqlsrv_query($this->cidUy, $sql);
+
+            }else{
+                
+                $result = sqlsrv_query($this->cid, $sql); 
+
+            }
        
             if ($result) {
                 return true;
