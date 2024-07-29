@@ -53,7 +53,7 @@ form.addEventListener('submit', async (event) => {
         if (tokenResponse.ok) {
             const result = JSON.parse(data);
             token = "token " + result["token"];
-            console.log(token);
+            // console.log(token);
 
         } else {
             throw new Error(`Error al obtener el token: ${tokenResponse.statusText}`);
@@ -65,6 +65,17 @@ form.addEventListener('submit', async (event) => {
         const tipoFactura = document.getElementById("tipoFactura").value;
         const numeroFactura = document.getElementById("numeroFactura").value;
         const imgFacturaInput = document.getElementById("imgFactura");
+        const fechaVencimiento = document.getElementById("fechaVencimiento");
+        // console.log(fechaVencimiento.value);       
+        // // Obtén el valor actual de la fecha
+        // const fechaActual = fechaVencimiento.value;        
+        // // Crea un objeto Date a partir del valor actual de la fecha
+        // const fecha = new Date(fechaActual);        
+        // // Formatea la fecha en el formato deseado
+        // const fechaFormateada = fecha.toISOString().split('T')[0];        
+        // // Asigna la fecha formateada al campo de entrada
+        // fechaVencimiento.value = fechaFormateada;
+        // console.log(fechaVencimiento);
         let files = imgFacturaInput.files;
         nameFile = numeroSucursal + numeroFactura;
 
@@ -75,12 +86,13 @@ form.addEventListener('submit', async (event) => {
         formData.append("numeroSucursal", numeroSucursal);
         formData.append("tipoFactura", tipoFactura);
         formData.append("numeroFactura", numeroFactura);
+        formData.append("fechaVencimiento", fechaVencimiento.value);
         let headersList = {
         "Authorization": token
         }
 
         const urlPost = config.urlPath + '/Api/postFactura';
-        console.log(urlPost);
+        // console.log(urlPost);
         let postResponse = await fetch(urlPost, { 
         method: "POST",
         body: formData,
