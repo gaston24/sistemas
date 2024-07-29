@@ -407,11 +407,12 @@ function traerCodigoRecodificacion () {
 
 function autorizar () {
 
-
     $data = ($_POST['data']);
     $numSolicitud = $_POST['numSolicitud'];
     $outlet = $_POST['outlet'];
     $arrayArticulosAlta = $_POST['arrayArticulosAlta'];
+    $numSucursal = $_POST['numSucursal'];
+    $valores = "";
 
     $recodificacion = new Recodificacion();
     
@@ -436,12 +437,21 @@ function autorizar () {
 
             $recodificacion->actualizarDetalle($value['PRECIO'], $value['NUEVO_CODIGO'], $value['DESTINO'], $value['OBSERVACIONES'], $value['ID']);
 
+            if($value['NUEVO_CODIGO'] == '' && $value['DESTINO'] == $numSucursal ) {
+
+                $valores .= "(''$value[COD_ARTICULO]'', ''1''),";
+
+            }
         }
 
     }
     
+    $cadena = rtrim($valores, ',') ;
+
+    $result = $recodificacion->realizarMovimientoDepositoCentral($cadena);
    
     return true;
+    
 }
 
 function enviar () {
