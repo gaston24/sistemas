@@ -398,8 +398,9 @@ function traerCodigoRecodificacion () {
     
     $valor = $_POST['valor'];
     $codArticulo = $_POST['codArticulo'];
+    $numSucursal = $_POST['numSucursal'];
     $recodificacion = new Recodificacion();
-    $result = $recodificacion->traerCodigoRecodificacion($valor, $codArticulo);
+    $result = $recodificacion->traerCodigoRecodificacion($valor, $codArticulo, $numSucursal);
     echo json_encode($result);
 
 }

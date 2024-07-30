@@ -322,7 +322,7 @@ class Recodificacion
     {   
 
         $sql = "
-        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL in ('PROPIOS','EXTERIOR')  AND HABILITADO = 1 ";
      
         if($outlet == true){
 
@@ -333,7 +333,6 @@ class Recodificacion
         SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
         ORDER BY DESC_SUCURSAL
         ";
-
        
         try {
 
@@ -419,7 +418,7 @@ class Recodificacion
                 
     }
 
-    public function traerCodigoRecodificacion($valor, $codArticulo) 
+    public function traerCodigoRecodificacion($valor, $codArticulo, $numSucursal) 
     {   
         $sql = "EXEC RO_SP_RECODIFICAR_OUTLET '$codArticulo', $valor";
  
@@ -428,12 +427,12 @@ class Recodificacion
                 session_start();
             }
             
-            if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+            if((int)$numSucursal >= 201){
 
                 $result = sqlsrv_query($this->cidUy, $sql);
 
             }else{
-
+           
                 $result = sqlsrv_query($this->cid, $sql); 
                 
             }
