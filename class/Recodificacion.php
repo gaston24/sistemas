@@ -200,10 +200,7 @@ class Recodificacion
         enc.ID ,
         enc.FECHA,
         enc.USUARIO_EMISOR,
-        CASE 
-        WHEN MIN(det.AJUSTADO) = 1 THEN 6
-        ELSE enc.ESTADO
-        END AS ESTADO,
+        enc.ESTADO,
         enc.NUM_SUC,
         enc.UPDATED_AT,
         SUM(det.cantidad) AS cantidad_total_articulos,
@@ -211,21 +208,13 @@ class Recodificacion
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
         WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'";
-        
-        if($estado != "5" && $estado != "6"){
+  
             
-            $sql .= "AND enc.ESTADO LIKE '%$estado%'";
-
-        }
-
-        if($estado == 6){
-            $sql .= "AND det.AJUSTADO = 1";
-        }
+        $sql .= "AND enc.ESTADO LIKE '%$estado%'";
 
         if($destino != null){
             $sql .= "AND det.DESTINO = '$destino'";
         }
-
 
         if($nroSucursal != null){
             $sql .= "AND enc.NUM_SUC = '$nroSucursal'";
@@ -234,11 +223,11 @@ class Recodificacion
         if($sup == 1){
             $sql .= "AND enc.ESTADO != '4'";
         }
+
         $sql .= "
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
         ORDER BY enc.ID DESC";
   
-
 
         try {
 
