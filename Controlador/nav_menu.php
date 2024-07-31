@@ -138,7 +138,7 @@ include('estado_cuenta.php');
                             </li>
                             <?php } ?>
 
-                            <?php if ($_SESSION['numsuc'] < 100) { ?>
+                            <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Calidad</a>
                                 <ul class="dropdown-menu">
                                     <a class="dropdown-item spinner" href="#" onclick="location.href='controlFallas/seleccionDeSolicitudes.php'">Gestion de fallas</a>
@@ -150,7 +150,13 @@ include('estado_cuenta.php');
                                     <?php
                                     } 
                                     ?>
+                                     <?php
+                                    if ($_SESSION['usuarioUy'] != 1) {
+                                    ?>
                                     <a class="dropdown-item spinner" href="#" onclick="location.href='talonarioFallas/index.php'">Talonario de fallas</a>
+                                    <?php
+                                    }
+                                    ?>
                                 </ul>
                             </li>
                             <?php } ?>
