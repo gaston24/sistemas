@@ -467,8 +467,8 @@ class Recodificacion
 
         $sql = "SET DATEFORMAT YMD 
 		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM STA14 
-        WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE 'GT%'
-        AND FECHA_MOV >= GETDATE()-60 AND COD_PRO_CL LIKE '%$destino%'";
+        WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE '[GU]%'
+        AND FECHA_MOV >= GETDATE()-30 AND COD_PRO_CL LIKE '%$destino%'";
  
         try {
 
@@ -776,9 +776,9 @@ class Recodificacion
             SELECT 1 FROM STA14 A 
             INNER JOIN STA20 B 
             ON A.ID_STA14 = B.ID_STA14
-            WHERE A.FECHA_MOV >= GETDATE()-60 
+            WHERE A.FECHA_MOV >= GETDATE()-30 
             AND T_COMP = 'REM'
-            AND A.COD_PRO_CL LIKE 'GT%'
+            AND A.COD_PRO_CL LIKE '[GU]%'
             AND A.N_COMP ='$nComp'
             AND B.COD_ARTICU ='$articulo'
         ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
