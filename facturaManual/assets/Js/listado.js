@@ -43,9 +43,9 @@ window.onload = async function() {
         let headersList = {
             "Authorization": token
             }
-        console.log(token);
+        // console.log(token);
         const url = config.urlPath +"/Api/getFacturas/"+numSuc;
-        console.log(url);
+        // console.log(url);
         const response = await fetch(url, { 
             method: "GET",
             headers: headersList
@@ -53,10 +53,27 @@ window.onload = async function() {
 
         if (response.ok) {
             var registros = await response.json();
+            // console.log(registros);
             var tableBody = document.getElementById('registros-tbody');
             tableBody.innerHTML = '';
 
             registros.forEach(registro => {
+                // Get the current date
+                const currentDate = new Date();                
+                // Parse the fechaVencimiento from the registro into a Date object
+                const fechaVencimiento = new Date(registro.fechaVencimiento);                
+                // Calculate the difference in days
+                const differenceInDays = (fechaVencimiento - currentDate) / (1000 * 60 * 60 * 24);
+                // Create a new span element for the warning icon
+                const warningIcon = document.createElement('span');
+                warningIcon.innerHTML = '&nbsp;&nbsp;<i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;';
+
+                // Create a new span element for the text
+                const warningText = document.createElement('span');
+                warningText.textContent = 'Proximo a vencer';
+                
+                
+
                 var row = document.createElement('tr');
                 
                 var idCell = document.createElement('td');
@@ -67,7 +84,7 @@ window.onload = async function() {
             
                 var tipoCell = document.createElement('td');
                 // tipoCell.textContent = registro.tipoFactura;
-                // console.log(registro.tipoFactura);
+                // console.log(registro.fechaVencimiento);
             
                 var numeroCell = document.createElement('td');
                 numeroCell.textContent = registro.numeroFactura;
@@ -100,6 +117,21 @@ window.onload = async function() {
                 const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minuto}`;
                 
                 fechaCell.textContent = fechaFormateada;
+                // Check if the difference is less than 45 days
+                if (Math.abs(differenceInDays) < 45) {
+                    console.log("La diferencia es de menos de 45 días");
+                    // Append the warning icon and text to the tipoCell
+                    var warningCell = document.createElement('td');
+                    warningCell.appendChild(warningIcon);
+                    warningCell.appendChild(warningText);
+                } else {
+                    console.log("La diferencia es mayor o igual a 45 días");
+                    warningIcon.innerHTML = '';
+                    warningText.textContent = '';
+                    var warningCell = document.createElement('td');
+                    warningCell.appendChild(warningIcon);
+                    warningCell.appendChild(warningText);
+                }
             
                 // row.appendChild(idCell);
                 // row.appendChild(sucursalCell);
@@ -107,6 +139,7 @@ window.onload = async function() {
                 row.appendChild(tipoCell);
                 row.appendChild(numeroCell);
                 row.appendChild(fechaCell);
+                row.appendChild(warningCell);
             
                 tableBody.appendChild(row);
             });            

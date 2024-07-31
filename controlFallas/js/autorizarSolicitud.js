@@ -152,6 +152,7 @@ const autorizar = () => {
     let allTr = document.querySelectorAll("tbody tr");
     let numSolicitud = document.querySelector("#numSolicitud").value;
     let nombreSuc = document.querySelector("#nombreSuc").value;
+    let numSucursal = document.querySelector("#nombreSuc").getAttribute("attr-realValue");
     let data = [];
     let codigosOulet = []; 
     let outlet = document.querySelector("#outlet").textContent;
@@ -242,7 +243,8 @@ const autorizar = () => {
                             data: data,
                             numSolicitud: numSolicitud,
                             outlet: outlet,
-                            arrayArticulosAlta: arrayResponse
+                            arrayArticulosAlta: arrayResponse,
+                            numSucursal:numSucursal
                         },
                         success: function (response) {
 

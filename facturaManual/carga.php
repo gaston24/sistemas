@@ -55,8 +55,12 @@
                                             <input type="text" id="numeroFactura" name="numeroFactura" class="form-control" required>
                                         </div>
                                         <div class="form-group">
+                                            <label for="fechaVencimiento" class="form-label">Vencimiento CAI:</label>
+                                            <input type="date" id="fechaVencimiento" name="fechaVencimiento" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="imgFactura" class="form-label">Imagen de Factura:</label>
-                                            <input type="file" id="imgFactura" name="imgFactura" accept="image/*" capture="camera" class="form-control">
+                                            <input type="file" id="imgFactura" name="imgFactura" accept="image/*" capture="camera" class="form-control" required>
                                         </div>
                                     </div>
                                     

@@ -41,6 +41,7 @@
                               <th>Tipo</th>
                               <th>Número de Factura</th>
                               <th>Fecha de alta</th>
+                              <th>Status</th>
                             </tr>
                           </thead>
                           <tbody id="registros-tbody">
