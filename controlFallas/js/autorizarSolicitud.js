@@ -206,7 +206,8 @@ const autorizar = () => {
         data: {
             codigosOulet: codigosOulet,
             numSolicitud: numSolicitud,
-            nombreSuc: nombreSuc
+            nombreSuc: nombreSuc,
+            numSucursal: numSucursal
 
         },
         success: function (response) {

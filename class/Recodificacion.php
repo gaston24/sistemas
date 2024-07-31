@@ -734,7 +734,7 @@ class Recodificacion
     }
 
 
-    public function validarCodigosOulet ($articulo)
+    public function validarCodigosOulet ($articulo, $numSucursal)
     {
 
         $sql="SELECT CASE WHEN EXISTS(
@@ -744,7 +744,15 @@ class Recodificacion
         THEN 'true' ELSE 'false' END AS ArticuloExiste;";
 
 
-        $stmt = sqlsrv_query($this->cid, $sql);
+        if($numSucursal >= 201){
+
+            $stmt = sqlsrv_query($this->cidUy, $sql);
+
+        }else{
+            
+            $stmt = sqlsrv_query($this->cid, $sql);
+        }
+
 
         if ($stmt === false) {
             die("Error en la consulta: " . sqlsrv_errors());
@@ -1135,7 +1143,7 @@ class Recodificacion
     
 
  
-    public function altaArticulo ($articulo) {
+    public function altaArticulo ($articulo, $numSucursal) {
        
         sqlsrv_configure("QueryTimeout", 60); 
     
@@ -1148,7 +1156,7 @@ class Recodificacion
                 session_start();
             }
             
-            if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+            if($numSucursal >= 201){
 
                 $result = sqlsrv_query($this->cidUy, $sql);
 
