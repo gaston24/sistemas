@@ -16,7 +16,7 @@ Array.prototype.slice.call( buttons ).forEach( function( button ) {
 		clearTimeout( resetTimeout );
 		resetTimeout = setTimeout( function() {
 			button.removeAttribute( 'data-loading' );			
-		}, 2000 );
+		}, 5000 );
 
 	}, false );
 

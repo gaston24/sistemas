@@ -70,7 +70,7 @@ window.onload = async function() {
 
                 // Create a new span element for the text
                 const warningText = document.createElement('span');
-                warningText.textContent = 'Proximo a vencer';
+                warningText.textContent = 'CAI por vencer';
                 
                 
 
