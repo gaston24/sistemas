@@ -9,7 +9,20 @@ class Articulo
 
         $cid = new Conexion();
 
-        $cid_central = $cid->conectar('central');  
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == '1'){
+
+            $cid_central = $cid->conectar('uy');  
+
+        }else{
+            $cid_central = $cid->conectar('central');  
+            
+        }
+        
         $sql = $sqlEnviado;
 
         $stmt = sqlsrv_query( $cid_central, $sql );

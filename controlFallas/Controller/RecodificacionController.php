@@ -398,8 +398,9 @@ function traerCodigoRecodificacion () {
     
     $valor = $_POST['valor'];
     $codArticulo = $_POST['codArticulo'];
+    $numSucursal = $_POST['numSucursal'];
     $recodificacion = new Recodificacion();
-    $result = $recodificacion->traerCodigoRecodificacion($valor, $codArticulo);
+    $result = $recodificacion->traerCodigoRecodificacion($valor, $codArticulo, $numSucursal);
     echo json_encode($result);
 
 }
@@ -418,7 +419,7 @@ function autorizar () {
     
     foreach ($arrayArticulosAlta as $key => $value) {
   
-        $result = $recodificacion->altaArticulo($value);
+        $result = $recodificacion->altaArticulo($value, $numSucursal);
     }    
  
     if($outlet == "1"){
@@ -515,6 +516,7 @@ function validarCodigosOulet () {
     $codigosOulet = $_POST['codigosOulet'];
     $numSolicitud = $_POST['numSolicitud'];
     $nombreSuc = $_POST['nombreSuc'];
+    $numSucursal = $_POST['numSucursal'];
 
     $recodificacion = new Recodificacion();
     $arrayResult = [];
@@ -523,7 +525,7 @@ function validarCodigosOulet () {
     
         if($articulo != ""){
 
-            $result = $recodificacion->validarCodigosOulet($articulo);
+            $result = $recodificacion->validarCodigosOulet($articulo, $numSucursal);
  
             if($result == false){
 

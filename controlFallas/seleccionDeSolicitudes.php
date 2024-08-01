@@ -1,7 +1,7 @@
 <?php 
     session_start();
     require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
-    if(!isset($_SESSION['username']) || ($_SESSION['usuarioUy'] == 1)){
+    if(!isset($_SESSION['username'])){
         header("Location:login.php");
     }
 

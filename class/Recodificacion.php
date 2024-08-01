@@ -13,6 +13,8 @@ class Recodificacion
         
         $conn = new Conexion();
         $this->cid = $conn->conectar('central');
+
+        $this->cidUy = $conn->conectar('uy');
         
         $this->cidLocal = $conn->conectar('local');
         
@@ -198,10 +200,7 @@ class Recodificacion
         enc.ID ,
         enc.FECHA,
         enc.USUARIO_EMISOR,
-        CASE 
-        WHEN MIN(det.AJUSTADO) = 1 THEN 6
-        ELSE enc.ESTADO
-        END AS ESTADO,
+        enc.ESTADO,
         enc.NUM_SUC,
         enc.UPDATED_AT,
         SUM(det.cantidad) AS cantidad_total_articulos,
@@ -209,21 +208,13 @@ class Recodificacion
         FROM sj_reco_locales_enc AS enc
         JOIN sj_reco_locales_det AS det ON enc.id = det.ID_ENC
         WHERE enc.FECHA BETWEEN '$desde' AND '$hasta'";
-        
-        if($estado != "5" && $estado != "6"){
+  
             
-            $sql .= "AND enc.ESTADO LIKE '%$estado%'";
-
-        }
-
-        if($estado == 6){
-            $sql .= "AND det.AJUSTADO = 1";
-        }
+        $sql .= "AND enc.ESTADO LIKE '%$estado%'";
 
         if($destino != null){
             $sql .= "AND det.DESTINO = '$destino'";
         }
-
 
         if($nroSucursal != null){
             $sql .= "AND enc.NUM_SUC = '$nroSucursal'";
@@ -232,11 +223,11 @@ class Recodificacion
         if($sup == 1){
             $sql .= "AND enc.ESTADO != '4'";
         }
+
         $sql .= "
         GROUP BY enc.ID, enc.FECHA, enc.USUARIO_EMISOR, enc.ESTADO, enc.NUM_SUC, enc.UPDATED_AT, det.N_COMP
         ORDER BY enc.ID DESC";
   
-
 
         try {
 
@@ -320,7 +311,9 @@ class Recodificacion
     {   
 
         $sql = "
-        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL = 'PROPIOS' AND HABILITADO = 1 ";
+
+        SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE CANAL in ('PROPIOS','EXTERIOR')  AND HABILITADO = 1 ";
+
      
         if($outlet == true){
 
@@ -331,7 +324,6 @@ class Recodificacion
         SELECT NRO_SUCURSAL, DESC_SUCURSAL, COD_CLIENT, OUTLET FROM LAKERBIS.LOCALES_LAKERS.DBO.SUCURSALES_LAKERS WHERE NRO_SUCURSAL = '16' OR COD_CLIENT = 'GTCENT'
         ORDER BY DESC_SUCURSAL
         ";
-
        
         try {
 
@@ -417,13 +409,24 @@ class Recodificacion
                 
     }
 
-    public function traerCodigoRecodificacion($valor, $codArticulo) 
+    public function traerCodigoRecodificacion($valor, $codArticulo, $numSucursal) 
     {   
         $sql = "EXEC RO_SP_RECODIFICAR_OUTLET '$codArticulo', $valor";
  
         try {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            
+            if((int)$numSucursal >= 201){
 
-            $result = sqlsrv_query($this->cid, $sql); 
+                $result = sqlsrv_query($this->cidUy, $sql);
+
+            }else{
+           
+                $result = sqlsrv_query($this->cid, $sql); 
+                
+            }
             
             $v = [];
             
@@ -453,8 +456,8 @@ class Recodificacion
 
         $sql = "SET DATEFORMAT YMD 
 		SELECT FECHA_MOV, NRO_SUCURS, N_COMP, COD_PRO_CL FROM STA14 
-        WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE 'GT%'
-        AND FECHA_MOV >= GETDATE()-60 AND COD_PRO_CL LIKE '%$destino%'";
+        WHERE T_COMP = 'REM' AND COD_PRO_CL LIKE '[GU]%'
+        AND FECHA_MOV >= GETDATE()-30 AND COD_PRO_CL LIKE '%$destino%'";
  
         try {
 
@@ -720,7 +723,7 @@ class Recodificacion
     }
 
 
-    public function validarCodigosOulet ($articulo)
+    public function validarCodigosOulet ($articulo, $numSucursal)
     {
 
         $sql="SELECT CASE WHEN EXISTS(
@@ -730,7 +733,15 @@ class Recodificacion
         THEN 'true' ELSE 'false' END AS ArticuloExiste;";
 
 
-        $stmt = sqlsrv_query($this->cid, $sql);
+        if($numSucursal >= 201){
+
+            $stmt = sqlsrv_query($this->cidUy, $sql);
+
+        }else{
+            
+            $stmt = sqlsrv_query($this->cid, $sql);
+        }
+
 
         if ($stmt === false) {
             die("Error en la consulta: " . sqlsrv_errors());
@@ -762,9 +773,9 @@ class Recodificacion
             SELECT 1 FROM STA14 A 
             INNER JOIN STA20 B 
             ON A.ID_STA14 = B.ID_STA14
-            WHERE A.FECHA_MOV >= GETDATE()-60 
+            WHERE A.FECHA_MOV >= GETDATE()-30 
             AND T_COMP = 'REM'
-            AND A.COD_PRO_CL LIKE 'GT%'
+            AND A.COD_PRO_CL LIKE '[GU]%'
             AND A.N_COMP ='$nComp'
             AND B.COD_ARTICU ='$articulo'
         ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
@@ -1121,7 +1132,7 @@ class Recodificacion
     
 
  
-    public function altaArticulo ($articulo) {
+    public function altaArticulo ($articulo, $numSucursal) {
        
         sqlsrv_configure("QueryTimeout", 60); 
     
@@ -1129,7 +1140,20 @@ class Recodificacion
 
     
         try {
-            $result = sqlsrv_query($this->cid, $sql); 
+
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            
+            if($numSucursal >= 201){
+
+                $result = sqlsrv_query($this->cidUy, $sql);
+
+            }else{
+                
+                $result = sqlsrv_query($this->cid, $sql); 
+
+            }
        
             if ($result) {
                 return true;

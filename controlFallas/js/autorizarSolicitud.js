@@ -1,7 +1,6 @@
 const activarRecodificacion  = (div) => {
 
     let allCheck = div.parentElement.parentElement.querySelectorAll("input[type='checkbox']")
-
     if(div.checked){
 
             
@@ -16,9 +15,22 @@ const activarRecodificacion  = (div) => {
                 let outlet = document.querySelector("#outlet").textContent;
                 let numSucursal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
                 data.forEach((element,y) => {
+
+                    if(parseInt(numSucursal) >= 201 && parseInt(element['NRO_SUCURSAL']) < 201){
+                        return 1;
+                    }
+                    if(parseInt(numSucursal) < 201 && parseInt(element['NRO_SUCURSAL']) >= 201){
+                        return 1;
+                    }
+                    
+
                     if(outlet == true && element['NRO_SUCURSAL'] != numSucursal){
                         return;
                     }
+                    if(element['OUTLET'] != 1){
+                        return 1;
+                    }
+
                     let option = new Option(element['DESC_SUCURSAL'], element['NRO_SUCURSAL']);
                     select.appendChild(option);
                 })
@@ -98,13 +110,14 @@ const comprobarCheckbox = (div) => {
 
         let codArticulo = div.parentElement.parentElement.querySelector("td").textContent;
         let valor = div.getAttribute("porcentaje");
-
+        let numSucursal = document.querySelector("#nombreSuc").getAttribute("attr-realvalue");
         $.ajax({
             url: "Controller/RecodificacionController.php?accion=traerCodigoRecodificacion",
             type: "POST",
             data: { 
                 codArticulo: codArticulo,
-                valor: valor
+                valor: valor,
+                numSucursal: numSucursal
             },
             success: function (response) {
  
@@ -193,7 +206,8 @@ const autorizar = () => {
         data: {
             codigosOulet: codigosOulet,
             numSolicitud: numSolicitud,
-            nombreSuc: nombreSuc
+            nombreSuc: nombreSuc,
+            numSucursal: numSucursal
 
         },
         success: function (response) {
