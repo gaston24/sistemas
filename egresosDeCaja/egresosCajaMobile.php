@@ -118,6 +118,27 @@ $data = $egreso->traerGastosMob($nroSucurs);
             cursor: pointer;
             display: none; /* Inicialmente oculto */
         }
+        .file-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+        }
+        .preview-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .preview-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 5px;
+        }
+        .preview-item .btn-delete {
+            padding: 2px 5px;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -141,53 +162,51 @@ $data = $egreso->traerGastosMob($nroSucurs);
     <div id="nroSucursal"><?php echo $nroSucurs; ?></div>
     
     <div class="container" id="gastosList">
+        <div class="row">
         <?php
         if (!is_array($data) || empty($data)) {
             echo "<p>No se encontraron gastos para mostrar.</p>";
         } else {
             foreach ($data as $gasto): 
         ?>
-            <div class="card" data-ncomp="<?php echo htmlspecialchars($gasto['N_COMP']); ?>">
-                <div class="card-body">
-                    <div class="vertical-line">
-                        <h5 class="card-title">
-                            <?php 
-                            echo htmlspecialchars($gasto['FECHA'] instanceof DateTime ? $gasto['FECHA']->format("Y-m-d") : $gasto['FECHA']); 
-                            ?> | 
-                            <?php echo htmlspecialchars($gasto['COD_COMP']); ?> 
-                            <?php echo htmlspecialchars($gasto['N_COMP']); ?>
-                        </h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            <?php echo htmlspecialchars($gasto['COD_CTA']); ?> | 
-                            <?php echo htmlspecialchars($gasto['DESC_CUENTA']); ?> | 
-                            <?php 
-                            $monto = floatval($gasto['MONTO']);
-                            if($monto < 0) {
-                                $monto = abs($monto);
-                                echo "- $" . number_format($monto, 0, '.', '.');
-                            } else {
-                                echo "$" . number_format($monto, 0, '.', '.');
-                            }
-                            ?>
-                        </h6>
-                        <p class="card-text"><?php echo htmlspecialchars($gasto['LEYENDA']); ?></p>
-                        <div class="btn-group" role="group">
-                            <?php if(!isset($gasto['guardado']) || $gasto['guardado'] != 1): ?>
+            <div class="col-12">
+                <div class="card" data-ncomp="<?php echo htmlspecialchars($gasto['N_COMP']); ?>">
+                    <div class="card-body">
+                        <div class="vertical-line">
+                            <h5 class="card-title">
+                                <?php 
+                                echo htmlspecialchars($gasto['FECHA'] instanceof DateTime ? $gasto['FECHA']->format("Y-m-d") : $gasto['FECHA']); 
+                                ?> | 
+                                <?php echo htmlspecialchars($gasto['COD_COMP']); ?> 
+                                <?php echo htmlspecialchars($gasto['N_COMP']); ?>
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                <?php echo htmlspecialchars($gasto['COD_CTA']); ?> | 
+                                <?php echo htmlspecialchars($gasto['DESC_CUENTA']); ?> | 
+                                <?php 
+                                $monto = floatval($gasto['MONTO']);
+                                if($monto < 0) {
+                                    $monto = abs($monto);
+                                    echo "- $" . number_format($monto, 0, '.', '.');
+                                } else {
+                                    echo "$" . number_format($monto, 0, '.', '.');
+                                }
+                                ?>
+                            </h6>
+                            <p class="card-text"><?php echo htmlspecialchars($gasto['LEYENDA']); ?></p>
+                            <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-outline-primary" onclick="elegirImagen(this)">
                                     <i class="bi bi-camera"></i> Cámara
                                 </button>
-                            <?php endif; ?>
-                            <button type="button" class="btn btn-outline-secondary" onclick="mostrarImagen(this)">
-                                <i class="bi bi-eye"></i> Ver
-                            </button>
-                            <?php if(!isset($gasto['guardado']) || $gasto['guardado'] != 1): ?>
-                                <button type="button" class="btn btn-outline-danger" onclick="eliminarArchivo(this)">
-                                    <i class="bi bi-trash"></i> Eliminar
+                                <button type="button" class="btn btn-outline-secondary" onclick="mostrarImagen(this)">
+                                    <i class="bi bi-eye"></i> Ver
                                 </button>
-                            <?php endif; ?>
-                            <button type="button" class="btn btn-outline-success" onclick="guardarGasto(this)">
-                                <i class="bi bi-save"></i> Guardar
-                            </button>
+                                <button type="button" class="btn btn-outline-success" onclick="guardarGasto(this)">
+                                    <i class="bi bi-save"></i> Guardar
+                                </button>
+                            </div>
+                            <div class="file-preview"></div>
+                            <!-- Las vistas previas de archivos se insertarán aquí dinámicamente -->
                         </div>
                     </div>
                 </div>
@@ -196,64 +215,19 @@ $data = $egreso->traerGastosMob($nroSucurs);
             endforeach;
         }
         ?>
+        </div>
     </div>
 
-    <input type="file" id="archivos" style="display: none;" accept="image/*" capture="camera">
+    <input type="file" id="archivos" style="display: none;" accept="image/*" capture="camera" multiple>
 
     <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true">
         <!-- El contenido del carrusel se generará dinámicamente con JavaScript -->
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/egresoCajaMobile.js"></script>
-
-    <script>
-
-        // Función para filtrar las tarjetas basándose en la búsqueda
-        function filterCards() {
-            var input, filter, cards, card, ncomp, i;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            cards = document.getElementsByClassName('card');
-
-            for (i = 0; i < cards.length; i++) {
-                card = cards[i];
-                ncomp = card.getAttribute('data-ncomp');
-                if (ncomp.toUpperCase().indexOf(filter) > -1) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
-                }
-            }
-
-            // Mostrar u ocultar el ícono de limpieza
-            document.getElementById('clearSearch').style.display = input.value.length > 0 ? "block" : "none";
-        }
-
-        // Función para limpiar el campo de búsqueda
-        function clearSearch() {
-            var input = document.getElementById('searchInput');
-            input.value = '';
-            filterCards(); // Esto mostrará todas las tarjetas de nuevo
-        }
-
-        // Agregar event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchInput = document.getElementById('searchInput');
-            var clearButton = document.getElementById('clearSearch');
-
-            if (searchInput) {
-                searchInput.addEventListener('keyup', filterCards);
-                searchInput.addEventListener('input', filterCards); // Para manejar el caso de cortar/pegar
-            }
-
-            if (clearButton) {
-                clearButton.addEventListener('click', clearSearch);
-            }
-        });
-
-    </script>
 
 </body>
 </html>
