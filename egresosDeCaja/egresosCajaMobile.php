@@ -109,6 +109,15 @@ $data = $egreso->traerGastosMob($nroSucurs);
             transform: translateY(-50%);
             color: #6c757d;
         }
+        .clear-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            cursor: pointer;
+            display: none; /* Inicialmente oculto */
+        }
     </style>
 </head>
 
@@ -125,6 +134,7 @@ $data = $egreso->traerGastosMob($nroSucurs);
         <div class="search-wrapper">
             <i class="bi bi-search search-icon"></i>
             <input type="text" id="searchInput" placeholder="Buscar por comprobante...">
+            <i class="bi bi-x-circle clear-icon" id="clearSearch"></i>
         </div>
     </div>
 
@@ -216,13 +226,30 @@ $data = $egreso->traerGastosMob($nroSucurs);
                     card.style.display = "none";
                 }
             }
+
+            // Mostrar u ocultar el ícono de limpieza
+            document.getElementById('clearSearch').style.display = input.value.length > 0 ? "block" : "none";
         }
 
-        // Agregar event listener para el campo de búsqueda
+        // Función para limpiar el campo de búsqueda
+        function clearSearch() {
+            var input = document.getElementById('searchInput');
+            input.value = '';
+            filterCards(); // Esto mostrará todas las tarjetas de nuevo
+        }
+
+        // Agregar event listeners
         document.addEventListener('DOMContentLoaded', function() {
             var searchInput = document.getElementById('searchInput');
+            var clearButton = document.getElementById('clearSearch');
+
             if (searchInput) {
                 searchInput.addEventListener('keyup', filterCards);
+                searchInput.addEventListener('input', filterCards); // Para manejar el caso de cortar/pegar
+            }
+
+            if (clearButton) {
+                clearButton.addEventListener('click', clearSearch);
             }
         });
 
