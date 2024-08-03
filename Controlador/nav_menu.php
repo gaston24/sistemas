@@ -1,6 +1,17 @@
 <?php
 include('estado_cuenta.php');
 ?>
+
+<?php
+// Función para detectar si el dispositivo es móvil
+function isMobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
+// Determinar la URL correcta basada en el tipo de dispositivo
+$egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosDeCaja/egresosDeCaja.php';
+?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" onCLick="window.location='index.php'"><i class="fad fa-home" title="INICIO"></i></a>
     <a class="navbar-brand" onCLick="window.location='login.php'"><i class="far fa-times-octagon" title="CERRAR SESION"></i></a>
@@ -119,7 +130,7 @@ include('estado_cuenta.php');
                                 ?>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Administración</a>
                                 <ul class="dropdown-menu">
-                                <a class="dropdown-item spinner" href="#" onclick="location.href='egresosDeCaja/egresosDeCaja.php'">Egresos de caja</a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $egresosCajaUrl; ?>'">Egresos de caja</a>
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'">Factura manual <span class="badge badge-warning">Testing</span></a>
                                 
                                 <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">First subsubmenu</a>
