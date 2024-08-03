@@ -23,22 +23,25 @@ $data = $egreso->traerGastosMob($nroSucurs);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Carga de Gastos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <style>
         body {
             background-color: #f0f2f5;
-            padding: 20px;
+            padding: 10px;
         }
         .navbar {
             background-color: #3b5998;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .navbar-brand i {
             margin-right: 10px;
-            font-size: 1.2em;
+            font-size: 1em;
         }
         .card {
             border: none;
@@ -47,7 +50,7 @@ $data = $egreso->traerGastosMob($nroSucurs);
             margin-bottom: 15px;
         }
         .card-body {
-            padding: 15px;
+            padding: 5px;
         }
         .card-title {
             font-size: 16px;
@@ -66,27 +69,66 @@ $data = $egreso->traerGastosMob($nroSucurs);
         .btn-group {
             width: 100%;
             flex-wrap: wrap;
+            justify-content: space-between;
         }
         .btn-group .btn {
             font-size: 12px;
-            padding: 5px;
+            padding: 8px;
             margin-bottom: 5px;
+            flex-grow: 1;
+            max-width: calc(50% - 5px);
         }
         .vertical-line {
             border-left: 3px solid #4267B2;
             padding-left: 10px;
             margin-left: -15px;
         }
+        #nroSucursal {
+            display: none;
+        }
+        .search-container {
+            padding: 10px;
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 56px; /* Ajusta este valor según la altura de tu navbar */
+            z-index: 999;
+        }
+        .search-wrapper {
+            position: relative;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 8px 8px 8px 35px; /* Aumentamos el padding izquierdo para dar espacio al icono */
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
     </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-dark mb-4">
+    <nav class="navbar navbar-dark mb-2">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
-                <i class="bi bi-cash"></i>Carga de Gastos
+            <i class="bi bi-camera-fill"></i>Carga de Fotos | Gastos
             </span>
         </div>
     </nav>
+    
+    <div class="search-container">
+        <div class="search-wrapper">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Buscar por comprobante...">
+        </div>
+    </div>
+
+    <div id="nroSucursal"><?php echo $nroSucurs; ?></div>
     
     <div class="container" id="gastosList">
         <?php
@@ -95,19 +137,19 @@ $data = $egreso->traerGastosMob($nroSucurs);
         } else {
             foreach ($data as $gasto): 
         ?>
-            <div class="card">
+            <div class="card" data-ncomp="<?php echo htmlspecialchars($gasto['N_COMP']); ?>">
                 <div class="card-body">
                     <div class="vertical-line">
                         <h5 class="card-title">
                             <?php 
                             echo htmlspecialchars($gasto['FECHA'] instanceof DateTime ? $gasto['FECHA']->format("Y-m-d") : $gasto['FECHA']); 
-                            ?> - 
+                            ?> | 
                             <?php echo htmlspecialchars($gasto['COD_COMP']); ?> 
                             <?php echo htmlspecialchars($gasto['N_COMP']); ?>
                         </h5>
                         <h6 class="card-subtitle mb-2 text-muted">
-                            <?php echo htmlspecialchars($gasto['COD_CTA']); ?> 
-                            <?php echo htmlspecialchars($gasto['DESC_CUENTA']); ?> 
+                            <?php echo htmlspecialchars($gasto['COD_CTA']); ?> | 
+                            <?php echo htmlspecialchars($gasto['DESC_CUENTA']); ?> | 
                             <?php 
                             $monto = floatval($gasto['MONTO']);
                             if($monto < 0) {
@@ -146,18 +188,45 @@ $data = $egreso->traerGastosMob($nroSucurs);
         ?>
     </div>
 
+    <input type="file" id="archivos" style="display: none;" accept="image/*" capture="camera">
+
+    <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true">
+        <!-- El contenido del carrusel se generará dinámicamente con JavaScript -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/egresoCaja.js"></script>
+    <script src="js/egresoCajaMobile.js"></script>
+
     <script>
-    function guardarGasto(button) {
-        // Aquí puedes agregar la lógica para guardar el gasto
-        alert('Guardando gasto...');
-        // Ejemplo: Puedes obtener los datos del gasto desde los elementos padres del botón
-        var card = button.closest('.card');
-        var gastoId = card.dataset.gastoId; // Asumiendo que has agregado un data-gasto-id a cada card
-        // Realiza una llamada AJAX para guardar el gasto
-        // ...
-    }
+
+        // Función para filtrar las tarjetas basándose en la búsqueda
+        function filterCards() {
+            var input, filter, cards, card, ncomp, i;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            cards = document.getElementsByClassName('card');
+
+            for (i = 0; i < cards.length; i++) {
+                card = cards[i];
+                ncomp = card.getAttribute('data-ncomp');
+                if (ncomp.toUpperCase().indexOf(filter) > -1) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            }
+        }
+
+        // Agregar event listener para el campo de búsqueda
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keyup', filterCards);
+            }
+        });
+
     </script>
+
 </body>
 </html>
