@@ -99,19 +99,36 @@ const eliminarArchivoPreview = (button, nComp, codCta) => {
 }
 
 
-const enviarImagenes = (nComp, codCta, imagesToUpload) => {
+const enviarImagenes = (nComp, codCta) => {
     let nroSucursal = document.querySelector("#nroSucursal").textContent;
+    const input = document.getElementById('archivos');
+    let files = input.files;
     const formData = new FormData();
+    const maxFiles = 3;
 
-    imagesToUpload.forEach((image, index) => {
-        const timestamp = new Date().getTime();
-        const newFileName = `${nComp}${nroSucursal}${codCta}_${index}_${timestamp}${getFileExtension(image.file.name)}`;
-        const modifiedFile = new File([image.file], newFileName, {
-            type: image.file.type,
-            lastModified: image.file.lastModified,
+    if (files.length > maxFiles) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `Solo se pueden seleccionar un máximo de ${maxFiles} archivos.`
         });
-        formData.append('archivos[]', modifiedFile);
-    });
+        return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileExtension = file.name.split('.').pop();
+        const newFileName = `${nComp}${nroSucursal}${codCta}_${i}_${Date.now()}.${fileExtension}`;
+        
+        // Crear un nuevo objeto File con el nombre modificado
+        const renamedFile = new File([file], newFileName, { type: file.type });
+        
+        formData.append('archivos[]', renamedFile);
+    }
+
+    formData.append('nComp', nComp);
+    formData.append('nroSucursal', nroSucursal);
+    formData.append('codCta', codCta);
 
     $.ajax({
         url: 'upload_image.php',
@@ -120,28 +137,30 @@ const enviarImagenes = (nComp, codCta, imagesToUpload) => {
         processData: false,
         contentType: false,
         success: function(response) {
+            console.log('Respuesta del servidor:', response);
             if (response.success) {
                 Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Fotos cargadas correctamente",
-                    text: response.message,
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al cargar las fotos",
+                    icon: 'success',
+                    title: 'Éxito',
                     text: response.message
                 });
+                // Aquí podrías actualizar la vista previa o la lista de imágenes
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message
+                });
+            }
+            if (response.errors && response.errors.length > 0) {
+                console.error('Errores:', response.errors);
             }
         },
         error: function() {
             Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Error al enviar las imágenes al servidor."
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al enviar las imágenes al servidor.'
             });
         }
     });
@@ -159,7 +178,6 @@ const mostrarImagen = (button) => {
     let nombre = nComp + nroSucursal + codCta;
     let carouselElement = document.querySelector('#carruselImagenes'); 
 
-    // Verificar si el elemento del carrusel existe
     if (!carouselElement) {
         console.error('No se encontró el elemento del carrusel');
         return;
@@ -168,13 +186,14 @@ const mostrarImagen = (button) => {
     carouselElement.innerHTML = ''; 
 
     $.ajax({
-        url: "Controller/EgresoCajaController.php?accion=contarImagenes",
+        url: "controller/EgresoCajaController.php?accion=contarImagenesMob",
         type: "POST",
         data: { nComp: nombre },
+        dataType: 'json',
         success: function(response) {
-            response = JSON.parse(response);
-            if(response['cantidad'] > 0){
-                let codigosImagenes = response['nombre'];
+            console.log('Respuesta del servidor:', response);
+            if(response.cantidad > 0){
+                let codigosImagenes = response.nombre;
                 
                 let modalContent = document.createElement('div');
                 modalContent.className = 'modal-dialog modal-dialog-centered modal-fullscreen';
@@ -241,7 +260,6 @@ const mostrarImagen = (button) => {
                 let modal = new bootstrap.Modal(carouselElement);
                 modal.show();
 
-                // Implementar gestos táctiles
                 implementTouchGestures(carousel);
             } else {
                 Swal.fire({
@@ -253,6 +271,7 @@ const mostrarImagen = (button) => {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Error al cargar las imágenes:', textStatus, errorThrown);
+            console.log('Respuesta del servidor:', jqXHR.responseText);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -382,6 +401,8 @@ const rotarImagen = () => {
     activeItem.style.transform = `rotate(${newRotation}deg)`;
     activeItem.setAttribute('data-rotation', newRotation);
 }
+
+
 
 // Función para filtrar las tarjetas basándose en la búsqueda
 function filterCards() {
