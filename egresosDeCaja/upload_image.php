@@ -1,15 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-header('Content-Type: application/json');
-
-$response = [
-    'success' => false,
-    'message' => '',
-    'uploadedFiles' => 0,
-    'errors' => []
-];
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][0])) {
     $root = $_SERVER["DOCUMENT_ROOT"];
     $targetDir = $root.'/Imagenes/egresosCaja/';
@@ -21,65 +10,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $maxFiles = 3;
     $totalFiles = count($_FILES['archivos']['name']);
     $uploadedFiles = 0;
-    $maxFileSize = 6 * 1024 * 1024; // 6 MB en bytes
+    $maxFileSize = 6 * 1024 * 1024; // 6 MB
 
     for ($i = 0; $i < $totalFiles; $i++) {
         if ($_FILES['archivos']['size'][$i] <= $maxFileSize) {
+            $timestamp = strval(round(microtime(true) * 1000));  
             $originalName = $_FILES['archivos']['name'][$i];
-            $fileInfo = pathinfo($originalName);
-            $newName = $fileInfo['filename'] . '.jpg'; // Aseguramos que la extensión sea .jpg
-            $targetFile = $targetDir . $newName;
-            $imageFileType = strtolower($fileInfo['extension']);
-
-            $allowedTypes = array('jpg', 'jpeg', 'png');
+            $newName = pathinfo($originalName, PATHINFO_FILENAME) . "_" . $i . "_" . $timestamp . '.jpg';
+            $targetFile = $targetDir . basename($newName);
+            
+            $imageFileType = exif_imagetype($_FILES['archivos']['tmp_name'][$i]);
+            $allowedTypes = array(IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF);
+            
             if (in_array($imageFileType, $allowedTypes)) {
                 if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $targetFile)) {
-                    // Convertir a JPEG si es necesario
-                    $image = null;
-                    switch($imageFileType) {
-                        case 'jpg':
-                        case 'jpeg':
-                            $image = imagecreatefromjpeg($targetFile);
-                            break;
-                        case 'png':
-                            $image = imagecreatefrompng($targetFile);
-                            break;
-                    }
-
-                    if ($image) {
-                        list($originalWidth, $originalHeight) = getimagesize($targetFile);
+                    // Redimensionar y convertir a JPEG si es necesario
+                    list($originalWidth, $originalHeight) = getimagesize($targetFile);
+                    
+                    if ($originalWidth > 800 || $originalHeight > 600) {
                         $newWidth = 960;
                         $newHeight = 1360;
 
                         $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-                        imagecopyresampled($resizedImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
+                        
+                        switch ($imageFileType) {
+                            case IMAGETYPE_JPEG:
+                                $sourceImage = imagecreatefromjpeg($targetFile);
+                                break;
+                            case IMAGETYPE_PNG:
+                                $sourceImage = imagecreatefrompng($targetFile);
+                                break;
+                            case IMAGETYPE_GIF:
+                                $sourceImage = imagecreatefromgif($targetFile);
+                                break;
+                        }
+
+                        imagecopyresampled(
+                            $resizedImage,
+                            $sourceImage,
+                            0, 0, 0, 0,
+                            $newWidth,
+                            $newHeight,
+                            $originalWidth,
+                            $originalHeight
+                        );
 
                         imagejpeg($resizedImage, $targetFile, 90);
-                        imagedestroy($image);
+                        imagedestroy($sourceImage);
                         imagedestroy($resizedImage);
-
-                        $uploadedFiles++;
-                    } else {
-                        $response['errors'][] = "No se pudo procesar la imagen: " . $newName;
                     }
+
+                    $uploadedFiles++;
                 } else {
-                    $response['errors'][] = "No se pudo mover el archivo: " . $newName;
+                    echo "Error: No se pudo mover el archivo $originalName.<br>";
                 }
             } else {
-                $response['errors'][] = "Tipo de archivo no permitido: " . $imageFileType;
+                echo "Error: El archivo $originalName no es una imagen válida.<br>";
             }
         } else {
-            $size = round($_FILES['archivos']['size'][$i] / (1024 * 1024), 2);
-            $response['errors'][] = "El archivo excede el tamaño máximo permitido (6 MB). Tamaño del archivo: " . $size . " MB.";
+            $tamaño = round($_FILES['archivos']['size'][$i] / (1024 * 1024), 2);
+            echo "Error: El archivo {$_FILES['archivos']['name'][$i]} excede el tamaño máximo permitido (6 MB). Tamaño del archivo: $tamaño MB.<br>";
         }
     }
 
-    $response['success'] = $uploadedFiles > 0;
-    $response['message'] = "Se subieron $uploadedFiles archivos correctamente.";
-    $response['uploadedFiles'] = $uploadedFiles;
+    echo "Se subieron $uploadedFiles archivos correctamente.";
 } else {
-    $response['message'] = "Error: No se seleccionaron archivos o se produjo un error en la carga.";
+    echo "Error: No se seleccionaron archivos o se produjo un error en la carga.";
 }
-
-echo json_encode($response);
 ?>

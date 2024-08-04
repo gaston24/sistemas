@@ -90,12 +90,10 @@ const eliminarArchivoPreview = (button, nComp, codCta) => {
     const previewItem = button.closest('.preview-item');
     const previewContainer = previewItem.parentElement;
     const imageIndex = Array.from(previewContainer.children).indexOf(previewItem);
+    const nroSucursal = document.querySelector("#nroSucursal").textContent;
+    const nombreCompleto = nComp + nroSucursal + codCta;
 
-    // Eliminar la imagen del servidor
-    eliminarArchivo(nComp, codCta, imageIndex);
-
-    // Eliminar la vista previa
-    previewItem.remove();
+    eliminarArchivo(nombreCompleto, imageIndex, previewItem);
 }
 
 
@@ -131,7 +129,7 @@ const enviarImagenes = (nComp, codCta) => {
     formData.append('codCta', codCta);
 
     $.ajax({
-        url: 'upload_image.php',
+        url: 'upload_image_mob.php',
         type: 'POST',
         data: formData,
         processData: false,
@@ -329,25 +327,33 @@ const validarExistenciaArchivo = (rutaArchivo, callback) => {
     img.src = rutaArchivo;
 }
 
-const eliminarArchivo = (nComp, codCta, imageIndex) => {
-    let nroSucursal = document.querySelector("#nroSucursal").textContent;
-    let numComp = nComp + nroSucursal + codCta;
-
+const eliminarArchivo = (nombreCompleto, imageIndex, previewItem) => {
     $.ajax({
-        url: "Controller/EgresoCajaController.php?accion=eliminarArchivo",
+        url: "Controller/EgresoCajaController.php?accion=eliminarArchivoMob",
         type: "POST",
         data: {
-            nComp: numComp,
+            nComp: nombreCompleto,
             index: imageIndex
         },
-        success: function (response) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Archivo eliminado',
-                text: 'Se eliminó el archivo correctamente',
-                timer: 2000,
-                showConfirmButton: false
-            });
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                // Eliminar la vista previa de la imagen
+                previewItem.remove();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: response.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message
+                });
+            }
         },
         error: function() {
             Swal.fire({
@@ -366,29 +372,40 @@ const guardarGasto = (button) => {
     let nroSucursal = document.querySelector("#nroSucursal").textContent;
 
     $.ajax({
-        url: "Controller/EgresoCajaController.php?accion=guardar",
+        url: "Controller/EgresoCajaController.php?accion=guardarMob",
         type: "POST",
         data: {
             nComp: nComp,
             codCta: codCta,
             nroSucursal: nroSucursal
         },
+        dataType: 'json',
         success: function(response) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Gasto guardado',
-                text: 'Se guardó correctamente',
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                location.reload();
-            });
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Gasto guardado',
+                    text: response.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Recargar la página
+                    location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message || 'Error al guardar el gasto.'
+                });
+            }
         },
-        error: function() {
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error:', textStatus, errorThrown);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error al guardar el gasto.'
+                text: 'Error al guardar el gasto. Por favor, intente de nuevo.'
             });
         }
     });

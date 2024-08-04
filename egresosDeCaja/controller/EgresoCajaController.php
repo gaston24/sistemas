@@ -10,8 +10,14 @@ switch ($accion) {
     case 'guardar':
         guardar();
         break;
+    case 'guardarMob':
+        guardarMob();
+        break;
     case 'eliminarArchivo':
         eliminarArchivo();
+        break;
+    case 'eliminarArchivoMob':
+        eliminarArchivoMob();
         break;
     case 'contarImagenes':
         contarFotosEnCarpeta();
@@ -24,77 +30,109 @@ switch ($accion) {
         break;
 }
 
-function eliminarArchivo() {
+function eliminarArchivo () {
+
     $nComp = $_POST['nComp'];
     $root = $_SERVER["DOCUMENT_ROOT"];
     $targetDir = $root.'/Imagenes/egresosCaja/';
     $fileName = $nComp;
 
     if ($gestor = opendir($targetDir)) {
-        while (($archivo = readdir($gestor)) !== false) {
+        while (($archivo = readdir($gestor)) !== false) { 
             if ($archivo != "." && $archivo != "..") {
-                if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
+                if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {                  
                     unlink($targetDir.pathinfo($archivo, PATHINFO_FILENAME).".jpg");
-                }
+                } 
             }
         }
         closedir($gestor);
     }
-
     echo json_encode(true);
 }
 
+
 function contarFotosEnCarpeta() {
-    $nComp = isset($_POST['nComp']) ? $_POST['nComp'] : "";
+    
+    $nComp = (isset($_POST['nComp'])) ? $_POST['nComp'] : "";
+    $nroSucursal = (isset($_POST['nroSucursal'])) ? $_POST['nroSucursal'] : "";
+
     $root = $_SERVER["DOCUMENT_ROOT"];
+
     $targetDir = $root.'/Imagenes/egresosCaja/';
     
-    $datosDeLosArchivos = [
-        'cantidad' => 0,
-        'nombre' => []
-    ];
+    if(isset($_POST['arrayNcomp'])){
 
-    if ($gestor = opendir($targetDir)) {
-        while (($archivo = readdir($gestor)) !== false) {
-            if ($archivo != "." && $archivo != "..") {
-                if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $nComp) !== false) {
-                    $datosDeLosArchivos['cantidad']++;
-                    $datosDeLosArchivos['nombre'][] = pathinfo($archivo, PATHINFO_FILENAME);
-                }
-            }
-        }
-        closedir($gestor);
+        $arrayArticulos = $_POST['arrayNcomp'];
+
     }
+ 
 
-    header('Content-Type: application/json');
-    echo json_encode($datosDeLosArchivos);
-}
+    if(isset($arrayArticulos)){
+        
+        $contadorFotos = 0;
+        $datosDeLosArchivos = [];
+        $datosDeLosArchivos['cantidad'] = 0;
+        foreach ($arrayArticulos as $key => $codigo) {
+            $fileName = $codigo;
+            // Abre el directorio
+            if ($gestor = opendir($targetDir)) {
+                // Recorre los archivos en el directorio
+                while (($archivo = readdir($gestor)) !== false) {
+                    // Ignora las carpetas "." y ".."
+                    if ($archivo != "." && $archivo != "..") {
+        
+                        if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
+                            // $contadorFotos++;
+                            $datosDeLosArchivos['cantidad'] ++;
+        
+                            $datosDeLosArchivos['nombre'][] = $codigo;
 
-function contarFotosEnCarpetaMob() {
-    $nComp = isset($_POST['nComp']) ? $_POST['nComp'] : "";
-    $root = $_SERVER["DOCUMENT_ROOT"];
-    $targetDir = $root . '/Imagenes/egresosCaja/';
+                            // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
+                        } 
+         
+                     
+                    }
+                }
+        
+                // Cierra el directorio
+                closedir($gestor);
+            }
+
+        }
+
+    }else{
+
     
-    $datosDeLosArchivos = [
-        'cantidad' => 0,
-        'nombre' => []
-    ];
+        $fileName = $nComp;
+        $contadorFotos = 0;
+        $datosDeLosArchivos = [];
+        $datosDeLosArchivos['cantidad'] = 0;
+        // Abre el directorio
+        if ($gestor = opendir($targetDir)) {
+            // Recorre los archivos en el directorio
+            while (($archivo = readdir($gestor)) !== false) {
+                // Ignora las carpetas "." y ".."
+                if ($archivo != "." && $archivo != "..") {
 
-    if ($gestor = opendir($targetDir)) {
-        while (($archivo = readdir($gestor)) !== false) {
-            if ($archivo != "." && $archivo != "..") {
-                if (strpos($archivo, $nComp) === 0) {
-                    $datosDeLosArchivos['cantidad']++;
-                    $datosDeLosArchivos['nombre'][] = $archivo;
+                    if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
+                        // $contadorFotos++;
+                        $datosDeLosArchivos['cantidad'] ++;
+
+                        $datosDeLosArchivos['nombre'][] = pathinfo($archivo, PATHINFO_FILENAME);
+
+                        // array_push($nombreArchivo, pathinfo($archivo, PATHINFO_FILENAME));
+                    } 
+    
+                
                 }
             }
+
+            // Cierra el directorio
+            closedir($gestor);
         }
-        closedir($gestor);
     }
 
-    header('Content-Type: application/json');
     echo json_encode($datosDeLosArchivos);
-    exit;
 }
 
 function guardar() {
@@ -131,4 +169,101 @@ function guardar() {
         $egreso->existeFoto($nComp, $codCta, $nroSucursal);
     }
 }
+
+function contarFotosEnCarpetaMob() {
+    $nComp = isset($_POST['nComp']) ? $_POST['nComp'] : "";
+    $root = $_SERVER["DOCUMENT_ROOT"];
+    $targetDir = $root . '/Imagenes/egresosCaja/';
+    
+    $datosDeLosArchivos = [
+        'cantidad' => 0,
+        'nombre' => []
+    ];
+
+    if ($gestor = opendir($targetDir)) {
+        while (($archivo = readdir($gestor)) !== false) {
+            if ($archivo != "." && $archivo != "..") {
+                if (strpos($archivo, $nComp) === 0) {
+                    $datosDeLosArchivos['cantidad']++;
+                    $datosDeLosArchivos['nombre'][] = $archivo;
+                }
+            }
+        }
+        closedir($gestor);
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($datosDeLosArchivos);
+    exit;
+}
+
+function eliminarArchivoMob() {
+    // Verificar que la solicitud se haga mediante POST
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['success' => false, 'message' => 'Método de solicitud inválido']);
+        return;
+    }
+
+    // Verificar si los parámetros esperados están presentes
+    if (!isset($_POST['nComp']) || !isset($_POST['index'])) {
+        echo json_encode(['success' => false, 'message' => 'Parámetros faltantes']);
+        return;
+    }
+
+    $nComp = $_POST['nComp'];
+    $index = intval($_POST['index']);
+    $root = $_SERVER["DOCUMENT_ROOT"];
+    $targetDir = $root.'/Imagenes/egresosCaja/';
+    $fileName = $nComp;
+
+    $archivosEncontrados = [];
+
+    if ($gestor = opendir($targetDir)) {
+        while (($archivo = readdir($gestor)) !== false) {
+            if ($archivo != "." && $archivo != "..") {
+                if (stripos(pathinfo($archivo, PATHINFO_FILENAME), $fileName) !== false) {
+                    $archivosEncontrados[] = $archivo;
+                }
+            }
+        }
+        closedir($gestor);
+    }
+
+    // Ordenar los archivos para asegurar que el índice corresponda al orden de las imágenes
+    sort($archivosEncontrados);
+
+    if ($index >= 0 && $index < count($archivosEncontrados)) {
+        $archivoAEliminar = $archivosEncontrados[$index];
+        if (unlink($targetDir . $archivoAEliminar)) {
+            echo json_encode(['success' => true, 'message' => 'Archivo eliminado correctamente']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No se pudo eliminar el archivo']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Índice de archivo inválido']);
+    }
+}
+
+function guardarMob() {
+    header('Content-Type: application/json');
+    $response = ['success' => false, 'message' => ''];
+
+    if (isset($_POST['nComp']) && isset($_POST['codCta']) && isset($_POST['nroSucursal'])) {
+        $egreso = new Egreso();
+        $result = $egreso->existeFoto($_POST['nComp'], $_POST['codCta'], $_POST['nroSucursal']);
+
+        if ($result) {
+            $response['success'] = true;
+            $response['message'] = 'Gasto guardado correctamente';
+        } else {
+            $response['message'] = 'No se pudo guardar el gasto';
+        }
+    } else {
+        $response['message'] = 'Faltan datos requeridos';
+    }
+
+    echo json_encode($response);
+    exit;
+}
+
 ?>

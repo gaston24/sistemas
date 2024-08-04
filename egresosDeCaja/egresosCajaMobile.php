@@ -90,7 +90,7 @@ $data = $egreso->traerGastosMob($nroSucurs);
             padding: 10px;
             background-color: #f8f9fa;
             position: sticky;
-            top: 56px; /* Ajusta este valor según la altura de tu navbar */
+            top: 56px;
             z-index: 999;
         }
         .search-wrapper {
@@ -98,7 +98,7 @@ $data = $egreso->traerGastosMob($nroSucurs);
         }
         #searchInput {
             width: 100%;
-            padding: 8px 8px 8px 35px; /* Aumentamos el padding izquierdo para dar espacio al icono */
+            padding: 8px 8px 8px 35px;
             border: 1px solid #ced4da;
             border-radius: 4px;
         }
@@ -116,13 +116,13 @@ $data = $egreso->traerGastosMob($nroSucurs);
             transform: translateY(-50%);
             color: #6c757d;
             cursor: pointer;
-            display: none; /* Inicialmente oculto */
+            display: none;
         }
         .file-preview {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
         }
         .preview-item {
             display: flex;
@@ -168,9 +168,11 @@ $data = $egreso->traerGastosMob($nroSucurs);
             echo "<p>No se encontraron gastos para mostrar.</p>";
         } else {
             foreach ($data as $gasto): 
+                $isGuardado = isset($gasto['guardado']) && $gasto['guardado'] == 1;
+                $cardClass = $isGuardado ? 'bg-success text-white' : '';
         ?>
             <div class="col-12">
-                <div class="card" data-ncomp="<?php echo htmlspecialchars($gasto['N_COMP']); ?>">
+                <div class="card <?php echo $cardClass; ?>" data-ncomp="<?php echo htmlspecialchars($gasto['N_COMP']); ?>">
                     <div class="card-body">
                         <div class="vertical-line">
                             <h5 class="card-title">
@@ -180,7 +182,7 @@ $data = $egreso->traerGastosMob($nroSucurs);
                                 <?php echo htmlspecialchars($gasto['COD_COMP']); ?> 
                                 <?php echo htmlspecialchars($gasto['N_COMP']); ?>
                             </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
+                            <h6 class="card-subtitle mb-2 <?php echo $isGuardado ? 'text-white' : 'text-muted'; ?>">
                                 <?php echo htmlspecialchars($gasto['COD_CTA']); ?> | 
                                 <?php echo htmlspecialchars($gasto['DESC_CUENTA']); ?> | 
                                 <?php 
@@ -195,18 +197,21 @@ $data = $egreso->traerGastosMob($nroSucurs);
                             </h6>
                             <p class="card-text"><?php echo htmlspecialchars($gasto['LEYENDA']); ?></p>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-outline-primary" onclick="elegirImagen(this)">
-                                    <i class="bi bi-camera"></i> Cámara
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary" onclick="mostrarImagen(this)">
+                                <?php if (!$isGuardado): ?>
+                                    <button type="button" class="btn btn-outline-primary" onclick="elegirImagen(this)">
+                                        <i class="bi bi-camera"></i> Cámara
+                                    </button>
+                                <?php endif; ?>
+                                <button type="button" class="btn <?php echo $isGuardado ? 'btn-outline-light' : 'btn-outline-secondary'; ?>" onclick="mostrarImagen(this)">
                                     <i class="bi bi-eye"></i> Ver
                                 </button>
-                                <button type="button" class="btn btn-outline-success" onclick="guardarGasto(this)">
-                                    <i class="bi bi-save"></i> Guardar
-                                </button>
+                                <?php if (!$isGuardado): ?>
+                                    <button type="button" class="btn btn-outline-success" onclick="guardarGasto(this)">
+                                        <i class="bi bi-save"></i> Guardar
+                                    </button>
+                                <?php endif; ?>
                             </div>
                             <div class="file-preview"></div>
-                            <!-- Las vistas previas de archivos se insertarán aquí dinámicamente -->
                         </div>
                     </div>
                 </div>
