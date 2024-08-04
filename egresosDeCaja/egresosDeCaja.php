@@ -164,21 +164,21 @@ if(isset($_GET['hasta']) &&$_GET['hasta'] != "" ){
                                     <?php 
                                         if($gasto['guardado'] != 1){
                                     ?>
-                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.3rem .5rem;" onclick="elegirImagen(this)">
+                                            <button class="btn btn-primary" type="button" style="margin-left: 5px; padding:.5rem .5rem;" onclick="elegirImagen(this)">
                                                 <i class="bi bi-upload"></i> 
                                             </button>
                                     <?php
                                         }
                                     ?>
 
-                                        <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem;"  onclick="mostrarImagen(this)">
+                                        <button class="btn btn-warning" style="margin-left:5px; padding:.5rem .5rem;"  onclick="mostrarImagen(this)">
                                             <i class="bi bi-eye" style="color:white"></i>
                                         </button>
                                         
                                     <?php 
                                         if($gasto['guardado'] != 1){
                                     ?>
-                                            <button class="btn btn-danger" style="margin-left:5px; padding:.3rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
+                                            <button class="btn btn-danger" style="margin-left:5px; padding:.5rem .5rem;" onclick="eliminarArchivo(this)"><i class="bi bi-trash"></i></button>
                                     <?php
                                         }
                                     ?>

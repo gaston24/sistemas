@@ -55,7 +55,8 @@ const cargarArchivos = (input) => {
         return;
     }
 
-    previewContainer.innerHTML = ''; // Limpiar previsualizaciones anteriores
+    // Eliminar esta línea para mantener las previsualizaciones anteriores
+    // previewContainer.innerHTML = ''; 
     
     let imagesToUpload = [];
 
@@ -97,32 +98,32 @@ const eliminarArchivoPreview = (button, nComp, codCta) => {
 }
 
 
-const enviarImagenes = (nComp, codCta) => {
+const enviarImagenes = (nComp, codCta, imagesToUpload) => {
     let nroSucursal = document.querySelector("#nroSucursal").textContent;
-    const input = document.getElementById('archivos');
-    let files = input.files;
     const formData = new FormData();
     const maxFiles = 3;
 
-    if (files.length > maxFiles) {
+    // Obtener las imágenes existentes
+    const existingPreviews = document.querySelectorAll(`.card[data-ncomp="${nComp}"] .file-preview .preview-item`);
+    const totalImages = existingPreviews.length + imagesToUpload.length;
+
+    if (totalImages > maxFiles) {
         Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: `Solo se pueden seleccionar un máximo de ${maxFiles} archivos.`
+            icon: 'warning',
+            title: 'Límite de imágenes',
+            text: `Ya has seleccionado ${existingPreviews.length} imagen(es). Solo puedes agregar ${maxFiles - existingPreviews.length} más.`
         });
         return;
     }
 
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const fileExtension = file.name.split('.').pop();
-        const newFileName = `${nComp}${nroSucursal}${codCta}_${i}_${Date.now()}.${fileExtension}`;
+    imagesToUpload.forEach((imageData, index) => {
+        const file = imageData.file;
+        const fileExtension = getFileExtension(file.name);
+        const newFileName = `${nComp}${nroSucursal}${codCta}_${existingPreviews.length + index}_${Date.now()}.${fileExtension}`;
         
-        // Crear un nuevo objeto File con el nombre modificado
         const renamedFile = new File([file], newFileName, { type: file.type });
-        
         formData.append('archivos[]', renamedFile);
-    }
+    });
 
     formData.append('nComp', nComp);
     formData.append('nroSucursal', nroSucursal);
@@ -142,7 +143,6 @@ const enviarImagenes = (nComp, codCta) => {
                     title: 'Éxito',
                     text: response.message
                 });
-                // Aquí podrías actualizar la vista previa o la lista de imágenes
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -199,6 +199,18 @@ const mostrarImagen = (button) => {
                 let modalBody = document.createElement('div');
                 modalBody.className = 'modal-content';
 
+                // Crear el marco superior para el botón de cerrar
+                let modalHeader = document.createElement('div');
+                modalHeader.className = 'modal-header';
+                let closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.className = 'btn-close';
+                closeButton.setAttribute('data-bs-dismiss', 'modal');
+                closeButton.setAttribute('aria-label', 'Close');
+                modalHeader.appendChild(closeButton);
+                
+                modalBody.appendChild(modalHeader);
+
                 let carousel = document.createElement('div');
                 carousel.className = 'carousel slide';
                 carousel.setAttribute('data-bs-ride', 'carousel');
@@ -218,15 +230,8 @@ const mostrarImagen = (button) => {
                     carouselInner.appendChild(carouselItem);
                 });
 
-                let closeButton = document.createElement('button');
-                closeButton.type = 'button';
-                closeButton.className = 'btn-close position-absolute top-0 end-0 m-3';
-                closeButton.setAttribute('data-bs-dismiss', 'modal');
-                closeButton.setAttribute('aria-label', 'Close');
-
                 carousel.appendChild(carouselInner);
                 modalBody.appendChild(carousel);
-                modalBody.appendChild(closeButton);
                 modalContent.appendChild(modalBody);
                 carouselElement.appendChild(modalContent);
 
@@ -258,6 +263,11 @@ const mostrarImagen = (button) => {
                 let modal = new bootstrap.Modal(carouselElement);
                 modal.show();
 
+                // Agregar evento para cerrar el modal
+                closeButton.addEventListener('click', function() {
+                    modal.hide();
+                });
+
                 implementTouchGestures(carousel);
             } else {
                 Swal.fire({
@@ -278,6 +288,7 @@ const mostrarImagen = (button) => {
         }
     });
 }
+
 
 const implementTouchGestures = (carousel) => {
     let startX;

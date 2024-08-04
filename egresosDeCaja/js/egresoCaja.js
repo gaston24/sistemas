@@ -113,172 +113,146 @@ const enviarImagenes = (nComp,codCta) => {
 
 
 const mostrarImagen = (divImagen, startIndex = 0) => {
-
-
   let codigosImagenes = [];
 
-  
   let nroSucursal = document.querySelector("#nroSucursal").textContent;
-  let nombre = divImagen.parentElement.parentElement.querySelectorAll("td")[2].textContent +nroSucursal+divImagen.parentElement.parentElement.querySelectorAll("td")[3].textContent;
+  let nombre = divImagen.parentElement.parentElement.querySelectorAll("td")[2].textContent + nroSucursal + divImagen.parentElement.parentElement.querySelectorAll("td")[3].textContent;
   let carouselElement = document.querySelector('#carruselImagenes'); 
 
   carouselElement.innerHTML = ''; 
 
   $.ajax({
+      url: "Controller/EgresoCajaController.php?accion=contarImagenes",
+      type: "POST",
+      data: { nComp: nombre },
+      success: function (response) {
+          response = JSON.parse(response);
 
-    url: "Controller/EgresoCajaController.php?accion=contarImagenes",
-    type: "POST",
-    data: {
-      nComp:nombre
+          if (response['cantidad'] > 0) {
+              for (let index = 0; index < response['nombre'].length; index++) {
+                  codigosImagenes.push(response['nombre'][index] + '.jpg');
+              }
 
-    },
+              let modalContent = document.createElement('div');
+              modalContent.className = 'modal-dialog modal-dialog-centered modal-fullscreen';
 
-    success: function (response) {
+              let modalBody = document.createElement('div');
+              modalBody.className = 'modal-content';
 
-      response = JSON.parse(response);
+              let modalHeader = document.createElement('div');
+              modalHeader.className = 'modal-header';
+              
+              let closeButton = document.createElement('button');
+              closeButton.type = 'button';
+              closeButton.className = 'close';
+              closeButton.setAttribute('data-dismiss', 'modal');
+              closeButton.setAttribute('aria-label', 'Close');
+              closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
+              modalHeader.appendChild(closeButton);
+              
+              modalBody.appendChild(modalHeader);
 
-      if(response['cantidad'] > 0){
+              let carousel = document.createElement('div');
+              carousel.innerHTML = "";
+              carousel.className = 'carousel slide';
+              carousel.setAttribute('data-bs-ride', 'carousel');
+              carousel.id = 'imageCarousel';
 
-        
-        for (let index = 0; index < response['nombre'].length  ; index++) {
-          
-          codigosImagenes.push(response['nombre'][index] + '.jpg');
+              let carouselInner = document.createElement('div');
+              carouselInner.className = 'carousel-inner h-100';
+              carouselInner.style.overflowY = 'hidden'; // Ocultar barra de desplazamiento vertical
 
-        }
-        
-        let modalContent = document.createElement('div');
-        modalContent.className = 'modal-dialog modal-dialog-centered';
-        modalContent.style = 'max-width: 100%;';
+              codigosImagenes.forEach((imagen, index) => {
+                  validarExistenciaArchivo('../../../Imagenes/egresosCaja/' + imagen, function (existe) {
+                      if (existe) {
+                          let carouselItem = document.createElement('div');
+                          carouselItem.className = index === startIndex ? 'carousel-item active h-100' : 'carousel-item h-100';
+                          carouselItem.style = "text-align:center; position: relative;"; // Asegura que el botón de rotar esté posicionado relativo a la imagen
+                          let imgElement = document.createElement('img');
+                          imgElement.src = '../../../Imagenes/egresosCaja/' + imagen;
+                          imgElement.className = 'd-block img-fluid';
+                          imgElement.style = 'max-height: 80vh; width: auto;';
 
-        let modalBody = document.createElement('div');
-        modalBody.className = 'modal-content';
+                          carouselItem.appendChild(imgElement);
+                          carouselInner.appendChild(carouselItem);
 
-        let carousel = document.createElement('div');
-        carousel.innerHTML = "";
-        carousel.className = 'carousel slide';
-        carousel.setAttribute('data-ride', 'carousel');
+                          // Crear el botón de rotar y añadirlo a cada ítem del carrusel
+                          let rotateButton = document.createElement('button');
+                          rotateButton.type = 'button';
+                          rotateButton.className = 'btn btn-primary';
+                          rotateButton.style.width = '150px';
+                          rotateButton.style.position = 'absolute';
+                          rotateButton.style.bottom = '20px';
+                          rotateButton.style.left = '50%';
+                          rotateButton.style.transform = 'translateX(-50%)';
+                          rotateButton.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Rotar Imagen';
+                          rotateButton.addEventListener('click', function () {
+                              rotarImagen();
+                          });
 
-        let carouselInner = document.createElement('div');
-        carouselInner.className = 'carousel-inner';
+                          carouselItem.appendChild(rotateButton);
+                      }
+                  });
+              });
 
+              carousel.appendChild(carouselInner);
+              modalBody.appendChild(carousel);
+              modalContent.appendChild(modalBody);
+              carouselElement.appendChild(modalContent);
 
-        codigosImagenes.forEach((imagen, index) => {
+              let prevControl = document.createElement('button');
+              prevControl.className = 'carousel-control-prev';
+              prevControl.type = 'button';
+              prevControl.setAttribute('data-bs-target', '#imageCarousel');
+              prevControl.setAttribute('data-bs-slide', 'prev');
+              prevControl.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+              prevControl.addEventListener('click', function() {
+                  pasarImagen(-1);
+              });
 
-          validarExistenciaArchivo('../../../Imagenes/egresosCaja/' + imagen, function(existe) {
+              let nextControl = document.createElement('button');
+              nextControl.className = 'carousel-control-next';
+              nextControl.type = 'button';
+              nextControl.setAttribute('data-bs-target', '#imageCarousel');
+              nextControl.setAttribute('data-bs-slide', 'next');
+              nextControl.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+              nextControl.addEventListener('click', function() {
+                  pasarImagen(1);
+              });
 
-            if (existe) { 
+              carousel.appendChild(prevControl);
+              carousel.appendChild(nextControl);
 
-              let carouselItem = document.createElement('div');
-              carouselItem.className = index === startIndex ? 'carousel-item active' : 'carousel-item';
-              carouselItem.style = "text-align:center"
-              let imgElement = document.createElement('img');
-              imgElement.src = '../../../Imagenes/egresosCaja/' + imagen;
+              let modal = new bootstrap.Modal(carouselElement);
+              modal.show();
 
-              carouselItem.appendChild(imgElement);
-              carouselInner.appendChild(carouselItem);
-            }
-
-          });
-        });
-
-        let closeButton = document.createElement('button');
-        closeButton.type = 'button';
-        closeButton.className = 'close';
-        closeButton.setAttribute('data-dismiss', 'modal');
-        closeButton.setAttribute('aria-label', 'Close');
-        closeButton.innerHTML = '<span aria-hidden="true" title="Cerrar" style="font-size:50px; margin-right: 0.5rem; color: red;">&times;</span>';
-    
-        // Agregar el botón de cierre al encabezado del modal
-        let modalHeader = document.createElement('div');
-        modalHeader.appendChild(closeButton);
-        modalBody.appendChild(modalHeader);
-
-        carousel.appendChild(carouselInner);
-        modalBody.appendChild(carousel);
-        modalContent.appendChild(modalBody);
-        carouselElement.appendChild(modalContent);
-
-        // Crear los controles "anterior" y "siguiente" del carrusel
-        let prevControl = document.createElement('a');
-        prevControl.className = 'carousel-control-prev';
-        prevControl.href = '#carruselImagenes';
-        prevControl.role = 'button';
-        prevControl.setAttribute('data-slide', 'prev');
-        prevControl.setAttribute("onclick",'pasarImagen(-1)')
-        let prevIcon = document.createElement('span');
-        prevIcon.className = 'carousel-control-prev-icon';
-        prevIcon.style = 'background-color: black';
-        prevIcon.setAttribute('aria-hidden', 'true');
-        prevControl.appendChild(prevIcon);
-
-
-        let nextControl = document.createElement('a');
-        nextControl.className = 'carousel-control-next';
-        nextControl.href = '#carruselImagenes';
-        nextControl.role = 'button';
-        nextControl.setAttribute('data-slide', 'next');
-        nextControl.setAttribute("onclick",'pasarImagen(1)')
-        let nextIcon = document.createElement('span');
-        nextIcon.className = 'carousel-control-next-icon';
-        nextIcon.style = 'background-color: black';
-        nextIcon.setAttribute('aria-hidden', 'true');
-        nextControl.appendChild(nextIcon);
-
-
-        carousel.appendChild(prevControl);
-        carousel.appendChild(nextControl);
-        
-        let rotateButton = document.createElement('button');
-        rotateButton.type = 'button';
-        rotateButton.style.width = '400px'
-        rotateButton.style.height = '50px'
-        rotateButton.style.marginTop = '10px'
-        rotateButton.style.marginBottom = '10px'
-        rotateButton.style.marginLeft = '35%'
-        rotateButton.className = 'btn btn-primary'; // Puedes ajustar las clases según tu estilo
-        rotateButton.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Rotar Imagen';
-        rotateButton.addEventListener('click', function() {
-            rotarImagen();
-        });
-        
-        modalBody.appendChild(rotateButton);
-
-        // Activa el carrusel de Bootstrap
-        $(carousel).carousel();
-
-        // Muestra el modal
-        $('#carruselImagenes').modal('show');
-
+          } else {
+              Swal.fire({
+                  icon: 'info',
+                  title: 'Sin imágenes',
+                  text: 'No hay imágenes para mostrar.'
+              });
+          }
       }
-
-    }
-  })
-
-
+  });
 }
 
-const pasarImagen = (pos) =>{
+const pasarImagen = (pos) => {
+  let items = document.querySelectorAll(".carousel-item");
 
-let items = document.querySelectorAll(".carousel-item")
+  for (let index = 0; index < items.length; index++) {
+      if (items[index].classList.contains("active")) {
+          items[index].classList.remove("active");
 
-for (let index = 0; index < items.length; index++) {
-  
-  if (items[index].classList.contains("active")) {
-
-    if (items[index + pos] !== undefined) {
-
-      items[index].classList.remove("active");
-    
-      items[index + pos].classList.add("active");
-      break; // Detener el bucle una vez que se encontró el siguiente elemento activo
-
-    }
-
+          let newIndex = (index + pos + items.length) % items.length;
+          items[newIndex].classList.add("active");
+          break; // Detener el bucle una vez que se encontró el siguiente elemento activo
+      }
   }
-
 }
 
-}
+
+
 
 const validarExistenciaArchivo = (rutaArchivo, callback) => {
   const img = new Image();
