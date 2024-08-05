@@ -81,4 +81,41 @@ class Egreso
 
 
     }
+
+    public function traerGastosMob($nroSucursal)
+    {
+  
+        if($_SESSION['usuarioUy'] == 1){
+ 
+            $prefix = "[Lakerbis].SUCURSALES_URUGUAY.dbo";
+         
+        }else{
+            $prefix = ' [Lakerbis].locales_lakers.dbo';
+        }
+ 
+        $sql = "SELECT a.*, (case when b.FECHA_GUARDADO is not null then 1 else 0 end) guardado
+        FROM $prefix.RO_V_GASTOS_CAJA_SUCURSALES  a
+        LEFT JOIN SJ_EGRESOS_DE_CAJA_GUARDADO b ON a.n_comp = b.n_comp COLLATE Latin1_General_BIN AND a.cod_cta = b.COD_CTA  AND  b.NRO_SUCURSAL = '$nroSucursal'
+        WHERE FECHA_GUARDADO IS NULL AND a.FECHA >= GETDATE()-30
+        AND a.NRO_SUCURS = '$nroSucursal'
+        ORDER BY a.FECHA ASC";
+
+    
+        $stmt = sqlsrv_query($this->cid_central, $sql);
+
+        try{
+            
+            $rows = array();
+    
+            while ($v = sqlsrv_fetch_array($stmt)) {
+                $rows[] = $v;
+            }
+    
+            return $rows;
+        
+        } catch (\Throwable $th){
+            print_r($th);
+        }
+
+    }
 }
