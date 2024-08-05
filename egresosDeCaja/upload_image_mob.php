@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     }
 
     $response['success'] = $uploadedFiles > 0;
-    $response['message'] = "Se subieron $uploadedFiles archivos correctamente.";
+    $response['message'] = "$uploadedFiles imagen cargada correctamente.";
     $response['uploadedFiles'] = $uploadedFiles;
 } else {
     $response['message'] = "Error: No se seleccionaron archivos o se produjo un error en la carga.";
