@@ -183,25 +183,24 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                             </li>
                             
                             <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
-                            
-                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <form action="fichaje/registro.php" method="get" target="_blank">
-                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Fichada por legajo <span class="badge badge-warning">Testing</span></button>
-                                        </form>
+                                <?php if (!isMobile()) { // Comprueba si no es un dispositivo móvil ?>
+                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">RRHH</a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <form action="fichaje/registro.php" method="get" target="_blank">
+                                                    <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Fichada por legajo <span class="badge badge-warning">Testing</span></button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form action="fichaje/reporteDeAsistencias.php" method="get" >
+                                                    <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Reporte de asistencias <span class="badge badge-warning">Testing</span></button>
+                                                </form>
+                                            </li>
+                                            <!-- Otros elementos de menú si los tienes -->
+                                        </ul>
                                     </li>
-                                    <li>
-                                        <form action="fichaje/reporteDeAsistencias.php" method="get" >
-                                            <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo">Reporte de asistencias <span class="badge badge-warning">Testing</span></button>
-                                        </form>
-                                    </li>
-                                    <!-- Otros elementos de menú si los tienes -->
-                                </ul>
-                            </li>
+                                <?php } ?>
                             <?php } ?>
-
-
 
                             </ul>
                         </li>
