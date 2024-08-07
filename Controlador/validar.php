@@ -2,6 +2,10 @@
 session_start();
 require_once __DIR__.'/../Class/extralarge.php';
 
+function isMobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
 $user = $_POST['user'];
 $pass = $_POST['pass'];
 
@@ -53,55 +57,57 @@ if( count($loginRes) == 0 ){
 	$_SESSION['pantallas'] = true;
 
 	
-	if($loginRes['NRO_SUCURS'] == 201 || $loginRes['NRO_SUCURS'] == 202){     
-		header("Location: eliminaPedido.php");
-	}elseif($loginRes['COD_VENDED']!='0' && $_SESSION['tipo']!= 'MAYORISTA'){
-		$_SESSION['nuevoPedido']=0; 
-		$_SESSION['cargaPedido']=1;
-		header("Location: ../mayoristas/index.php");
-	}elseif($_SESSION['tipo'] == 'MAYORISTA'){
-		header("Location: ../index.php");
-	}elseif($_SESSION['username']== 'supervisoras'){
-		header("Location: ../supervisoras/index.php");	
-	}elseif($_SESSION['username']== 'cordoba'){
-		header("Location: ../cordoba/eliminaPedidoCordoba.php");		
-	}elseif($_SESSION['username']== 'levi'){
-		header("Location: ../levi/eliminaPedidoLevi.php");	
-	}elseif($_SESSION['username']== 'salta'){
-		header("Location: ../salta/eliminaPedidoSalta.php");	
-	}elseif($_SESSION['permisos']== '6'){
-		header("Location: ../conteos/index.php");
-	}elseif($_SESSION['permisos']== '5'){
-		header("Location: ../conteos/index.php");			
-	}elseif($_SESSION['permisos']== '4' && $_SESSION['tipo']=='SUPERVISION'){
-		header("Location: ../../estadisticas/index.php");	
-	}elseif($_SESSION['username']== 'LOGISTICA'){
-		header("Location: ../control/control_logistica.php");	
-	}elseif($_SESSION['username']== 'comercial2'){
-		header("Location: ../../comercial2/index.php");		
-	}elseif($_SESSION['username']== 'directores'){
-		header("Location: ../../ppp/index.php");		
-	}elseif($_SESSION['username']== 'rotaciones'){
-		$_SESSION['nuevoPedido']=0; 
-		$_SESSION['cargaPedido']=1;
-		header("Location: ../rotaciones/index.php");
-	}elseif($_SESSION['dsn']== 'SIN'){
-		$_SESSION['nuevoPedido']=0; 
-		$_SESSION['cargaPedido']=1;
-		header("Location: ../index.php");
-	}elseif($loginRes['NOMBRE']=='COMERCIAL'){
-		header("Location: ../inicial/admin.php");
-	}elseif($_POST['conecta']=='no' && $_SESSION['numsuc'] > 104){
-		$_SESSION['dsn']= 'SIN';
-		$_SESSION['nuevoPedido']=0; 
-		$_SESSION['cargaPedido']=1;
-		header("Location: ../index.php");		
-	}elseif( in_array($_SESSION['tipo'], ['LOCAL_PROPIO', 'FRANQUICIA']) ){
-		header("Location: eliminaPedido.php");
-	}else{
-		header('Location:../login.php');
-	}
-	
+	if ($loginRes['NRO_SUCURS'] == 201 || $loginRes['NRO_SUCURS'] == 202) {     
+        header("Location: eliminaPedido.php");
+    } elseif ($loginRes['COD_VENDED'] != '0' && $_SESSION['tipo'] != 'MAYORISTA') {
+        $_SESSION['nuevoPedido'] = 0; 
+        $_SESSION['cargaPedido'] = 1;
+        header("Location: ../mayoristas/index.php");
+    } elseif ($_SESSION['tipo'] == 'MAYORISTA') {
+        header("Location: ../index.php");
+    } elseif ($_SESSION['username'] == 'supervisoras') {
+        header("Location: ../supervisoras/index.php");   
+    } elseif ($_SESSION['username'] == 'cordoba') {
+        header("Location: ../cordoba/eliminaPedidoCordoba.php");      
+    } elseif ($_SESSION['username'] == 'levi') {
+        header("Location: ../levi/eliminaPedidoLevi.php"); 
+    } elseif ($_SESSION['username'] == 'salta') {
+        header("Location: ../salta/eliminaPedidoSalta.php");  
+    } elseif ($_SESSION['permisos'] == '6') {
+        header("Location: ../conteos/index.php");
+    } elseif ($_SESSION['permisos'] == '5') {
+        header("Location: ../conteos/index.php");           
+    } elseif ($_SESSION['permisos'] == '4' && $_SESSION['tipo'] == 'SUPERVISION') {
+        if (isMobile()) {
+            header("Location: ../../estadisticas/indexMobile.php");
+        } else {
+            header("Location: ../../estadisticas/index.php");
+        }
+    } elseif ($_SESSION['username'] == 'LOGISTICA') {
+        header("Location: ../control/control_logistica.php");    
+    } elseif ($_SESSION['username'] == 'comercial2') {
+        header("Location: ../../comercial2/index.php");      
+    } elseif ($_SESSION['username'] == 'directores') {
+        header("Location: ../../ppp/index.php");     
+    } elseif ($_SESSION['username'] == 'rotaciones') {
+        $_SESSION['nuevoPedido'] = 0; 
+        $_SESSION['cargaPedido'] = 1;
+        header("Location: ../rotaciones/index.php");
+    } elseif ($_SESSION['dsn'] == 'SIN') {
+        $_SESSION['nuevoPedido'] = 0; 
+        $_SESSION['cargaPedido'] = 1;
+        header("Location: ../index.php");
+    } elseif ($loginRes['NOMBRE'] == 'COMERCIAL') {
+        header("Location: ../inicial/admin.php");
+    } elseif ($_POST['conecta'] == 'no' && $_SESSION['numsuc'] > 104) {
+        $_SESSION['dsn'] = 'SIN';
+        $_SESSION['nuevoPedido'] = 0; 
+        $_SESSION['cargaPedido'] = 1;
+        header("Location: ../index.php");       
+    } elseif (in_array($_SESSION['tipo'], ['LOCAL_PROPIO', 'FRANQUICIA'])) {
+        header("Location: eliminaPedido.php");
+    } else {
+        header('Location:../login.php');
+    }
 }
-
 ?>
