@@ -226,6 +226,7 @@ const ajustePropio  = () => {
 
     let arrayDeArticulos = []
     let allTr = document.querySelectorAll("tbody tr")
+    let nroSolicitud = document.querySelector("#nroSolicitud").textContent
     allTr.forEach(tr => {
 
         if(tr.querySelectorAll("td")[6].querySelector("input").checked == true){
@@ -332,7 +333,8 @@ const ajustePropio  = () => {
                                         url:"Controller/RecodificacionController.php?accion=ajustarArticulos",
                                         type:"POST",
                                         data:{
-                                            arrayDeArticulos:arrayDeArticulos
+                                            arrayDeArticulos:arrayDeArticulos,
+                                            nroSolicitud:nroSolicitud
                                         },
                                         success:function(data){
                                             document.querySelector("#boxLoading").classList.remove('loading')
