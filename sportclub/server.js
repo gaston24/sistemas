@@ -14,9 +14,10 @@ app.post('/buscar-socio', async (req, res) => {
   try {
     const response = await axios({
       method: 'post',
-      url: 'https://integraciones.stg.sportclub.com.ar/cheeky/socio/',
+      url: 'https://integraciones.stg.sportclub.com.ar/docs/cheeky/',
       headers: {
         'api-key': 'X4UQgbx7RMIkvJjQozuBMRUWOUqfPIf086sg5L302OR7O3lgPZBgvk1hGMpRPHyi',
+        'docs-key': 'qs2PpeNgJT2mRMTkYy28%3FA-iGhmMTM%219mY%21isiY5hxB-WRhvf%3FaerP4jn3LqLBQR',
       },
       data: {
         documento: documento,

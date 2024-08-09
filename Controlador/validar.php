@@ -88,7 +88,11 @@ if( count($loginRes) == 0 ){
     } elseif ($_SESSION['username'] == 'comercial2') {
         header("Location: ../../comercial2/index.php");      
     } elseif ($_SESSION['username'] == 'directores') {
-        header("Location: ../../ppp/index.php");     
+        if (isMobile()) {
+            header("Location: ../../ppp/indexMob.php");
+        } else {
+            header("Location: ../../ppp/index.php");
+        }     
     } elseif ($_SESSION['username'] == 'rotaciones') {
         $_SESSION['nuevoPedido'] = 0; 
         $_SESSION['cargaPedido'] = 1;
