@@ -12,6 +12,7 @@ document.getElementById('buscar').addEventListener('click', async () => {
       });
   
       const data = response.data;
+      console.log(data);
       displayResult(data);
     } catch (error) {
       console.error('Error al buscar el socio:', error);
@@ -21,12 +22,16 @@ document.getElementById('buscar').addEventListener('click', async () => {
   
   function displayResult(data) {
     const resultDiv = document.getElementById('result');
+    if(data.Response)
+    {
+      console.log('Socio Válido');
+      estado='<p style="color:green;font-size:30px;"><strong>Socio Válido</strong></p>';
+    }else{
+      console.log('Socio Inexistente');
+      estado='<p style="color:red;font-size:30px;"><strong>Socio Inexistente</strong></p>';
+    }
     resultDiv.innerHTML = `
-      <h3>Información del Socio</h3>
-      <p><strong>Nombre:</strong> ${data.nombre}</p>
-      <p><strong>Apellido:</strong> ${data.apellido}</p>
-      <p><strong>Documento:</strong> ${data.documento}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
+      <h3>Información del Socio</h3>${estado};
     `;
   }
   
