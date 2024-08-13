@@ -809,13 +809,12 @@ class Recodificacion
         $conn = new Conexion();
         $cid = $conn->conectar('local');
 
-        $sql="SELECT CASE WHEN EXISTS (
-          	 SELECT 1 FROM STA14 A 
+        $sql="SELECT CASE WHEN (
+          	 SELECT COUNT(*) FROM STA14 A 
             INNER JOIN STA20 B ON A.ID_STA14 = B.ID_STA14
             WHERE A.NCOMP_ORIG ='$nComp'
             AND B.COD_ARTICU ='$articulo'
-            AND B.CANTIDAD >= '$cantidad'
-        ) THEN 'true' ELSE 'false' END AS ArticuloExiste;";
+        ) >=  $cantidad THEN 'true' ELSE 'false' END AS ArticuloExiste;";
     
          
         $stmt = sqlsrv_query($cid, $sql);
