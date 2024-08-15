@@ -1,72 +1,38 @@
 
-body
-{  
-    margin:0;
-    margin-left: 40%;
+body {
+    background-color: #f8f9fa;
 }
-
-.select2-container--default .select2-search--dropdown .select2-search__field {
-    border: 1px solid #aaa;
-    margin-left: 0;
-    margin-top: 0;
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
-
-.page-wrapper{
-    width: 350px;
+.form-control, .btn {
+    border-radius: 10px;
 }
-
-.wrapper--w280{
-    width: 350px;
+.navbar {
+    background-color: #dc3545;
+    color: white;
 }
-
-h4{
-    margin-top: 1rem;
-    margin-left: 0.5rem;
-    margin-bottom: 2rem;
+.input-group-text {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: 95px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
 }
-
-input.info{
-    width: 15rem;
-    display: flex;
-    align-items: center;
-    margin-left: 6rem;
-    margin-top: -1.5rem;
-    margin-bottom: 1rem;
+.input-group {
+    position: relative;
 }
-
-.btn{
-    margin-left: 0.5rem;
+.list-group-item{
+    font-size:14px;
 }
-
-#cont{
-    margin-top: 1.5rem;
-    margin-left: 0.5rem;
+.thead{
+    font-size: 13px;
 }
-
-@media only screen and (max-width: 1281px) {
-
-    body {
-      margin: 0;
-      padding: 0; 
-      margin-top: 0.6rem; 
-    }
-
-    .card{
-        margin-left: 0.2rem;
-    }   
-
-    input
-    {
-        width: 14rem;
-        font-size: 0.9em;
-    }
-  
-    /* .contInputs
-    { 
-        margin: 0 0 0 0;
-        height:50vh;
-        width: 85vw;
-        padding: 0;
-    } */
-
-  }
+#tbodyStockPrecio {
+    font-size: 11px;
+}

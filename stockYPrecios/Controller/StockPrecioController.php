@@ -9,6 +9,11 @@ switch ($accion) {
 
         break;
 
+    case 'traerVariantes':
+        traerVariantes();
+
+        break;
+
     
     default:
         # code...
@@ -25,6 +30,23 @@ function traerArticulos () {
     $usuarioUy = $_POST['usuarioUy'];
 
     $result = $articulo->traerMaestroArticulo($codArticulo, $usuarioUy);
+     
+
+    echo json_encode($result);
+
+
+}
+
+function traerVariantes () {
+
+    require_once "../class/StockPrecio.php";
+
+    $articulo = new StockPrecio();
+    
+    $codArticulo = $_POST['codArticulo'];
+    $usuarioUy = $_POST['usuarioUy'];
+
+    $result = $articulo->traerVariantes($codArticulo, $usuarioUy);
      
 
     echo json_encode($result);

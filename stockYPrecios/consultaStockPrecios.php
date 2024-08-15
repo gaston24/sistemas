@@ -1,108 +1,87 @@
-<?php 
-    session_start();
-
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
-?>
-
 <!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Solicitud de Recodificacion</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" class="rel">
-        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" class="rel">
-
-        <!-- Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="css/style.css">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Consulta Stock y Precios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css" class="rel">
+ 
+</head>
+<body>
+    <div class="container py-4">
+        <nav class="navbar navbar-dark mb-3">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">
+                    <i class="bi bi-search"></i> Consulta Stock y Precios
+                </span>
+            </div>
+        </nav>
         
-        </link>
-        <style>
-
-            /* .select2-dropdown.select2-dropdown--above {
-
-                width:300px;
-            } */
-        </style>
-
-    </head>
-
-    <body>
-        
-      
-        <input type="file" name="archivos[]" id="archivos" multiple accept=".pdf, .jpg, .png" style="display: none;" />
-        <div id="carruselImagenes" class="modal fade" tabindex="-1" aria-hidden="true" style="margin-left:10%;max-width:80%"></div>
-        <div id="nroSucursal" hidden><?= $nroSucurs; ?></div>
-
         <div class="card">
-            <div class="page-wrapper bg-secondary p-b-100 pt-2 font-robo">
-                <div class="wrapper wrapper--w280"><div style="color:white; text-align:center"><h6>Consulta Stock y Precios</h6></div>
-                    <div class="card card-1">
-                        <div id="periodo" hidden><?= $periodo ?></div>
-                        <div>
-                        
-                            <h4><strong><i class="bi bi-search"></i>Consulta Stock y Precios </strong></h4>
-
-                        </div>
-
-                        <div>
-
-                            <div class="contInputs">
-
-                                <div class="form-inline" style="margin-left: 0.5rem;">
-                                    <input name="selectArticulo" id="selectArticulo" class = "form-control selectArticulo" type="text" style="width: 13rem;" onchange="traerArticulo(this,<?= $_SESSION['usuarioUy'] ?>)">
-                                    <button class="btn btn-danger btn-sm" onclick="borrar()">Borrar <i class="bi bi-x-circle"></i></button>
-                                </div>
-                               <div id="cont">
-
-                                    <div>
-                                        Articulo : <input type="text" class="info" id="articulo" disabled>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        Descripcion : <input type="text" class="info" id="descripcion" disabled>
-                                        </select>
-                                    </div>
-                                    <div >
-                                        Stock : <input type="text" class="info" id="stock" disabled>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        Precio : <input type="text" class="info" id="precio" disabled>
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
-            
-                       
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="selectArticulo" placeholder="Ingrese código">
+                        <span class="input-group-text" onclick="borrar()">
+                            <i class="bi bi-x-circle"></i>
+                        </span>
+                        <button class="btn btn-primary" type="button" onclick="traerArticulo(document.getElementById('selectArticulo'), <?= json_encode($_SESSION['usuarioUy'] ?? null) ?>)">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
                     </div>
+                </div>
+
+                <div id="resultadoArticulo" class="mt-4">
+                    <h6 class="card-title mb-2">Información del Artículo</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Artículo
+                            <input type="text" class="form-control-plaintext text-end" id="articulo" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Descripción
+                            <input type="text" class="form-control-plaintext text-end" id="descripcion" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Stock
+                            <input type="text" class="form-control-plaintext text-end" id="stock" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Precio
+                            <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-        <link rel="stylesheet" type="text/css" href="assets/select2/select2.min.css">
-        <script src="assets/select2/select2.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-        <script src="js/consultaStockPrecio.js"></script>
-    </body>
 
+        <!-- Nueva card con la tabla de datos -->
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title mb-2">Variantes del artículo</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead">
+                            <tr>
+                                <th>Artículo</th>
+                                <th>Color</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyStockPrecio">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/consultaStockPrecio.js"></script>
+ 
+</body>
 </html>
-<script>
-</script>
-<!-- <script src="js/gastosTesoreria.js"></script> -->
-
