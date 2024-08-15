@@ -7,7 +7,7 @@ document.getElementById('buscar').addEventListener('click', async () => {
     }
   
     try {
-      const response = await axios.post('http://app.xl.com.ar:4000/buscar-socio', {
+      const response = await axios.post('https://sportclub-pinq.onrender.com/buscar-socio', {
         documento: documento,
       });
   

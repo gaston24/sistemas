@@ -5,29 +5,23 @@ const path = require('path');
 const helmet = require('helmet');  // Importar helmet
 
 const app = express();
-const port = 4000;
+const port = 3000;
 
 app.use(express.json());
+app.use(express.static('public'));
 app.use(cors());
 
-// Configurar Helmet para agregar políticas de seguridad
-// Configurar Helmet para agregar políticas de seguridad
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'", "https:"],  // Permitir todo desde el mismo origen y HTTPS
-      fontSrc: ["'self'", "https:", "data:"],  // Permitir fuentes desde el mismo origen, HTTPS y data URIs
-      scriptSrc: ["'self'"],  // Permitir scripts desde el mismo origen
-      styleSrc: ["'self'", "https:"],  // Permitir estilos desde el mismo origen y HTTPS
-      imgSrc: ["'self'", "https:", "data:"],  // Permitir imágenes desde el mismo origen, HTTPS y data URIs
-      connectSrc: ["'self'", "https:"],  // Permitir conexiones desde el mismo origen y HTTPS
-
-    },
-  })
-);
-
-app.use(cors({
-  origin: 'http://app.xl.com.ar'
+// Configura CSP con Helmet para asegurar la coherencia y evitar conflictos
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],  // Fallback default
+    fontSrc: ["'self'", "https://sportclub-pinq.onrender.com", "https://cdn.jsdelivr.net"],  // Permite fuentes de estos dominios
+    scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://sportclub-pinq.onrender.com"],  // Permite scripts de estos dominios
+    connectSrc: ["'self'", "https://sportclub-pinq.onrender.com"],  // Permite conexiones a estos dominios (para Axios)
+    imgSrc: ["'self'", "data:"],  // Permite imágenes del mismo origen y data URIs
+    styleSrc: ["'self'", "https://cdn.jsdelivr.net"]  // Permite estilos del mismo origen y CDN
+    // Puedes agregar más directivas según sea necesario
+  }
 }));
 
 app.post('/buscar-socio', async (req, res) => {
@@ -52,6 +46,6 @@ app.post('/buscar-socio', async (req, res) => {
   }
 });
 
-app.listen(port,'0.0.0.0', () => {
+app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });

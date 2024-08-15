@@ -5,12 +5,9 @@ document.getElementById('selectArticulo').addEventListener('keydown', function(e
   }
 });
 
-
 const traerArticulo = (div, usuarioUy = null) => {
-
-
   console.log("aca");
-  codArticulo =  div.value
+  const codArticulo = div.value;
 
   $.ajax({
       url: "Controller/StockPrecioController.php?accion=traerArticulos",
@@ -20,23 +17,27 @@ const traerArticulo = (div, usuarioUy = null) => {
         usuarioUy: usuarioUy
       },
       success: function (response) {
-          data = JSON.parse(response);
+          const data = JSON.parse(response);
   
           if(data.length > 0){
-
-              document.querySelector("#articulo").value = data[0]['COD_ARTICU'] ;
+              document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
               document.querySelector("#descripcion").value = data[0]['DESCRIPCIO'];
-              document.querySelector("#stock").value =  parseInt(data[0]['CANT_STOCK']) ;
+              document.querySelector("#stock").value = parseInt(data[0]['CANT_STOCK']);
               document.querySelector("#precio").value = "$" + parseNumber(data[0]['PRECIO']);
+              document.querySelector("#destino").value = data[0]['DESTINO'];
 
-          }else{
-
-              document.querySelector("#articulo"). value = "" ;
-              document.querySelector("#descripcion").value = "";
-              document.querySelector("#stock").value =  "" ;
-              document.querySelector("#precio").value = "";
-
+              // Mostrar u ocultar el badge SALE
+              const badgeElement = document.querySelector('.estado-badge');
+              if (data[0]['LIQUIDACION'] === 'SI') {
+                  badgeElement.style.display = 'inline-block';
+                  badgeElement.textContent = 'SALE';
+              } else {
+                  badgeElement.style.display = 'none';
+              }
+          } else {
+              borrar();
           }
+
           $.ajax({
             url: "Controller/StockPrecioController.php?accion=traerVariantes",
             type: "POST",
@@ -50,7 +51,6 @@ const traerArticulo = (div, usuarioUy = null) => {
               let variantes = JSON.parse(response);
               
               variantes.forEach(element => {
-
                 console.log(element);
 
                 let tr = document.createElement("tr");
@@ -59,13 +59,10 @@ const traerArticulo = (div, usuarioUy = null) => {
                 let tdStock = document.createElement("td");
                 let tdPrecio = document.createElement("td");
 
-                tdArticulo.textContent = element.COD_ARTICU
-
-                tdColor.textContent = element.COLOR
-
-                tdStock.textContent = element.CANT_STOCK
-
-                tdPrecio.textContent = "$" + parseNumber(element.PRECIO)
+                tdArticulo.textContent = element.COD_ARTICU;
+                tdColor.textContent = element.COLOR;
+                tdStock.textContent = element.CANT_STOCK;
+                tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
 
                 tr.appendChild(tdArticulo);
                 tr.appendChild(tdColor);
@@ -73,23 +70,18 @@ const traerArticulo = (div, usuarioUy = null) => {
                 tr.appendChild(tdPrecio);
 
                 tbodyStockPrecio.appendChild(tr);
-                
               });
               div.value = '';
             }
-          })
-
+          });
       }
-  
-    });
-
-
+  });
 }
 
 const parseNumber = (number) => {
   number = parseInt(number);
 
-  newNumber = number.toLocaleString('de-De', {
+  const newNumber = number.toLocaleString('de-De', {
       style: 'decimal',
       maximumFractionDigits: 0,
       minimumFractionDigits: 0
@@ -104,5 +96,9 @@ const borrar = () => {
   document.querySelector("#descripcion").value = "";
   document.querySelector("#stock").value = "";
   document.querySelector("#precio").value = "";
+  document.querySelector("#destino").value = "";
   document.querySelector("#selectArticulo").focus();
+
+  // Ocultar el badge SALE al borrar
+  document.querySelector('.estado-badge').style.display = 'none';
 }

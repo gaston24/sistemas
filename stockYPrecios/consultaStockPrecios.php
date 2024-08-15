@@ -10,8 +10,8 @@
  
 </head>
 <body>
-    <div class="container py-4">
-        <nav class="navbar navbar-dark mb-3">
+    <div class="container py-1">
+        <nav class="navbar navbar-dark mb-1">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">
                     <i class="bi bi-search"></i> Consulta Stock y Precios
@@ -21,20 +21,24 @@
         
         <div class="card">
             <div class="card-body">
-                <div class="mb-3">
+                <div class="mb-2">
                     <div class="input-group">
                         <input type="text" class="form-control" id="selectArticulo" placeholder="Ingrese código">
                         <span class="input-group-text" onclick="borrar()">
                             <i class="bi bi-x-circle"></i>
                         </span>
                         <button class="btn btn-primary" type="button" onclick="traerArticulo(document.getElementById('selectArticulo'), <?= json_encode($_SESSION['usuarioUy'] ?? null) ?>)">
-                            <i class="bi bi-search"></i> Buscar
+                            <i class="bi bi-search"></i>
                         </button>
                     </div>
                 </div>
 
-                <div id="resultadoArticulo" class="mt-4">
-                    <h6 class="card-title mb-2">Información del Artículo</h6>
+                <div id="resultadoArticulo" class="mt-3">
+                    <h6 class="card-title mb-1">Información del Artículo
+                    <h5 class="card-title">
+                        <span class="estado-badge badge" style="display: none;">SALE</span>
+                    </h5>
+                    </h6>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Artículo
@@ -51,6 +55,10 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Precio
                             <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Destino
+                            <input type="text" class="form-control-plaintext text-end" id="destino" readonly>
                         </li>
                     </ul>
                 </div>
