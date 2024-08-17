@@ -9,7 +9,7 @@ const traerArticulo = (div, usuarioUy = null) => {
         codArticulo: codArticulo,
         usuarioUy: usuarioUy
       },
-      dataType: 'json',  // Esperamos JSON
+      dataType: 'json',
       success: function (data) {
           if(data.length > 0){
               document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
@@ -48,31 +48,34 @@ const traerVariantes = (codArticulo, usuarioUy) => {
       codArticulo: codArticulo,
       usuarioUy: usuarioUy
     },
-    dataType: 'json',  // Esperamos JSON
+    dataType: 'json',
     success: function (variantes) {
       let tbodyStockPrecio = document.querySelector("#tbodyStockPrecio");
       tbodyStockPrecio.innerHTML = '';
       
       variantes.forEach(element => {
-        console.log(element);
+        // Solo agregar a la tabla si no es el artículo original
+        if (element.COD_ARTICU !== codArticulo) {
+          console.log(element);
 
-        let tr = document.createElement("tr");
-        let tdArticulo = document.createElement("td");
-        let tdColor = document.createElement("td");
-        let tdStock = document.createElement("td");
-        let tdPrecio = document.createElement("td");
+          let tr = document.createElement("tr");
+          let tdArticulo = document.createElement("td");
+          let tdColor = document.createElement("td");
+          let tdStock = document.createElement("td");
+          let tdPrecio = document.createElement("td");
 
-        tdArticulo.textContent = element.COD_ARTICU;
-        tdColor.textContent = element.COLOR;
-        tdStock.textContent = element.CANT_STOCK;
-        tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
+          tdArticulo.textContent = element.COD_ARTICU;
+          tdColor.textContent = element.COLOR;
+          tdStock.textContent = element.CANT_STOCK;
+          tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
 
-        tr.appendChild(tdArticulo);
-        tr.appendChild(tdColor);
-        tr.appendChild(tdStock);
-        tr.appendChild(tdPrecio);
+          tr.appendChild(tdArticulo);
+          tr.appendChild(tdColor);
+          tr.appendChild(tdStock);
+          tr.appendChild(tdPrecio);
 
-        tbodyStockPrecio.appendChild(tr);
+          tbodyStockPrecio.appendChild(tr);
+        }
       });
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -104,4 +107,18 @@ const borrar = () => {
 
   // Ocultar el badge SALE al borrar
   document.querySelector('.estado-badge').style.display = 'none';
+
+  // Limpiar la tabla de variantes
+  let tbodyStockPrecio = document.querySelector("#tbodyStockPrecio");
+  if (tbodyStockPrecio) {
+    tbodyStockPrecio.innerHTML = '';
+  }
 }
+
+// Agregar evento de tecla Enter al campo de búsqueda
+document.getElementById('selectArticulo').addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    document.querySelector('.btn-primary').click();
+  }
+});

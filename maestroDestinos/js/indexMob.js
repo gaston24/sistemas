@@ -21,6 +21,7 @@ document.getElementById('selectArticulo').addEventListener('keydown', function(e
             if(data.length > 0){
                 document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
                 document.querySelector("#descripcion").value = data[0]['DESCRIPCION'];
+                document.querySelector("#rubro").value = data[0]['RUBRO'];
                 document.querySelector("#precio").value = data[0]['PRECIO'] ? "$" + parseNumber(data[0]['PRECIO']) : "N/A";
                 document.querySelector("#destino").value = data[0]['DESTINO'] || "N/A";
                 document.querySelector("#temporada").value = data[0]['TEMPORADA'] || "N/A";
@@ -35,7 +36,11 @@ document.getElementById('selectArticulo').addEventListener('keydown', function(e
                 }
             } else {
                 borrar();
-                alert("No se encontraron datos para este artículo.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "El articulo es incorrecto!",
+                  });
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -50,7 +55,7 @@ document.getElementById('selectArticulo').addEventListener('keydown', function(e
     number = parseFloat(number);
     return number.toLocaleString('es-AR', {
         style: 'decimal',
-        minimumFractionDigits: 2,
+        minimumFractionDigits: 0,
         maximumFractionDigits: 2
     });
   }
@@ -59,6 +64,8 @@ document.getElementById('selectArticulo').addEventListener('keydown', function(e
     document.querySelector("#selectArticulo").value = "";
     document.querySelector("#articulo").value = "";
     document.querySelector("#descripcion").value = "";
+    document.querySelector("#rubro").value = "";
+    document.querySelector("#rubro").value = "";
     document.querySelector("#precio").value = "";
     document.querySelector("#destino").value = "";
     document.querySelector("#temporada").value = "";

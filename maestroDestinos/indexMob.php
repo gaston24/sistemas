@@ -14,6 +14,7 @@ $maestroArticulos = new Articulo();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Consulta Destino</title>
+    <link rel="shortcut icon" href="../assets/css/icono.jpg" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/indexMob.css" class="rel">
@@ -59,6 +60,10 @@ $maestroArticulos = new Articulo();
                             <input type="text" class="form-control-plaintext text-end" id="descripcion" readonly>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Rubro
+                            <input type="text" class="form-control-plaintext text-end" id="rubro" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
                             Precio
                             <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
                         </li>
@@ -75,6 +80,7 @@ $maestroArticulos = new Articulo();
             </div>
         </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/indexMob.js"></script>

@@ -46,7 +46,10 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                     <i class="fas fa-search"></i> Consultas
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
                     <a class="dropdown-item spinner" href="stockYprecios/consultaStockPrecios.php" onclick="location.href='guia_local'"><i class="fas fa-boxes"></i> Stock y Precios</a>
+                    <?php } ?>
+                    <a class="dropdown-item spinner" href="#" onclick="location.href='maestroDestinos/indexMob.php'"><i class="fas fa-map-marker-alt"></i> Destinos por Articulo</a>
                 </div>
             </li>
        
