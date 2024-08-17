@@ -2,6 +2,22 @@
 body {
     background-color: #f8f9fa;
 }
+.container {
+    max-width: 100%;
+    padding: 15px;
+}
+#imagenArticulo{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (min-width: 768px) {
+    .container {
+        max-width: 420px;
+        max-height: 650px;
+        margin: 0 auto;
+    }
+}
 .card {
     border-radius: 0 0 15px 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,4 +61,3 @@ body {
     justify-content: center;
     left: 20%;
 }
-

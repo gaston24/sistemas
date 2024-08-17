@@ -29,12 +29,20 @@ const traerArticulo = (div, usuarioUy = null) => {
               traerVariantes(codArticulo, usuarioUy);
           } else {
               borrar();
-              alert("No se encontraron datos para este artículo.");
+              Swal.fire({
+                icon: 'info',
+                title: 'Sin resultados',
+                text: 'No se encontraron datos para este artículo.',
+              });
           }
       },
       error: function(jqXHR, textStatus, errorThrown) {
           console.error("Error en la solicitud AJAX:", textStatus, errorThrown);
-          alert("Hubo un error al obtener los datos del artículo. Por favor, intente de nuevo.");
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al obtener los datos del artículo. Por favor, intente de nuevo.',
+          });
           borrar();
       }
   });
@@ -80,7 +88,11 @@ const traerVariantes = (codArticulo, usuarioUy) => {
     },
     error: function(jqXHR, textStatus, errorThrown) {
       console.error("Error al obtener variantes:", textStatus, errorThrown);
-      alert("Hubo un error al obtener las variantes del artículo. Por favor, intente de nuevo.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al obtener las variantes del artículo. Por favor, intente de nuevo.',
+      });
     }
   });
 }
