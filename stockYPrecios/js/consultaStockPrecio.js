@@ -1,10 +1,3 @@
-document.getElementById('selectArticulo').addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') {
-      event.preventDefault(); // Prevenir comportamiento por defecto
-      document.querySelector('.btn-primary').click(); // Hacer clic en el botón de buscar
-  }
-});
-
 const traerArticulo = (div, usuarioUy = null) => {
   console.log("aca");
   const codArticulo = div.value;
@@ -16,15 +9,13 @@ const traerArticulo = (div, usuarioUy = null) => {
         codArticulo: codArticulo,
         usuarioUy: usuarioUy
       },
-      success: function (response) {
-          const data = JSON.parse(response);
-  
+      dataType: 'json',  // Esperamos JSON
+      success: function (data) {
           if(data.length > 0){
               document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
               document.querySelector("#descripcion").value = data[0]['DESCRIPCIO'];
               document.querySelector("#stock").value = parseInt(data[0]['CANT_STOCK']);
               document.querySelector("#precio").value = "$" + parseNumber(data[0]['PRECIO']);
-              document.querySelector("#destino").value = data[0]['DESTINO'];
 
               // Mostrar u ocultar el badge SALE
               const badgeElement = document.querySelector('.estado-badge');
@@ -34,47 +25,60 @@ const traerArticulo = (div, usuarioUy = null) => {
               } else {
                   badgeElement.style.display = 'none';
               }
+
+              traerVariantes(codArticulo, usuarioUy);
           } else {
               borrar();
+              alert("No se encontraron datos para este artículo.");
           }
-
-          $.ajax({
-            url: "Controller/StockPrecioController.php?accion=traerVariantes",
-            type: "POST",
-            data: {
-              codArticulo: codArticulo,
-              usuarioUy: usuarioUy
-            },
-            success: function (response) {
-              let tbodyStockPrecio = document.querySelector("#tbodyStockPrecio");
-              tbodyStockPrecio.innerHTML = '';
-              let variantes = JSON.parse(response);
-              
-              variantes.forEach(element => {
-                console.log(element);
-
-                let tr = document.createElement("tr");
-                let tdArticulo = document.createElement("td");
-                let tdColor = document.createElement("td");
-                let tdStock = document.createElement("td");
-                let tdPrecio = document.createElement("td");
-
-                tdArticulo.textContent = element.COD_ARTICU;
-                tdColor.textContent = element.COLOR;
-                tdStock.textContent = element.CANT_STOCK;
-                tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
-
-                tr.appendChild(tdArticulo);
-                tr.appendChild(tdColor);
-                tr.appendChild(tdStock);
-                tr.appendChild(tdPrecio);
-
-                tbodyStockPrecio.appendChild(tr);
-              });
-              div.value = '';
-            }
-          });
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.error("Error en la solicitud AJAX:", textStatus, errorThrown);
+          alert("Hubo un error al obtener los datos del artículo. Por favor, intente de nuevo.");
+          borrar();
       }
+  });
+}
+
+const traerVariantes = (codArticulo, usuarioUy) => {
+  $.ajax({
+    url: "Controller/StockPrecioController.php?accion=traerVariantes",
+    type: "POST",
+    data: {
+      codArticulo: codArticulo,
+      usuarioUy: usuarioUy
+    },
+    dataType: 'json',  // Esperamos JSON
+    success: function (variantes) {
+      let tbodyStockPrecio = document.querySelector("#tbodyStockPrecio");
+      tbodyStockPrecio.innerHTML = '';
+      
+      variantes.forEach(element => {
+        console.log(element);
+
+        let tr = document.createElement("tr");
+        let tdArticulo = document.createElement("td");
+        let tdColor = document.createElement("td");
+        let tdStock = document.createElement("td");
+        let tdPrecio = document.createElement("td");
+
+        tdArticulo.textContent = element.COD_ARTICU;
+        tdColor.textContent = element.COLOR;
+        tdStock.textContent = element.CANT_STOCK;
+        tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
+
+        tr.appendChild(tdArticulo);
+        tr.appendChild(tdColor);
+        tr.appendChild(tdStock);
+        tr.appendChild(tdPrecio);
+
+        tbodyStockPrecio.appendChild(tr);
+      });
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.error("Error al obtener variantes:", textStatus, errorThrown);
+      alert("Hubo un error al obtener las variantes del artículo. Por favor, intente de nuevo.");
+    }
   });
 }
 
@@ -96,7 +100,6 @@ const borrar = () => {
   document.querySelector("#descripcion").value = "";
   document.querySelector("#stock").value = "";
   document.querySelector("#precio").value = "";
-  document.querySelector("#destino").value = "";
   document.querySelector("#selectArticulo").focus();
 
   // Ocultar el badge SALE al borrar
