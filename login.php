@@ -7,103 +7,116 @@ if(isset($_SESSION['username'])){
 
 ?>
 
-<!doctype html>
-<html charset="UTF-8">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<?php include 'assets/css/header.php'; ?>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<?php include __DIR__.'/ajustes/css/headers/include_1.php'; ?>
-<link rel="stylesheet" href="css/style2.css">
-<title>Login</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>XL Gestion - Login</title>
+	<link rel="shortcut icon" href="assets/css/icono.jpg" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            height: 80vh;
+			margin-top:7rem;
+        }
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 15px;
+        }
+        .form-control-icon {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
+        }
+        .form-control {
+            padding-left: 2.375rem;
+        }
+        .input-group-append .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .connection-row {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .connection-row label {
+            margin-right: 10px;
+            margin-bottom: 0;
+        }
+        .connection-row select {
+			flex-grow: 1;
+			width: auto;
+		}
+		/* Media queries para responsividad */
+		@media (max-width: 480px) {
+		body {
+			margin-top:2px;
+		}
+		}
+    </style>
 </head>
-
 <body>
-	<div id="contenedor">
+    <div class="login-container">
+        <h1 class="text-center mb-4">XL GESTION</h1>
+        <div class="text-center mb-4">
+            <img src="Controlador/logo.jpg" alt="XL EXTRA LARGE" class="img-fluid" style="max-width: 200px;">
+        </div>
+        <form action="Controlador/validar.php" method="post">
+            <div class="form-group position-relative">
+                <i class="fas fa-user form-control-icon"></i>
+                <input type="text" class="form-control" id="usuarioRegistrado" name="user" placeholder="Usuario" required autofocus>
+            </div>
+            <div class="form-group position-relative">
+                <i class="fas fa-lock form-control-icon"></i>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="pass" placeholder="Contraseña" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+            <div class="connection-row">
+                <label for="inputState">Conectar con local:</label>
+                <select class="form-control" id="inputState" name="conecta">
+                    <option selected value="si">Si</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </form>
+    </div>
 
-	<header id="encabezado">
-		<h1 align="center">XL GESTION</h1>
-
-	</header>
-
-	<aside id="logo">
-		<img src="Controlador/logo.jpg">
-	</aside>
-	
-	<section id="contenido">
-		<article>
-			<form action="Controlador/validar.php" method="post">	
-				<div class="container login-form">
-					<h2 class="login-title">- Please Login -</h2>
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<form>
-								<div class="input-group login-userinput">
-									<span class="input-group-addon"><span class="fa fa-user mr-3" id="userIcon"></span></span>
-									<input class="form-control" type="text" id="usuarioRegistrado" name="user" placeholder="Usuario" required autofocus>
-								</div>
-								<div class="input-group">
-									<span class="input-group-addon"><span class="fa fa-lock mr-3" id="userIcon"></span></span>
-									<input class="form-control" type="password" value="hunter2" id="example-password-input" placeholder="Contraseña" name="pass" required>
-									<span id="showPassword" class="input-group-btn">
-							<button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-						</span>  
-								</div>
-								<button class="btn btn-primary btn-block login-button" type="submit"><i class="fa fa-sign-in"></i> Ingresar</button>
-								<!-- spinner -->
-								<div id="boxLoading"></div>
-								<div class="checkbox login-options mt-2">
-									<label for="">Conexión con el local</label>
-									<select id="inputState" name="conecta" >
-										<option selected value="si">Si</option>
-										<option value="no">No</option>
-									</select>	
-								</div>		
-							</form>			
-						</div>
-					</div>
-				</div>
-				<div class="row" style="justify-content:center">			
-					<div class="col-md-3 col-md-offset-3 alert alert-danger mt-2" role="alert" id="alertError" style="display:none;" >
-					<strong>Error!</strong><a> No existe el usuario </a>
-					</div>
-				</div>
-
-			</form>
-		</article>
-	</section>
-		
-	</div>
-	
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      
+    </script>
 </body>
 
 <script>
 
-window.onload = function(){$("#showPassword").hide();}
-
-$("#txtPassword").on('change',function() {  
-		if($("#txtPassword").val())
-		{
-			$("#showPassword").show();
-		}
-		else
-		{
-			$("#showPassword").hide();
-		}
-});
-
-$(".reveal").on('click',function() {
-    var $pwd = $("#txtPassword");
-    if ($pwd.attr('type') === 'password') 
-		{
-        $pwd.attr('type', 'text');
-    } 
-		else 
-		{
-        $pwd.attr('type', 'password');
-    }
-});
-
+document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const password = document.getElementById('password');
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
 
 
 //Spinner listOrdenesActivas.php//

@@ -80,9 +80,9 @@ require 'class/fechaEntrega.php';
 		
 		include_once 'Controlador/nav_menu.php';
 		?>
-		<div class="form-group" style="margin-top: 1rem; margin-left: 7%;">
+		<div class="form-group" style="margin-top: 0.5rem;">
 			<div class="col-">
-				<div class="mb-4">
+				<div class="mb-1">
 					<div class="row" style="display: flex; justify-content: center;">
 						<div class="col-"><h2>Bienvenido/a</h2></div>
 					</div>
@@ -102,13 +102,13 @@ require 'class/fechaEntrega.php';
 				?>
 			</div>
 
-			<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;"> 
+			<div class="col-" style="margin-top: 1rem; display: flex; justify-content: center;"> 
 				<img src="Controlador/logo.jpg" style="height: 150px; width: 200px">
 			</div>
 		</div>
 		
 							
-		<div class="col-" style="margin-top: 2rem; display: flex; justify-content: center;">
+		<div class="col-" style="margin-top: 1rem; display: flex; justify-content: center;">
 			<div style="text-align: center; width: 24rem">
 				<?php
 				if($_SESSION['tipo'] == 'MAYORISTA'){
