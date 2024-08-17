@@ -18,11 +18,22 @@ $maestroArticulos = new Articulo();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/indexMob.css" class="rel">
- 
+    <style>
+        .list-group-item {
+            padding: 0.5rem 1rem;
+        }
+        .form-control-plaintext {
+            padding: 0;
+        }
+        #imagenArticulo {
+            max-width: 90%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <div class="container py-1">
-        <nav class="navbar navbar-dark mb-1">
+        <nav class="navbar navbar-dark">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">
                     <i class="bi bi-search"></i> Consulta Destino
@@ -32,7 +43,7 @@ $maestroArticulos = new Articulo();
         
         <div class="card">
             <div class="card-body">
-                <div class="mb-2">
+                <div class="mb-1">
                     <div class="input-group">
                         <input type="text" class="form-control" id="selectArticulo" placeholder="Ingrese código">
                         <span class="input-group-text" onclick="borrar()">
@@ -44,8 +55,9 @@ $maestroArticulos = new Articulo();
                     </div>
                 </div>
 
-                <div id="resultadoArticulo" class="mt-3">
-                    <h6 class="card-title mb-1">Información del Artículo
+                <div id="resultadoArticulo" class="mt-4">
+                    <img id="imagenArticulo" src="" alt="Imagen del artículo" style="display: none;">
+                    <h6 class="card-title mb-1 mt-1">Información del Artículo
                     <h5 class="card-title">
                         <span class="estado-badge badge" style="display: none;">SALE</span>
                     </h5>
@@ -79,11 +91,11 @@ $maestroArticulos = new Articulo();
                 </div>
             </div>
         </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/indexMob.js"></script>
- 
 </body>
 </html>
