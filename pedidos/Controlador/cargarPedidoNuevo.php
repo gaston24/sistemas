@@ -1,6 +1,10 @@
 <?php
 
-require '../../../Controlador/dsn_central.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
+$cid = new Conexion();
+$cid_central = $cid->conectar('central');
+
 require '../../../Controlador/fecha.php';
 require '../../../Controlador/carga_pedido_encabezado.php';
 
@@ -15,6 +19,7 @@ $t_ped = $_POST['tipo_pedido'];
 $depo = $_POST['depo'];
 $talon_ped = 97;
 
+
 //////////// TOMAR EL PROXIMO NUMERO Y EL PUNTO DE VENTA DEL TALONARIO 97 
 
 $sqlProx = "
@@ -22,14 +27,13 @@ $sqlProx = "
 	SELECT PROXIMO, SUCURSAL FROM GVA43 WHERE TALONARIO = $talon_ped
 	";
 
-$resultProx=odbc_exec($cid,$sqlProx)or die(exit("Error en odbc_exec"));
+	
+$resultProx = sqlsrv_query($cid_central, $sqlProx);
 
-while($v=odbc_fetch_array($resultProx)){
+while($v=sqlsrv_fetch_array($resultProx, SQLSRV_FETCH_ASSOC)){
 	$prox = $v['PROXIMO'];
 	$ptoVta = $v['SUCURSAL'];
-	
 }
-	
 
 ////////// DESCIFRAR PROXIMO NUMERO, CONVERTIRLO EN VARIABLE	
 	
@@ -38,9 +42,10 @@ $sqlProxDes = "
 	SELECT DBO.Fn_obtenerproximonumero('$prox')proxDes 
 	";
 
-$resultProxDes=odbc_exec($cid,$sqlProxDes)or die(exit("Error en odbc_exec"));
 
-while($v=odbc_fetch_array($resultProxDes)){
+$resultProxDes = sqlsrv_query($cid_central, $sqlProxDes);
+
+while($v=sqlsrv_fetch_array($resultProxDes, SQLSRV_FETCH_ASSOC)){
 	$proxDes = $v['proxDes'];
 }
 
@@ -58,12 +63,12 @@ $sqlActuaProx = "
 	SELECT DBO.Fn_encryptarproximonumero('$proxPed')proxEnc
 	";
 
-$resultProx=odbc_exec($cid,$sqlActuaProx)or die(exit("Error en odbc_exec"));
 
-while($v=odbc_fetch_array($resultProx)){
+$resultProx=sqlsrv_query($cid_central,$sqlActuaProx)or die(exit("Error en odbc_exec"));
+
+while($v=sqlsrv_fetch_array($resultProx, SQLSRV_FETCH_ASSOC)){
 	$proxPedDes = $v['proxEnc'];
 }
-
 /////////// ACTUALIZAR TABLA CON EL PROXIMO NUMERO
 
 $sqlActuaProxDes = "
@@ -71,7 +76,8 @@ $sqlActuaProxDes = "
 	UPDATE GVA43 SET PROXIMO = '$proxPedDes' WHERE TALONARIO = $talon_ped
 	";
 
-odbc_exec($cid,$sqlActuaProxDes)or die(exit("Error en odbc_exec"));
+
+sqlsrv_query($cid_central,$sqlActuaProxDes)or die(exit("Error en odbc_exec"));
 
 
 /************** AHORA SE CARGA EL PEDIDO **********/
@@ -101,9 +107,14 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 		
 		$sqlVerificaArt = "SELECT * FROM STA03 WHERE COD_ARTICU = '$codArt'";
 		
-		$resultVerifica = odbc_exec($cid, $sqlVerificaArt)or die(exit("Error en odbc_exec"));
+		// $resultVerifica = odbc_exec($cid, $sqlVerificaArt)or die(exit("Error en odbc_exec"));
+
+		$resultVerifica = sqlsrv_query($cid_central, $sqlVerificaArt)or die(exit("Error en odbc_exec"));
 			
-		if(odbc_num_rows($resultVerifica)==0){
+		// if(odbc_num_rows($resultVerifica)==0){
+		if(sqlsrv_num_rows($resultVerifica)==0){
+
+
 		
 			if($cantArt>0){
 				
@@ -163,10 +174,10 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 				$nroRenglon++;
 				
 				$sqlKit = "SELECT COD_INSUMO, CANTIDAD FROM STA03 WHERE COD_ARTICU = '$codArt'";
-				
-				$resultExplota = odbc_exec($cid, $sqlKit)or die(exit("Error en odbc_exec"));
-				
-				while($v=odbc_fetch_array($resultExplota)){
+
+				$resultExplota = sqlsrv_query($cid_central, $sqlKit)or die(exit("Error en odbc_exec"));
+
+				while($v=sqlsrv_fetch_array($resultExplota, SQLSRV_FETCH_ASSOC)){
 					
 					$codArt2 = $v['COD_INSUMO'];
 					$cantInsumo = $v['CANTIDAD'];

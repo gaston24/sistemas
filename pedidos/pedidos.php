@@ -199,7 +199,7 @@ if (!isset($_SESSION['username'])) {
                         <th>Precio</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tabla">
                     <?php foreach ($pedidos as $v) {
                         $imageName = substr($v['COD_ARTICU'], 0, 13);
                         $imageUrl = file_exists("../../Imagenes/".$imageName.".jpg") ? "../../Imagenes/".$imageName.".jpg" : "";
