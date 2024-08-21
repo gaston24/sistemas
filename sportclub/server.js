@@ -1,12 +1,28 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path');
+const helmet = require('helmet');  // Importar helmet
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(express.static('public'));
 app.use(cors());
+
+// Configura CSP con Helmet para asegurar la coherencia y evitar conflictos
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],  // Fallback default
+    fontSrc: ["'self'", "https://sportclub-pinq.onrender.com", "https://cdn.jsdelivr.net"],  // Permite fuentes de estos dominios
+    scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://sportclub-pinq.onrender.com"],  // Permite scripts de estos dominios
+    connectSrc: ["'self'", "https://sportclub-pinq.onrender.com"],  // Permite conexiones a estos dominios (para Axios)
+    imgSrc: ["'self'", "data:"],  // Permite imágenes del mismo origen y data URIs
+    styleSrc: ["'self'", "https://cdn.jsdelivr.net"]  // Permite estilos del mismo origen y CDN
+    // Puedes agregar más directivas según sea necesario
+  }
+}));
 
 app.post('/buscar-socio', async (req, res) => {
   const { documento } = req.body;

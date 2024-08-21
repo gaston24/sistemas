@@ -2,6 +2,15 @@
 body {
     background-color: #f8f9fa;
 }
+.container {
+    max-width: 100%;
+    padding: 15px;
+}
+#imagenArticulo{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
 @media (min-width: 768px) {
     .container {
         max-width: 420px;
@@ -10,7 +19,7 @@ body {
     }
 }
 .card {
-    border-radius: 15px;
+    border-radius: 0 0 15px 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
 }
@@ -45,11 +54,10 @@ body {
 }
 .estado-badge {
     font-size: 0.8em;
-    padding: 0.4em 0.4em;
+    padding: 0.3em 5em;
     position: absolute;
-    top: 4.4rem;
-    right: 1rem;
-    z-index: 10;
+    top: 3.6rem;
     background-color: #dc3545;
+    justify-content: center;
+    left: 20%;
 }
-

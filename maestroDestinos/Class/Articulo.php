@@ -81,4 +81,30 @@ class Articulo
 
     }    
 
-}    
+    public function buscarArticuloPorCodigo($codArticulo)
+    {
+        $sql = "SELECT A.COD_ARTICU, A.DESCRIPCION, A.DESTINO, A.TEMPORADA, B.RUBRO, A.FECHA_MOD, A.LIQUIDACION, C.PRECIO
+                FROM MAESTRO_DESTINOS A
+                LEFT JOIN SOF_RUBROS_TANGO B ON A.COD_ARTICU = B.COD_ARTICU
+                LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = 20) C ON A.COD_ARTICU = C.COD_ARTICU
+                WHERE A.COD_ARTICU = ?";
+
+        $stmt = sqlsrv_prepare($this->cid_central, $sql, array($codArticulo));
+        
+        if ($stmt === false) {
+            throw new Exception("Error preparing statement: " . print_r(sqlsrv_errors(), true));
+        }
+
+        $result = sqlsrv_execute($stmt);
+        if ($result === false) {
+            throw new Exception("Error executing statement: " . print_r(sqlsrv_errors(), true));
+        }
+
+        $rows = array();
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
+}
