@@ -104,6 +104,7 @@
 						<div id="boxLoading"></div>
                         <div id="outlet" hidden><?= $outlet ?></div>
                         <div id="nroSolicitud" hidden><?= $numSolicitud[0]['ultimo_id'] ?> </div>
+                        <div id="imgBorrador" hidden><?= (isset($borradorEnc[0])) ? $borradorEnc[0]['NUM_SOLICITUD'] : "" ?></div>
                         <div class="row" style="margin-left:50px; margin-top:30px">
 
                         
@@ -208,7 +209,7 @@
                                                     <i class="bi bi-upload"></i> 
                                                     </button>
 
-                                                    <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem"  onclick="mostrarImagen(this)">
+                                                    <button class="btn btn-warning" style="margin-left:5px; padding:.3rem .5rem"  onclick="mostrarImagen(this,'.$borradorEnc[0]['NUM_SOLICITUD'].')">
                                                     <i class="bi bi-eye" style="color:white"></i>
                                                     </button>
 

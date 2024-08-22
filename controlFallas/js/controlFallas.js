@@ -170,14 +170,20 @@ const quitarErrorImagen = () => {
 
 }
 
-const mostrarImagen = (divImagen, startIndex = 0) => {
+const mostrarImagen = (divImagen, imgNumber = 0 ) => {
+    console.log(imgNumber)
 
- 
+    let startIndex = 0;
+
     let codigosImagenes = [];
   
     let codigoArticulo = divImagen.parentElement.parentElement.querySelectorAll("td")[0].querySelector("select").value;
-
+    
     let numImg = timestap;
+    
+    if (imgNumber != 0){
+      numImg = imgNumber;  
+    }
 
     let nroSucursal = document.querySelector("#nroSucursal").textContent;
 
@@ -514,7 +520,7 @@ const comprobarFila = (div) => {
 const parseNumber = (number) => {
   number = parseInt(number);
 
-  newNumber = number.toLocaleString('de-De', {
+  let newNumber = number.toLocaleString('de-De', {
       style: 'decimal',
       maximumFractionDigits: 0,
       minimumFractionDigits: 0
@@ -529,7 +535,15 @@ const solicitar = async (esBorrador = false) => {
   let fecha = document.querySelector("#fecha").value;
   let usuario = document.querySelector("#usuario").value;
   let estado = document.querySelector("#estado").value;
+  let imgBorrador = document.querySelector("#imgBorrador").textContent;
+
   let numImg = timestap;
+
+  if(imgBorrador != "" && imgBorrador != null){
+    numImg = imgBorrador;
+  }
+
+
   let numSolicitud = document.querySelector("#nroSolicitud").textContent;
 
   
@@ -564,8 +578,6 @@ const solicitar = async (esBorrador = false) => {
   if(stock == false ){
     return 1  
   }
-
-  console.log(numImg)
 
   
 
