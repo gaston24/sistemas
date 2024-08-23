@@ -4,12 +4,12 @@ console.log("envio.js");
 // MATRIZ DE PEDIDOS (LOCALES PROPIOS Y FRANQUICIAS --- MAYORISTAS)
 function matrizPedidos()  {
     const matriz = Array.from(document.getElementById("tabla").rows);
-    const matriz2 = matriz.filter(x=>x.querySelector('input').value !=0);
+    const matriz2 = matriz.filter(x=>x.querySelector('input').value != 0);
     const matriz3 = matriz2.map( function(x) {
         let valor = x.querySelectorAll('td');
         var another = [];
         valor.forEach(function(x, z){
-            another[z] = (z==0||z==2) ? '' : ( (z==8) ? x.firstChild.value : (z==9 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
+            another[z] = (z==0||z==2) ? '' : ( (z==8) ? x.querySelector("input").value : (z==9 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
         })
         return another;
     })

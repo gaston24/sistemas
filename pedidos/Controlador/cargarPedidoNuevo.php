@@ -5,11 +5,11 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/sistemas/class/conexion.php';
 $cid = new Conexion();
 $cid_central = $cid->conectar('central');
 
-require '../../../Controlador/fecha.php';
-require '../../../Controlador/carga_pedido_encabezado.php';
+require 'fecha.php';
+require 'carga_pedido_encabezado.php';
 
-require '../../../Controlador/carga_pedido_detalle_simple.php';
-require '../../../Controlador/carga_pedido_detalle_simple_kit.php';
+require 'carga_pedido_detalle_simple.php';
+require 'carga_pedido_detalle_simple_kit.php';
 
 //////////// DECLARA VARIABLES
 
@@ -113,7 +113,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 			
 		// if(odbc_num_rows($resultVerifica)==0){
 		if(sqlsrv_num_rows($resultVerifica)==0){
-
+		
 
 		
 			if($cantArt>0){
@@ -146,6 +146,7 @@ for($i = 0; $i < count($_POST['matriz']); $i++){
 			}
 
 		}else{
+			
 			
 			if($cantArt>0){
 				
