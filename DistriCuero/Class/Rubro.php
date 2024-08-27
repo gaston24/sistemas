@@ -17,7 +17,7 @@ class Rubro
         $sql = "SELECT * FROM
                 (
                 SELECT REPLACE(DESCRIP, '_', '') DESCRIP FROM STA11FLD WHERE DESCRIP NOT LIKE '[_][ZDH]%' AND DESCRIP NOT LIKE 'Todos' 
-                AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT IN ('ALHAJEROS','PACKAGING','LENTES')
+                AND DESCRIP NOT LIKE '%OUTLET' AND DESCRIP NOT IN ('ALHAJEROS','LENTES')
                 ) A
                 ORDER BY 1
         ";
