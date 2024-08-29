@@ -305,96 +305,97 @@
    
   
     function generateBarcode(div) {
+    // Obtener el valor del código de barras desde el input
+    let id = div.parentElement.parentElement.children[1].innerText;
+    let nroSucursal = document.getElementById('nroSucursal').innerText;
 
+    $.ajax({
+        type: "POST",
+        url: "Controller/RecodificacionController.php?accion=traerArticulosEnSolicitud",
+        data: {id: id},
+        success: function (response) {
+            let articulos = JSON.parse(response);
 
-        // Obtener el valor del código de barras desde el input
-        let id = div.parentElement.parentElement.children[1].innerText;
-        let nroSucursal = document.getElementById('nroSucursal').innerText;
+            document.querySelector('#barcode').innerHTML = '';
 
-     
+            if(articulos.length == 0){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No hay articulos en la solicitud!',
+                })
+                return;
+            }
 
-        
-        $.ajax({
-            type: "POST",
-            url: "Controller/RecodificacionController.php?accion=traerArticulosEnSolicitud",
-            data: {id: id},
-            success: function (response) {
-                let articulos = JSON.parse(response);
+            // Crear un contenedor para la fila actual
+            let currentRow = document.createElement('div');
+            currentRow.style.display = 'flex';
+            currentRow.style.justifyContent = 'space-between';
+            currentRow.style.marginBottom = '30px';
+            document.querySelector('#barcode').appendChild(currentRow);
 
-                document.querySelector('#barcode').innerHTML = '';
-
-                if(articulos.length == 0){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'No hay articulos en la solicitud!',
-                    })
+            articulos.forEach((articulo, index) => {
+                let value = articulo['NUEVO_CODIGO'];
+                if(articulo['DESTINO'] != nroSucursal){
+                    return;
+                }
+                if(articulo['NUEVO_CODIGO'] == null || articulo['NUEVO_CODIGO'] == ''){
                     return;
                 }
 
-                articulos.forEach((articulo, index) => {
-                    
-                    let value = articulo['NUEVO_CODIGO'] ;
-                    if(articulo['DESTINO'] != nroSucursal){
-                        return;
-                    }
-                    if(articulo['NUEVO_CODIGO'] == null || articulo['NUEVO_CODIGO'] == ''){
-                        return;
-                    }
-
-
-
-                        
-                    // Configuración del código de barras
-                    var settings = {
+                // Configuración del código de barras
+                var settings = {
                     format: 'CODE93',
                     lineColor: '#000000',
-                    width: 4,   
-                    height: 150, 
-                    displayValue: true
+                    width: 2,
+                    height: 80,
+                    displayValue: true,
+                    fontSize: 10,
+                    marginTop: 8,
+                    marginBottom: 8
                 };
 
-
-                    // Generar el código de barras en el elemento con id 'barcode'
-                    let divCodigo = document.createElement('div');
-
-                    divCodigo.id = 'barcode'+index;
-            
-                    
-                    document.getElementById('barcode').appendChild(divCodigo);
-                    
-                    
-                    $('#barcode'+index).barcode(value, 'code93', settings);
-                    let lastChild = document.querySelector('#barcode'+index).querySelector(`div:last-child`);
-                    let nuevoDivDescripcion = document.createElement('div');
-                    nuevoDivDescripcion.innerHTML = articulo['DESCSTA11'];
-                    nuevoDivDescripcion.style.textAlign = 'center';
-                    nuevoDivDescripcion.style.fontSize = '13px';
-
+                // Generar el código de barras en el elemento con id 'barcode'
+                let divCodigo = document.createElement('div');
+                divCodigo.id = 'barcode'+index;
+                divCodigo.style.marginRight = '50px'; // Añadir margen derecho para espaciado horizontal
+                currentRow.appendChild(divCodigo);
                 
+                $('#barcode'+index).barcode(value, 'code93', settings);
 
-                    document.querySelector('#barcode'+index).appendChild(nuevoDivDescripcion)
-                    
-        
+                // Ajustar el tamaño del contenedor del código de barras
+                $('#barcode'+index).css({
+                    'transform': 'scale(1.4)',
+                    'transform-origin': 'top left'
                 });
 
-                document.querySelector('#barcode').hidden = false;
+                let nuevoDivDescripcion = document.createElement('div');
+                nuevoDivDescripcion.innerHTML = articulo['DESCSTA11'];
+                nuevoDivDescripcion.style.textAlign = 'center';
+                nuevoDivDescripcion.style.fontSize = '10px';
 
-                document.getElementById('bodyCompleto').hidden = true;
-              
-                print();
+                document.querySelector('#barcode'+index).appendChild(nuevoDivDescripcion);
 
-    
-                document.querySelector('#barcode').hidden = true;
+                // Si hemos añadido 3 códigos de barras a la fila actual, crear una nueva fila
+                if ((index + 1) % 5 === 0) {
+                    currentRow = document.createElement('div');
+                    currentRow.style.display = 'flex';
+                    // currentRow.style.justifyContent = 'space-between';
+                    currentRow.style.marginBottom = '70px';
+                    document.querySelector('#barcode').appendChild(currentRow);
+                }
+            });
 
-    
-                document.getElementById('bodyCompleto').hidden = false ;
-                
-            }
-        });
-    
+            document.querySelector('#barcode').hidden = false;
+            document.getElementById('bodyCompleto').hidden = true;
+            
+            print();
+
+            document.querySelector('#barcode').hidden = true;
+            document.getElementById('bodyCompleto').hidden = false;
+        }
+    });
 }
-
 
 </script>
 
