@@ -34,75 +34,70 @@ function matrizPedidosMayoristas()  {
 
 // PEDIDOS LOCALES Y FRANQUICIAS
 function enviar() {
-
     $('#btnEnviar').hide();
     $('#spinnerEnviar').show();
 
     let totalPrecioValida = $('#totalPrecio').val();
 
-    if (totalPrecioValida != 'NaN') {
-
+    if (totalPrecioValida !== 'NaN') {
         const matriz = matrizPedidos();
+        const suma = parseInt($('#total').val(), 10);
 
-        suma = $('#total').val();
-
+        let diferencia = 0;
         if (suc > 100) {
-            totalPedido = $('#totalPrecio').val();
+            const totalPedido = parseInt($('#totalPrecio').val().replace(/[^\d.-]/g, ''), 10);
             console.log(totalPedido + " " + cupo_credito);
-            var diferencia = (parseInt(cupo_credito, 10) - parseInt(totalPedido, 10)) * -1;
+            diferencia = Math.max(totalPedido - parseInt(cupo_credito, 10), 0);
         }
 
-        if (suma != 0) {
+        if (suma !== 0) {
+            const formattedDiferencia = new Intl.NumberFormat('es-AR', { 
+                style: 'currency', 
+                currency: 'ARS',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(diferencia);
 
-            if (suc > 100 && (parseInt(totalPedido, 10) > parseInt(cupo_credito, 10))) {
-                swal.fire({
-                    title: "Atencion!",
-                    text: "El limite de crédito fue excedido en " + diferencia + " pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
+            if (suc > 100 && diferencia > 0) {
+                Swal.fire({
+                    title: "Atención!",
+                    text: `El límite de crédito fue excedido en ${formattedDiferencia}, por favor analice quitar artículos o comuníquese con mariela.gueler@xl.com.ar para evaluar su situación`,
                     icon: "warning",
-                    button: "Aceptar",
+                    confirmButtonText: "Aceptar",
                 });
-                 $('#btnEnviar').show();
-                 $('#spinnerEnviar').hide();
+                $('#btnEnviar').show();
+                $('#spinnerEnviar').hide();
             } else {
                 $("#aguarde").show();
                 $("#pantalla").fadeOut();
 
                 const matrizStock = chequeaStock(matriz);
-
-                // console.log("matriz", matriz);
-                // console.log("matrizStock", matrizStock);
                 const resultCompara = comparaStock(matriz, matrizStock);
 
                 if(resultCompara.length > 0){
-                    // console.log("hay diferencias")
-                    muestraDiferencia(resultCompara)
-                }else{
-                    // console.log("sin diferencias")
+                    muestraDiferencia(resultCompara);
+                } else {
                     postear(matriz, suc, codClient, t_ped, depo, talon_ped);
                 }
-
             }
-
         } else {
-            swal.fire({
+            Swal.fire({
                 title: "Error!",
-                text: "No hay ningun articulo seleccionado!",
+                text: "No hay ningún artículo seleccionado!",
                 icon: "warning",
-                button: "Aceptar",
+                confirmButtonText: "Aceptar",
             });
             $('#btnEnviar').show();
             $('#spinnerEnviar').hide();
         }
-
     } else {
-        swal.fire({
+        Swal.fire({
             title: "Error!",
-            text: "Error al cargar los articulos, solo se aceptan numeros! Revise los campos cargados por favor",
+            text: "Error al cargar los artículos, solo se aceptan números! Revise los campos cargados por favor",
             icon: "warning",
-            button: "Aceptar",
+            confirmButtonText: "Aceptar",
         });
     }
-
 }
 
 // PEDIDOS ECOMMERCE

@@ -124,6 +124,17 @@ if (!isset($_SESSION['username'])) {
         .product-image {
             cursor: pointer;
         }
+        #creditAlertContainer {
+        position: absolute;
+        z-index: 1000;
+        width: 22%;
+        }
+
+        #creditAlertContainer .alert {
+            margin-bottom: 0;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -157,10 +168,10 @@ if (!isset($_SESSION['username'])) {
                     <div class="input-group input-group-sm">
                         <span class="input-group-text">Importe total:</span>
                         <input type="text" name="total_precio" id="totalPrecio" class="form-control" value="0" onChange="verificarCredito()">
-                        <a id="cupoCreditoExcedido"></a>
                     </div>
+                    <div id="creditAlertContainer" class="mt-2"></div>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="row col-md-4 mb-2">
                     <div class="btn-group btn-group-sm" role="group">
                         <button type="button" class="btn btn-secondary" id="btnGrabarPedido">
                             <i class="fas fa-save"></i> Grabar
@@ -175,8 +186,8 @@ if (!isset($_SESSION['username'])) {
 							onClick="<?= ($_SESSION['tipo'] == 'MAYORISTA') ? 'enviarMayorista()' : 'enviar()';?>">
 							<i class="fas fa-cloud-upload-alt"></i> Enviar
 						</button>
+                        <span id="sinConexion" class="badge bg-danger ml-4" style="display: none; margin-left:1rem">SIN CONEXIÓN</span>
                     </div>
-                    <span id="sinConexion" class="badge bg-danger" style="display: none;">SIN CONEXIÓN</span>
                 </div>
             </div>
         </div>
@@ -224,19 +235,19 @@ if (!isset($_SESSION['username'])) {
                                 <input type="number" name="cantPed[]" class="form-control form-control-sm pedido-input" value="0" min="0" id="articulo" onchange="total();verifica();precioTotal()">
                             </td>
                             <td id="precio">
-                                <?php
-                                if ($suc > 100 && $suc != 201 && $suc != 202 ) {
+                            <?php
+                                if ($suc > 100 && $suc != 201 && $suc != 202) {
                                     if ($_GET['tipo'] == 3) {
-                                        echo (int)($v['PRECIO_MAYO']);
+                                        echo '$' . number_format((int)($v['PRECIO_MAYO']), 0, ',', '.');
                                     } else {
                                         if (substr($tipo_cli, 0, 1) == 'F' && $_GET['tipo'] != 3) {
-                                            echo (int)($v['PRECIO_FRANQ']);
+                                            echo '$' . number_format((int)($v['PRECIO_FRANQ']), 0, ',', '.');
                                         } else {
-                                            echo (int)($v['PRECIO_MAYO']);
+                                            echo '$' . number_format((int)($v['PRECIO_MAYO']), 0, ',', '.');
                                         }
                                     }
                                 }
-                                ?>
+                            ?>
                             </td>
                         </tr>
                     <?php } ?>
@@ -329,12 +340,22 @@ if (!isset($_SESSION['username'])) {
                 var totalPrecio = 0;
                 $('#pedidosTable tbody tr').each(function() {
                     var cantidad = parseInt($(this).find('.pedido-input').val()) || 0;
-                    var precio = parseFloat($(this).find('td:last').text()) || 0;
+                    var precioTexto = $(this).find('td:last').text();
+                    var precio = parseFloat(precioTexto.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
                     totalArticulos += cantidad;
                     totalPrecio += cantidad * precio;
                 });
                 $('#total').val(totalArticulos);
-                $('#totalPrecio').val(totalPrecio.toFixed(2));
+                
+                // Formatear el precio total con separadores de miles y sin decimales
+                var formattedTotalPrecio = new Intl.NumberFormat('es-AR', { 
+                    style: 'currency', 
+                    currency: 'ARS',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(totalPrecio);
+                
+                $('#totalPrecio').val(formattedTotalPrecio);
             }
 
             $(window).resize(function() {
