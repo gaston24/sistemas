@@ -60,36 +60,39 @@ function total() {
   
   
 function precioTotal() {
-  if(suc > 100){
+
+
+  if(suc>100){
+
       var precioTodos = 0;
-      var p = document.querySelectorAll("#pedidosTable #precio"); 
-      var x = document.querySelectorAll("#pedidosTable input[name='cantPed[]']");
+      var p = document.querySelectorAll("#id_tabla #precio"); 
+      var x = document.querySelectorAll("#id_tabla input[name='cantPed[]']");
       var i;
 
       for (i = 0; i < p.length; i++) {
-          precioTodos += parseInt(0 + p[i].innerText.replace('$', '').replace('.', '') * x[i].value);
+          precioTodos += parseInt(0+p[i].innerHTML * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
       }
 
-      document.getElementById('totalPrecio').value = '$' + precioTodos.toLocaleString('es-AR');
+      document.getElementById('totalPrecio').value = precioTodos;
 
-      console.log("Cupo disponible: " + cupo_credito + " - Pedidos total: " + precioTodos);
+      console.log("Cupo disponible: "+cupo_credito+ " - Pedidos total: "+precioTodos);
 
-      var diferencia = (cupo_credito - precioTodos) * -1;
-      const formattedDiferencia = diferencia.toLocaleString('es-AR', { maximumFractionDigits: 2 });
+      var diferencia = (cupo_credito - precioTodos)*-1;
+      const number = diferencia;
+      diferencia = number.toLocaleString().toLocaleString('en-US', { maximumFractionDigits: 2 });
 
-      var alertContainer = document.getElementById("creditAlertContainer");
       if(parseInt(precioTodos, 10) > parseInt(cupo_credito, 10)){
-          alertContainer.innerHTML = `
-              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <strong>Cupo de crédito excedido en $${formattedDiferencia}</strong>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-          `;
-      } else {
-          alertContainer.innerHTML = "";
+          document.getElementById("cupoCreditoExcedido").innerHTML = "<strong style='color: red;'>CUPO DE CREDITO EXCEDIDO EN "+diferencia+" PESOS</strong>";
+      }else{
+          document.getElementById("cupoCreditoExcedido").innerHTML = "";
       }
+      
   }
-}
+
+  
+
+
+};
 
 
 function totalizar(){

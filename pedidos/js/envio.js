@@ -4,7 +4,7 @@ console.log("envio.js");
 // MATRIZ DE PEDIDOS (LOCALES PROPIOS Y FRANQUICIAS --- MAYORISTAS)
 function matrizPedidos()  {
     const matriz = Array.from(document.getElementById("tabla").rows);
-    const matriz2 = matriz.filter(x=>x.querySelector('input').value != 0);
+    const matriz2 = matriz.filter(x=>x.querySelector('input').value !=0);
     const matriz3 = matriz2.map( function(x) {
         let valor = x.querySelectorAll('td');
         var another = [];
@@ -34,70 +34,75 @@ function matrizPedidosMayoristas()  {
 
 // PEDIDOS LOCALES Y FRANQUICIAS
 function enviar() {
+
     $('#btnEnviar').hide();
     $('#spinnerEnviar').show();
 
     let totalPrecioValida = $('#totalPrecio').val();
 
-    if (totalPrecioValida !== 'NaN') {
-        const matriz = matrizPedidos();
-        const suma = parseInt($('#total').val(), 10);
+    if (totalPrecioValida != 'NaN') {
 
-        let diferencia = 0;
+        const matriz = matrizPedidos();
+
+        suma = $('#total').val();
+
         if (suc > 100) {
-            const totalPedido = parseInt($('#totalPrecio').val().replace(/[^\d.-]/g, ''), 10);
+            totalPedido = $('#totalPrecio').val();
             console.log(totalPedido + " " + cupo_credito);
-            diferencia = Math.max(totalPedido - parseInt(cupo_credito, 10), 0);
+            var diferencia = (parseInt(cupo_credito, 10) - parseInt(totalPedido, 10)) * -1;
         }
 
-        if (suma !== 0) {
-            const formattedDiferencia = new Intl.NumberFormat('es-AR', { 
-                style: 'currency', 
-                currency: 'ARS',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(diferencia);
+        if (suma != 0) {
 
-            if (suc > 100 && diferencia > 0) {
-                Swal.fire({
-                    title: "Atención!",
-                    text: `El límite de crédito fue excedido en ${formattedDiferencia}, por favor analice quitar artículos o comuníquese con mariela.gueler@xl.com.ar para evaluar su situación`,
+            if (suc > 100 && (parseInt(totalPedido, 10) > parseInt(cupo_credito, 10))) {
+                swal.fire({
+                    title: "Atencion!",
+                    text: "El limite de crédito fue excedido en " + diferencia + " pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
                     icon: "warning",
-                    confirmButtonText: "Aceptar",
+                    button: "Aceptar",
                 });
-                $('#btnEnviar').show();
-                $('#spinnerEnviar').hide();
+                 $('#btnEnviar').show();
+                 $('#spinnerEnviar').hide();
             } else {
                 $("#aguarde").show();
                 $("#pantalla").fadeOut();
 
                 const matrizStock = chequeaStock(matriz);
+
+                // console.log("matriz", matriz);
+                // console.log("matrizStock", matrizStock);
                 const resultCompara = comparaStock(matriz, matrizStock);
 
                 if(resultCompara.length > 0){
-                    muestraDiferencia(resultCompara);
-                } else {
+                    // console.log("hay diferencias")
+                    muestraDiferencia(resultCompara)
+                }else{
+                    // console.log("sin diferencias")
                     postear(matriz, suc, codClient, t_ped, depo, talon_ped);
                 }
+
             }
+
         } else {
-            Swal.fire({
+            swal.fire({
                 title: "Error!",
-                text: "No hay ningún artículo seleccionado!",
+                text: "No hay ningun articulo seleccionado!",
                 icon: "warning",
-                confirmButtonText: "Aceptar",
+                button: "Aceptar",
             });
             $('#btnEnviar').show();
             $('#spinnerEnviar').hide();
         }
+
     } else {
-        Swal.fire({
+        swal.fire({
             title: "Error!",
-            text: "Error al cargar los artículos, solo se aceptan números! Revise los campos cargados por favor",
+            text: "Error al cargar los articulos, solo se aceptan numeros! Revise los campos cargados por favor",
             icon: "warning",
-            confirmButtonText: "Aceptar",
+            button: "Aceptar",
         });
     }
+
 }
 
 // PEDIDOS ECOMMERCE
