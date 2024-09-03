@@ -1,9 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] .'/sistemas/class/conexion.php';
-	
-$conn = new Conexion();
-$cid = $conn->conectar('central');
 
+require '../../../Controlador/dsn_central.php';
 
 //////////// DECLARA VARIABLES
 
@@ -28,23 +25,16 @@ $sqlStock = "
 	")"
 	;
 
-$result = sqlsrv_query($cid, $sqlStock);
+$result=odbc_exec($cid,$sqlStock)or die(exit("Error en odbc_exec"));
 
 $data = [];
 
-while($v=sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+while($v=odbc_fetch_array($result)){
 	$data[] = array(
 		$v['COD_ARTICU'],
 		$v['CANT_STOCK'],
 	);
 }
-
-// while($v=odbc_fetch_array($result)){
-// 	$data[] = array(
-// 		$v['COD_ARTICU'],
-// 		$v['CANT_STOCK'],
-// 	);
-// }
 
 // $data = [
 // 	['XT0SST02Z010136', 1],

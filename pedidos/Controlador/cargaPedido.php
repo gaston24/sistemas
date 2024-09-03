@@ -1,6 +1,6 @@
 <?php
 
-	require_once __DIR__."/../class/extralarge.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/sistemas/class/extralarge.php";
 	$xlLocales = new Extralarge;
 
 	try {
@@ -24,10 +24,13 @@
 
 		localStorage.setItem('datosLocal', datosLocal);
 
-
 	</script>
 
 	<?php
 
 
 ?>
+
+
+
+
