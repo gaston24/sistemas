@@ -8,8 +8,10 @@ if (!isset($_SESSION['username'])) {
 
 	header("Location:../index.php");
 } else {
+
 	include_once __DIR__.'/../class/pedido.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
+    require_once "../Controlador/cargaPedidoNew.php";
 
 	// CONSULTAS EL DEPO
 	$_SESSION['depo'] = '01';
@@ -203,8 +205,10 @@ if (!isset($_SESSION['username'])) {
                         <th>Descripcion</th>
                         <th>Rubro</th>
                         <th>Stock Central</th>
-                        <th class="stock-local">Stock Local</th>
-                        <th class="ventas-30-dias">Venta 30 dias</th>
+                        <?php if ($_SESSION['tipo'] != 'MAYORISTA') { ?>
+                            <th class="stock-local">Stock Local</th>
+                            <th class="ventas-30-dias">Venta 30 dias</th>
+						<?php } ?>
                         <th>Distribucion</th>
                         <th>Pedido</th>
                         <th>Precio</th>
@@ -217,7 +221,7 @@ if (!isset($_SESSION['username'])) {
                         $isSale = (substr($v['DESCRIPCIO'], -11) == '-- SALE! --');
                         $description = $isSale ? substr($v['DESCRIPCIO'], 0, -11) : $v['DESCRIPCIO'];
                     ?>
-                        <tr>
+                        <tr id="trPedido">
                             <td>
                                 <img src="<?= $imageUrl ?>" alt="Sin imagen" height="40" width="40" class="product-image" data-bs-toggle="modal" data-bs-target="#imageModal<?= $imageName ?>">
                             </td>
@@ -227,9 +231,11 @@ if (!isset($_SESSION['username'])) {
                                 <?= $isSale ? '<span class="sale-badge">SALE</span>' : '' ?>
                             </td>
                             <td><?= $v['RUBRO'] ?></td>
-                            <td id="stock"><?= (int)($v['CANT_STOCK']) ?></td>
-                            <td id="cantStock" class="stock-local">0</td>
-                            <td id="cantVendida" class="ventas-30-dias">0</td>
+                            <td id="stock"><?= (int)($v['CANT_STOCK']) ?></td>   
+                            <?php if ($_SESSION['tipo'] != 'MAYORISTA') { ?>
+                                <td id="cantStock" class="stock-local">0</td>
+                                <td id="cantVendida" class="ventas-30-dias">0</td>
+                            <?php } ?>
                             <td id="cant"><?= (int)($v['DISTRI']) ?></td>
                             <td>
                                 <input type="number" name="cantPed[]" class="form-control form-control-sm pedido-input" value="0" min="0" id="articulo" onchange="total();verifica();precioTotal()">
