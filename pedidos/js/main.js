@@ -9,6 +9,7 @@ const actualizarDatosTabla = () => {
 
   let datosLocal = localStorage.getItem('datosLocal');
   datosLocal = JSON.parse(datosLocal);
+  console.log(datosLocal)
 
   let registros = document.querySelectorAll("#trPedido");
 

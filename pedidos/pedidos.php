@@ -10,7 +10,7 @@ if (!isset($_SESSION['username'])) {
 } else {
 	include_once __DIR__.'/../class/pedido.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
-
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/Controlador/cargaPedidosNew.php';
 	// CONSULTAS EL DEPO
 	$_SESSION['depo'] = '01';
 
@@ -217,7 +217,7 @@ if (!isset($_SESSION['username'])) {
                         $isSale = (substr($v['DESCRIPCIO'], -11) == '-- SALE! --');
                         $description = $isSale ? substr($v['DESCRIPCIO'], 0, -11) : $v['DESCRIPCIO'];
                     ?>
-                        <tr>
+                        <tr id="trPedido">
                             <td>
                                 <img src="<?= $imageUrl ?>" alt="Sin imagen" height="40" width="40" class="product-image" data-bs-toggle="modal" data-bs-target="#imageModal<?= $imageName ?>">
                             </td>
