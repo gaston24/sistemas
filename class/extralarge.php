@@ -117,6 +117,11 @@ class Extralarge {
     public function traerDatosArticulos($localName){
 
         $cid = $this->conn->conectar($localName);
+
+        if($cid == false){
+            return false;    
+        }
+        
         
 
         $sql = "

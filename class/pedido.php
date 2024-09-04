@@ -12,7 +12,7 @@ class Pedido {
     public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null, $db = 'central'){
 
         $cid = $this->conn->conectar($db);
-
+        
             switch ($tipoPedido) {
                 case 1:
                     $_SESSION['tipo_pedido'] = 'GENERAL';

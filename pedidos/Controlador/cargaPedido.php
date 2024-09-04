@@ -6,7 +6,9 @@
 	try {
 		
 		$datosLocal = $xlLocales->traerDatosArticulos($_SESSION['username']);
-
+		if($datosLocal == false ){
+			$datosLocal = [];
+		}
 		$datosLocal = json_encode($datosLocal);
 
 	} catch (\Throwable $th) {

@@ -44,9 +44,9 @@ class Conexion{
 
     public function conectar($nameServer = null) {
         try {
-
+           
             $serverDB = $this->servidor($nameServer);
-
+          
             if($this->env == 'PROD' && (strtolower($serverDB[0]) == strtolower('lakerbis'))){
                 $pass = $this->pass_locales;
             } else {
