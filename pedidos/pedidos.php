@@ -232,7 +232,7 @@ if (!isset($_SESSION['username'])) {
                             <td id="cantVendida" class="ventas-30-dias">0</td>
                             <td id="cant"><?= (int)($v['DISTRI']) ?></td>
                             <td>
-                                <input type="number" name="cantPed[]" class="form-control form-control-sm pedido-input" value="0" min="0" id="articulo" onchange="total();verifica();precioTotal()">
+                                <input type="number" name="cantPed[]" class="form-control form-control-sm pedido-input" value="0" min="0" id="articulo" onchange="total();verifica();precioTotal()" <?= ((int)$v['DISTRI'] > 0 ) ? 'disabled' : '' ?>>
                             </td>
                             <td id="precio">
                             <?php
