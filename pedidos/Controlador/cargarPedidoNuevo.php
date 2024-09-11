@@ -8,7 +8,6 @@ $cid_central = $cid->conectar('central');
 require 'fecha.php';
 
 
-//////////// DECLARA VARIABLES
 
 $suc = $_POST['numsuc'];
 $codClient = $_POST['codClient'];
@@ -32,9 +31,37 @@ foreach ($_POST['matriz'] as $key => $value) {
 $stringParaSql = substr($stringParaSql, 0, -1);
 $stringParaSql .= ')';
 
-$sql = "EXEC FU_PEDIDOS $suc, '$codClient', '$t_ped', '$depo', $talon_ped, '$stringParaSql'";
+// Cargar variables de entorno
+require_once('../../class/classEnv.php');
+$dotEnv = new DotEnv('../../.env');
+$vars = $dotEnv->listVars();
 
-sqlsrv_query($cid_central, $sql);
+$serverName = escapeshellarg($vars["HOST_CENTRAL"]);
+$database = escapeshellarg($vars['DATABASE_CENTRAL']);
+$user = escapeshellarg($vars['USER']);
+$password = escapeshellarg($vars['PASS']);
+
+
+$query = "EXEC FU_PEDIDOS $suc, '$codClient', '$t_ped', '$depo', $talon_ped, '$stringParaSql'";
+$query = escapeshellarg($query);
+
+
+$command = "sqlcmd -S $serverName -d $database -U $user -P $password -Q $query";
+
+// Ejecutar el comando
+try {
+    exec($command, $output, $returnVar);
+
+    if ($returnVar !== 0) {
+        throw new Exception("El comando sqlcmd falló con el código de retorno $returnVar. Salida: " . implode("\n", $output));
+    }
+    
+
+} catch (\Throwable $th) {
+    error_log("Error al ejecutar el SP: " . $th->getMessage());
+    echo 'Error: ' . $th->getMessage();
+}
+
 
 $sql = "SELECT TOP 1 NRO_PEDIDO
 FROM GVA21 
