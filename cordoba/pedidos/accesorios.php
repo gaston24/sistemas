@@ -35,7 +35,7 @@ if(!isset($_SESSION['username'])){
 		$sql="
 		SET DATEFORMAT YMD
 		
-		EXEC SJ_TIPO_PEDIDO_CORDOBA_2
+		EXEC SJ_TIPO_PEDIDO_CORDOBA_2_bis
 		
 		";
 

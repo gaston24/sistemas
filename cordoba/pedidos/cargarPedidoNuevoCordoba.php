@@ -20,7 +20,8 @@ $locales = array
 'FRORIG',
 'FRORNC',
 'FRORSJ',
-'FRPASJ'
+'FRPASJ',
+'FRPRIN'
 );
 
 
@@ -41,9 +42,9 @@ function backup(){
 		$local_815 = $_POST['cantPed_815'][$i];
 		$local_816 = $_POST['cantPed_816'][$i];
 		$local_876 = $_POST['cantPed_876'][$i];
-		
+		$local_940 = $_POST['cantPed_940'][$i];
 		//echo $codArt.' - '.$local_812.' - '.$local_813.' - '.$local_814.' - '.$local_815.' - '.$local_816.' - '.$local_876.'<br>';
-		$sqlInsert = "INSERT INTO SJ_CORDOBA_BACKUP VALUES ('$codArt', $local_812, $local_813, $local_814, $local_815, $local_816, $local_876)";
+		$sqlInsert = "INSERT INTO SJ_CORDOBA_BACKUP VALUES ('$codArt', $local_812, $local_813, $local_814, $local_815, $local_816, $local_876, $local_940)";
 		odbc_exec($cid,$sqlInsert)or die(exit("Error en odbc_exec"));	
 	}
 }
@@ -52,7 +53,7 @@ backup();
 
 
 
-for($i=0;$i<6;$i++){
+for($i=0;$i<7;$i++){
 //$local = $locales[$x];
 
 //echo $locales[$i];
@@ -66,6 +67,7 @@ case 'FRORIG': $suc = 814; break;
 case 'FRORNC': $suc = 815; break;
 case 'FRORSJ': $suc = 816; break;
 case 'FRPASJ': $suc = 876; break;
+case 'FRPRIN': $suc = 940; break;
 }
 
 $x = 0;
@@ -78,6 +80,7 @@ case 'FRORIG': $total_ped = array_sum($_POST['cantPed_814']); break;
 case 'FRORNC': $total_ped = array_sum($_POST['cantPed_815']); break;
 case 'FRORSJ': $total_ped = array_sum($_POST['cantPed_816']); break;
 case 'FRPASJ': $total_ped = array_sum($_POST['cantPed_876']); break;
+case 'FRPRIN': $total_ped = array_sum($_POST['cantPed_940']); break;
 }
 
 
@@ -94,6 +97,7 @@ case 'FRORIG': $cant_local = $_POST['cantPed_814']; break;
 case 'FRORNC': $cant_local = $_POST['cantPed_815']; break;
 case 'FRORSJ': $cant_local = $_POST['cantPed_816']; break;
 case 'FRPASJ': $cant_local = $_POST['cantPed_876']; break;
+case 'FRPRIN': $cant_local = $_POST['cantPed_940']; break;
 }
 
 

@@ -31,7 +31,7 @@ $permiso = $_SESSION['permisos'];
 		<option value="FRORNC">NUEVO CENTRO</option> 
 		<option value="FRORSJ">SAN JUAN</option> 
 		<option value="FRPASJ">PASEO DEL JOCKEY</option> 
-
+		<option value="FRPRIN">RIVERA</option> 
 		
 	
 	</select >
@@ -257,7 +257,8 @@ $sql=
 	 'FRORIG',
 	 'FRORNC',
 	 'FRORSJ',
-	 'FRPASJ'
+	 'FRPASJ',
+	 'FRPRIN'
 
 	)
 	AND N_COMP LIKE '%$remito'

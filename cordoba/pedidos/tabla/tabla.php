@@ -37,6 +37,9 @@ if(substr($v['DESCRIPCIO'], -11)=='-- SALE! --'){
 <td style="width: 2% ; border-left: 1px solid black"><?php echo (int)($v['876_STOCK']) ;?>  </td>				
 <td style="width: 2%"><?php echo (int)($v['876_VENDIDO']) ;?>  </td>
 <td style="width: 4%"><input type="text" name="cantPed_876[]" value="0" size="1" tabindex="1" id="articulo" class="form-control form-control-sm">  </td>
+<td style="width: 2% ; border-left: 1px solid black"><?php echo (int)($v['940_STOCK']) ;?>  </td>				
+<td style="width: 2%"><?php echo (int)($v['940_VENDIDO']) ;?>  </td>
+<td style="width: 4%"><input type="text" name="cantPed_940[]" value="0" size="1" tabindex="1" id="articulo" class="form-control form-control-sm">  </td>
 <td style="width: 4%"></td>			
 
 </tr>

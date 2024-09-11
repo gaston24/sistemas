@@ -50,6 +50,13 @@ function total() {
     suma += parseInt(0 + x[i].value);
   }
 
+  var x = document.querySelectorAll("#id_tabla input[name='cantPed_940[]']");
+  var i;
+  for (i = 0; i < x.length; i++) {
+    suma += parseInt(0 + x[i].value);
+  }
+
+
   document.getElementById("total").value = suma;
 }
 
@@ -88,6 +95,12 @@ function precioTotal() {
   }
 
   var x = document.querySelectorAll("#id_tabla input[name='cantPed_876[]']");
+  var i;
+  for (i = 0; i < p.length; i++) {
+    precioTodos += parseInt(0 + p[i].innerHTML * x[i].value);
+  }
+
+  var x = document.querySelectorAll("#id_tabla input[name='cantPed_940[]']");
   var i;
   for (i = 0; i < p.length; i++) {
     precioTodos += parseInt(0 + p[i].innerHTML * x[i].value);
