@@ -84,6 +84,9 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                             <a class="dropdown-item" data-toggle="modal" data-target="#dataFranquiciaModal" style="cursor:pointer"><i class="fas fa-file-invoice-dollar"></i> Estado de cuenta</a>
                         <?php } ?>
                         <a class="dropdown-item spinner" href="#" onclick="location.href='maestroDestinos/index.php'"><i class="fas fa-map-marker-alt"></i> Maestro Destinos</a>
+                        <?php if ($_SESSION['numsuc'] < 100 && $_SESSION['usuarioUy'] != 1) { ?>
+                        <a class="dropdown-item spinner" href="#" onclick="location.href='../comercial/sucursales/cumplimientoObjetivos.php'"><i class="fas fa-bullseye"></i> Cumplimiento Objetivos</a>
+                        <?php } ?>
                     </div>
                 </li>
 

@@ -1,44 +1,44 @@
 $(document).ready(function() {
     console.log('global.js')
-    setTimeout(function() {
+    // setTimeout(function() {
         
-        Swal.fire({
-            // title: 'Iniciar Sesión',
-            html: `
-                <div class="circle-icon">
+    //     Swal.fire({
+    //         // title: 'Iniciar Sesión',
+    //         html: `
+    //             <div class="circle-icon">
                  
-                </div>
-                <br>
-                <button id="miBoton" onclick="reproducirSonido()" hidden></button>
-                <div><h3 style="font-style: italic">Tu sesion expirará en <span id='contador'></span></br>min</h3></div>
-                <div>¿Quieres extender la sesion?</div>
+    //             </div>
+    //             <br>
+    //             <button id="miBoton" onclick="reproducirSonido()" hidden></button>
+    //             <div><h3 style="font-style: italic">Tu sesion expirará en <span id='contador'></span></br>min</h3></div>
+    //             <div>¿Quieres extender la sesion?</div>
 
-            `,
-            allowOutsideClick: false, // Evita que se cierre al hacer clic fuera
-            showCancelButton: true,
-            cancelButtonColor: '#d33',
-            confirmButtonColor: '#3085d6',
-            cancelButtonText: 'NO',
-            confirmButtonText: 'SI',
-        }).then((result) => {
+    //         `,
+    //         allowOutsideClick: false, // Evita que se cierre al hacer clic fuera
+    //         showCancelButton: true,
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonText: 'NO',
+    //         confirmButtonText: 'SI',
+    //     }).then((result) => {
             
-            if (result.dismiss === Swal.DismissReason.cancel) {
+    //         if (result.dismiss === Swal.DismissReason.cancel) {
 
-                window.location.href = `${window.location.origin}/sistemas/login.php`;
+    //             window.location.href = `${window.location.origin}/sistemas/login.php`;
 
-            } else if (result.isConfirmed) {
+    //         } else if (result.isConfirmed) {
                 
-                location.reload();
+    //             location.reload();
                 
-            }
+    //         }
             
 
-        });
+    //     });
      
         
-        actualizarContador();
-        setInterval(actualizarContador, 1000);
-    }, 1500000);
+    //     actualizarContador();
+    //     setInterval(actualizarContador, 1000);
+    // }, 1500000);
 })
 
 
