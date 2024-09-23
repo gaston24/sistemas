@@ -1,0 +1,92 @@
+
+body {
+    padding-top: 95px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height:500px;
+}
+.fixed-header {
+    position: fixed;
+    top: 5;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    margin-right:3rem; 
+    margin-left:3.8rem; 
+}
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    margin-right:3rem; 
+    margin-left:3rem; 
+}
+#pedidosTable {
+    font-size: 0.8rem;
+    width: 100%;
+}
+#pedidosTable th, #pedidosTable td {
+    white-space: nowrap;
+    padding: 0.5rem;
+}
+.table-fixed-header {
+    position: sticky;
+    top: 120px;
+    background-color: #e9ecef;
+    z-index: 1;
+}
+.sale-badge {
+    background-color: #dc3545;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7em;
+    font-weight: bold;
+}
+.search-box {
+    position: relative;
+}
+.clear-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d;
+}
+.pedido-input {
+    width: 50px;
+}
+.page-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+@media (max-width: 768px) {
+    body{
+        height:768px;
+        overflow-x: hidden;
+    }
+    .stock-local, .ventas-30-dias {
+        display: none;
+    }
+    #pedidosTable {
+        font-size: 0.75rem;
+        width: 100%;
+    }
+}
+.product-image {
+    cursor: pointer;
+}
+#creditAlertContainer {
+position: absolute;
+z-index: 1000;
+width: 22%;
+}
+
+#creditAlertContainer .alert {
+    margin-bottom: 0;
+    padding: 1rem;
+    font-size: 0.9rem;
+}

@@ -12,7 +12,7 @@ const actualizarDatosTabla = () => {
 
   let registros = document.querySelectorAll("#trPedido");
 
-  if(datosLocal){
+  if(datosLocal && datosLocal.length > 0){
 
     registros.forEach(x=>{
       datosLocal.forEach(y=>{
@@ -24,6 +24,7 @@ const actualizarDatosTabla = () => {
     })
 
   }else{
+   
 
     registros.forEach(x=>{
       x.querySelector("#cantStock").style.color="red";
@@ -211,12 +212,12 @@ const grabarPedido = document.querySelector('#btnGrabarPedido');
 grabarPedido.addEventListener("click", ()=>{
   let matriz = matrizPedidos();
   localStorage.setItem("matrizPedido", JSON.stringify(matriz));
-  // console.log(matriz)
-  swal({
-      title: "Pedido salvado",
+
+  Swal.fire({
+      title: 'Pedido salvado',
       text: "Carga del pedido grabada en la memoria de la maquina",
-      icon: "success",
-      button: "Aceptar",
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
   })
 
 })
@@ -227,14 +228,15 @@ cargarPedido.addEventListener("click", ()=>{
   let matriz = localStorage.getItem("matrizPedido");
 
   matriz = JSON.parse(matriz);
-
+  console.log(matriz)
   const matrizTabla = Array.from(document.getElementById("tabla").rows);
   matrizTabla.forEach( function(x) {
       matriz.forEach(w=>{
           if(x.querySelectorAll('td')[1].innerHTML == w[1] ){
-              x.querySelectorAll('td')[8].firstChild.value = w[8];
+              x.querySelectorAll('td')[8].querySelector("input").value = w[8];
           }
       })
   })
 
 })
+
