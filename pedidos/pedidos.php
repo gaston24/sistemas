@@ -10,7 +10,7 @@ if (!isset($_SESSION['username'])) {
 } else {
 	include_once __DIR__.'/../class/pedido.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/Controlador/cargaPedidosNew.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/Controlador/cargaPedidoNew.php';
 	// CONSULTAS EL DEPO
 	$_SESSION['depo'] = '01';
 
