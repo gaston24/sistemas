@@ -44,6 +44,7 @@ while($v=odbc_fetch_array($resultProxDes)){
 	$proxDes = $v['proxDes'];
 }
 
+
 /////////// NUMERO DE PEDIDO PARA CARGAR EN TANGO
 
 $numPed = (string)($ptoVta).(string)($proxDes);
