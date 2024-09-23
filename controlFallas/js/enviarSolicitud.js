@@ -8,6 +8,10 @@ const enviar = () => {
 
     allTr.forEach(element => {
 
+        if(!element.querySelectorAll("td")[7].querySelector("select")){
+            return ;
+        }
+
         if(element.querySelectorAll("td")[7].querySelector("select").value == '' 
         || element.querySelectorAll("td")[7].querySelector("select").value == null){
             error = true ;

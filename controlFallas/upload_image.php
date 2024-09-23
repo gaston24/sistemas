@@ -4,7 +4,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $root = $_SERVER["DOCUMENT_ROOT"];
     $targetDir = 'assets/uploads/';
 
-
     // Crear el directorio si no existe
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -14,12 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
     $totalFiles = count($_FILES['archivos']['name']);
     $uploadedFiles = 0;
 
-    $maxFileSize = 6 * 1024 * 1024; // 6 MB en bytes
-
+    $maxFileSize = 10 * 1024 * 1024; // 6 MB en bytes
 
     for ($i = 0; $i < $totalFiles; $i++) {
         // Verificar el tamaño del archivo
-        if ($_FILES['archivos']['size'][$i] <= $maxFileSize) {
+        // if ($_FILES['archivos']['size'][$i] <= $maxFileSize) {
             // Obtener el timestamp actual en milisegundos
             $timestamp = strval(round(microtime(true) * 1000));
             $newName = $_FILES['archivos']['name'][$i] . "_" . $i . "_" . $timestamp.'.jpg';
@@ -28,11 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
             // Permitir solo ciertos tipos de archivos
             $allowedTypes = array('pdf', 'jpg', 'png');
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-   
+            
             if (in_array($fileType, $allowedTypes)) {
-             
+                
                 if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $targetFile)) {
-                    // var_dump($_FILES['archivos']['tmp_name'][$i], $targetFile);
+                    // Leer datos EXIF para aplicar rotación si es necesario
                     $exif = exif_read_data($targetFile);
                     if (!empty($exif['Orientation'])) {
                         // Aplicar la rotación según la orientación EXIF sin cambiar dimensiones
@@ -57,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
                         // Sobrescribir el archivo original con la imagen rotada
                         rename($rotatedFile, $targetFile);
                     }
+
                     // Obtener las dimensiones originales de la imagen
                     list($originalWidth, $originalHeight) = getimagesize($targetFile);
 
@@ -66,10 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
                             $newWidth = 960;
                             $newHeight = 1360;
 
+
                             $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
                             $sourceImage = imagecreatefromjpeg($targetFile);
 
-                            imagecopyresized(
+                            imagecopyresampled(
                                 $resizedImage,
                                 $sourceImage,
                                 0,
@@ -82,8 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
                                 $originalHeight
                             );
 
-                            imagejpeg($resizedImage, $targetFile);
-
+                            imagejpeg($resizedImage, $targetFile, 75); // Ajustar calidad para comprimir
                             imagedestroy($sourceImage);
                             imagedestroy($resizedImage);
                         }
@@ -94,9 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['archivos']['name'][
             } else {
                 echo "Error: El archivo no es de un tipo permitido (pdf, jpg, png).";
             }
-        } else {
-            echo "Error: El archivo excede el tamaño máximo permitido (4 MB).";
-        }
+        // } else {
+            // echo "Error: El archivo excede el tamaño máximo permitido (6 MB).";
+        // }
     }
 
     echo "Se subieron $uploadedFiles archivos correctamente.";

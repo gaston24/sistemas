@@ -12,6 +12,7 @@
 	<th style="width: 8%">DINO</th>				
 	<th style="width: 8%">NVO<br>CENTRO</th>				
 	<th style="width: 8%">SAN<br>JUAN</th>				
-	<th style="width: 8%">JOCKEY</th>				
+	<th style="width: 8%">JOCKEY</th>	
+	<th style="width: 8%">RIVERA</th>				
 	<th style="width: 4%"><input type="submit" value="Enviar" class="btn btn-primary btn-sm"></th>
 </tr>

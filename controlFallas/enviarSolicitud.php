@@ -14,8 +14,7 @@
         
     }
     $locales = $recodificacion->traerLocales();
-    
-   
+
 ?>
 
 <!DOCTYPE html>
@@ -113,6 +112,7 @@
                                             <?php 
                                                 foreach ($locales as $key => $local) {
                                                     
+
                                                     if($local['NRO_SUCURSAL'] == $detalle['DESTINO']){
                                                         echo $local['DESC_SUCURSAL'];
                                                     }
@@ -121,17 +121,24 @@
                                         </td>
                                         <td style="text-align:center"><?= $detalle['OBSERVACIONES'] ?> </td>
                                         <td style="text-align:center">
-                                            <select class="form-control selectRemito" id="selectRemito" onchange="comprobarArticuloEnRemito(this)">
-                                                <option value="" selected disabled hidden>Seleccionar remito</option>
-                                                <?php 
+                                            <?php
+                                            
+                                            if($detalle['DESTINO'] != $_SESSION['numsuc']){ 
+                                            ?>
+                                                <select class="form-control selectRemito" id="selectRemito" onchange="comprobarArticuloEnRemito(this)">
+                                                    <option value="" selected disabled hidden>Seleccionar remito</option>
+                                                    <?php 
                                                     foreach ($remitos as $key => $remito) {
-                                                ?>
-                                                    <option value="<?= $remito['N_COMP']?>"><?= $remito['N_COMP']?></option>
-                                                <?php
+                                                        ?>
+                                                        <option value="<?= $remito['N_COMP']?>"><?= $remito['N_COMP']?></option>
+                                                        <?php
                                                     } 
-                                                ?>
-                                            </select>
-                                        </td>
+                                                    ?>
+                                                </select>
+                                            <?php 
+                                            }
+                                            ?>
+                                                </td>
                                                                                 <td hidden><?= $detalle['ID'] ?></td>
 
                                        </tr>

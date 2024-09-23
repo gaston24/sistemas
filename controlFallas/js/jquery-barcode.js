@@ -19,14 +19,14 @@
   var barcode = {
     settings:{
       barWidth: 1,
-      barHeight: 60,
+      barHeight: 50,
       moduleSize: 5,
       showHRI: true,
       addQuietZone: true,
       marginHRI: 5,
       bgColor: "#FFFFFF",
       color: "#000000",
-      fontSize: 13,
+      fontSize: 10,
       output: "css",
       posX: 0,
       posY: 0
@@ -1234,6 +1234,11 @@
       for(var name in barcode.settings){
         if (settings[name] == undefined) settings[name] = barcode.settings[name];
       }
+      
+      // Convert string values to float for more precise control
+      settings.barWidth = parseFloat(settings.barWidth);
+      settings.barHeight = parseFloat(settings.barHeight);
+      settings.moduleSize = parseFloat(settings.moduleSize);
       
       switch(type){
         case "std25":

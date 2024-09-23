@@ -43,8 +43,99 @@ if (!isset($_SESSION['username'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style/pedidos.css" class="rel">
- 
+    <style>
+        body {
+            padding-top: 95px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            height:500px;
+        }
+        .fixed-header {
+            position: fixed;
+            top: 5;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+			margin-right:3rem; 
+			margin-left:3.8rem; 
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+			margin-right:3rem; 
+			margin-left:3rem; 
+        }
+        #pedidosTable {
+            font-size: 0.8rem;
+            width: 100%;
+        }
+        #pedidosTable th, #pedidosTable td {
+            white-space: nowrap;
+            padding: 0.5rem;
+        }
+        .table-fixed-header {
+            position: sticky;
+            top: 120px;
+            background-color: #e9ecef;
+            z-index: 1;
+        }
+        .sale-badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+        .search-box {
+            position: relative;
+        }
+        .clear-search {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+        .pedido-input {
+            width: 50px;
+        }
+        .page-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            body{
+                height:768px;
+                overflow-x: hidden;
+            }
+            .stock-local, .ventas-30-dias {
+                display: none;
+            }
+            #pedidosTable {
+                font-size: 0.75rem;
+                width: 100%;
+            }
+        }
+        .product-image {
+            cursor: pointer;
+        }
+        #creditAlertContainer {
+        position: absolute;
+        z-index: 1000;
+        width: 22%;
+        }
+
+        #creditAlertContainer .alert {
+            margin-bottom: 0;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
     <div id="aguarde" style="display: none;">
@@ -69,17 +160,11 @@ if (!isset($_SESSION['username'])) {
                 </div>
                 <div class="col-md-2 mb-2">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text">Total SKU</span>
-                        <input type="text" id="totalSKU" class="form-control" value="0" readonly>
-                    </div>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text">Total unidades</span>
+                        <span class="input-group-text">Total articulos</span>
                         <input type="text" id="total" class="form-control" value="0" readonly>
                     </div>
                 </div>
-                    <div class="col-md-2 mb-2" <?php if ($suc < 100) { echo 'hidden'; } ?>>
+                <div class="col-md-2 mb-2" <?php if ($suc < 100) { echo 'hidden'; } ?>>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text">Importe total:</span>
                         <input type="text" name="total_precio" id="totalPrecio" class="form-control" value="0" onChange="verificarCredito()">
@@ -253,19 +338,14 @@ if (!isset($_SESSION['username'])) {
             function updateTotals() {
                 var totalArticulos = 0;
                 var totalPrecio = 0;
-                var totalSKU = 0;
                 $('#pedidosTable tbody tr').each(function() {
                     var cantidad = parseInt($(this).find('.pedido-input').val()) || 0;
                     var precioTexto = $(this).find('td:last').text();
                     var precio = parseFloat(precioTexto.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
                     totalArticulos += cantidad;
                     totalPrecio += cantidad * precio;
-                    if (cantidad > 0) {
-                        totalSKU++;
-                    }
                 });
                 $('#total').val(totalArticulos);
-                $('#totalSKU').val(totalSKU);
                 
                 // Formatear el precio total con separadores de miles y sin decimales
                 var formattedTotalPrecio = new Intl.NumberFormat('es-AR', { 
