@@ -42,11 +42,15 @@ $user = escapeshellarg($vars['USER']);
 $password = escapeshellarg($vars['PASS']);
 
 
+// Crear un archivo temporal para la consulta
+$tempFile = tempnam(sys_get_temp_dir(), 'sqlcmd_');
 $query = "EXEC FU_PEDIDOS $suc, '$codClient', '$t_ped', '$depo', $talon_ped, '$stringParaSql'";
-$query = escapeshellarg($query);
+file_put_contents($tempFile, $query); // Guarda la consulta en un archivo
 
 
-$command = "sqlcmd -S $serverName -d $database -U $user -P $password -Q $query";
+
+$command = "sqlcmd -S $serverName -d $database -U $user -P $password -i $tempFile";
+
 
 // Ejecutar el comando
 try {
@@ -55,12 +59,14 @@ try {
     if ($returnVar !== 0) {
         throw new Exception("El comando sqlcmd falló con el código de retorno $returnVar. Salida: " . implode("\n", $output));
     }
-    
 
 } catch (\Throwable $th) {
     error_log("Error al ejecutar el SP: " . $th->getMessage());
     echo 'Error: ' . $th->getMessage();
 }
+
+// Eliminar el archivo temporal
+unlink($tempFile);
 
 
 $sql = "SELECT TOP 1 NRO_PEDIDO
