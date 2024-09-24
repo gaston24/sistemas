@@ -160,7 +160,13 @@ if (!isset($_SESSION['username'])) {
                 </div>
                 <div class="col-md-2 mb-2">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text">Total articulos</span>
+                        <span class="input-group-text">Total SKU</span>
+                        <input type="text" id="totalSKU" class="form-control" value="0" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">Total unidades</span>
                         <input type="text" id="total" class="form-control" value="0" readonly>
                     </div>
                 </div>
@@ -338,14 +344,19 @@ if (!isset($_SESSION['username'])) {
             function updateTotals() {
                 var totalArticulos = 0;
                 var totalPrecio = 0;
+                var totalSKU = 0;
                 $('#pedidosTable tbody tr').each(function() {
                     var cantidad = parseInt($(this).find('.pedido-input').val()) || 0;
                     var precioTexto = $(this).find('td:last').text();
                     var precio = parseFloat(precioTexto.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
                     totalArticulos += cantidad;
                     totalPrecio += cantidad * precio;
+                    if (cantidad > 0) {
+                        totalSKU++;
+                    }
                 });
                 $('#total').val(totalArticulos);
+                $('#totalSKU').val(totalSKU);
                 
                 // Formatear el precio total con separadores de miles y sin decimales
                 var formattedTotalPrecio = new Intl.NumberFormat('es-AR', { 
