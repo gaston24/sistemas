@@ -43,11 +43,19 @@ $password = escapeshellarg($vars['PASS']);
 
 
 // Crear un archivo temporal para la consulta
-$tempFile = tempnam(sys_get_temp_dir(), 'sqlcmd_');
+$tempFile = tempnam(sys_get_temp_dir(), 'sqlcmd_' . uniqid());
 $query = "EXEC FU_PEDIDOS $suc, '$codClient', '$t_ped', '$depo', $talon_ped, '$stringParaSql'";
 file_put_contents($tempFile, $query); // Guarda la consulta en un archivo
 
+// Ruta donde quieres guardar el log
+$logFile = $_SERVER['DOCUMENT_ROOT'].'/LOGSFU/LOG.log';
 
+// Un mensaje de error o información que quieres registrar
+$message = "query:$query fecha:" . date('Y-m-d H:i:s') . PHP_EOL;
+
+// Escribe el mensaje en el archivo de log
+error_log($message, 3, $logFile);
+  
 
 $command = "sqlcmd -S $serverName -d $database -U $user -P $password -i $tempFile";
 
