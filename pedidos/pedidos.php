@@ -8,6 +8,7 @@ if (!isset($_SESSION['username'])) {
 
 	header("Location:../index.php");
 } else {
+
 	include_once __DIR__.'/../class/pedido.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/assets/js/js.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/Controlador/cargaPedidoNew.php';
@@ -238,7 +239,7 @@ if (!isset($_SESSION['username'])) {
                             <td id="cantVendida" class="ventas-30-dias">0</td>
                             <td id="cant"><?= (int)($v['DISTRI']) ?></td>
                             <td>
-                                <input type="number" name="cantPed[]" class="form-control form-control-sm pedido-input" value="0" min="0" id="articulo" onchange="total();verifica();precioTotal()" <?= ((int)$v['DISTRI'] > 0 ) ? 'disabled' : '' ?>>
+                                <input type="number" name="cantPed[]" class="form-control form-control-sm pedido-input" value="0" min="0" id="articulo" onchange="total();verifica();precioTotal()" <?= ((int)$v['DISTRI'] > 0 && $_SESSION['tipo'] != 'FRANQUICIA') ? 'disabled' : '' ?>>
                             </td>
                             <td id="precio">
                             <?php
