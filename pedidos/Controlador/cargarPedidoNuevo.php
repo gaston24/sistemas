@@ -17,7 +17,7 @@ $talon_ped = 97;
 $stringParaSql = '(';
 
 if( substr($codClient, 0, 2) == 'MA' ){
-	$cantidadPedida = 6;
+	$cantidadPedida = 8;
 }else{
 	$cantidadPedida = 8;
 }
@@ -27,6 +27,7 @@ foreach ($_POST['matriz'] as $key => $value) {
 
 	$stringParaSql .= '"'.$value[1].'","'.$value[$cantidadPedida].'","'.$value[3].'","'.$value[4].'";';
 }
+
 
 $stringParaSql = substr($stringParaSql, 0, -1);
 $stringParaSql .= ')';
