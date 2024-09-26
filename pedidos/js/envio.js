@@ -23,10 +23,15 @@ function matrizPedidosMayoristas()  {
         let valor = x.querySelectorAll('td');
         var another = [];
         valor.forEach(function(x, z){
-            another[z] = (z==0||z==2) ? '' : ( (z==6) ? x.querySelector("input").value : (z==7 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
+ 
+                another[z] = (z==0||z==2) ? '' : ( (z==8) ? x.querySelector("input").value : (z==7 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
+
+            
+
         })
         return another;
     })
+    
     return matriz3;
 }
 
@@ -43,6 +48,7 @@ function enviar() {
     if (totalPrecioValida != 'NaN') {
 
         const matriz = matrizPedidos();
+        console.log(matriz)
 
         suma = $('#total').val();
 
@@ -109,6 +115,7 @@ function enviar() {
 function enviarEcommerce() {
 
     const matriz = matrizPedidos();
+    console.log(matriz)
 
     suma = $('#total').val();
 
@@ -136,7 +143,7 @@ function enviarMayorista() {
     if (totalPrecioValida != 'NaN') {
 
         const matriz = matrizPedidosMayoristas();
-
+        console.log(matriz)
         suma = $('#total').val();
 
         if (suma != 0) {
