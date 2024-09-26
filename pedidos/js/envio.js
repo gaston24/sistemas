@@ -23,7 +23,7 @@ function matrizPedidosMayoristas()  {
         let valor = x.querySelectorAll('td');
         var another = [];
         valor.forEach(function(x, z){
-            another[z] = (z==0||z==2) ? '' : ( (z==6) ? x.firstChild.value : (z==7 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
+            another[z] = (z==0||z==2) ? '' : ( (z==6) ? x.querySelector("input").value : (z==7 ? another[z] = x.innerHTML.trim() : another[z] = x.innerHTML) );
         })
         return another;
     })
