@@ -317,12 +317,18 @@ if (!isset($_SESSION['username'])) {
                 order: [[3, 'asc'], [1, 'asc']],
                 pageLength: -1,
                 lengthChange: false,
-                searching: false,
+                searching: true,
                 info: false,
                 paging: false,
                 scrollY: 'calc(100vh - 150px)',
                 scrollCollapse: true,
                 autoWidth: false,
+                language: {
+                    search: "Buscar:",
+                    zeroRecords: "No se encontraron resultados",
+                    infoEmpty: "Mostrando 0 de 0 registros",
+                    emptyTable: "No hay datos disponibles en la tabla"
+                },
                 columnDefs: [
                     { width: '40px', targets: 0 },
                     { width: '100px', targets: 1 },
@@ -332,12 +338,20 @@ if (!isset($_SESSION['username'])) {
                 ]
             });
 
+            // Función de búsqueda personalizada
+            function customSearch(value) {
+                table.search(value).draw();
+            }
+
+            // Evento de búsqueda en el input
             $('#searchBox').on('keyup', function() {
-                table.search(this.value).draw();
+                customSearch(this.value);
             });
 
+            // Limpiar búsqueda
             $('#clearSearch').on('click', function() {
-                $('#searchBox').val('').trigger('keyup');
+                $('#searchBox').val('');
+                customSearch('');
             });
 
             $('#pedidosTable').on('change', '.pedido-input', updateTotals);
