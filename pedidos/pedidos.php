@@ -201,7 +201,7 @@ if (!isset($_SESSION['username'])) {
     </div>
 
     <div class="container-fluid">
-        <div class="table-container">
+        <div class="table-container" <?= ($suc < 100) ? '' : 'style="margin-top: 40px;"' ?>>
             <table id="pedidosTable" class="table table-striped table-hover">
                 <thead class="table-fixed-header">
                     <tr>
