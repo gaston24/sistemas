@@ -85,7 +85,7 @@ $pedido = new Pedido();
                 <th scope="col" style="width: 5%">ARREGLO</th>
                 <th scope="col" style="width: 5%">PRIORIDAD</th>
                 <th scope="col" style="width: 2%">ASIGNAR FECHA</th>
-                <th scope="col" style="width: 1%;"></th>
+                <th scope="col" style="width: 2%;"><button class="btn btn-primary" onclick="copiarPrimerFila()"><i class="fa fa fa-solid fa-arrow-down"></i></button></th>
             </thead>
 
             <tbody id="table" style="font-size: small;">
@@ -103,7 +103,7 @@ $pedido = new Pedido();
                 ?>
 
 
-                    <tr>
+                    <tr id="trBody">
                         <td><?= substr($value->FECHA->date, 0, 10); ?></td>
                         <td><?= $value->HORA_INGRESO; ?></td>
                         <td>
@@ -467,6 +467,29 @@ $pedido = new Pedido();
                 }
             }
         }
+    }
+
+    const copiarPrimerFila = () =>{
+        
+        let allTr = document.querySelectorAll('#trBody');
+
+        let primerFila = allTr[0];
+
+        let tipoComporbante = primerFila.querySelectorAll('td')[8].querySelector("select").value
+        let embalaje = primerFila.querySelectorAll('td')[9].querySelector("select").value
+        let despacho = primerFila.querySelectorAll('td')[10].querySelector("select").value
+        let asignarFecha = primerFila.querySelectorAll('td')[13].querySelector("input").value
+
+
+
+        allTr.forEach(element => {
+            element.querySelectorAll('td')[8].querySelector("select").value = tipoComporbante
+            element.querySelectorAll('td')[9].querySelector("select").value = embalaje
+            element.querySelectorAll('td')[10].querySelector("select").value = despacho
+            element.querySelectorAll('td')[13].querySelector("input").value = asignarFecha
+        });
+
+
     }
 </script>
 <script src="main.js" charset="utf-8"></script>
