@@ -810,7 +810,7 @@ class Recodificacion
         $cid = $conn->conectar('local');
 
         $sql="SELECT CASE WHEN (
-          	 SELECT B.CANTIDAD FROM STA14 A 
+          	 SELECT SUM(B.CANTIDAD) FROM STA14 A 
             INNER JOIN STA20 B ON A.ID_STA14 = B.ID_STA14
             WHERE A.NCOMP_ORIG ='$nComp'
             AND B.COD_ARTICU ='$articulo'
