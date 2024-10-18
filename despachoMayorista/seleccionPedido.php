@@ -396,6 +396,7 @@ $pedido = new Pedido();
                     location.reload()
                 });
         }
+        location.reload();
 
     }
     //bandera que indica si el pedido se encuentra con campos vacios o no. 1 indica que existen campos sin completar. 
@@ -483,10 +484,15 @@ $pedido = new Pedido();
 
 
         allTr.forEach(element => {
-            element.querySelectorAll('td')[8].querySelector("select").value = tipoComporbante
-            element.querySelectorAll('td')[9].querySelector("select").value = embalaje
-            element.querySelectorAll('td')[10].querySelector("select").value = despacho
-            element.querySelectorAll('td')[13].querySelector("input").value = asignarFecha
+
+           if(element.querySelectorAll('td')[8].querySelector("select").disabled == false){
+
+               element.querySelectorAll('td')[8].querySelector("select").value = tipoComporbante
+               element.querySelectorAll('td')[9].querySelector("select").value = embalaje
+               element.querySelectorAll('td')[10].querySelector("select").value = despacho
+               element.querySelectorAll('td')[13].querySelector("input").value = asignarFecha
+
+           }
         });
 
 
