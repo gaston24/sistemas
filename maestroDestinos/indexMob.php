@@ -49,7 +49,7 @@ $maestroArticulos = new Articulo();
                         <span class="input-group-text" onclick="borrar()">
                             <i class="bi bi-x-circle"></i>
                         </span>
-                        <button class="btn btn-primary" type="button" onclick="traerArticulo(document.getElementById('selectArticulo'), <?= json_encode($_SESSION['usuarioUy'] ?? null) ?>)">
+                        <button class="btn btn-primary" type="button" onclick="traerArticulo(document.getElementById('selectArticulo'))">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>

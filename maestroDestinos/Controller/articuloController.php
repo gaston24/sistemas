@@ -12,8 +12,8 @@ try {
     switch ($accion) {
         case 'traerArticulo':
             $codArticulo = $_POST['codArticulo'] ?? '';
-            $usuarioUy = $_POST['usuarioUy'] ?? 0;
-            
+
+
             // Asumiendo que necesitas crear un método específico para buscar un artículo por código
             $result = $articulo->buscarArticuloPorCodigo($codArticulo);
             
