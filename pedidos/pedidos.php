@@ -49,7 +49,7 @@ if (!isset($_SESSION['username'])) {
             padding-top: 95px;
             overflow-x: hidden;
             overflow-y: hidden;
-            height:500px;
+            height:480px;
         }
         .fixed-header {
             position: fixed;
@@ -320,7 +320,7 @@ if (!isset($_SESSION['username'])) {
                 searching: true,
                 info: false,
                 paging: false,
-                scrollY: 'calc(100vh - 150px)',
+                scrollY: 'calc(95vh - 150px)',
                 scrollCollapse: true,
                 autoWidth: false,
                 language: {
