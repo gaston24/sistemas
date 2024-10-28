@@ -243,6 +243,7 @@ $pedido = new Pedido();
         //guardar los cambios de un select junto con los datos del resto de la fila
         el.addEventListener('change', (el) => {
             guardarDatos(el.target.parentNode.parentNode, el)
+            sumarComprobantesFacturas();
         });
     });
 
@@ -259,6 +260,7 @@ $pedido = new Pedido();
         habilitarInputs(pedido);
         pedido = pedido.target.parentNode.parentNode.parentNode;
         guardarDatos(pedido);
+        sumarComprobantesFacturas();
     }
 
     function habilitarInputs(input) {
@@ -307,20 +309,9 @@ $pedido = new Pedido();
                 fechaDespacho: row.children[13].children[0].value
             };
             Pedidos.push(infoPedido);
-            try {
-                if (campo.srcElement.attributes.id.value == 'Comprobante') {
-                sumarPorTipoComprobante(infoPedido.tipoComp, '', infoPedido.importePendiente);
-            }
-            } catch (error) {
-                console.log('Valor no definido:'+error);
-                sumarPorTipoComprobante(infoPedido.tipoComp, '', infoPedido.importePendiente);
-            }
-           
-            //guardar el pedidos editado en el array Pedidos
            
 
 
-            /* console.log(Pedidos); */
         } else {
 
             //si el pedido ya se editó, y se vuelve a editar, se realiza un update de los valores dentro del objeto en el array Pedidos
@@ -335,12 +326,9 @@ $pedido = new Pedido();
                 Pedidos[elementIndex].arreglo = (row.children[11].children[0].value != '' ? row.children[11].children[0].value : row.children[11].children[0].children[0].innerHTML),
                 Pedidos[elementIndex].prioridad = (row.children[12].children[0].value != '' ? row.children[12].children[0].value : row.children[12].children[0].children[0].innerHTML),
                 Pedidos[elementIndex].fechaDespacho = row.children[13].children[0].value;
-            if (campo.srcElement.attributes.id.value == 'Comprobante') {
-                sumarPorTipoComprobante(Pedidos[elementIndex].tipoComp, tipoCompAnterior, Pedidos[elementIndex].importePendiente);
-            }
 
         }
-        console.log(Pedidos);
+      
     }
 
     let conexion;
@@ -492,11 +480,78 @@ $pedido = new Pedido();
                element.querySelectorAll('td')[10].querySelector("select").value = despacho
                element.querySelectorAll('td')[13].querySelector("input").value = asignarFecha
 
+                if ((Pedidos.find((valor, indice) => {
+                    return valor.codigo == element.querySelectorAll('td')[4].textContent
+                    })) == undefined) {
+                    //si el pedido no se encuentra en el array pedidos entonce almaceno los valores en el objeto 
+                    const infoPedido = {
+                        codigo: element.querySelectorAll('td')[8].querySelector("select").value,
+                        fecha: element.querySelectorAll('td')[0].innerHTML,
+                        hora: element.querySelectorAll('td')[1].innerHTML,
+                        cod_client:(document.getElementById('cod_client').value).replace('&','%26'),
+                        razon_soci: (document.getElementById('razon_soci').value).replace('&','%26'),
+                        localidad: document.getElementById('localidad').value,
+                        cod_vended: document.getElementById('cod_vended').value,
+                        vendedor: document.getElementById('vendedor').value,
+                        estado: element.querySelectorAll('td')[2].innerText,
+                        talonario: element.querySelectorAll('td')[3].innerHTML,
+                        unidPedido: element.querySelectorAll('td')[5].innerHTML,
+                        unidPendiente: element.querySelectorAll('td')[6].innerHTML,
+                        importePendiente: parseFloat(element.querySelectorAll('td')[7].innerText.slice(2)).toFixed(3),
+                        tipoComp: element.querySelectorAll('td')[8].querySelector("select").value,
+                        embalaje: element.querySelectorAll('td')[9].querySelector("select").value,
+                        despacho: element.querySelectorAll('td')[10].querySelector("select").value,
+                        arreglo: element.querySelectorAll('td')[11].querySelector("select").value,
+                        prioridad: element.querySelectorAll('td')[12].querySelector("select").value,
+                        fechaDespacho: element.querySelectorAll('td')[13].querySelector("input").value
+                    };
+                    Pedidos.push(infoPedido);
+
+                } else {
+
+                    elementIndex = Pedidos.findIndex((pedido => pedido.codigo == element.querySelectorAll('td')[4].textContent));
+                    let tipoCompAnterior = Pedidos[elementIndex].tipoComp;
+                    console.log('tipoCompAnterior: ' + tipoCompAnterior);
+                    Pedidos[elementIndex].tipoComp = element.querySelectorAll('td')[8].querySelector("select").value;
+                    Pedidos[elementIndex].embalaje = element.querySelectorAll('td')[9].querySelector("select").value;
+                    Pedidos[elementIndex].despacho = element.querySelectorAll('td')[10].querySelector("select").value;
+                    Pedidos[elementIndex].arreglo = element.querySelectorAll('td')[11].querySelector("select").value;
+                    Pedidos[elementIndex].prioridad = element.querySelectorAll('td')[12].querySelector("select").value;
+                    Pedidos[elementIndex].fechaDespacho = element.querySelectorAll('td')[13].querySelector("input").value;
+
+                }
+              
            }
+  
         });
 
-
+        sumarComprobantesFacturas();
     }
+
+const sumarComprobantesFacturas = () =>{
+
+    let totalFactura = 0;
+    let totalRemito = 0;
+
+    document.querySelectorAll('.Comprobante').forEach(element => {
+        if(element.value == 'FACTURA'){ 
+        
+            let valor = parseFloat(element.parentElement.parentElement.querySelectorAll('td')[7].innerText.replace("$", "").replaceAll(".", "").replace(",", "."));
+            totalFactura = parseFloat(totalFactura) + valor
+            
+
+
+        }else if (element.value == 'REMITO'){
+            let valor = parseFloat(element.parentElement.parentElement.querySelectorAll('td')[7].innerText.replace("$", "").replaceAll(".", "").replace(",", "."));
+            totalRemito = parseFloat(totalRemito) + valor
+        }
+    });
+
+    inputTotalFactura.value = totalFactura.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    inputTotalRemito.value = totalRemito.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
+}
+
 </script>
 <script src="main.js" charset="utf-8"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
