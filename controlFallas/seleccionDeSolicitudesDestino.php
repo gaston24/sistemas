@@ -305,7 +305,6 @@
    
   
     function generateBarcode(div) {
-    // Obtener el valor del código de barras desde el input
     let id = div.parentElement.parentElement.children[1].innerText;
     let nroSucursal = document.getElementById('nroSucursal').innerText;
 
@@ -327,12 +326,16 @@
                 return;
             }
 
-            // Crear un contenedor para la fila actual
+            document.querySelector('#barcode').style.width = '100%';
+            document.querySelector('#barcode').style.padding = '20px';
+            
             let currentRow = document.createElement('div');
             currentRow.style.display = 'flex';
-            currentRow.style.justifyContent = 'space-between';
-            currentRow.style.marginBottom = '30px';
+            currentRow.style.marginBottom = '70px';
+            currentRow.style.justifyContent = 'flex-start';
             document.querySelector('#barcode').appendChild(currentRow);
+
+            let itemsInCurrentRow = 0;
 
             articulos.forEach((articulo, index) => {
                 let value = articulo['NUEVO_CODIGO'];
@@ -343,7 +346,34 @@
                     return;
                 }
 
-                // Configuración del código de barras
+                if (itemsInCurrentRow >= 4) {
+                    currentRow = document.createElement('div');
+                    currentRow.style.display = 'flex';
+                    currentRow.style.marginBottom = '70px';
+                    currentRow.style.justifyContent = 'flex-start';
+                    document.querySelector('#barcode').appendChild(currentRow);
+                    itemsInCurrentRow = 0;
+                }
+
+                // Contenedor principal de la etiqueta
+                let divEtiqueta = document.createElement('div');
+                divEtiqueta.style.width = '220px';
+                divEtiqueta.style.marginRight = '40px';
+                divEtiqueta.style.display = 'inline-block';
+                divEtiqueta.style.verticalAlign = 'top';
+                currentRow.appendChild(divEtiqueta);
+
+                // Contenedor para el código de barras
+                let divCodigoContainer = document.createElement('div');
+                divCodigoContainer.style.width = '100%';
+                divCodigoContainer.style.textAlign = 'center';
+                divEtiqueta.appendChild(divCodigoContainer);
+
+                let divCodigo = document.createElement('div');
+                divCodigo.id = 'barcode'+index;
+                divCodigo.style.display = 'inline-block';
+                divCodigoContainer.appendChild(divCodigo);
+
                 var settings = {
                     format: 'CODE93',
                     lineColor: '#000000',
@@ -354,36 +384,40 @@
                     marginTop: 8,
                     marginBottom: 8
                 };
-
-                // Generar el código de barras en el elemento con id 'barcode'
-                let divCodigo = document.createElement('div');
-                divCodigo.id = 'barcode'+index;
-                divCodigo.style.marginRight = '50px'; // Añadir margen derecho para espaciado horizontal
-                currentRow.appendChild(divCodigo);
                 
                 $('#barcode'+index).barcode(value, 'code93', settings);
 
-                // Ajustar el tamaño del contenedor del código de barras
                 $('#barcode'+index).css({
-                    'transform': 'scale(1.4)',
-                    'transform-origin': 'top left'
+                    'transform': 'scale(1.5)',
+                    'transform-origin': 'center top'
                 });
 
-                let nuevoDivDescripcion = document.createElement('div');
-                nuevoDivDescripcion.innerHTML = articulo['DESCSTA11'];
-                nuevoDivDescripcion.style.textAlign = 'center';
-                nuevoDivDescripcion.style.fontSize = '10px';
+                // Agregar la descripción fija "OUTLET ARTIC.SIN CAMBIO"
+                let divDescContainer = document.createElement('div');
+                divDescContainer.style.width = '100%';
+                divDescContainer.style.textAlign = 'center';
+                divDescContainer.style.marginTop = '5px';
+                divEtiqueta.appendChild(divDescContainer);
 
-                document.querySelector('#barcode'+index).appendChild(nuevoDivDescripcion);
+                let divDescFija = document.createElement('div');
+                divDescFija.innerHTML = 'OUTLET ARTIC.SIN CAMBIO';
+                divDescFija.style.fontSize = '10px';
+                divDescFija.style.whiteSpace = 'nowrap';
+                divDescFija.style.textAlign = 'center';
+                divDescContainer.appendChild(divDescFija);
 
-                // Si hemos añadido 3 códigos de barras a la fila actual, crear una nueva fila
-                if ((index + 1) % 5 === 0) {
-                    currentRow = document.createElement('div');
-                    currentRow.style.display = 'flex';
-                    // currentRow.style.justifyContent = 'space-between';
-                    currentRow.style.marginBottom = '70px';
-                    document.querySelector('#barcode').appendChild(currentRow);
+                // Si hay descripción adicional del artículo específico
+                if (articulo['DESCSTA11'] && articulo['DESCSTA11'] !== 'OUTLET ARTIC.SIN CAMBIO') {
+                    let divDescArticulo = document.createElement('div');
+                    divDescArticulo.innerHTML = articulo['DESCSTA11'];
+                    divDescArticulo.style.fontSize = '10px';
+                    divDescArticulo.style.whiteSpace = 'nowrap';
+                    divDescArticulo.style.textAlign = 'center';
+                    divDescArticulo.style.marginTop = '3px';
+                    divDescContainer.appendChild(divDescArticulo);
                 }
+
+                itemsInCurrentRow++;
             });
 
             document.querySelector('#barcode').hidden = false;
