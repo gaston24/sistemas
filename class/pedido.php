@@ -9,10 +9,16 @@ class Pedido {
         
     }
 
-    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null, $db = 'central'){
-
-        $cid = $this->conn->conectar($db);
-        
+    public function listarPedido($tipoPedido, $tipo_cli, $suc, $codClient, $esOutlet = null, $db = 'central') {
+        try {
+            $cid = $this->conn->conectar($db);
+            
+            // Verificar conexión
+            if ($cid === false) {
+                $errors = sqlsrv_errors();
+                throw new Exception("Error de conexión a la base de datos: " . print_r($errors, true));
+            }
+    
             switch ($tipoPedido) {
                 case 1:
                     $_SESSION['tipo_pedido'] = 'GENERAL';
@@ -24,50 +30,61 @@ class Pedido {
                     $_SESSION['tipo_pedido'] = 'OUTLET';
                     break;
             }
-            
-        try{
-
-          
-            $sql = "EXEC SJ_TIPO_PEDIDO_".$tipoPedido." $suc, '$codClient'";
-           
-
-            if($esOutlet != null){
-
-                if($tipoPedido == 1){
-
-                    $sql = "EXEC SJ_TIPO_PEDIDO_".$tipoPedido."_OUTLET '$suc', '$codClient'";
-                }
-
-
+    
+            // Construir la consulta SQL
+            if ($esOutlet != null && $tipoPedido == 1) {
+                $sql = "EXEC SJ_TIPO_PEDIDO_{$tipoPedido}_OUTLET '{$suc}', '{$codClient}'";
+            } else {
+                $sql = "EXEC SJ_TIPO_PEDIDO_{$tipoPedido} '{$suc}', '{$codClient}'";
             }
-      
+    
+            // Para debug: Imprimir la consulta SQL
+            error_log("SQL Query: " . $sql);
+            
             ini_set('max_execution_time', 300);
-
-            $stmt = sqlsrv_query($cid, $sql);
-
-            if($db != 'uy'){
-
-
-                $next_result = sqlsrv_next_result($stmt);
-                
-            }
-
             
+            // Ejecutar la consulta
+            $stmt = sqlsrv_query($cid, $sql);
+            
+            if ($stmt === false) {
+                $errors = sqlsrv_errors();
+                $errorMessage = "Error al ejecutar la consulta:\n";
+                foreach ($errors as $error) {
+                    $errorMessage .= "SQLSTATE: " . $error['SQLSTATE'] . "\n";
+                    $errorMessage .= "Code: " . $error['code'] . "\n";
+                    $errorMessage .= "Message: " . $error['message'] . "\n";
+                }
+                throw new Exception($errorMessage);
+            }
+    
             $v = [];
             
-       
-            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
-
-                $v[] = $row;
-
+            // Si no es Uruguay y hay resultados, obtener el siguiente conjunto
+            if ($db != 'uy' && $stmt !== false) {
+                $next_result = sqlsrv_next_result($stmt);
+                if ($next_result === false) {
+                    $errors = sqlsrv_errors();
+                    error_log("Error en next_result: " . print_r($errors, true));
+                }
             }
-            
+    
+            // Obtener los resultados
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                $v[] = $row;
+            }
+    
             return $v;
-
         }
-        catch (\Throwable $th) {
-            die("Error en sqlsrv_exec");
-        };
+        catch (Exception $e) {
+            error_log("Error en listarPedido: " . $e->getMessage());
+            throw $e;
+        }
+        finally {
+            // Liberar recursos
+            if (isset($stmt) && $stmt !== false) {
+                sqlsrv_free_stmt($stmt);
+            }
+        }
     }
 
     public function traerHistorial($codClient, $usuarioUy = 0){
