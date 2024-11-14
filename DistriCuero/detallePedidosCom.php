@@ -50,6 +50,8 @@ $todosLosPedidos = $pedido->traerDetallePedidosCom($orden);
                 <th scope="col" style="width: 15%">Articulo</th>
                 <th scope="col" style="width: 15%">Descripcion</th> 
                 <th scope="col" style="width: 5%">Cantidad</th> 
+                <th scope="col" style="width: 5%">Estado</th> 
+                <th scope="col" style="width: 5%"></th>
             </thead>
 
             <tbody id="table">
@@ -64,7 +66,28 @@ $todosLosPedidos = $pedido->traerDetallePedidosCom($orden);
                     <td><?=  $key['COD_CLIENT'] ?></td>
                     <td><?=  $key['COD_ARTICU'] ?></td>
                     <td><?=  $key['DESCRIPCIO'] ?></td>
-                    <td><?=  $key['CANTIDAD']?></td>      
+                    <td><?=  $key['CANTIDAD']?></td>
+                    <td><?=  $key['ESTADO']?></td>
+                    <td>
+                        <?php
+                        switch($key['ESTADO']) {
+                            case 'PENDIENTE':
+                                echo '<i class="fas fa-clock text-warning" data-toggle="tooltip" data-placement="top" title="Pendiente"></i>';
+                                break;
+                            case 'CARGADA':
+                                echo '<i class="fas fa-check-circle text-success" data-toggle="tooltip" data-placement="top" title="Procesado"></i>';
+                                break;
+                            case 'RECHAZADA':
+                                echo '<i class="fas fa-times-circle text-danger" data-toggle="tooltip" data-placement="top" title="Cancelado"></i>';
+                                break;
+                            case 'EN PROCESO':
+                                echo '<i class="fas fa-spinner fa-spin text-primary" data-toggle="tooltip" data-placement="top" title="En Proceso"></i>';
+                                break;
+                            default:
+                                echo '<i class="fas fa-question-circle text-secondary" data-toggle="tooltip" data-placement="top" title="' . $key['ESTADO'] . '"></i>';
+                        }
+                        ?>
+                    </td>      
                 </tr>   
                 
                 <?php
@@ -82,21 +105,25 @@ $todosLosPedidos = $pedido->traerDetallePedidosCom($orden);
 <!-- Plugin to export Excel -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
 
 <script>
 
-    $(document).ready(() => {
-                $("#btnExport").click(function(){
+$(document).ready(function(){
+    // Inicializar tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Tu código existente del table2excel
+    $("#btnExport").click(function(){
         $("#tablePedidosCom").table2excel({
-            // exclude CSS class
             exclude: ".noExl",
             name: "Detalle pedidos",
-            filename: "Detalle notas de pedido", //do not include extension
-            fileext: ".xls" // file extension
+            filename: "Detalle notas de pedido",
+            fileext: ".xls"
         }); 
-        });
-
     });
+});
 
 </script>
 

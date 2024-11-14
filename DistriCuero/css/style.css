@@ -245,6 +245,15 @@ thead tr th {
     cursor: pointer;
   }
 
+  .fas {
+        font-size: 1.5em;
+    }
+    .fa-clock { color: #ffc107; }
+    .fa-check-circle { color: #28a745; }
+    .fa-times-circle { color: #dc3545; }
+    .fa-spinner { color: #007bff; }
+    .fa-question-circle { color: #6c757d; }
+
 
 
 
