@@ -114,12 +114,15 @@ if (isset($_GET['rubro'])) {
                 </tr>
             </thead>
             <tbody id="table">
-                <?php foreach ($todosLosArticulos as $key): 
-                    $cod_articu = substr($key['COD_ARTICU'], 0, 13);
+            <?php foreach ($todosLosArticulos as $key): 
+                    // Use first 15 characters for KITS, otherwise use first 13
+                    $cod_articu = ($key['RUBRO'] == 'KITS') ? 
+                        substr($key['COD_ARTICU'], 0, 15) : 
+                        substr($key['COD_ARTICU'], 0, 13);
                     $jpg_path = "../../Imagenes/{$cod_articu}.jpg";
                     $png_path = "../../Imagenes/{$cod_articu}.png";
 
-                    // Verifica cuál archivo existe
+                                    // Verifica cuál archivo existe
                     if (file_exists($jpg_path)) {
                         $image_path = $jpg_path;
                         $image_ext = 'jpg';
