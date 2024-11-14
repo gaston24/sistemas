@@ -1,185 +1,136 @@
 
-<?php 
-
-if(!isset($_SESSION['codClient'])){
-
-    class Orden
-
-    {
-    
-        private function retornarArray($sqlEnviado){
-    
+<?php
+class Orden {
+    private function retornarArray($sqlEnviado) {
+        if(!isset($_SESSION['codClient'])) {
             require_once 'Conexion.php';
-    
             $cid = new Conexion();
-            $cid_central = $cid->conectar();  
-            $sql = $sqlEnviado;
-    
-            $stmt = sqlsrv_query( $cid_central, $sql );
-    
-            $rows = array();
-    
-            while( $v = sqlsrv_fetch_array( $stmt) ) {
-                $rows[] = $v;
-            }
-    
-            return $rows;  
-    
-        }
-    
-        public function traerDetalleOrden($a){
-    
-            $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE NRO_ORDEN LIKE '$a' ";
-    
-            $rows = $this->retornarArray($sql);
-    
-            return $rows;
-        }
-    
-        public function traerOrdenesActivasTodas(){
-    
-            $sql = "
-    
-            SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS FROM RO_ORDENES_PRECOMPRA 
-            WHERE ACTIVA = 1
-            GROUP BY FECHA, HORA, NRO_ORDEN
-            ORDER BY NRO_ORDEN DESC
-    
-            ";
-            
-            $rows = $this->retornarArray($sql);
-    
-            return $rows;
-    
-        }  
-    
-        public function traerOrdenesInactivas(){
-    
-            $sql = "
-    
-                SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS FROM RO_ORDENES_PRECOMPRA 
-                WHERE ACTIVA IS NULL OR ACTIVA = 0
-                GROUP BY FECHA, HORA, NRO_ORDEN, ACTIVA
-                ORDER BY NRO_ORDEN DESC
-    
-            ";
-            
-            $rows = $this->retornarArray($sql);
-    
-            return $rows;
-    
+            $cid_central = $cid->conectar();
+        } else {
+            require_once $_SERVER['DOCUMENT_ROOT']. '/sistemas/class/conexion.php';
+            $cid = new Conexion();
+            $cid_central = $cid->conectar('central');
         }
         
-        public function traerOrdenesTodas(){
-    
-                $sql = "
-        
-                SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS, ACTIVA FROM RO_ORDENES_PRECOMPRA 
-                GROUP BY FECHA, HORA, NRO_ORDEN, ACTIVA
-                ORDER BY NRO_ORDEN DESC
-        
-                ";
-                
-                $rows = $this->retornarArray($sql);
-        
-                return $rows;
-        
-        }
-            
-        public function traerOrdenesConNotaPedido($orden){
-
-            $sql = "SELECT A.NRO_SUCURSAL, A.COD_CLIENT, A.DESC_SUCURSAL, REPLACE(ISNULL(B.FECHA, ''),'1900-01-01','') FECHA, B.HORA, B.NRO_ORDEN, NRO_NOTA_PEDIDO, TOTAL, CANTIDAD, 
-                    CASE WHEN C.FECHA IS NOT NULL THEN 'RECHAZADA'
-                        WHEN NRO_NOTA_PEDIDO IS NOT NULL THEN 'CARGADA'
-                        ELSE 'PENDIENTE' 
-                    END ESTADO
-                    FROM [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS A
-                    LEFT JOIN 
-                    (
-                    SELECT FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO,	SUM(PRECIO) TOTAL, SUM(CANTIDAD) CANTIDAD FROM	 
-                    (
-                    SELECT FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO, A.COD_ARTICU, (ISNULL(C.PRECIO, D.PRECIO) * CANTIDAD) PRECIO, CANTIDAD FROM RO_PEDIDO_PRECOMPRA A
-                    LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = '30' AND COD_ARTICU LIKE 'X%') C ON C.COD_ARTICU = A.COD_ARTICU COLLATE Latin1_General_BIN
-                    LEFT JOIN
-                    (
-                        SELECT A.COD_ARTICU, SUM(PRECIO*CANTIDAD) PRECIO FROM STA03 A
-                        LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = '20') B ON A.COD_INSUMO = B.COD_ARTICU
-                        GROUP BY A.COD_ARTICU
-                    ) D
-                    ON D.COD_ARTICU = A.COD_ARTICU COLLATE Latin1_General_BIN
-                    WHERE NRO_ORDEN = '$orden'
-                    ) A
-                    GROUP BY FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO
-                    ) 
-                    B ON A.COD_CLIENT = B.COD_CLIENT
-                    LEFT JOIN (SELECT * FROM RO_ORDENES_RECHAZADAS WHERE NRO_ORDEN = '$orden') C ON A.COD_CLIENT = C.COD_CLIENT
-                    WHERE CANAL = 'FRANQUICIAS' AND HABILITADO = 1 AND NRO_SUC_MADRE IS NULL
-                    ORDER BY NRO_SUCURSAL
-                ";
-                
-                $rows = $this->retornarArray($sql);
-
-                return $rows;
-
-        }
-    
-    }
-	
-}else{
-
-$codClient = $_SESSION['codClient']; 
-
-class Orden
-
-{
-
-    private function retornarArray($sqlEnviado){
-
-        require_once $_SERVER['DOCUMENT_ROOT']. '/sistemas/class/conexion.php';
-
-        $cid = new Conexion();
-        $cid_central = $cid->conectar('central');  
-        
-        $sql = $sqlEnviado;
-
-        $stmt = sqlsrv_query( $cid_central, $sql );
-
+        $stmt = sqlsrv_query($cid_central, $sqlEnviado);
         $rows = array();
-
-        while( $v = sqlsrv_fetch_array( $stmt) ) {
+        
+        while($v = sqlsrv_fetch_array($stmt)) {
             $rows[] = $v;
         }
-
-        return $rows;  
-
-    }
-
-    public function traerDetalleOrden($a){
         
-        $sql = " SELECT * FROM RO_ORDENES_PRECOMPRA WHERE NRO_ORDEN LIKE '$a' ";
-
-        $rows = $this->retornarArray($sql);
-
         return $rows;
     }
 
-    public function traerOrdenesActivas($codClient){
+    public function traerDetalleOrden($a) {
+        $sql = "SELECT * FROM RO_ORDENES_PRECOMPRA WHERE NRO_ORDEN LIKE '$a'";
+        return $this->retornarArray($sql);
+    }
 
-        $sql = "
+    public function traerOrdenesActivasTodas() {
+        $sql = "SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS 
+                FROM RO_ORDENES_PRECOMPRA 
+                WHERE ACTIVA = 1
+                GROUP BY FECHA, HORA, NRO_ORDEN
+                ORDER BY NRO_ORDEN DESC";
+        return $this->retornarArray($sql);
+    }
 
-            SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS, LANZAMIENTO FROM RO_ORDENES_PRECOMPRA 
-            WHERE ACTIVA = 1
-            AND NRO_ORDEN NOT IN (SELECT NRO_ORDEN FROM RO_PEDIDO_PRECOMPRA WHERE COD_CLIENT = '$codClient')
-            AND NRO_ORDEN NOT IN (SELECT NRO_ORDEN FROM RO_ORDENES_RECHAZADAS WHERE COD_CLIENT = '$codClient')
-            GROUP BY FECHA, HORA, NRO_ORDEN, LANZAMIENTO
-            ORDER BY NRO_ORDEN DESC
+    public function traerOrdenesActivas($codClient) {
+        $sql = "SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS, LANZAMIENTO 
+                FROM RO_ORDENES_PRECOMPRA 
+                WHERE ACTIVA = 1
+                AND NRO_ORDEN NOT IN (SELECT NRO_ORDEN FROM RO_PEDIDO_PRECOMPRA WHERE COD_CLIENT = '$codClient')
+                AND NRO_ORDEN NOT IN (SELECT NRO_ORDEN FROM RO_ORDENES_RECHAZADAS WHERE COD_CLIENT = '$codClient')
+                GROUP BY FECHA, HORA, NRO_ORDEN, LANZAMIENTO
+                ORDER BY NRO_ORDEN DESC";
+        return $this->retornarArray($sql);
+    }
 
-        ";
-     
-        $rows = $this->retornarArray($sql);
+    public function traerOrdenesInactivas() {
+        $sql = "SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS 
+                FROM RO_ORDENES_PRECOMPRA 
+                WHERE ACTIVA IS NULL OR ACTIVA = 0
+                GROUP BY FECHA, HORA, NRO_ORDEN, ACTIVA
+                ORDER BY NRO_ORDEN DESC";
+        return $this->retornarArray($sql);
+    }
 
-        return $rows;
+    public function traerOrdenesTodas() {
+        $sql = "SELECT CAST(FECHA AS VARCHAR) FECHA, HORA, NRO_ORDEN, COUNT(COD_ARTICU) ARTICULOS, ACTIVA 
+                FROM RO_ORDENES_PRECOMPRA 
+                GROUP BY FECHA, HORA, NRO_ORDEN, ACTIVA
+                ORDER BY NRO_ORDEN DESC";
+        return $this->retornarArray($sql);
+    }
 
-        }  
+    public function traerOrdenesConNotaPedido($orden) {
+        $sql = "SELECT A.NRO_SUCURSAL, A.COD_CLIENT, A.DESC_SUCURSAL, 
+                       REPLACE(ISNULL(B.FECHA, ''),'1900-01-01','') FECHA, 
+                       B.HORA, B.NRO_ORDEN, NRO_NOTA_PEDIDO, TOTAL, CANTIDAD,
+                       CASE WHEN C.FECHA IS NOT NULL THEN 'RECHAZADA'
+                            WHEN NRO_NOTA_PEDIDO IS NOT NULL THEN 'CARGADA'
+                            ELSE 'PENDIENTE' 
+                       END ESTADO
+                FROM [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS A
+                LEFT JOIN (
+                    SELECT FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO, 
+                           SUM(PRECIO) TOTAL, SUM(CANTIDAD) CANTIDAD 
+                    FROM (
+                        SELECT FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO, 
+                               A.COD_ARTICU, (ISNULL(C.PRECIO, D.PRECIO) * CANTIDAD) PRECIO, 
+                               CANTIDAD 
+                        FROM RO_PEDIDO_PRECOMPRA A
+                        LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = '30' AND COD_ARTICU LIKE 'X%') C 
+                            ON C.COD_ARTICU = A.COD_ARTICU COLLATE Latin1_General_BIN
+                        LEFT JOIN (
+                            SELECT A.COD_ARTICU, SUM(PRECIO*CANTIDAD) PRECIO 
+                            FROM STA03 A
+                            LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = '20') B 
+                                ON A.COD_INSUMO = B.COD_ARTICU
+                            GROUP BY A.COD_ARTICU
+                        ) D ON D.COD_ARTICU = A.COD_ARTICU COLLATE Latin1_General_BIN
+                        WHERE NRO_ORDEN = '$orden'
+                    ) A
+                    GROUP BY FECHA, HORA, COD_CLIENT, NRO_ORDEN, NRO_NOTA_PEDIDO
+                ) B ON A.COD_CLIENT = B.COD_CLIENT
+                LEFT JOIN (SELECT * FROM RO_ORDENES_RECHAZADAS WHERE NRO_ORDEN = '$orden') C 
+                    ON A.COD_CLIENT = C.COD_CLIENT
+                WHERE CANAL = 'FRANQUICIAS' AND HABILITADO = 1 AND NRO_SUC_MADRE IS NULL
+                ORDER BY NRO_SUCURSAL";
+        return $this->retornarArray($sql);
+    }
+
+    public function traerResumenOrdenes() {
+        $sql = "SELECT TOP 10 A.FECHA, A.HORA, A.NRO_ORDEN, B.PRECIO, CANT_NP, B.CANTIDAD, 
+                       A.LANZAMIENTO, A.ACTIVA, A.CANT_MAX 
+                FROM RO_ORDENES_PRECOMPRA A
+                LEFT JOIN (
+                    SELECT NRO_ORDEN, COUNT(DISTINCT(NRO_NOTA_PEDIDO)) CANT_NP, SUM((ISNULL(C.PRECIO, D.PRECIO) * CANTIDAD)) PRECIO, 
+                           SUM(CANTIDAD) CANTIDAD 
+                    FROM RO_PEDIDO_PRECOMPRA A
+                    LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = '30' AND COD_ARTICU LIKE 'X%') C 
+                        ON C.COD_ARTICU = A.COD_ARTICU COLLATE Latin1_General_BIN
+                    LEFT JOIN (
+                        SELECT A.COD_ARTICU, SUM(PRECIO*CANTIDAD) PRECIO 
+                        FROM STA03 A
+                        LEFT JOIN (SELECT COD_ARTICU, PRECIO FROM GVA17 WHERE NRO_DE_LIS = '20') B 
+                            ON A.COD_INSUMO = B.COD_ARTICU
+                        GROUP BY A.COD_ARTICU
+                    ) D ON D.COD_ARTICU = A.COD_ARTICU COLLATE Latin1_General_BIN
+                    GROUP BY NRO_ORDEN
+                ) B ON A.NRO_ORDEN = B.NRO_ORDEN
+				GROUP BY A.FECHA, A.HORA, A.NRO_ORDEN, B.PRECIO, CANT_NP, B.CANTIDAD, A.LANZAMIENTO, A.ACTIVA, A.CANT_MAX 
+                ORDER BY A.FECHA DESC";
+        return $this->retornarArray($sql);
+    }
+
+    public function obtenerTotalSucursales() {
+        $sql = "SELECT COUNT(NRO_SUCURSAL) as SUCURSALES 
+                FROM [LAKERBIS].LOCALES_LAKERS.DBO.SUCURSALES_LAKERS
+                WHERE CANAL = 'FRANQUICIAS' AND HABILITADO = 1 
+                AND NRO_SUC_MADRE IS NULL";
+        $result = $this->retornarArray($sql);
+        return intval($result[0]['SUCURSALES']);
     }
 }

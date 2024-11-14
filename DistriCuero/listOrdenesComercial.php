@@ -26,7 +26,7 @@ $todasLasOrdenes = $orden->traerOrdenesTodas();
     <h3 class="mb-4 mt-4 ml-4" id="titleSelect"><i class="fa fa-check-square-o"></i>  Selección de Ordenes</h3>
 
             <div class="ml-2">   
-                <a type="button" class="btn btn-primary ml-4 mb-4" id="btn_back2" href="navbar.html"><i class="fa fa-arrow-left"></i>  Volver</a>
+                <a type="button" class="btn btn-primary ml-4 mb-4" id="btn_back2" href="menu.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div>
 
     <div class="table-responsive">

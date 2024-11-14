@@ -28,7 +28,7 @@ $todasLasOrdenes = $orden->traerOrdenesInactivas();
     <div class="form-row ml-3 mb-3 contenedor">
 
             <div class="ml-2">   
-                <a type="button" class="btn btn-primary" id="btn_back2" href="navbar.html"><i class="fa fa-arrow-left"></i>  Volver</a>
+                <a type="button" class="btn btn-primary" id="btn_back2" href="menu.php"><i class="fa fa-arrow-left"></i>  Volver</a>
             </div>
 
             <div class="mt-2" id="busqRapida">

@@ -42,7 +42,7 @@ if (isset($_GET['rubro'])) {
 
 <div class="row mt-4" id="contenedorTitle">
     <div>   
-        <a type="button" class="btn btn-primary" id="btn_back2" href="navbar.html"><i class="fa fa-arrow-left"></i> Volver</a>
+        <a type="button" class="btn btn-primary" id="btn_back2" href="menu.php"><i class="fa fa-arrow-left"></i> Volver</a>
     </div>
     <div id="titleIndex">
         <h3><i class="fa fa-archive"></i> Gestión de Artículos</h3>
