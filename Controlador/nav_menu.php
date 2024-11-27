@@ -165,6 +165,7 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#" onclick="location.href='procedimientos'"><i class="fas fa-book"></i> Procedimientos</a>
+                            <a class="dropdown-item" href="#" onclick="window.open('../comercial/recepcion/index.php', '_blank');"><i class="fas fa-phone"></i> Internos</a>
                         </div>
                     </li>
                 <?php } ?>
