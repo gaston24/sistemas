@@ -103,7 +103,9 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                         <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-user-cog"></i> Administración</a>
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $egresosCajaUrl; ?>'"><i class="fas fa-money-bill-wave"></i> Egresos de caja</a>
-                                <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'"><i class="fas fa-file-invoice"></i> Factura manual <span class="badge badge-warning">Testing</span></a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'"><i class="fas fa-file-invoice"></i> Factura manual </a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='../administracion/tesoreria/registrarRetiro.php'"><i class="fas fa-truck"></i> Guía de traslado <span class="badge badge-warning">Testing</span></a>
+
                             </ul>
                         </li>
                         <?php } ?>
@@ -142,12 +144,12 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                                     <ul class="dropdown-menu">
                                         <li>
                                             <form action="fichaje/registro.php" method="get" target="_blank">
-                                                <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo"><i class="fas fa-user-clock"></i> Fichada por legajo <span class="badge badge-warning">Testing</span></button>
+                                                <button class="dropdown-item spinner" type="submit" id="FichadaPorLegajo"><i class="fas fa-user-clock"></i> Fichada por legajo</button>
                                             </form>
                                         </li>
                                         <li>
                                             <form action="fichaje/reporteDeAsistencias.php" method="get">
-                                                <button class="dropdown-item spinner" type="submit" id="ReporteAsistencias"><i class="fas fa-clipboard-list"></i> Reporte de asistencias <span class="badge badge-warning">Testing</span></button>
+                                                <button class="dropdown-item spinner" type="submit" id="ReporteAsistencias"><i class="fas fa-clipboard-list"></i> Reporte de asistencias</button>
                                             </form>
                                         </li>
                                     </ul>
