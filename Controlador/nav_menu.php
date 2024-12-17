@@ -104,7 +104,7 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $egresosCajaUrl; ?>'"><i class="fas fa-money-bill-wave"></i> Egresos de caja</a>
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'"><i class="fas fa-file-invoice"></i> Factura manual </a>
-                                <a class="dropdown-item spinner" href="#" onclick="location.href='../administracion/tesoreria/registrarRetiro.php'"><i class="fas fa-truck"></i> Guía de traslado <span class="badge badge-warning">Testing</span></a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='../administracion/tesoreria/ListarRetiros.php'"><i class="fas fa-truck"></i> Guía de traslado <span class="badge badge-warning">Testing</span></a>
 
                             </ul>
                         </li>
