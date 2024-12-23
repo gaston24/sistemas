@@ -56,6 +56,8 @@ if( count($loginRes) == 0 ){
 
 	$_SESSION['pantallas'] = true;
 
+    $_SESSION['entorno'] = 'sistemas';
+
 	
 	if ($loginRes['NRO_SUCURS'] == 201 || $loginRes['NRO_SUCURS'] == 202) {     
         header("Location: eliminaPedido.php");

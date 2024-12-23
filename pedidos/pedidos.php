@@ -19,7 +19,7 @@ if (!isset($_SESSION['username'])) {
 	$codClient = $_SESSION['username'];
 	$tipo_cli = $_SESSION['tipo'];
 	$esOutlet = $_SESSION['esOutlet'];
-	$esUsuarioUy = $_SESSION['usuarioUy'];
+	$esUsuarioUy = isset($_SESSION['usuarioUy']) ? $_SESSION['usuarioUy'] : null; // o un valor predeterminado;
 	$db = 'central';
 
 	if($esUsuarioUy == 1){
