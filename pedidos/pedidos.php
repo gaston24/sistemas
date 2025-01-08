@@ -31,6 +31,7 @@ if (!isset($_SESSION['username'])) {
 
 	$pedido = new Pedido();
 	$pedidos = $pedido->listarPedido($_GET['tipo'], $tipo_cli, $suc, $codClient, $esOutlet,	$db);
+
 	
 ?>
 
@@ -141,6 +142,7 @@ if (!isset($_SESSION['username'])) {
 <body>
     <div id="aguarde" style="display: none;">
         <h1 class="text-center">Aguarde un momento por favor
+            <div hidden id="pedidosCount"><?= empty($pedidos) ? '0' : '1' ?></div>
             <div class="spinner-border text-dark" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -285,10 +287,10 @@ if (!isset($_SESSION['username'])) {
 
 
 	<?php
-	$suc = $_SESSION['numsuc'];
-	$codClient = $_SESSION['codClient'];
-	$t_ped = $_SESSION['tipo_pedido'];
-	$depo = $_SESSION['depo'];
+	$suc = isset($_SESSION['numsuc']) ? $_SESSION['numsuc'] : '';
+	$codClient = isset($_SESSION['codClient']) ? $_SESSION['codClient'] : '';
+	$t_ped = isset($_SESSION['tipo_pedido']) ? $_SESSION['tipo_pedido'] : '';
+	$depo = isset($_SESSION['depo']) ? $_SESSION['depo'] : '';
 	$talon_ped = 97;
 	?>
 
@@ -387,6 +389,24 @@ if (!isset($_SESSION['username'])) {
             $(window).resize(function() {
                 table.columns.adjust().draw();
             });
+
+            if(document.querySelector("#pedidosCount").textContent == 0){
+                Swal.fire({
+                    icon: "error",
+                    title: "Error de acceso",
+                    text: "No se pudo acceder a la plataforma de pedidos. Por favor intente nuevamente.",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Reintentar",
+                    cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                    // retryAccess();
+                    location.reload();
+                    }
+                });
+            }
         });
 
     </script>

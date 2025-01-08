@@ -15,8 +15,10 @@ class Pedido {
             
             // Verificar conexión
             if ($cid === false) {
-                $errors = sqlsrv_errors();
-                throw new Exception("Error de conexión a la base de datos: " . print_r($errors, true));
+                // $errors = sqlsrv_errors();
+                // throw new Exception("Error de conexión a la base de datos: " . print_r($errors, true));
+                return [];
+                die();
             }
     
             switch ($tipoPedido) {
@@ -115,7 +117,7 @@ class Pedido {
             SELECT NRO_PEDIDO, CAST(SUM(CANT_PEDID) AS FLOAT) CANT FROM GVA03 WHERE TALON_PED IN ($talonarios) GROUP BY NRO_PEDIDO
         )B
         ON A.NRO_PEDIDO = B.NRO_PEDIDO
-        WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-60) AND A.TALON_PED IN ($talonarios)
+        WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-42) AND A.TALON_PED IN ($talonarios)
         ORDER BY 1 desc, 2 desc
 
         ";
