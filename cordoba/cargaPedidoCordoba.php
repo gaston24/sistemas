@@ -17,8 +17,10 @@ for($i=0;$i<count($_POST['suc']);$i++){
 	
 	
 	if($selec == 'si'){
-	
-		
+
+	if($dsn == '940 - PASEO RIVERA INDARTE'){
+		$dsn = "Driver={SQL Server Native Client 11.0};Server=nodo.rivera.fusionip.com.ar,20640;Database=PASEO_RIVERA;";
+	}
 	
 	$user = 'sa';
 	$pass = 'Axoft1988';
@@ -48,8 +50,9 @@ for($i=0;$i<count($_POST['suc']);$i++){
 	";
 
 	$cid = @odbc_connect($dsn, $user, $pass);
-
+	
 	ini_set('max_execution_time', 300);
+	
 	$result1 = @odbc_exec($cid, $sql1)or die(exit("</br></br><H2 ALIGN='CENTER'>IMPOSIBLE CONECTARSE CON ".$dsn."</H2></br></br><H2 ALIGN='CENTER'>VUELVA PARA ATRAS Y DESTILDE LA CONEXION DE ESTE LOCAL</H2>"));
 
 	while($v=odbc_fetch_array($result1)){
