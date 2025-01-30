@@ -1,5 +1,5 @@
 <?php
-// session_start();
+//session_start();
 ?>
 
 <div class="modal fade" id="dataFranquiciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -32,12 +32,21 @@
         </li>
         <li class="list-group-item">
             Disponible para pedidos
-            <?php if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) < 0.10){ ?>
-                <span class="badge badge-warning badge-pill" id="icon"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-                <p id="info" class="text-danger"><small>El importe disponible en $ es inferior al 10% del cupo de crédito!</small></p>
-                <?php }else if(((int)$_SESSION['cupoCredi'] / (int)$_SESSION['cupoCrediCliente']) >= 0.10){ ?>
-                <span class="badge badge-primary badge-pill"><?= "$".number_format((int)$_SESSION['cupoCredi'], 0, ".",".");  ?></span>
-            <?php } ?>			
+            <?php 
+              if (!isset($_SESSION['cupoCrediCliente']) || (int)$_SESSION['cupoCrediCliente'] === 0) {
+                  echo '<p class="text-danger"><small>Error: Cupo de crédito del cliente no válido.</small></p>';
+              } else {
+                  $disponible = (int)$_SESSION['cupoCredi'];
+                  $cupoCliente = (int)$_SESSION['cupoCrediCliente'];
+                  $porcentaje = $disponible / $cupoCliente;
+
+                  if ($porcentaje < 0.10) { ?>
+                      <span class="badge badge-warning badge-pill" id="icon"><?= "$".number_format($disponible, 0, ".", ".");  ?></span>
+                      <p id="info" class="text-danger"><small>El importe disponible en $ es inferior al 10% del cupo de crédito!</small></p>
+                  <?php } else { ?>
+                      <span class="badge badge-primary badge-pill"><?= "$".number_format($disponible, 0, ".", ".");  ?></span>
+                  <?php }
+              } ?>		
         </li>
         </ul>	
       </div>
