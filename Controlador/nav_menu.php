@@ -104,7 +104,7 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $egresosCajaUrl; ?>'"><i class="fas fa-money-bill-wave"></i> Egresos de caja</a>
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='<?php echo $lista; ?>'"><i class="fas fa-file-invoice"></i> Factura manual </a>
-                                <a class="dropdown-item spinner" href="#" onclick="location.href='../administracion/tesoreria/ListarRetiros.php'"><i class="fas fa-truck"></i> Guía de traslado <span class="badge badge-warning">Testing</span></a>
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='../administracion/tesoreria/ListarRetiros.php'"><i class="fas fa-truck"></i> Guía de traslado</a>
 
                             </ul>
                         </li>
@@ -140,7 +140,8 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                         
                         <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
                             <?php if (!isMobile()) { ?>
-                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-users"></i> RRHH</a>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-users"></i> RRHH</a>
                                     <ul class="dropdown-menu">
                                         <li>
                                             <form action="fichaje/registro.php" method="get" target="_blank">
@@ -152,6 +153,13 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                                                 <button class="dropdown-item spinner" type="submit" id="ReporteAsistencias"><i class="fas fa-clipboard-list"></i> Reporte de asistencias</button>
                                             </form>
                                         </li>
+                                        <?php if ($_SESSION['numsuc'] < 100) { ?>
+                                            <li>
+                                                <a class="dropdown-item spinner" href="../administracion/recursosHumanos/anticipoSueldos/cargaAnticipoGrupo.php">
+                                                    <i class="fas fa-university"></i> Solicitud Anticipo de Sueldos <span class="badge badge-warning">Testing</span>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
