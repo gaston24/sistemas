@@ -63,7 +63,7 @@ function enviar() {
             if (suc > 100 && (parseInt(totalPedido, 10) > parseInt(cupo_credito, 10))) {
                 swal.fire({
                     title: "Atencion!",
-                    text: "El limite de crédito fue excedido en " + diferencia + " pesos, por favor analice quitar articulos o comuníquese con ines.sica@xl.com.ar para evaluar su situación",
+                    text: "El limite de crédito fue excedido en " + diferencia + " pesos, por favor analice quitar articulos o comuníquese con silvia.freire@xl.com.ar para evaluar su situación",
                     icon: "warning",
                     button: "Aceptar",
                 });
