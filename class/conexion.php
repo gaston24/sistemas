@@ -64,12 +64,15 @@ class Conexion{
 
             if(!$cid) return false;
 
-            // este cid va a cambiar mil veces
+  
             $_SESSION['cid'] = $cid;
             return $cid;
             
-        } catch (PDOException $e) {
-            echo $e->getMessage();
+        } catch (Exception $e) {
+           
+            error_log("Error de conexión: " . $e->getMessage()); 
+            echo "Hubo un problema al conectar a la base de datos. Intente más tarde.";
+            return false;
         }
     }
 

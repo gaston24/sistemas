@@ -15,10 +15,7 @@ class Pedido {
             
             // Verificar conexión
             if ($cid === false) {
-                // $errors = sqlsrv_errors();
-                // throw new Exception("Error de conexión a la base de datos: " . print_r($errors, true));
                 return [];
-                die();
             }
     
             switch ($tipoPedido) {
@@ -79,7 +76,7 @@ class Pedido {
         }
         catch (Exception $e) {
             error_log("Error en listarPedido: " . $e->getMessage());
-            throw $e;
+            return [];
         }
         finally {
             // Liberar recursos
