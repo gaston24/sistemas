@@ -335,18 +335,47 @@ function postearOrdenes3(matriz) {
 
 }
 
-function validarCredito(){  
- var importeNP = document.getElementById('totalPrecio').value;      
-  if((parseInt(creditoDisp.replace(/[$.]/g, "")) < parseInt(importeNP.replace(/[$.]/g, ""))) && (parseInt(importeNP.replace(/[$.]/g, "")) > 0)){
-    Swal.fire({
-      icon: 'info',
-      title: 'Atención',
-      text: 'El crédito disponible es insuficiente! $',
-    })
-  }else{
-      alert(creditoDisp.replace(/[$.]/g, ""))
-        enviaPedido();
-  
+function validarCredito() {
+  // Obtener el valor del importe total y el crédito disponible
+  var importeNP = document.getElementById('totalPrecio').value;
+  var creditoDisp = document.getElementById('totalPPP').value;
+
+  // Eliminar símbolos de moneda y convertir a números
+  var creditoNumerico = parseInt(creditoDisp.replace(/[$.]/g, ""), 10);
+  var importeNumerico = parseInt(importeNP.replace(/[$.]/g, ""), 10);
+
+  // Validar si el importe es 0
+  if (importeNumerico === 0) {
+      if (creditoNumerico > 0) {
+          // Si el crédito es mayor que 0, permitir continuar
+          enviaPedido();
+      } else {
+          // Si el crédito no es mayor que 0, mostrar mensaje de error
+          Swal.fire({
+              icon: 'error',
+              title: 'Atención',
+              text: 'El crédito disponible debe ser mayor a 0!',
+          });
+      }
+      return; // Salir de la función
+  }
+
+  // Validar si el crédito es insuficiente para el importe
+  if (creditoNumerico < importeNumerico) {
+      Swal.fire({
+          icon: 'info',
+          title: 'Atención',
+          text: 'El crédito disponible es insuficiente!',
+      });
+  } else {
+      // Si el crédito es suficiente, mostrar mensaje de éxito y continuar
+      Swal.fire({
+          icon: 'success',
+          title: 'Crédito disponible',
+          text: 'Crédito disponible: $' + creditoNumerico,
+      }).then(() => {
+          enviaPedido(); // Llama a la función enviaPedido después de mostrar el mensaje
+      });
   }
 }
 
@@ -539,21 +568,32 @@ for (let CheckBox of document.getElementsByClassName('only-one')){
 
  //Calcula el importe total del pedido//
 
-function precioTotal() {
+ function precioTotal() {
+  var precioTodos = 0;
+  var precios = document.querySelectorAll("#tablePed #precioPed"); // Obtener todos los precios
+  var cantidades = document.querySelectorAll("#tablePed input[name='inputNum[]']"); // Obtener todas las cantidades
 
-      var precioTodos = 0;
-      var p = document.querySelectorAll("#tablePed #precioPed"); 
-      var x = document.querySelectorAll("#tablePed input[name='inputNum[]']");
-      var i;
+  for (var i = 0; i < precios.length; i++) {
+      // Limpiar y convertir el precio a número
+      var precio = parseInt(precios[i].innerHTML.replace(/[^0-9]/g, ""), 10) || 0;
 
-      for (i = 0; i < p.length; i++) {
-          precioTodos += parseInt(0+p[i].innerHTML.replace(/[$.]/g, "") * x[i].value); //acá hago 0+x[i].value para evitar problemas cuando el input está vacío, si no tira NaN
-         }
+      // Limpiar y convertir la cantidad a número
+      var cantidad = parseInt(cantidades[i].value, 10) || 0;
 
-      document.getElementById('totalPrecio').value = new Intl.NumberFormat("es-ar",{style: "currency", currency: "ARS", minimumFractionDigits: 0}).format(precioTodos);
-      // new Intl.NumberFormat("es-ar",{style: "currency", currency: "ARS", minimumFractionDigits: 0}).format(precioTodos);
-      
+      // Sumar al total
+      precioTodos += precio * cantidad;
   }
+
+  // Formatear el total como moneda
+  var totalFormateado = new Intl.NumberFormat("es-ar", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0
+  }).format(precioTodos);
+
+  // Mostrar el total en el input
+  document.getElementById('totalPrecio').value = totalFormateado;
+}
 
   // Coloca separador de miles //
 
