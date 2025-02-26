@@ -202,7 +202,7 @@ class Pedido {
         }else{
 
             $cid = $this->conn->conectar('central');
-            $talonarios = '96, 97';
+            $talonarios = '1, 96, 97';
         }
 
     
