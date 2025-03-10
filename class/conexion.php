@@ -24,9 +24,8 @@ class Conexion{
     }
 
     private function servidor($nameServer) {
-        
         if($nameServer == 'central'){
-            return array($this->host_central, $this->database_central);
+            return array('servidor', 'LAKER_SA');
         }elseif($nameServer == 'locales'){
             return array($this->host_locales, $this->database_locales);
         }elseif($nameServer == 'uy'){
@@ -46,30 +45,35 @@ class Conexion{
         try {
            
             $serverDB = $this->servidor($nameServer);
-          
+       
             if($this->env == 'PROD' && (strtolower($serverDB[0]) == strtolower('lakerbis'))){
                 $pass = $this->pass_locales;
             } else {
-                $pass = $this->pass;
+                $pass = 'Axoft1988';
             }
+       
 
             $params = array( 
                 "Database" => $serverDB[1], 
-                "UID" => $this->user, 
+                "UID" => 'sa', 
                 "PWD" => $pass, 
-                "CharacterSet" => $this->character
+                "CharacterSet" => 'UTF-8'
             );
+        
 
             $cid = sqlsrv_connect($serverDB[0], $params);
 
             if(!$cid) return false;
 
-            // este cid va a cambiar mil veces
+  
             $_SESSION['cid'] = $cid;
             return $cid;
             
-        } catch (PDOException $e) {
-            echo $e->getMessage();
+        } catch (Exception $e) {
+           
+            error_log("Error de conexión: " . $e->getMessage()); 
+            echo "Hubo un problema al conectar a la base de datos. Intente más tarde.";
+            return false;
         }
     }
 

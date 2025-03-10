@@ -15,10 +15,7 @@ class Pedido {
             
             // Verificar conexión
             if ($cid === false) {
-                // $errors = sqlsrv_errors();
-                // throw new Exception("Error de conexión a la base de datos: " . print_r($errors, true));
                 return [];
-                die();
             }
     
             switch ($tipoPedido) {
@@ -79,7 +76,7 @@ class Pedido {
         }
         catch (Exception $e) {
             error_log("Error en listarPedido: " . $e->getMessage());
-            throw $e;
+            return [];
         }
         finally {
             // Liberar recursos
@@ -191,4 +188,143 @@ class Pedido {
             die("Error en sqlsrv_exec");
         };
     }
+
+    public function traerHistorialRubro($codClient, $usuarioUy = 0){
+
+
+
+        if($usuarioUy == 1){
+
+            $cid = $this->conn->conectar('uy');
+            $codClient = '000000';
+            $talonarios = '98';
+
+        }else{
+
+            $cid = $this->conn->conectar('central');
+            $talonarios = '1, 96, 97';
+        }
+
+    
+        
+        $sql=
+        "
+        SET DATEFORMAT YMD
+
+        SELECT CAST(FECHA_PEDI AS DATE)FECHA, RUBRO, B.CANT FROM GVA21 A
+        INNER JOIN
+        (
+            SELECT NRO_PEDIDO, TALON_PED, CAST(SUM(CANT_PEDID) AS FLOAT) CANT, RUBRO FROM GVA03 A
+			LEFT JOIN SOF_RUBROS_TANGO B ON A.COD_ARTICU = B.COD_ARTICU
+			WHERE TALON_PED IN ($talonarios) 
+			GROUP BY NRO_PEDIDO, TALON_PED, RUBRO
+        )B
+        ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
+        WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-42) AND A.TALON_PED IN ($talonarios)
+        ORDER BY 1 desc, 2 desc
+
+        ";
+            
+   
+        try {
+            $stmt = sqlsrv_query($cid, $sql);
+            $v = [];
+            while ($row = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)) {
+
+                $v[] = $row;
+
+            }
+
+            return $v;
+
+        }
+        catch (\Throwable $th) {
+            die("Error en sqlsrv_exec");
+        };
+
+
+        
+    }
+
+    public function traerRubros($codClient, $usuarioUy = 0) {
+        if($usuarioUy == 1){
+            $cid = $this->conn->conectar('uy');
+            $codClient = '000000';
+            $talonarios = '98';
+        } else {
+            $cid = $this->conn->conectar('central');
+            $talonarios = '96, 97';
+        }
+        
+        $sql = "
+            SET DATEFORMAT YMD
+            SELECT DISTINCT(RUBRO) RUBRO FROM GVA21 A
+            INNER JOIN
+            (
+                SELECT NRO_PEDIDO, TALON_PED, CAST(SUM(CANT_PEDID) AS FLOAT) CANT, RUBRO FROM GVA03 A
+                LEFT JOIN SOF_RUBROS_TANGO B ON A.COD_ARTICU = B.COD_ARTICU
+                WHERE TALON_PED IN ($talonarios) 
+                GROUP BY NRO_PEDIDO, TALON_PED, RUBRO
+            )B
+            ON A.NRO_PEDIDO = B.NRO_PEDIDO AND A.TALON_PED = B.TALON_PED
+            WHERE COD_CLIENT = '$codClient' AND FECHA_PEDI > (GETDATE()-42) AND A.TALON_PED IN ($talonarios)
+            ORDER BY RUBRO
+        ";
+        
+        try {
+            $stmt = sqlsrv_query($cid, $sql);
+            $rubros = [];
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                if (!empty($row['RUBRO'])) {
+                    $rubros[] = trim($row['RUBRO']);
+                }
+            }
+            return $rubros;
+        }
+        catch (\Throwable $th) {
+            error_log("Error en traerRubros: " . $th->getMessage());
+            return [];
+        }
+    }
+
+    public function traerVentasRubro($codClient, $suc, $usuarioUy = 0) {
+        if($usuarioUy == 1){
+            $cid = $this->conn->conectar('uy');
+        } else {
+            $cid = $this->conn->conectar('central');
+        }
+        
+        $sql = "
+            SELECT CAST(FECHA_EMIS AS DATE) FECHA, SUM(CANTIDAD) CANT_VENTAS, RUBRO FROM 
+            (
+                SELECT A.FECHA_EMIS, 
+                       CAST(CASE WHEN B.T_COMP LIKE 'NC%' THEN B.CANTIDAD *-1 ELSE B.CANTIDAD END AS FLOAT) CANTIDAD, 
+                       C.RUBRO 
+                FROM [LAKERBIS].LOCALES_LAKERS.DBO.CTA02 A          
+                INNER JOIN [LAKERBIS].LOCALES_LAKERS.DBO.CTA03 B ON A.FECHA_EMIS = B.FECHA_MOV AND A.N_COMP = B.N_COMP AND A.T_COMP = B.T_COMP   
+                INNER JOIN SOF_RUBROS_TANGO C ON B.COD_ARTICU = C.COD_ARTICU
+                WHERE A.FECHA_EMIS >= GETDATE()-42 AND A.NRO_SUCURS = '$suc'
+            ) A
+            GROUP BY FECHA_EMIS, RUBRO
+            ORDER BY FECHA_EMIS
+        ";
+        
+        try {
+            $stmt = sqlsrv_query($cid, $sql);
+            $ventas = [];
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                $ventas[] = [
+                    'FECHA' => $row['FECHA'],
+                    'CANT_VENTAS' => (float)$row['CANT_VENTAS'],
+                    'RUBRO' => trim($row['RUBRO'])
+                ];
+            }
+            return $ventas;
+        }
+        catch (\Throwable $th) {
+            error_log("Error en traerVentasRubro: " . $th->getMessage());
+            return [];
+        }
+    }
+
 }
