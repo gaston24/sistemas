@@ -178,9 +178,18 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                             </td>
                             <td id='estado1'>
                                 <?php if(isset($value->FIN_PICKING)){ ?>
-                                    <i class="fa fa-cart-plus" aria-hidden="true" title="PREPARADO" style="display: flex; text-align: right; color:#28a745; font-size: 1.5em;" data-toggle="tooltip" data-placement="top"></i>
+                                    <i class="fa fa-cart-plus" aria-hidden="true" 
+                                    data-html="true"
+                                    title="<strong>PREPARADO</strong><br>Fecha: <?= substr($value->FECHA_FIN_PICK->date,0,10) ?>" 
+                                    style="display: flex; text-align: right; color:#28a745; font-size: 1.5em;" 
+                                    data-toggle="tooltip" 
+                                    data-placement="top"></i>
                                 <?php } else if (isset($value->INI_PICKING)) { ?>
-                                    <i class="fa fa-cart-plus" aria-hidden="true" title="PREPARACION" style="display: flex; text-align: right; color:#ffc107; font-size: 1.5em;"  data-toggle="tooltip" data-placement="top"></i>
+                                    <i class="fa fa-cart-plus" aria-hidden="true" 
+                                    title="PREPARACION" 
+                                    style="display: flex; text-align: right; color:#ffc107; font-size: 1.5em;"  
+                                    data-toggle="tooltip" 
+                                    data-placement="top"></i>
                                 <?php{ ?> <?php } ?>
                             </td>
                             <td id='estado2'>
@@ -190,7 +199,11 @@ $hasta = isset($_GET['hasta']) ? $_GET['hasta'] : date("Y-m-d");
                             </td>
                             <td id='estado3'>
                                 <?php if(isset($value->FECHA_GUIA)){ ?>
-                                    <i class="fas fa-truck" aria-hidden="true" title="DESPACHADO" data-toggle="tooltip" data-placement="top"></i>
+                                    <i class="fas fa-truck" aria-hidden="true" 
+                                    data-html="true"
+                                    data-toggle="tooltip" 
+                                    data-placement="top"
+                                    title="<strong>DESPACHADO</strong><br>Guía: <?= $value->NRO_GUIA ?><br>Fecha: <?= substr($value->FECHA_GUIA->date,0,10) ?>"></i>
                                 <?php } else { ?> <?php } ?>
                             </td>
                         </tr>
@@ -239,8 +252,10 @@ $(document).ready(function(){
  
 
     $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip({
+        html: true
     })
+})
 
 </script>
 
