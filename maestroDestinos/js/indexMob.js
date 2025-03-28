@@ -14,7 +14,8 @@ const traerArticulo = (div) => {
               document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
               document.querySelector("#descripcion").value = data[0]['DESCRIPCION'];
               document.querySelector("#rubro").value = data[0]['RUBRO'] || 'N/A';
-              document.querySelector("#precio").value = data[0]['PRECIO'] ? "$" + parseNumber(data[0]['PRECIO']) : "N/A";
+              document.querySelector("#precio").value = data[0]['PRECIO'] ? "$" + parseNumber(data[0]['PRECIO'], 0) : "N/A";
+              document.querySelector("#precio_sin_iva").value = data[0]['PRECIO_S_IVA'] ? "$" + parseNumber(data[0]['PRECIO_S_IVA'], 2) : "N/A";
               document.querySelector("#destino").value = data[0]['DESTINO'] || 'N/A';
               document.querySelector("#temporada").value = data[0]['TEMPORADA'] || 'N/A';
 
@@ -66,12 +67,14 @@ const traerArticulo = (div) => {
   });
 }
 
-const parseNumber = (number) => {
-  number = parseFloat(number);
+const parseNumber = (number, decimals = 0) => {
+  // Si es un string, convertir a número
+  number = typeof number === 'string' ? parseFloat(number) : parseFloat(number);
+  
   return number.toLocaleString('es-AR', {
       style: 'decimal',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
   });
 }
 
@@ -81,6 +84,7 @@ const borrar = () => {
   document.querySelector("#descripcion").value = "";
   document.querySelector("#rubro").value = "";
   document.querySelector("#precio").value = "";
+  document.querySelector("#precio_sin_iva").value = "";
   document.querySelector("#destino").value = "";
   document.querySelector("#temporada").value = "";
   document.querySelector("#selectArticulo").focus();

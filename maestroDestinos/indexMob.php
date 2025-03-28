@@ -24,10 +24,23 @@ $maestroArticulos = new Articulo();
         }
         .form-control-plaintext {
             padding: 0;
+            text-overflow: ellipsis;
+            overflow: visible;
+            white-space: normal;
+            text-align: right;
+            width: 65%;
         }
         #imagenArticulo {
             max-width: 90%;
             height: auto;
+        }
+        .precio-label {
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .item-label {
+            width: 35%;
+            min-width: 90px;
         }
     </style>
 </head>
@@ -63,28 +76,32 @@ $maestroArticulos = new Articulo();
                     </h5>
                     </h6>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Artículo
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label">Artículo</span>
                             <input type="text" class="form-control-plaintext text-end" id="articulo" readonly>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Descripción
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label">Descripción</span>
                             <input type="text" class="form-control-plaintext text-end" id="descripcion" readonly>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Rubro
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label">Rubro</span>
                             <input type="text" class="form-control-plaintext text-end" id="rubro" readonly>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Precio
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label precio-label">Precio (c/IVA)</span>
                             <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Destino
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label precio-label">Precio (s/IVA)</span>
+                            <input type="text" class="form-control-plaintext text-end" id="precio_sin_iva" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label">Destino</span>
                             <input type="text" class="form-control-plaintext text-end" id="destino" readonly>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Temporada
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <span class="item-label">Temporada</span>
                             <input type="text" class="form-control-plaintext text-end" id="temporada" readonly>
                         </li>
                     </ul>

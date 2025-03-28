@@ -16,6 +16,7 @@ const traerArticulo = (div, usuarioUy = null) => {
               document.querySelector("#descripcion").value = data[0]['DESCRIPCIO'];
               document.querySelector("#stock").value = parseInt(data[0]['CANT_STOCK']);
               document.querySelector("#precio").value = "$" + parseNumber(data[0]['PRECIO']);
+              document.querySelector("#precio_sin_iva").value = "$" + parseNumber(data[0]['PRECIO_S_IVA'], 2);
 
               // Mostrar u ocultar el badge SALE
               const badgeElement = document.querySelector('.estado-badge');
@@ -71,16 +72,19 @@ const traerVariantes = (codArticulo, usuarioUy) => {
           let tdColor = document.createElement("td");
           let tdStock = document.createElement("td");
           let tdPrecio = document.createElement("td");
+          let tdPrecioSinIva = document.createElement("td");
 
           tdArticulo.textContent = element.COD_ARTICU;
           tdColor.textContent = element.COLOR;
           tdStock.textContent = element.CANT_STOCK;
           tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
+          tdPrecioSinIva.textContent = "$" + parseNumber(element.PRECIO_S_IVA, 2);
 
           tr.appendChild(tdArticulo);
           tr.appendChild(tdColor);
           tr.appendChild(tdStock);
           tr.appendChild(tdPrecio);
+          tr.appendChild(tdPrecioSinIva);
 
           tbodyStockPrecio.appendChild(tr);
         }
@@ -97,13 +101,14 @@ const traerVariantes = (codArticulo, usuarioUy) => {
   });
 }
 
-const parseNumber = (number) => {
-  number = parseInt(number);
-
+const parseNumber = (number, decimals = 0) => {
+  // Si es un string, convertir a número
+  number = typeof number === 'string' ? parseFloat(number) : number;
+  
   const newNumber = number.toLocaleString('de-De', {
       style: 'decimal',
-      maximumFractionDigits: 0,
-      minimumFractionDigits: 0
+      maximumFractionDigits: decimals,
+      minimumFractionDigits: decimals
   });
 
   return newNumber;
@@ -115,6 +120,7 @@ const borrar = () => {
   document.querySelector("#descripcion").value = "";
   document.querySelector("#stock").value = "";
   document.querySelector("#precio").value = "";
+  document.querySelector("#precio_sin_iva").value = "";
   document.querySelector("#selectArticulo").focus();
 
   // Ocultar el badge SALE al borrar

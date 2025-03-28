@@ -34,6 +34,7 @@
                     </div>
                 </div>
 
+                <!-- Modificación en la sección de información del artículo -->
                 <div id="resultadoArticulo" class="mt-3">
                     <h6 class="card-title mb-1">Información del Artículo
                     <h5 class="card-title">
@@ -54,35 +55,37 @@
                             <input type="text" class="form-control-plaintext text-end" id="stock" readonly>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Precio
+                            Precio (con IVA)
                             <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Precio (sin IVA)
+                            <input type="text" class="form-control-plaintext text-end" id="precio_sin_iva" readonly>
                         </li>
                     </ul>
                 </div>
-            </div>
-        </div>
 
-        <!-- Nueva card con la tabla de datos -->
-        <div class="card">
-            <div class="card-body">
-                <h6 class="card-title mb-2">Variantes del artículo</h6>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="thead">
-                            <tr>
-                                <th>Artículo</th>
-                                <th>Color</th>
-                                <th>Stock</th>
-                                <th>Precio</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbodyStockPrecio">
-                        </tbody>
-                    </table>
+                <!-- Modificación en la tabla de variantes -->
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title mb-2">Variantes del artículo</h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="thead">
+                                    <tr>
+                                        <th>Artículo</th>
+                                        <th>Color</th>
+                                        <th>Stock</th>
+                                        <th>Precio (c/IVA)</th>
+                                        <th>Precio (s/IVA)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyStockPrecio">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

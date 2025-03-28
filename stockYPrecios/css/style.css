@@ -36,6 +36,7 @@ body {
 }
 .list-group-item{
     font-size:14px;
+    padding: 0.5rem 1rem;
 }
 .thead{
     font-size: 13px;
@@ -53,3 +54,26 @@ body {
     background-color: #dc3545;
 }
 
+/* Nuevos estilos para las etiquetas de precio */
+.precio-label {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.form-control-plaintext {
+    min-width: 100px;
+    max-width: 140px;
+}
+
+/* Aumentar el ancho de la tabla para que quepan las 5 columnas */
+@media (min-width: 768px) {
+    .container {
+        max-width: 500px;
+    }
+}
+
+/* Ajustar el tamaño del texto en la tabla para que quepa mejor */
+table.table th, table.table td {
+    padding: 0.4rem;
+    white-space: nowrap;
+}

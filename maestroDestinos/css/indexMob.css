@@ -45,6 +45,7 @@ body {
 }
 .list-group-item{
     font-size:14px;
+    padding: 0.5rem 1rem;
 }
 .thead{
     font-size: 13px;
@@ -60,4 +61,25 @@ body {
     background-color: #dc3545;
     justify-content: center;
     left: 20%;
+}
+
+/* Nuevos estilos para las etiquetas de precio */
+.precio-label {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.item-label {
+    width: 35%;
+    min-width: 90px;
+}
+
+.form-control-plaintext {
+    width: 65%;
+    min-width: 100px;
+    text-overflow: ellipsis;
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: right;
 }
