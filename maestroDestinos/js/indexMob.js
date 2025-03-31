@@ -14,8 +14,23 @@ const traerArticulo = (div) => {
               document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
               document.querySelector("#descripcion").value = data[0]['DESCRIPCION'];
               document.querySelector("#rubro").value = data[0]['RUBRO'] || 'N/A';
-              document.querySelector("#precio").value = data[0]['PRECIO'] ? "$" + parseNumber(data[0]['PRECIO'], 0) : "N/A";
+              
+              // Precio sin IVA
               document.querySelector("#precio_sin_iva").value = data[0]['PRECIO_S_IVA'] ? "$" + parseNumber(data[0]['PRECIO_S_IVA'], 2) : "N/A";
+              
+              // Calcular el IVA (diferencia entre precio con IVA y sin IVA)
+              if (data[0]['PRECIO'] && data[0]['PRECIO_S_IVA']) {
+                  const precioConIva = parseFloat(data[0]['PRECIO']);
+                  const precioSinIva = parseFloat(data[0]['PRECIO_S_IVA']);
+                  const ivaValor = precioConIva - precioSinIva;
+                  document.querySelector("#iva").value = "$" + parseNumber(ivaValor, 2);
+              } else {
+                  document.querySelector("#iva").value = "N/A";
+              }
+              
+              // Precio con IVA
+              document.querySelector("#precio").value = data[0]['PRECIO'] ? "$" + parseNumber(data[0]['PRECIO'], 0) : "N/A";
+              
               document.querySelector("#destino").value = data[0]['DESTINO'] || 'N/A';
               document.querySelector("#temporada").value = data[0]['TEMPORADA'] || 'N/A';
 
@@ -85,6 +100,7 @@ const borrar = () => {
   document.querySelector("#rubro").value = "";
   document.querySelector("#precio").value = "";
   document.querySelector("#precio_sin_iva").value = "";
+  document.querySelector("#iva").value = ""; // Limpiar también el campo de IVA
   document.querySelector("#destino").value = "";
   document.querySelector("#temporada").value = "";
   document.querySelector("#selectArticulo").focus();

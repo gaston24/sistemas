@@ -4,7 +4,7 @@ body {
 }
 @media (min-width: 768px) {
     .container {
-        max-width: 420px;
+        max-width: 500px;
         max-height: 650px;
         margin: 0 auto;
     }
@@ -63,13 +63,6 @@ body {
 .form-control-plaintext {
     min-width: 100px;
     max-width: 140px;
-}
-
-/* Aumentar el ancho de la tabla para que quepan las 5 columnas */
-@media (min-width: 768px) {
-    .container {
-        max-width: 500px;
-    }
 }
 
 /* Ajustar el tamaño del texto en la tabla para que quepa mejor */

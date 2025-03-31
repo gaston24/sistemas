@@ -34,7 +34,7 @@
                     </div>
                 </div>
 
-                <!-- Modificación en la sección de información del artículo -->
+                <!-- Información del artículo con el orden modificado de precios -->
                 <div id="resultadoArticulo" class="mt-3">
                     <h6 class="card-title mb-1">Información del Artículo
                     <h5 class="card-title">
@@ -55,17 +55,21 @@
                             <input type="text" class="form-control-plaintext text-end" id="stock" readonly>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Precio (con IVA)
-                            <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
                             Precio (sin IVA)
                             <input type="text" class="form-control-plaintext text-end" id="precio_sin_iva" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            IVA
+                            <input type="text" class="form-control-plaintext text-end" id="iva" readonly>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Precio (con IVA)
+                            <input type="text" class="form-control-plaintext text-end" id="precio" readonly>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Modificación en la tabla de variantes -->
+                <!-- Tabla de variantes con el orden modificado de precios -->
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title mb-2">Variantes del artículo</h6>
@@ -76,8 +80,9 @@
                                         <th>Artículo</th>
                                         <th>Color</th>
                                         <th>Stock</th>
-                                        <th>Precio (c/IVA)</th>
                                         <th>Precio (s/IVA)</th>
+                                        <th>IVA</th>
+                                        <th>Precio (c/IVA)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyStockPrecio">
@@ -86,10 +91,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/consultaStockPrecio.js"></script>
- 
 </body>
 </html>

@@ -15,8 +15,18 @@ const traerArticulo = (div, usuarioUy = null) => {
               document.querySelector("#articulo").value = data[0]['COD_ARTICU'];
               document.querySelector("#descripcion").value = data[0]['DESCRIPCIO'];
               document.querySelector("#stock").value = parseInt(data[0]['CANT_STOCK']);
-              document.querySelector("#precio").value = "$" + parseNumber(data[0]['PRECIO']);
+              
+              // Precio sin IVA
               document.querySelector("#precio_sin_iva").value = "$" + parseNumber(data[0]['PRECIO_S_IVA'], 2);
+              
+              // Calcular el IVA (diferencia entre precio con IVA y sin IVA)
+              const precioConIva = parseFloat(data[0]['PRECIO']);
+              const precioSinIva = parseFloat(data[0]['PRECIO_S_IVA']);
+              const ivaValor = precioConIva - precioSinIva;
+              document.querySelector("#iva").value = "$" + parseNumber(ivaValor, 2);
+              
+              // Precio con IVA
+              document.querySelector("#precio").value = "$" + parseNumber(data[0]['PRECIO']);
 
               // Mostrar u ocultar el badge SALE
               const badgeElement = document.querySelector('.estado-badge');
@@ -71,20 +81,28 @@ const traerVariantes = (codArticulo, usuarioUy) => {
           let tdArticulo = document.createElement("td");
           let tdColor = document.createElement("td");
           let tdStock = document.createElement("td");
-          let tdPrecio = document.createElement("td");
           let tdPrecioSinIva = document.createElement("td");
+          let tdIva = document.createElement("td");
+          let tdPrecio = document.createElement("td");
+
+          // Calcular el IVA como la diferencia entre precio con IVA y sin IVA
+          const precioConIva = parseFloat(element.PRECIO);
+          const precioSinIva = parseFloat(element.PRECIO_S_IVA);
+          const ivaValor = precioConIva - precioSinIva;
 
           tdArticulo.textContent = element.COD_ARTICU;
           tdColor.textContent = element.COLOR;
           tdStock.textContent = element.CANT_STOCK;
-          tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
           tdPrecioSinIva.textContent = "$" + parseNumber(element.PRECIO_S_IVA, 2);
+          tdIva.textContent = "$" + parseNumber(ivaValor, 2);
+          tdPrecio.textContent = "$" + parseNumber(element.PRECIO);
 
           tr.appendChild(tdArticulo);
           tr.appendChild(tdColor);
           tr.appendChild(tdStock);
-          tr.appendChild(tdPrecio);
           tr.appendChild(tdPrecioSinIva);
+          tr.appendChild(tdIva);
+          tr.appendChild(tdPrecio);
 
           tbodyStockPrecio.appendChild(tr);
         }
@@ -121,6 +139,7 @@ const borrar = () => {
   document.querySelector("#stock").value = "";
   document.querySelector("#precio").value = "";
   document.querySelector("#precio_sin_iva").value = "";
+  document.querySelector("#iva").value = ""; // Limpiar también el campo de IVA
   document.querySelector("#selectArticulo").focus();
 
   // Ocultar el badge SALE al borrar
