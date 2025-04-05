@@ -164,6 +164,15 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                                 </li>
                             <?php } ?>
                         <?php } ?>
+                        
+                        <?php if ($_SESSION['numsuc'] < 100) { ?>
+                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-cash-register"></i> Ventas</a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item spinner" href="#" onclick="location.href='../comercial/sucursales/cartelVidriera.php'"><i class="fas fa-bookmark"></i> Carteles Precios Vidriera</a>
+                            </ul>
+                        </li>
+                        <?php } ?>
+
                     </ul>
                 </li>
 
