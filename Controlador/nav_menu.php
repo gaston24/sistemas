@@ -127,7 +127,7 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                         <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-cubes"></i> Stock</a>
                             <ul class="dropdown-menu">
                             <?php if($_SESSION['connection_db'] != false ) {?>      
-                                <?php if ($_SESSION['numsuc'] < 100) { ?>
+                                <?php if ($_SESSION['numsuc'] < 100 || $_SESSION['usuarioUy'] == 1) { ?>
                                     <a class="dropdown-item" href="#" onclick="location.href='control/index.php'"><i class="fas fa-clipboard-check"></i> Control de remitos</a>
                                 <?php } ?>
                             <?php } ?>
@@ -165,7 +165,7 @@ $egresosCajaUrl = isMobile() ? 'egresosDeCaja/egresosCajaMobile.php' : 'egresosD
                             <?php } ?>
                         <?php } ?>
                         
-                        <?php if ($_SESSION['numsuc'] < 100) { ?>
+                        <?php if ($_SESSION['usuarioUy'] != 1) { ?>
                         <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-cash-register"></i> Ventas</a>
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item spinner" href="#" onclick="location.href='../comercial/sucursales/cartelVidriera.php'"><i class="fas fa-bookmark"></i> Carteles Precios Vidriera</a>
