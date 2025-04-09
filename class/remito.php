@@ -165,7 +165,7 @@ class Remito {
 
     public function verificacion($user, $db = 'central'){
 
-        $cid = $this->conn->conectar($db);
+        $cid = $this->conn->conectar('central');
 
         
         $sql=
@@ -445,7 +445,7 @@ class Remito {
     }
 
     public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status, $db = 'central'){
-        $cid = $this->conn->conectar($db);
+        $cid = $this->conn->conectar('central');
 
         $sql = " SET DATEFORMAT YMD
          INSERT INTO SJ_CONTROL_AUDITORIA
@@ -555,7 +555,7 @@ class Remito {
 
     public function ajusteRemitoStatus($ncomp, $db = 'central'){
 
-        $cid = $this->conn->conectar($db);
+        $cid = $this->conn->conectar('central');
 
 
         $sql = 
