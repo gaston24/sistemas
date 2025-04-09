@@ -14,7 +14,7 @@ try {
 	$fechaRem = $_SESSION['fecha_mov'];
 	$fechaRem = $fechaRem->format('Y-m-d H:i:s');
 	$codVend = $_SESSION['codVen'];
-	
+	$db = (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
 	$_post = json_decode(file_get_contents('php://input'),true);
 	$articulosControlados = $_post['data'];
 	$acum = 0;
@@ -38,12 +38,12 @@ try {
 			$status = ($cantRem <> $cantControl) ? 'PENDIENTE' : 'ACEPTADO';
 
 			if( in_array(substr(strtoupper($codArticu), 0, 1) , ['X', 'O']) ){
-				echo $remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status);
+				echo $remito->insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $codVend, $status, $db);
 			}
 
 		}
 
-		$remito->ajusteRemitoStatus($rem);
+		$remito->ajusteRemitoStatus($rem, $db);
 
 		echo true;
 
