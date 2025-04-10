@@ -3,7 +3,10 @@ session_start();
 if(!isset($_SESSION['username'])){
 	header("Location:../login.php");
 }else{
-	 
+$db = 'central';	 
+if(isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1){
+	$db = 'uy';
+}
 require_once __DIR__.'/../class/remito.php';
 
 $user = $_SESSION['codClient'];
@@ -51,10 +54,10 @@ if( count($result) > 0 ){
 
 	// BORRAR TABLAS
 	// CONTROL Y AUX 
-	$remito->deleteControlRemitoTables($user);
+	$remito->deleteControlRemitoTables($user, $db);
 
 	//TRAER MAESTRO DE ARTICULOS 
-	$maestroArt = $remito->traerMaestroDeArticulos();
+	$maestroArt = $remito->traerMaestroDeArticulos($db);
 
 	?>
 	<script>

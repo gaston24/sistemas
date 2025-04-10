@@ -163,7 +163,7 @@ class Remito {
         return $array;
     }    
 
-    public function verificacion($user){
+    public function verificacion($user, $db = 'central'){
 
         $cid = $this->conn->conectar('central');
 
@@ -318,9 +318,9 @@ class Remito {
         };
     }
 
-    public function deleteControlRemitoTables($user){
+    public function deleteControlRemitoTables($user, $db = 'central'){
 
-        $cid = $this->conn->conectar('central');
+        $cid = $this->conn->conectar($db);
         
 
         $sql = "EXEC SJ_DELETE_CONTROL_LOCAL_TABLES '$user'";
@@ -341,9 +341,8 @@ class Remito {
             
     }
 
-    public function traerMaestroDeArticulos(){
-
-        $cid = $this->conn->conectar('central');
+    public function traerMaestroDeArticulos($db = 'central'){
+        $cid = $this->conn->conectar($db);
 
         $sql = "SELECT COD_ARTICU, SINONIMO, DESCRIPCIO 
                 FROM STA11 
@@ -445,7 +444,7 @@ class Remito {
             
     }
 
-    public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status){
+    public function insertarAuditoria($fechaRem, $codClient, $rem, $sucOrig, $sucDestin, $codArticu, $cantRem, $cantControl, $vendedor, $status, $db = 'central'){
         $cid = $this->conn->conectar('central');
 
         $sql = " SET DATEFORMAT YMD
@@ -554,7 +553,7 @@ class Remito {
         
     } 
 
-    public function ajusteRemitoStatus($ncomp){
+    public function ajusteRemitoStatus($ncomp, $db = 'central'){
 
         $cid = $this->conn->conectar('central');
 

@@ -11,7 +11,9 @@ if (!isset($_SESSION['username'])) {
 	require_once __DIR__.'/../class/remito.php';
 
 	$remito = new Remito();
-	$verificacion = $remito->verificacion($user);
+	$db = (isset($_SESSION['usuarioUy']) && $_SESSION['usuarioUy'] == 1) ? 'uy' : 'central';
+
+	$verificacion = $remito->verificacion($user, $db);
 
 ?>
 	<!DOCTYPE HTML>
