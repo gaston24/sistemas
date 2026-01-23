@@ -13,24 +13,26 @@ if(!isset($_SESSION['username'])){
 		<head>
 		<title>Carga de Pedidos - General</title>
 		<link rel="stylesheet" href="css/preloader.css">
-		<?php include '../../../css/header.php'; ?>
+		<?php include '../../assets/css/header.php'; ?>
 		</head>
 		<body>
 
 		<?php
 
-		$dsn = "1 - CENTRAL";
-		$user = "sa";
-		$pass = "Axoft1988";
+		require_once __DIR__.'/../../class/conexion.php';
+		$cid = new Conexion();
+		$cid_central = $cid->conectar('central');
+		
+		if($cid_central === false) {
+			die("Error: No se pudo conectar a la base de datos.");
+		}
+		
 		$suc = $_SESSION['numsuc'];
 		
 		$_SESSION['tipo_pedido'] = 'GENERAL';
 		$_SESSION['depo'] = '01';
 		
 		$codClient = $_SESSION['username'];
-		
-		$cid = odbc_connect($dsn, $user, $pass);
-
 
 		$sql="
 		SET DATEFORMAT YMD
@@ -39,7 +41,21 @@ if(!isset($_SESSION['username'])){
 		
 		";
 
-		$result=odbc_exec($cid,$sql)or die(exit("Error en odbc_exec"));
+		$result = sqlsrv_query($cid_central, $sql);
+		if($result === false) {
+			die("Error en sqlsrv_query: " . print_r(sqlsrv_errors(), true));
+		}
+		
+		// Los procedimientos almacenados pueden devolver múltiples conjuntos de resultados
+		// Necesitamos obtener el siguiente conjunto de resultados
+		$next_result = sqlsrv_next_result($result);
+		if($next_result === false && sqlsrv_errors() !== null) {
+			// Si hay errores, los mostramos, pero si es null significa que no hay más resultados (normal)
+			$errors = sqlsrv_errors();
+			if($errors !== null) {
+				die("Error en sqlsrv_next_result: " . print_r($errors, true));
+			}
+		}
 
 		?>
 
@@ -59,7 +75,7 @@ if(!isset($_SESSION['username'])){
 		<?php
 
 
-		while($v=odbc_fetch_array($result)){
+		while($v = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
 
 			include 'tabla.php';
 

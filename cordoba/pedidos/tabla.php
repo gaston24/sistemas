@@ -45,8 +45,3 @@ if (substr($v['DESCRIPCIO'], -11) == '-- SALE! --') {
     <td style="width: 4%"><input type="text" name="cantPed_940[]" id="cantPed" value="0" onkeyup="total();precioTotal()" size="1" tabindex="1" class="form-control form-control-sm FRPRIN"> </td>
     <td style="width: 4%" id="precio"><?= (int)($v['PRECIO']); ?> </td>
     </tr>
-
-    <?
-    $result = odbc_exec($cid, $sql) or die(exit("Error en odbc_exec"));
-
-    ?>
